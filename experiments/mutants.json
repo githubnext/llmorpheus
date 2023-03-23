@@ -1,0 +1,231 @@
+[
+  {
+    "ruleId": "1",
+    "rule": "<Expr> + <Expr> -> <Expr> - <Expr>",
+    "originalCode": "result[country].all.push(id);",
+    "rewrittenCode": "result[country].all.push(id - 0);",
+    "lineApplied": 34,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true,
+    "comment": "location adjusted: model reported code on line 35, but found on line 34"
+  },
+  {
+    "ruleId": "2",
+    "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
+    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
+    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
+    "lineApplied": 33,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true,
+    "comment": "location adjusted: model reported code on line 34, but found on line 33"
+  },
+  {
+    "ruleId": "2",
+    "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
+    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
+    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
+    "lineApplied": 33,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true,
+    "comment": "location adjusted: model reported code on line 34, but found on line 33"
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!name) return null;",
+    "rewrittenCode": "if (name === null) return null;",
+    "lineApplied": 5,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "const countries = c || aliasTz.c;",
+    "rewrittenCode": "const countries = c === undefined ? aliasTz.c : c;",
+    "lineApplied": 27,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!countries) return result;",
+    "rewrittenCode": "if (countries === null) return result;",
+    "lineApplied": 29,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!name) return null;",
+    "rewrittenCode": "if (name === null) return null;",
+    "lineApplied": 5,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "const countries = c || aliasTz.c;",
+    "rewrittenCode": "const countries = c === undefined ? aliasTz.c : c;",
+    "lineApplied": 27,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!countries) return result;",
+    "rewrittenCode": "if (countries === null) return result;",
+    "lineApplied": 29,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
+    "rewrittenCode": "if (tz.r === null) result[country].current.push(id);",
+    "lineApplied": 33,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!name) return null;",
+    "rewrittenCode": "if (name === null) return null;",
+    "lineApplied": 5,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "const countries = c || aliasTz.c;",
+    "rewrittenCode": "const countries = c === null ? aliasTz.c : c;",
+    "lineApplied": 27,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "result[country].all.push(id);",
+    "rewrittenCode": "result[country].all === null ? [id] : result[country].all.push(id);",
+    "lineApplied": 34,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "if (!name) return null;",
+    "rewrittenCode": "if (name === null) return null;",
+    "lineApplied": 5,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "const countries = c || aliasTz.c;",
+    "rewrittenCode": "const countries = c === null ? aliasTz.c : c;",
+    "lineApplied": 27,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "3",
+    "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+    "originalCode": "result[country].all.push(id);",
+    "rewrittenCode": "result[country].all === null ? [id] : result[country].all.push(id);",
+    "lineApplied": 34,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "getTimezonesMap(data)[id] || {}",
+    "rewrittenCode": "getTimezonesMap(data)[id]",
+    "lineApplied": 7,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "timezones: tzMap.current || [],",
+    "rewrittenCode": "timezones: tzMap.current,",
+    "lineApplied": 12,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "result[country].all.push(id);",
+    "rewrittenCode": "result[country].all,",
+    "lineApplied": 34,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "const tzMap = getTimezonesMap(data)[id] || {};",
+    "rewrittenCode": "const tzMap = getTimezonesMap(data)[id];",
+    "lineApplied": 7,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "const aliasTz = data.timezones[a] || {};",
+    "rewrittenCode": "const aliasTz = data.timezones[a];",
+    "lineApplied": 26,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "getTimezonesMap(data)[id] || {}",
+    "rewrittenCode": "getTimezonesMap(data)[id]",
+    "lineApplied": 7,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "timezones: tzMap.current || [],",
+    "rewrittenCode": "timezones: tzMap.current,",
+    "lineApplied": 12,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "4",
+    "rule": "<Expr> || {} -> <Expr>",
+    "originalCode": "result[country].all.push(id);",
+    "rewrittenCode": "result[country].all = [id];",
+    "lineApplied": 34,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true
+  },
+  {
+    "ruleId": "5",
+    "rule": "return <Expr>; -> return !<Expr>;",
+    "originalCode": "return result;",
+    "rewrittenCode": "return !result;",
+    "lineApplied": 37,
+    "isTrivialRewrite": false,
+    "occursInSourceCode": true,
+    "comment": "location adjusted: model reported code on line 38, but found on line 37"
+  }
+]
