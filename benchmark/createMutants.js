@@ -45,6 +45,11 @@ if (require.main === module) {
                 default: 5,
                 description: "number of completions to generate for each prompt (default: 5)",
             },
+            removeInvalid: {
+                type: "boolean",
+                default: false,
+                description: "whether to remove invalid mutants (default: false)",
+            },
         });
         const argv = await parser.argv;
         const rules = argv.rules === undefined ? [] : argv.rules.substring(1, argv.rules.length - 1).split(",");
@@ -52,7 +57,7 @@ if (require.main === module) {
         const ruleFilter = (value) => {
             return argv.rules === undefined || rules.includes(value);
         };
-        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.rulesFileName, ruleFilter, argv.instructionsFileName, argv.numCompletions, argv.logFileName);
+        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.rulesFileName, ruleFilter, argv.instructionsFileName, argv.numCompletions, argv.logFileName, argv.removeInvalid);
         mutantGenerator.generateMutants(argv.origFileName, argv.outputFileName);
         mutantGenerator.printMutantInfo();
     })();

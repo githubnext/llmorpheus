@@ -7,4 +7,6 @@ export interface IMutant {
   occursInSourceCode?: boolean;
   isTrivialRewrite?: boolean;
   comment?: string;
+  originalCodeMatchesLHS?: boolean;
+  rewrittenCodeMatchesRHS?: boolean;
 }

@@ -3,7 +3,7 @@ import { Codex } from "./codex";
 
 import { IMutant } from "./mutant";
 import { createPrompt } from "./prompt";
-import { IRule, IRuleFilter } from "./rule";
+import { getLHSterminals, getRHSterminals, IRule, IRuleFilter } from "./rule";
 
 
 function addLineNumbers(code: string) : string {
@@ -23,7 +23,7 @@ export class MutantGenerator {
   private mutants : IMutant[] = [];
   private instructions : string;
 
-  constructor(private rulesFileName: string, private ruleFilter: IRuleFilter, private instructionsFileName: string, private numCompletions: number, private logFileName: string) {
+  constructor(private rulesFileName: string, private ruleFilter: IRuleFilter, private instructionsFileName: string, private numCompletions: number, private logFileName: string, private removeInvalid: boolean) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8"));
     this.instructions = fs.readFileSync(this.instructionsFileName, "utf8");
   }
@@ -59,7 +59,7 @@ export class MutantGenerator {
         continue;
       }
       this.printAndLog(`Applying rule ${rule.id} to ${origFileName}`);
-          
+
       const prompt = createPrompt(origCode, rule, this.instructions);  
       const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
       
@@ -94,6 +94,8 @@ export class MutantGenerator {
       }
     }
     this.detectInvalidMutants(origCode);
+    this.removeDuplicates();
+    this.removeInvalidMutants();
 
     // write mutant info to JSON file
     fs.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));   
@@ -139,6 +141,61 @@ export class MutantGenerator {
         mutant.occursInSourceCode = false;  
       }
     });
+
+    // check if the original code contains the symbols in the LHS of the rule, and if the rewritten code
+    // contains the symbols in the RHS of the rule
+    this.mutants.forEach((mutant) => {
+      mutant.originalCodeMatchesLHS = true;
+      for (const symbol of getLHSterminals(mutant.rule)) {
+        if (mutant.originalCode.indexOf(symbol) === -1) {
+          mutant.originalCodeMatchesLHS = false;
+          if (mutant.comment === undefined){
+            mutant.comment = `\noriginal code does not contain symbol \"${symbol}\"`;
+          } else {
+            mutant.comment += `\noriginal code does not contain symbol \"${symbol}\"`;
+          }
+        }
+      }
+      mutant.rewrittenCodeMatchesRHS = true;
+      for (const symbol of getRHSterminals(mutant.rule)) {
+        if (mutant.rewrittenCode.indexOf(symbol) === -1) {
+          mutant.rewrittenCodeMatchesRHS = false;
+          if (mutant.comment === undefined){
+            mutant.comment = `\nrewritten code does not contain symbol \"${symbol}\"`;
+          } else {
+            mutant.comment += `\nrewritten code does not contain symbol \"${symbol}\"`;
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Detect duplicates in the list of mutants. Mutants are considered duplicates if they have the same ruleId and 
+   * lineApplied. Merge the notes of the duplicates into one comment.
+   */
+  private removeDuplicates() : void {
+    const newMutants = [];
+    for (const mutant of this.mutants) {
+      const existingMutant = newMutants.find((m) => m.ruleId === mutant.ruleId && m.lineApplied === mutant.lineApplied);
+      if (existingMutant === undefined) {
+        newMutants.push(mutant);
+      } else {
+        existingMutant.comment = existingMutant.comment + "\n(duplicate: " + mutant.comment + ")";
+        // this.printAndLog(`*** duplicate mutant: ${JSON.stringify(mutant)}`);
+      }
+    }
+    this.mutants = newMutants;
+  }
+
+  /**
+   * Remove mutants that are invalid (when the original code is not present in the source code)
+   * or is trivial, or does not match the rewrite rule.
+   */ 
+  private removeInvalidMutants() : void {
+    if (this.removeInvalid) {
+      this.mutants = this.mutants.filter((mutant) => mutant.occursInSourceCode && !mutant.isTrivialRewrite && mutant.originalCodeMatchesLHS && mutant.rewrittenCodeMatchesRHS);
+    }
   }
 
   // print mutant info to console
