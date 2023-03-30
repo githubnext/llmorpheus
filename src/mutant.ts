@@ -1,12 +1,11 @@
-import { getLHSterminals, getRHSterminals } from "./rule";
+import { Rule } from "./rule";
 
 /**
  * Represents a mutant
  */
 export class Mutant {
   private comment: string;
-  constructor(private ruleId: string, 
-              private rule: string, 
+  constructor(private rule: Rule, 
               private originalCode: string, 
               private rewrittenCode: string, 
               private lineApplied: number){
@@ -25,7 +24,7 @@ export class Mutant {
    * Returns true if the original code contains all the terminals on the LHS of the rule
    */
   public originalCodeMatchesLHS() : boolean {
-    for (const symbol of getLHSterminals(this.rule)) {
+    for (const symbol of this.rule.getLHSterminals()) {
       if (this.originalCode.indexOf(symbol) === -1) {
         return false;
       }
@@ -37,7 +36,7 @@ export class Mutant {
    * Returns true if the rewritten code contains all the terminals on the RHS of the rule
    */ 
   public rewrittenCodeMatchesRHS() : boolean {
-    for (const symbol of getRHSterminals(this.rule)) {
+    for (const symbol of this.rule.getRHSterminals()) {
       if (this.rewrittenCode.indexOf(symbol) === -1) {
         return false;
       }
@@ -62,7 +61,7 @@ export class Mutant {
   }
 
   public getRuleId() : string {
-    return this.ruleId;
+    return this.rule.getRuleId();
   }
 
   private static WINDOW_SIZE = 2;

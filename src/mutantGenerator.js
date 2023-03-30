@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const codex_1 = require("./codex");
 const mutant_1 = require("./mutant");
 const prompt_1 = require("./prompt");
+const rule_1 = require("./rule");
 /**
  * Suggests mutations in given files using the specified rules
  */
@@ -20,7 +21,7 @@ class MutantGenerator {
         this.removeInvalid = removeInvalid;
         this.rules = [];
         this.mutants = [];
-        this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8"));
+        this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8")).map((rule) => new rule_1.Rule(rule.id, rule.rule, rule.description));
         this.promptGenerator = new prompt_1.PromptGenerator(promptTemplateFileName);
     }
     appendToLog(msg) {
@@ -43,10 +44,10 @@ class MutantGenerator {
         const origCode = this.addLineNumbers(fs_1.default.readFileSync(origFileName, "utf8"));
         // create mutants using each of the selected rules
         for (const rule of this.rules) {
-            if (!this.ruleFilter(rule.id)) { // skip rules that are not selected
+            if (!this.ruleFilter(rule.getRuleId())) { // skip rules that are not selected
                 continue;
             }
-            this.printAndLog(`Applying rule \"${rule.id}\" ${rule.rule} to ${origFileName}`);
+            this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} to ${origFileName}`);
             const prompt = this.promptGenerator.createPrompt(origCode, rule);
             const model = new codex_1.Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
             this.appendToLog(` using prompt:\n${prompt}\n`);
@@ -59,10 +60,10 @@ class MutantGenerator {
                 continue;
             }
             if (completions.size === 0) {
-                this.printAndLog(`No completions found for rule ${rule.id}.`);
+                this.printAndLog(`No completions found for rule ${rule.getRuleId()}.`);
             }
             else {
-                this.printAndLog(`\tReceived ${completions.size} completions for rule ${rule.id}.`);
+                this.printAndLog(`\tReceived ${completions.size} completions for rule ${rule.getRuleId()}.`);
                 let completionNr = 1;
                 for (const completion of completions) {
                     this.appendToLog(`completion ${completionNr}:\n${completion}`);
@@ -76,7 +77,7 @@ class MutantGenerator {
                         const lineNr = parseInt(match[1]);
                         const originalCode = match[2];
                         const rewrittenCode = match[3];
-                        const mutant = new mutant_1.Mutant(rule.id, rule.rule, originalCode, rewrittenCode, lineNr); //{ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr, comment: "" };
+                        const mutant = new mutant_1.Mutant(rule, originalCode, rewrittenCode, lineNr); //{ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr, comment: "" };
                         nrMutants++;
                         this.mutants.push(mutant);
                         const isUseful = !mutant.isTrivialRewrite() && mutant.originalCodeMatchesLHS() && mutant.rewrittenCodeMatchesRHS();

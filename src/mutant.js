@@ -1,13 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mutant = void 0;
-const rule_1 = require("./rule");
 /**
  * Represents a mutant
  */
 class Mutant {
-    constructor(ruleId, rule, originalCode, rewrittenCode, lineApplied) {
-        this.ruleId = ruleId;
+    constructor(rule, originalCode, rewrittenCode, lineApplied) {
         this.rule = rule;
         this.originalCode = originalCode;
         this.rewrittenCode = rewrittenCode;
@@ -25,7 +23,7 @@ class Mutant {
      * Returns true if the original code contains all the terminals on the LHS of the rule
      */
     originalCodeMatchesLHS() {
-        for (const symbol of (0, rule_1.getLHSterminals)(this.rule)) {
+        for (const symbol of this.rule.getLHSterminals()) {
             if (this.originalCode.indexOf(symbol) === -1) {
                 return false;
             }
@@ -36,7 +34,7 @@ class Mutant {
      * Returns true if the rewritten code contains all the terminals on the RHS of the rule
      */
     rewrittenCodeMatchesRHS() {
-        for (const symbol of (0, rule_1.getRHSterminals)(this.rule)) {
+        for (const symbol of this.rule.getRHSterminals()) {
             if (this.rewrittenCode.indexOf(symbol) === -1) {
                 return false;
             }
@@ -58,7 +56,7 @@ class Mutant {
         return this.lineApplied;
     }
     getRuleId() {
-        return this.ruleId;
+        return this.rule.getRuleId();
     }
     /**
      * Adjusts the line number of the mutant if the original code is not found on the line reported by the model.

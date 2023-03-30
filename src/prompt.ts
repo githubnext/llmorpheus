@@ -1,6 +1,6 @@
 import fs from "fs";
 import * as handlebars from 'handlebars';
-import { IRule } from "./rule";
+import { Rule } from "./rule";
 
 /**
  * Component for creating a prompt for a given rule and original code.
@@ -18,7 +18,7 @@ export class PromptGenerator {
    * @param rule The rule.
    * @returns The prompt.
    */
-  public createPrompt(origCode: string, rule: IRule){  
+  public createPrompt(origCode: string, rule: Rule){  
     const compiledTemplate = handlebars.compile(this.template);
     return compiledTemplate({ origCode: origCode, rule: rule });
   }
