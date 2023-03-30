@@ -3,20 +3,11 @@ import { Codex } from "./codex";
 
 import { Mutant } from "./mutant";
 import { PromptGenerator } from "./prompt";
-import { getLHSterminals, getRHSterminals, IRule, IRuleFilter } from "./rule";
+import { IRule, IRuleFilter } from "./rule";
 
-
-function addLineNumbers(code: string) : string {
-  const lines = code.split("\n");
-  const maxDigits = Math.floor(Math.log10(lines.length)) + 1;
-  const paddedLines = lines.map((line, i) => {
-    const lineNumber : string = (i + 1).toString();
-    const padding = " ".repeat(maxDigits - lineNumber.length);
-    return `${padding}${lineNumber}: ${line}`;
-  });
-  return paddedLines.join("\n");
-};
-
+/**
+ * Suggests mutations in given files using the specified rules
+ */ 
 export class MutantGenerator {
 
   private rules: IRule[] = [];
@@ -51,7 +42,7 @@ export class MutantGenerator {
 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
 
-    const origCode = addLineNumbers(fs.readFileSync(origFileName, "utf8"));
+    const origCode = this.addLineNumbers(fs.readFileSync(origFileName, "utf8"));
    
     // create mutants using each of the selected rules
     for (const rule of this.rules){      
@@ -104,14 +95,20 @@ export class MutantGenerator {
         } 
       }
     }
-    this.detectInvalidMutants(origCode);
+    this.adjustLineNumbers(origCode);
+    this.removeInvalidMutants();
     this.removeDuplicates();
 
     // write mutant info to JSON file
     fs.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));   
   }
 
-  private WINDOW_SIZE = 2;
+  /**
+   * Account for the fact that the model sometimes reports the wrong line number for the mutation.
+   */
+  private adjustLineNumbers(origCode: string) : void {
+    this.mutants.forEach((mutant) =>  mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
+  }
 
   /**
    * Detect mutants that are invalid (when the original code is not present in the source code) 
@@ -121,11 +118,10 @@ export class MutantGenerator {
    * 
    * @param origCode The original source code.
    */
-  private detectInvalidMutants(origCode: string) : void {
+  private removeInvalidMutants() : void {
     this.mutants = this.mutants.filter((mutant) => !mutant.isTrivialRewrite()); // remove trivial rewrites
     this.mutants = this.mutants.filter((mutant) => mutant.originalCodeMatchesLHS()); // remove mutants that do not match LHS of applied rule
     this.mutants = this.mutants.filter((mutant) => mutant.rewrittenCodeMatchesRHS()); // remove mutants that do not match RHS of applied rule
-    this.mutants.forEach((mutant) =>  mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
     this.mutants = this.mutants.filter((mutant) => mutant.getLineApplied() !== -1); // remove mutants that are not found in source code
   }
 
@@ -146,4 +142,17 @@ export class MutantGenerator {
     this.mutants = newMutants;
   }
 
+  /** 
+   * Add line numbers to the source code.
+   */
+  private addLineNumbers(code: string) : string {
+    const lines = code.split("\n");
+    const maxDigits = Math.floor(Math.log10(lines.length)) + 1;
+    const paddedLines = lines.map((line, i) => {
+      const lineNumber : string = (i + 1).toString();
+      const padding = " ".repeat(maxDigits - lineNumber.length);
+      return `${padding}${lineNumber}: ${line}`;
+    });
+    return paddedLines.join("\n");
+  };
 }

@@ -8,17 +8,9 @@ const fs_1 = __importDefault(require("fs"));
 const codex_1 = require("./codex");
 const mutant_1 = require("./mutant");
 const prompt_1 = require("./prompt");
-function addLineNumbers(code) {
-    const lines = code.split("\n");
-    const maxDigits = Math.floor(Math.log10(lines.length)) + 1;
-    const paddedLines = lines.map((line, i) => {
-        const lineNumber = (i + 1).toString();
-        const padding = " ".repeat(maxDigits - lineNumber.length);
-        return `${padding}${lineNumber}: ${line}`;
-    });
-    return paddedLines.join("\n");
-}
-;
+/**
+ * Suggests mutations in given files using the specified rules
+ */
 class MutantGenerator {
     constructor(promptTemplateFileName, rulesFileName, ruleFilter, numCompletions, logFileName, removeInvalid) {
         this.rulesFileName = rulesFileName;
@@ -28,7 +20,6 @@ class MutantGenerator {
         this.removeInvalid = removeInvalid;
         this.rules = [];
         this.mutants = [];
-        this.WINDOW_SIZE = 2;
         this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8"));
         this.promptGenerator = new prompt_1.PromptGenerator(promptTemplateFileName);
     }
@@ -49,7 +40,7 @@ class MutantGenerator {
             fs_1.default.unlinkSync(this.logFileName);
         }
         this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
-        const origCode = addLineNumbers(fs_1.default.readFileSync(origFileName, "utf8"));
+        const origCode = this.addLineNumbers(fs_1.default.readFileSync(origFileName, "utf8"));
         // create mutants using each of the selected rules
         for (const rule of this.rules) {
             if (!this.ruleFilter(rule.id)) { // skip rules that are not selected
@@ -100,10 +91,17 @@ class MutantGenerator {
                 }
             }
         }
-        this.detectInvalidMutants(origCode);
+        this.adjustLineNumbers(origCode);
+        this.removeInvalidMutants();
         this.removeDuplicates();
         // write mutant info to JSON file
         fs_1.default.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));
+    }
+    /**
+     * Account for the fact that the model sometimes reports the wrong line number for the mutation.
+     */
+    adjustLineNumbers(origCode) {
+        this.mutants.forEach((mutant) => mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
     }
     /**
      * Detect mutants that are invalid (when the original code is not present in the source code)
@@ -113,11 +111,10 @@ class MutantGenerator {
      *
      * @param origCode The original source code.
      */
-    detectInvalidMutants(origCode) {
+    removeInvalidMutants() {
         this.mutants = this.mutants.filter((mutant) => !mutant.isTrivialRewrite()); // remove trivial rewrites
         this.mutants = this.mutants.filter((mutant) => mutant.originalCodeMatchesLHS()); // remove mutants that do not match LHS of applied rule
         this.mutants = this.mutants.filter((mutant) => mutant.rewrittenCodeMatchesRHS()); // remove mutants that do not match RHS of applied rule
-        this.mutants.forEach((mutant) => mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
         this.mutants = this.mutants.filter((mutant) => mutant.getLineApplied() !== -1); // remove mutants that are not found in source code
     }
     /**
@@ -137,6 +134,20 @@ class MutantGenerator {
         }
         this.mutants = newMutants;
     }
+    /**
+     * Add line numbers to the source code.
+     */
+    addLineNumbers(code) {
+        const lines = code.split("\n");
+        const maxDigits = Math.floor(Math.log10(lines.length)) + 1;
+        const paddedLines = lines.map((line, i) => {
+            const lineNumber = (i + 1).toString();
+            const padding = " ".repeat(maxDigits - lineNumber.length);
+            return `${padding}${lineNumber}: ${line}`;
+        });
+        return paddedLines.join("\n");
+    }
+    ;
 }
 exports.MutantGenerator = MutantGenerator;
 //# sourceMappingURL=mutantGenerator.js.map

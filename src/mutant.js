@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mutant = void 0;
 const rule_1 = require("./rule");
+/**
+ * Represents a mutant
+ */
 class Mutant {
     constructor(ruleId, rule, originalCode, rewrittenCode, lineApplied) {
         this.ruleId = ruleId;
@@ -11,18 +14,27 @@ class Mutant {
         this.lineApplied = lineApplied;
         this.comment = "";
     }
+    /**
+     * Returns true if the mutant is trivial, i.e., the original code and the rewritten code are identical
+     * after trimming whitespace
+     */
     isTrivialRewrite() {
         return this.rewrittenCode.trim() === this.originalCode.trim();
     }
+    /**
+     * Returns true if the original code contains all the terminals on the LHS of the rule
+     */
     originalCodeMatchesLHS() {
         for (const symbol of (0, rule_1.getLHSterminals)(this.rule)) {
             if (this.originalCode.indexOf(symbol) === -1) {
-                // console.log(`*** did not find ${symbol} in ${this.originalCode}`);
                 return false;
             }
         }
         return true;
     }
+    /**
+     * Returns true if the rewritten code contains all the terminals on the RHS of the rule
+     */
     rewrittenCodeMatchesRHS() {
         for (const symbol of (0, rule_1.getRHSterminals)(this.rule)) {
             if (this.rewrittenCode.indexOf(symbol) === -1) {
@@ -48,6 +60,13 @@ class Mutant {
     getRuleId() {
         return this.ruleId;
     }
+    /**
+     * Adjusts the line number of the mutant if the original code is not found on the line reported by the model.
+     * Checks up to WINDOW_SIZE lines before and after the line where the mutation was reported. If the line
+     * is not found, the location is set to -1.
+     * @param origCode the original code of the file where the mutant was applied
+     * @returns void
+     */
     adjustLocationAsNeeded(origCode) {
         const origLine = origCode.split("\n")[this.lineApplied - 1];
         if (origLine && origLine.trim().indexOf(this.originalCode.trim()) !== -1) {

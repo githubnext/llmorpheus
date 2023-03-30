@@ -1,4 +1,4 @@
-Starting generation of mutants on: Wed, 29 Mar 2023 23:36:43 GMT
+Starting generation of mutants on: Thu, 30 Mar 2023 01:37:52 GMT
 
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> to experiments/origFile.txt using prompt:
 In this task, we will change the behavior of a program by applying mutation testing.
@@ -116,6 +116,7 @@ The rewriting rule is not applicable to LINE #37
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
+
 	candidate mutant: {"ruleId":"1","rule":"<Expr> + <Expr> -> <Expr> - <Expr>","originalCode":"result[country].all.push(id);","rewrittenCode":"result[country].all.push(id - 0);","lineApplied":35,"comment":""} (useful: false)
 	completion 1 contains  1 candidate mutants, of which 0 are useful--------------------------------------------
 completion 2:
@@ -236,7 +237,7 @@ Please assume that each change is made in isolation.
 
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
-	Received 1 completions for rule 2.completion 1:
+	Received 3 completions for rule 2.completion 1:
 
 The rewriting rule is not applicable to LINE #1
 The rewriting rule is not applicable to LINE #2
@@ -287,6 +288,118 @@ The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
 	candidate mutant: {"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","originalCode":"if (tz.r === undefined) result[country].current.push(id);","rewrittenCode":"if (tz.r !== undefined) result[country].current.push(id);","lineApplied":34,"comment":""} (useful: true)
 	completion 1 contains  1 candidate mutants, of which 1 are useful--------------------------------------------
+completion 2:
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+The rewriting rule is not applicable to LINE #6
+The rewriting rule is not applicable to LINE #7
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+The rewriting rule is not applicable to LINE #33
+
+CHANGE LINE #34 FROM:
+```
+if (tz.r === undefined) result[country].current.push(id);
+```
+TO:
+```
+if (tz.r !== undefined) result[country].current.push(id);
+```
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
+The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
+
+	candidate mutant: {"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","originalCode":"if (tz.r === undefined) result[country].current.push(id);","rewrittenCode":"if (tz.r !== undefined) result[country].current.push(id);","lineApplied":34,"comment":""} (useful: true)
+	completion 2 contains  1 candidate mutants, of which 1 are useful--------------------------------------------
+completion 3:
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+The rewriting rule is not applicable to LINE #6
+The rewriting rule is not applicable to LINE #7
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+The rewriting rule is not applicable to LINE #33
+CHANGE LINE #34 FROM:
+```
+result[country].current.push(id);
+```
+TO:
+```
+result[country].current.push(id) !== undefined;
+```
+CHANGE LINE #35 FROM:
+```
+result[country].all.push(id);
+```
+TO:
+```
+result[country].all.push(id) !== undefined;
+```
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
+The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
+	candidate mutant: {"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","originalCode":"result[country].current.push(id);","rewrittenCode":"result[country].current.push(id) !== undefined;","lineApplied":34,"comment":""} (useful: false)
+	candidate mutant: {"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","originalCode":"result[country].all.push(id);","rewrittenCode":"result[country].all.push(id) !== undefined;","lineApplied":35,"comment":""} (useful: false)
+	completion 3 contains  2 candidate mutants, of which 0 are useful--------------------------------------------
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> to experiments/origFile.txt using prompt:
 In this task, we will change the behavior of a program by applying mutation testing.
 Given the following code, where line numbers have been added for ease of reference:
@@ -472,7 +585,7 @@ Please assume that each change is made in isolation.
 
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
-	Received 1 completions for rule 4.completion 1:
+	Received 2 completions for rule 4.completion 1:
 
 The rewriting rule is not applicable to LINE #1
 The rewriting rule is not applicable to LINE #2
@@ -539,6 +652,73 @@ The rewriting rule is not applicable to LINE #40
 	candidate mutant: {"ruleId":"4","rule":"<Expr> || {} -> <Expr>","originalCode":"timezones: tzMap.current || [],","rewrittenCode":"timezones: tzMap.current,","lineApplied":12,"comment":""} (useful: false)
 	candidate mutant: {"ruleId":"4","rule":"<Expr> || {} -> <Expr>","originalCode":"result[country].all.push(id);","rewrittenCode":"result[country].all = [id];","lineApplied":34,"comment":""} (useful: false)
 	completion 1 contains  3 candidate mutants, of which 1 are useful--------------------------------------------
+completion 2:
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+The rewriting rule is not applicable to LINE #6
+CHANGE LINE #7 FROM:
+```
+getTimezonesMap(data)[id] || {}
+```
+TO:
+```
+getTimezonesMap(data)[id]
+```
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+CHANGE LINE #12 FROM:
+```
+timezones: tzMap.current || [],
+```
+TO:
+```
+timezones: tzMap.current,
+```
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+CHANGE LINE #33 FROM:
+```
+if (tz.r === undefined) result[country].current.push(id);
+```
+TO:
+```
+if (tz.r) result[country].current.push(id);
+```
+The rewriting rule is not applicable to LINE #34
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
+The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
+	candidate mutant: {"ruleId":"4","rule":"<Expr> || {} -> <Expr>","originalCode":"getTimezonesMap(data)[id] || {}","rewrittenCode":"getTimezonesMap(data)[id]","lineApplied":7,"comment":""} (useful: true)
+	candidate mutant: {"ruleId":"4","rule":"<Expr> || {} -> <Expr>","originalCode":"timezones: tzMap.current || [],","rewrittenCode":"timezones: tzMap.current,","lineApplied":12,"comment":""} (useful: false)
+	candidate mutant: {"ruleId":"4","rule":"<Expr> || {} -> <Expr>","originalCode":"if (tz.r === undefined) result[country].current.push(id);","rewrittenCode":"if (tz.r) result[country].current.push(id);","lineApplied":33,"comment":""} (useful: false)
+	completion 2 contains  3 candidate mutants, of which 1 are useful--------------------------------------------
 Applying rule "5" return <Expr>; -> return !<Expr>; to experiments/origFile.txt using prompt:
 In this task, we will change the behavior of a program by applying mutation testing.
 Given the following code, where line numbers have been added for ease of reference:
@@ -642,22 +822,21 @@ The rewriting rule is not applicable to LINE #31
 The rewriting rule is not applicable to LINE #32
 The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
-CHANGE LINE #35 FROM:
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+CHANGE LINE #38 FROM:
 ```
-result[country].all.push(id);
+return result;
 ```
 TO:
 ```
-result[country].all.push(!id);
+return !result;
 ```
-The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
-The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-
-	candidate mutant: {"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","originalCode":"result[country].all.push(id);","rewrittenCode":"result[country].all.push(!id);","lineApplied":35,"comment":""} (useful: false)
-	completion 1 contains  1 candidate mutants, of which 0 are useful--------------------------------------------
+	candidate mutant: {"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","originalCode":"return result;","rewrittenCode":"return !result;","lineApplied":38,"comment":""} (useful: true)
+	completion 1 contains  1 candidate mutants, of which 1 are useful--------------------------------------------
 completion 2:
 
 The rewriting rule is not applicable to LINE #1
@@ -694,18 +873,19 @@ The rewriting rule is not applicable to LINE #31
 The rewriting rule is not applicable to LINE #32
 The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
-The rewriting rule is not applicable to LINE #35
-The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
-CHANGE LINE #38 FROM:
+CHANGE LINE #35 FROM:
 ```
-return result;
+result[country].all.push(id);
 ```
 TO:
 ```
-return !result;
+result[country].all.push(!id);
 ```
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-	candidate mutant: {"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","originalCode":"return result;","rewrittenCode":"return !result;","lineApplied":38,"comment":""} (useful: true)
-	completion 2 contains  1 candidate mutants, of which 1 are useful--------------------------------------------
+
+	candidate mutant: {"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","originalCode":"result[country].all.push(id);","rewrittenCode":"result[country].all.push(!id);","lineApplied":35,"comment":""} (useful: false)
+	completion 2 contains  1 candidate mutants, of which 0 are useful--------------------------------------------
