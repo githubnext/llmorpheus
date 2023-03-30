@@ -4,9 +4,9 @@ Given the following code, where line numbers have been added for ease of referen
 {{{origCode}}}
 <END>
 
-Identify where the following rewrite rule can be applied:
+Identify where the following rewrite rule is applicable:
 		{{{rule.rule}}} ({{rule.description}})
-Going through each of the lines in the code in order, please respond EITHER:
+Going through EACH of the lines in the code in order, please respond EITHER:
 The rewriting rule is not applicable to LINE #N
 OR respond by providing: 
 	  (i) the line number of the code that matched the rewriting rule, 
@@ -21,6 +21,7 @@ TO:
 ```
 <rewritten code>
 ```
-Please assume that each change is made in isolation.
+Please assume that each change is made in isolation and apply the rule
+on every line where it is applicable.
 
 After responding to all of the lines in the code, please conclude your response with "DONE". 
