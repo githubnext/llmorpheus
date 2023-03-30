@@ -5,45 +5,15 @@
     "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
     "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
     "lineApplied": 33,
-    "isTrivialRewrite": false,
-    "occursInSourceCode": true,
-    "comment": "location adjusted: model reported code on line 34, but found on line 33\n(duplicate: location adjusted: model reported code on line 34, but found on line 33)",
-    "originalCodeMatchesLHS": true,
-    "rewrittenCodeMatchesRHS": true
+    "comment": "location adjusted: model reported code on line 34, but found on line 33"
   },
   {
     "ruleId": "4",
     "rule": "<Expr> || {} -> <Expr>",
-    "originalCode": "const tzMap = getTimezonesMap(data)[id] || {};",
-    "rewrittenCode": "const tzMap = getTimezonesMap(data)[id];",
+    "originalCode": "getTimezonesMap(data)[id] || {}",
+    "rewrittenCode": "getTimezonesMap(data)[id]",
     "lineApplied": 7,
-    "isTrivialRewrite": false,
-    "occursInSourceCode": true,
-    "originalCodeMatchesLHS": true,
-    "rewrittenCodeMatchesRHS": true
-  },
-  {
-    "ruleId": "4",
-    "rule": "<Expr> || {} -> <Expr>",
-    "originalCode": "const aliasTz = data.timezones[a] || {};",
-    "rewrittenCode": "const aliasTz = data.timezones[a];",
-    "lineApplied": 26,
-    "isTrivialRewrite": false,
-    "occursInSourceCode": true,
-    "originalCodeMatchesLHS": true,
-    "rewrittenCodeMatchesRHS": true
-  },
-  {
-    "ruleId": "5",
-    "rule": "return <Expr>; -> return !<Expr>;",
-    "originalCode": "if (!countries) return result;",
-    "rewrittenCode": "if (!countries) return !result;",
-    "lineApplied": 29,
-    "isTrivialRewrite": false,
-    "occursInSourceCode": true,
-    "originalCodeMatchesLHS": true,
-    "rewrittenCodeMatchesRHS": true,
-    "comment": "undefined\n(duplicate: undefined)\n(duplicate: location adjusted: model reported code on line 28, but found on line 29)"
+    "comment": ""
   },
   {
     "ruleId": "5",
@@ -51,10 +21,6 @@
     "originalCode": "return result;",
     "rewrittenCode": "return !result;",
     "lineApplied": 37,
-    "isTrivialRewrite": false,
-    "occursInSourceCode": true,
-    "comment": "location adjusted: model reported code on line 38, but found on line 37\n(duplicate: undefined)\n(duplicate: location adjusted: model reported code on line 35, but found on line 37)",
-    "originalCodeMatchesLHS": true,
-    "rewrittenCodeMatchesRHS": true
+    "comment": "location adjusted: model reported code on line 38, but found on line 37"
   }
 ]

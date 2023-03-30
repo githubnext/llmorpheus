@@ -18,6 +18,6 @@
 },
 {    "id": "5",
       "rule": "return <Expr>; -> return !<Expr>;",
-      "description": "negate return expression"
+      "description": "insert ! before expression in return statement"
 }
 ]

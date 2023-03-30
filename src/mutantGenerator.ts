@@ -1,8 +1,8 @@
 import fs from "fs";
 import { Codex } from "./codex";
 
-import { IMutant } from "./mutant";
-import { createPrompt } from "./prompt";
+import { Mutant } from "./mutant";
+import { PromptGenerator } from "./prompt";
 import { getLHSterminals, getRHSterminals, IRule, IRuleFilter } from "./rule";
 
 
@@ -20,12 +20,12 @@ function addLineNumbers(code: string) : string {
 export class MutantGenerator {
 
   private rules: IRule[] = [];
-  private mutants : IMutant[] = [];
-  private instructions : string;
+  private mutants : Mutant[] = [];
+  private promptGenerator : PromptGenerator;
 
-  constructor(private rulesFileName: string, private ruleFilter: IRuleFilter, private instructionsFileName: string, private numCompletions: number, private logFileName: string, private removeInvalid: boolean) {
+  constructor(promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private numCompletions: number, private logFileName: string, private removeInvalid: boolean) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8"));
-    this.instructions = fs.readFileSync(this.instructionsFileName, "utf8");
+    this.promptGenerator = new PromptGenerator(promptTemplateFileName);
   }
 
   private appendToLog(msg: string) : void {
@@ -58,44 +58,54 @@ export class MutantGenerator {
       if (!this.ruleFilter(rule.id)){ // skip rules that are not selected
         continue;
       }
-      this.printAndLog(`Applying rule ${rule.id} to ${origFileName}`);
+      this.printAndLog(`Applying rule \"${rule.id}\" ${rule.rule} to ${origFileName}`);
 
-      const prompt = createPrompt(origCode, rule, this.instructions);  
+      const prompt = this.promptGenerator.createPrompt(origCode, rule);  
       const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
       
-      this.appendToLog(`using prompt:\n${prompt}\n`);
-      const completions = await model.query(prompt);
-
+      this.appendToLog(` using prompt:\n${prompt}\n`);
+      let completions;
+      try {
+         completions = await model.query(prompt);
+      } catch (err) {
+        this.printAndLog(`\tError: ${err}`);
+        continue;
+      }
       if (completions.size === 0) {
         this.printAndLog(`No completions found for rule ${rule.id}.`);
       } else {
         this.printAndLog(`\tReceived ${completions.size} completions for rule ${rule.id}.`);
-        let i = 1;
+        let completionNr = 1;
         for (const completion of completions) {
-          // count the number of mutants in the completion, update the log, and increment the counter
-          const nrMutants = (completion.match(/CHANGE LINE/g) || []).length;
-          this.printAndLog(`\tcompletion ${i} contains ${nrMutants} candidate mutants`);
-          this.appendToLog(`completion ${i}:\n${completion}`);
-          i++;
+          this.appendToLog(`completion ${completionNr}:\n${completion}`);
 
           // extract the mutants from the completion
           // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
           const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
           let match;
+          let nrMutants = 0;
+          let nrUsefulMutants = 0;
           while ((match = regExp.exec(completion)) !== null) {
               const lineNr = parseInt(match[1]);
               const originalCode = match[2];
               const rewrittenCode = match[3];
-              this.mutants.push({ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr });
-              this.appendToLog(`\tcandidate mutant: ${JSON.stringify({ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr })}\n`);
+              const mutant = new Mutant(rule.id, rule.rule, originalCode, rewrittenCode, lineNr); //{ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr, comment: "" };
+              nrMutants++;
+              this.mutants.push(mutant);
+              const isUseful = !mutant.isTrivialRewrite() && mutant.originalCodeMatchesLHS() && mutant.rewrittenCodeMatchesRHS();
+              this.appendToLog(`\tcandidate mutant: ${JSON.stringify(mutant)} (useful: ${isUseful})\n`);
+              if (isUseful){
+                nrUsefulMutants++;
+              }
           }
+          this.printAndLog(`\tcompletion ${completionNr} contains  ${nrMutants} candidate mutants, of which ${nrUsefulMutants} are useful`);
+          completionNr++;
           this.appendToLog("--------------------------------------------\n");
         } 
       }
     }
     this.detectInvalidMutants(origCode);
     this.removeDuplicates();
-    this.removeInvalidMutants();
 
     // write mutant info to JSON file
     fs.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));   
@@ -112,62 +122,11 @@ export class MutantGenerator {
    * @param origCode The original source code.
    */
   private detectInvalidMutants(origCode: string) : void {
-    this.mutants.forEach((mutant) => {
-      mutant.isTrivialRewrite = mutant.rewrittenCode.trim() === mutant.originalCode.trim();
-
-      // check if the original code is present at the exact line
-      const origLine = origCode.split("\n")[mutant.lineApplied - 1];
-      if (origLine && origLine.trim().indexOf(mutant.originalCode.trim()) !== -1) {
-        mutant.occursInSourceCode = true;
-        return;
-      } else { // else, check up to WINDOW_SIZE lines before and after the line where the mutation was reported
-        for (let i=1; i<=this.WINDOW_SIZE; i++) {
-          const line = origCode.split("\n")[mutant.lineApplied - 1 - i];
-          if (line && line.trim().indexOf(mutant.originalCode.trim()) !== -1) {
-            mutant.occursInSourceCode = true;
-            mutant.comment = `location adjusted: model reported code on line ${mutant.lineApplied}, but found on line ${mutant.lineApplied - i}`;
-            mutant.lineApplied -= i;
-            return;
-          } else {
-            const line = origCode.split("\n")[mutant.lineApplied - 1 + i];
-            if (line && line.trim().indexOf(mutant.originalCode.trim()) !== -1) {
-              mutant.occursInSourceCode = true;
-              mutant.comment = `location adjusted: model reported code on line ${mutant.lineApplied}, but found on line ${mutant.lineApplied + i}`;
-              mutant.lineApplied += i;
-              return;
-            }
-          }
-        }
-        mutant.occursInSourceCode = false;  
-      }
-    });
-
-    // check if the original code contains the symbols in the LHS of the rule, and if the rewritten code
-    // contains the symbols in the RHS of the rule
-    this.mutants.forEach((mutant) => {
-      mutant.originalCodeMatchesLHS = true;
-      for (const symbol of getLHSterminals(mutant.rule)) {
-        if (mutant.originalCode.indexOf(symbol) === -1) {
-          mutant.originalCodeMatchesLHS = false;
-          if (mutant.comment === undefined){
-            mutant.comment = `\noriginal code does not contain symbol \"${symbol}\"`;
-          } else {
-            mutant.comment += `\noriginal code does not contain symbol \"${symbol}\"`;
-          }
-        }
-      }
-      mutant.rewrittenCodeMatchesRHS = true;
-      for (const symbol of getRHSterminals(mutant.rule)) {
-        if (mutant.rewrittenCode.indexOf(symbol) === -1) {
-          mutant.rewrittenCodeMatchesRHS = false;
-          if (mutant.comment === undefined){
-            mutant.comment = `\nrewritten code does not contain symbol \"${symbol}\"`;
-          } else {
-            mutant.comment += `\nrewritten code does not contain symbol \"${symbol}\"`;
-          }
-        }
-      }
-    });
+    this.mutants = this.mutants.filter((mutant) => !mutant.isTrivialRewrite()); // remove trivial rewrites
+    this.mutants = this.mutants.filter((mutant) => mutant.originalCodeMatchesLHS()); // remove mutants that do not match LHS of applied rule
+    this.mutants = this.mutants.filter((mutant) => mutant.rewrittenCodeMatchesRHS()); // remove mutants that do not match RHS of applied rule
+    this.mutants.forEach((mutant) =>  mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
+    this.mutants = this.mutants.filter((mutant) => mutant.getLineApplied() !== -1); // remove mutants that are not found in source code
   }
 
   /**
@@ -177,36 +136,14 @@ export class MutantGenerator {
   private removeDuplicates() : void {
     const newMutants = [];
     for (const mutant of this.mutants) {
-      const existingMutant = newMutants.find((m) => m.ruleId === mutant.ruleId && m.lineApplied === mutant.lineApplied);
+      const existingMutant = newMutants.find((m) => m.getRuleId() === mutant.getRuleId() && m.getLineApplied() === mutant.getLineApplied());
       if (existingMutant === undefined) {
         newMutants.push(mutant);
       } else {
-        existingMutant.comment = existingMutant.comment + "\n(duplicate: " + mutant.comment + ")";
-        // this.printAndLog(`*** duplicate mutant: ${JSON.stringify(mutant)}`);
+        existingMutant.addComment(mutant.getComment());
       }
     }
     this.mutants = newMutants;
   }
 
-  /**
-   * Remove mutants that are invalid (when the original code is not present in the source code)
-   * or is trivial, or does not match the rewrite rule.
-   */ 
-  private removeInvalidMutants() : void {
-    if (this.removeInvalid) {
-      this.mutants = this.mutants.filter((mutant) => mutant.occursInSourceCode && !mutant.isTrivialRewrite && mutant.originalCodeMatchesLHS && mutant.rewrittenCodeMatchesRHS);
-    }
-  }
-
-  // print mutant info to console
-  public printMutantInfo() : void {
-    this.mutants.forEach((mutant) => {
-      console.log(`rule ${mutant.ruleId} applied to line ${mutant.lineApplied}:`);
-      console.log(`  rule: ${mutant.ruleId}: ${mutant.rule}`);
-      console.log(`  original code: ${mutant.originalCode}`);
-      console.log(`  rewritten code: ${mutant.rewrittenCode}\n`);
-      console.log(`  claimed line in orig code: ${mutant.lineApplied} (occurs in source code: ${mutant.occursInSourceCode})`);
-      console.log(`  is trivial rewrite: ${mutant.isTrivialRewrite}\n`);
-    });
-  }
 }

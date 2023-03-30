@@ -26,10 +26,10 @@ if (require.main === module) {
                 default: "rules.json",
                 description: "name of file containing the rewriting rules (default: \"rules.json\")",
             },
-            instructionsFileName: {
+            promptTemplateFileName: {
                 type: "string",
-                default: "instructions.txt",
-                description: "name of file containing the instructions (default: \"instructions.txt\")",
+                default: "template.hb",
+                description: "name of file containing the prompt template (default: \"template.hb\")",
             },
             logFileName: {
                 type: "string",
@@ -57,9 +57,8 @@ if (require.main === module) {
         const ruleFilter = (value) => {
             return argv.rules === undefined || rules.includes(value);
         };
-        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.rulesFileName, ruleFilter, argv.instructionsFileName, argv.numCompletions, argv.logFileName, argv.removeInvalid);
+        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.numCompletions, argv.logFileName, argv.removeInvalid);
         mutantGenerator.generateMutants(argv.origFileName, argv.outputFileName);
-        mutantGenerator.printMutantInfo();
     })();
 }
 //# sourceMappingURL=createMutants.js.map
