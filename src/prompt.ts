@@ -20,6 +20,6 @@ export class PromptGenerator {
    */
   public createPrompt(origCode: string, rule: Rule){  
     const compiledTemplate = handlebars.compile(this.template);
-    return compiledTemplate({ origCode: origCode, rule: rule });
+    return compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
   }
 }

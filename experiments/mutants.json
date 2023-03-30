@@ -8,7 +8,7 @@
     "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
     "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
     "lineApplied": 33,
-    "comment": ""
+    "comment": "location adjusted: model reported code on line 34, but found on line 33"
   },
   {
     "rule": {

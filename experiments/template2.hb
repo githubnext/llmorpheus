@@ -9,7 +9,7 @@ Consider the following rewrite rule:
 Going through EACH of the lines in the code in order, please respond EITHER:
 
 IF line#N contains one of the following symbols
-		{{{rule.symbols}}}
+		{{{symbols}}}
 then show how the line would be rewritten by the rule by providing:
 	  (i) the line number of the code that matched the rewriting rule, 
 	  (ii) a Markdown code block with the original code on that line, and
