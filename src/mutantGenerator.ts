@@ -49,7 +49,7 @@ export class MutantGenerator {
       if (!this.ruleFilter(rule.getRuleId())){ // skip rules that are not selected
         continue;
       }
-      this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} to ${origFileName}`);
+      this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${origFileName}`);
 
       const prompt = this.promptGenerator.createPrompt(origCode, rule);  
       const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
