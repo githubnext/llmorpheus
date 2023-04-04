@@ -16,8 +16,8 @@
       "rule": "<Expr> || {} -> <Expr>",
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
     },
-    "originalCode": "getTimezonesMap(data)[id] || {}",
-    "rewrittenCode": "getTimezonesMap(data)[id]",
+    "originalCode": "const tzMap = getTimezonesMap(data)[id] || {};",
+    "rewrittenCode": "const tzMap = getTimezonesMap(data)[id];",
     "lineApplied": 7,
     "comment": ""
   },
@@ -30,6 +30,39 @@
     "originalCode": "const aliasTz = data.timezones[a] || {};",
     "rewrittenCode": "const aliasTz = data.timezones[a];",
     "lineApplied": 26,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return timezonesMap;",
+    "rewrittenCode": "return !timezonesMap;",
+    "lineApplied": 19,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return result;",
+    "rewrittenCode": "return !result;",
+    "lineApplied": 29,
+    "comment": "location adjusted: model reported code on line 28, but found on line 29"
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return result;",
+    "rewrittenCode": "return !result;",
+    "lineApplied": 37,
     "comment": ""
   }
 ]

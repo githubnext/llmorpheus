@@ -48,22 +48,22 @@ class MutantGenerator {
                 continue;
             }
             this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${origFileName}`);
-            const prompt = this.promptGenerator.createPrompt(origCode, rule);
-            const model = new codex_1.Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
-            this.appendToLog(` using prompt:\n${prompt}\n`);
-            let completions;
-            try {
-                completions = await model.query(prompt);
-            }
-            catch (err) {
-                this.printAndLog(`\tError: ${err}`);
-                continue;
-            }
-            if (completions.size === 0) {
-                this.printAndLog(`No completions found for rule ${rule.getRuleId()}.`);
-            }
-            else {
-                this.printAndLog(`\tReceived ${completions.size} completions for rule ${rule.getRuleId()}.`);
+            const chunks = this.createChunks(origCode);
+            for (let chunkNr = 0; chunkNr < chunks.length; chunkNr++) {
+                const chunk = chunks[chunkNr];
+                this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName})`);
+                const prompt = this.promptGenerator.createPrompt(chunk, rule);
+                const model = new codex_1.Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
+                this.appendToLog(`    prompt for chunk ${chunkNr} of ${origFileName}:\n\n${prompt}\n\n`);
+                let completions;
+                try {
+                    completions = await model.query(prompt);
+                }
+                catch (err) {
+                    this.printAndLog(`    Error: ${err}`);
+                    continue;
+                }
+                this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${origFileName} .`);
                 let completionNr = 1;
                 for (const completion of completions) {
                     this.appendToLog(`completion ${completionNr}:\n${completion}`);
@@ -86,7 +86,7 @@ class MutantGenerator {
                             nrUsefulMutants++;
                         }
                     }
-                    this.printAndLog(`\tcompletion ${completionNr} contains  ${nrMutants} candidate mutants, of which ${nrUsefulMutants} are useful`);
+                    this.printAndLog(`    completion ${completionNr} for chunk ${chunkNr} of file ${origFileName} contains  ${nrMutants} candidate mutants, of which ${nrUsefulMutants} are useful`);
                     completionNr++;
                     this.appendToLog("--------------------------------------------\n");
                 }
@@ -97,6 +97,25 @@ class MutantGenerator {
         this.removeDuplicates();
         // write mutant info to JSON file
         fs_1.default.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));
+    }
+    /**
+     * Break up the source code into chunks of at most CHUNK_SIZE lines.
+     * @param origCode: the source code
+     * @returns an array of strings, each of which is a chunk of the source code
+     */
+    createChunks(origCode) {
+        const chunks = [];
+        const lines = origCode.split("\n");
+        for (let i = 0; i < lines.length; i += MutantGenerator.CHUNK_SIZE) {
+            chunks.push(lines.slice(i, i + MutantGenerator.CHUNK_SIZE).join("\n")); // do we need MAX here?
+        }
+        return chunks;
+    }
+    getLineRange(chunk) {
+        const lines = chunk.split("\n");
+        const firstLine = lines[0];
+        const lastLine = lines[lines.length - 1];
+        return firstLine.substring(0, firstLine.indexOf(":")) + '-' + lastLine.substring(0, lastLine.indexOf(":"));
     }
     /**
      * Account for the fact that the model sometimes reports the wrong line number for the mutation.
@@ -151,4 +170,5 @@ class MutantGenerator {
     ;
 }
 exports.MutantGenerator = MutantGenerator;
+MutantGenerator.CHUNK_SIZE = 10; // max number of LOC to include in one prompt
 //# sourceMappingURL=mutantGenerator.js.map
