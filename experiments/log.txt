@@ -1,4 +1,4 @@
-Starting generation of mutants on: Wed, 05 Apr 2023 12:46:35 GMT
+Starting generation of mutants on: Wed, 05 Apr 2023 15:13:00 GMT
 
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to experiments/origFile.txt  skipping chunk 0 (lines 1-10) of experiments/origFile.txt because it does not contain any of the terminals +  skipping chunk 1 (lines 11-20) of experiments/origFile.txt because it does not contain any of the terminals +  skipping chunk 2 (lines 21-30) of experiments/origFile.txt because it does not contain any of the terminals +  skipping chunk 3 (lines 31-40) of experiments/origFile.txt because it does not contain any of the terminals +Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to experiments/origFile.txt  skipping chunk 0 (lines 1-10) of experiments/origFile.txt because it does not contain any of the terminals ===  skipping chunk 1 (lines 11-20) of experiments/origFile.txt because it does not contain any of the terminals ===  skipping chunk 2 (lines 21-30) of experiments/origFile.txt because it does not contain any of the terminals ===  prompting for chunk 3 (lines 31-40) of experiments/origFile.txt)    prompt for chunk 3 of experiments/origFile.txt:
 
@@ -59,7 +59,7 @@ The rewriting rule is not applicable to LINE #37
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-	candidate mutant: {"rule":{"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","description":"replace === operator in condition with !=="},"originalCode":"if (tz.r === undefined) result[country].current.push(id);","rewrittenCode":"if (tz.r !== undefined) result[country].current.push(id);","lineApplied":33,"comment":""} (useful: true)
+	candidate mutant: {"rule":{"ruleId":"2","rule":"<Expr> === <Expr> -> <Expr> !== <Expr>","description":"replace === operator in condition with !=="},"originalCode":"if (tz.r === undefined) result[country].current.push(id);","rewrittenCode":"if (tz.r !== undefined) result[country].current.push(id);","fileName":"experiments/origFile.txt","lineApplied":33,"comment":""} (useful: true)
     completion 1 for chunk 3 of file experiments/origFile.txt contains 1 candidate mutants, of which 1 are useful--------------------------------------------
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to experiments/origFile.txt  skipping chunk 0 (lines 1-10) of experiments/origFile.txt because it does not contain any of the terminals !==  skipping chunk 1 (lines 11-20) of experiments/origFile.txt because it does not contain any of the terminals !==  skipping chunk 2 (lines 21-30) of experiments/origFile.txt because it does not contain any of the terminals !==  skipping chunk 3 (lines 31-40) of experiments/origFile.txt because it does not contain any of the terminals !==Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to experiments/origFile.txt  prompting for chunk 0 (lines 1-10) of experiments/origFile.txt)    prompt for chunk 0 of experiments/origFile.txt:
 
@@ -120,7 +120,7 @@ const tzMap = getTimezonesMap(data)[id];
 The rewriting rule is not applicable to LINE #8
 The rewriting rule is not applicable to LINE #9
 The rewriting rule is not applicable to LINE #10
-	candidate mutant: {"rule":{"ruleId":"4","rule":"<Expr> || {} -> <Expr>","description":"replace binary || expression with its first operand if the second operand is an empty object literal"},"originalCode":"const tzMap = getTimezonesMap(data)[id] || {};","rewrittenCode":"const tzMap = getTimezonesMap(data)[id];","lineApplied":7,"comment":""} (useful: true)
+	candidate mutant: {"rule":{"ruleId":"4","rule":"<Expr> || {} -> <Expr>","description":"replace binary || expression with its first operand if the second operand is an empty object literal"},"originalCode":"const tzMap = getTimezonesMap(data)[id] || {};","rewrittenCode":"const tzMap = getTimezonesMap(data)[id];","fileName":"experiments/origFile.txt","lineApplied":7,"comment":""} (useful: true)
     completion 1 for chunk 0 of file experiments/origFile.txt contains 1 candidate mutants, of which 1 are useful--------------------------------------------
   skipping chunk 1 (lines 11-20) of experiments/origFile.txt because it does not contain any of the terminals ||,{}  prompting for chunk 2 (lines 21-30) of experiments/origFile.txt)    prompt for chunk 2 of experiments/origFile.txt:
 
@@ -180,7 +180,7 @@ const aliasTz = data.timezones[a];
 The rewriting rule is not applicable to LINE #27
 The rewriting rule is not applicable to LINE #28
 The rewriting rule is not applicable to LINE #29
-	candidate mutant: {"rule":{"ruleId":"4","rule":"<Expr> || {} -> <Expr>","description":"replace binary || expression with its first operand if the second operand is an empty object literal"},"originalCode":"const aliasTz = data.timezones[a] || {};","rewrittenCode":"const aliasTz = data.timezones[a];","lineApplied":26,"comment":""} (useful: true)
+	candidate mutant: {"rule":{"ruleId":"4","rule":"<Expr> || {} -> <Expr>","description":"replace binary || expression with its first operand if the second operand is an empty object literal"},"originalCode":"const aliasTz = data.timezones[a] || {};","rewrittenCode":"const aliasTz = data.timezones[a];","fileName":"experiments/origFile.txt","lineApplied":26,"comment":""} (useful: true)
     completion 1 for chunk 2 of file experiments/origFile.txt contains 1 candidate mutants, of which 1 are useful--------------------------------------------
   skipping chunk 3 (lines 31-40) of experiments/origFile.txt because it does not contain any of the terminals ||,{}Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to experiments/origFile.txt  prompting for chunk 0 (lines 1-10) of experiments/origFile.txt)    prompt for chunk 0 of experiments/origFile.txt:
 
@@ -241,7 +241,7 @@ TO:
 return !{
 ```
 The rewriting rule is not applicable to LINE #10
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return {","rewrittenCode":"return !{","lineApplied":9,"comment":""} (useful: false)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return {","rewrittenCode":"return !{","fileName":"experiments/origFile.txt","lineApplied":9,"comment":""} (useful: false)
     completion 1 for chunk 0 of file experiments/origFile.txt contains 1 candidate mutants, of which 0 are useful--------------------------------------------
   prompting for chunk 1 (lines 11-20) of experiments/origFile.txt)    prompt for chunk 1 of experiments/origFile.txt:
 
@@ -298,35 +298,6 @@ if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
 ```
 TO:
 ```
-if (!timezonesMap) timezonesMap = !buildTimezonesMap(data);
-```
-CHANGE LINE #19 FROM:
-```
-return timezonesMap;
-```
-TO:
-```
-return !timezonesMap;
-```
-The rewriting rule is not applicable to LINE #20
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"if (!timezonesMap) timezonesMap = buildTimezonesMap(data);","rewrittenCode":"if (!timezonesMap) timezonesMap = !buildTimezonesMap(data);","lineApplied":18,"comment":""} (useful: false)
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return timezonesMap;","rewrittenCode":"return !timezonesMap;","lineApplied":19,"comment":""} (useful: true)
-    completion 1 for chunk 1 of file experiments/origFile.txt contains 2 candidate mutants, of which 1 are useful--------------------------------------------
-completion 2:
-
-The rewriting rule is not applicable to LINE #11
-The rewriting rule is not applicable to LINE #12
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
-CHANGE LINE #18 FROM:
-```
-if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-TO:
-```
 if (timezonesMap) timezonesMap = buildTimezonesMap(data);
 ```
 CHANGE LINE #19 FROM:
@@ -338,9 +309,45 @@ TO:
 return !timezonesMap;
 ```
 The rewriting rule is not applicable to LINE #20
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"if (!timezonesMap) timezonesMap = buildTimezonesMap(data);","rewrittenCode":"if (timezonesMap) timezonesMap = buildTimezonesMap(data);","lineApplied":18,"comment":""} (useful: false)
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return timezonesMap;","rewrittenCode":"return !timezonesMap;","lineApplied":19,"comment":""} (useful: true)
-    completion 2 for chunk 1 of file experiments/origFile.txt contains 2 candidate mutants, of which 1 are useful--------------------------------------------
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"if (!timezonesMap) timezonesMap = buildTimezonesMap(data);","rewrittenCode":"if (timezonesMap) timezonesMap = buildTimezonesMap(data);","fileName":"experiments/origFile.txt","lineApplied":18,"comment":""} (useful: false)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return timezonesMap;","rewrittenCode":"return !timezonesMap;","fileName":"experiments/origFile.txt","lineApplied":19,"comment":""} (useful: true)
+    completion 1 for chunk 1 of file experiments/origFile.txt contains 2 candidate mutants, of which 1 are useful--------------------------------------------
+completion 2:
+
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+CHANGE LINE #17 FROM:
+```
+function getTimezonesMap(data) {
+```
+TO:
+```
+function getTimezonesMap(data) {
+```
+CHANGE LINE #18 FROM:
+```
+if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
+```
+TO:
+```
+if (!timezonesMap) timezonesMap = !buildTimezonesMap(data);
+```
+CHANGE LINE #19 FROM:
+```
+return timezonesMap;
+```
+TO:
+```
+return !timezonesMap;
+```
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"function getTimezonesMap(data) {","rewrittenCode":"function getTimezonesMap(data) {","fileName":"experiments/origFile.txt","lineApplied":17,"comment":""} (useful: false)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"if (!timezonesMap) timezonesMap = buildTimezonesMap(data);","rewrittenCode":"if (!timezonesMap) timezonesMap = !buildTimezonesMap(data);","fileName":"experiments/origFile.txt","lineApplied":18,"comment":""} (useful: false)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return timezonesMap;","rewrittenCode":"return !timezonesMap;","fileName":"experiments/origFile.txt","lineApplied":19,"comment":""} (useful: true)
+    completion 2 for chunk 1 of file experiments/origFile.txt contains 3 candidate mutants, of which 1 are useful--------------------------------------------
   prompting for chunk 2 (lines 21-30) of experiments/origFile.txt)    prompt for chunk 2 of experiments/origFile.txt:
 
 In this task, we will change the behavior of a program by applying mutation testing.
@@ -398,7 +405,7 @@ TO:
 ```
 return !result;
 ```
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return result;","rewrittenCode":"return !result;","lineApplied":28,"comment":""} (useful: true)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return result;","rewrittenCode":"return !result;","fileName":"experiments/origFile.txt","lineApplied":28,"comment":""} (useful: true)
     completion 1 for chunk 2 of file experiments/origFile.txt contains 1 candidate mutants, of which 1 are useful--------------------------------------------
   prompting for chunk 3 (lines 31-40) of experiments/origFile.txt)    prompt for chunk 3 of experiments/origFile.txt:
 
@@ -459,5 +466,5 @@ return !result;
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return result;","rewrittenCode":"return !result;","lineApplied":37,"comment":""} (useful: true)
+	candidate mutant: {"rule":{"ruleId":"5","rule":"return <Expr>; -> return !<Expr>;","description":"negate return expression"},"originalCode":"return result;","rewrittenCode":"return !result;","fileName":"experiments/origFile.txt","lineApplied":37,"comment":""} (useful: true)
     completion 1 for chunk 3 of file experiments/origFile.txt contains 1 candidate mutants, of which 1 are useful--------------------------------------------

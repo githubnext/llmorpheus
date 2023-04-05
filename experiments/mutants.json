@@ -7,6 +7,7 @@
     },
     "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
     "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 33,
     "comment": ""
   },
@@ -18,6 +19,7 @@
     },
     "originalCode": "const tzMap = getTimezonesMap(data)[id] || {};",
     "rewrittenCode": "const tzMap = getTimezonesMap(data)[id];",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 7,
     "comment": ""
   },
@@ -29,6 +31,7 @@
     },
     "originalCode": "const aliasTz = data.timezones[a] || {};",
     "rewrittenCode": "const aliasTz = data.timezones[a];",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 26,
     "comment": ""
   },
@@ -40,6 +43,7 @@
     },
     "originalCode": "return timezonesMap;",
     "rewrittenCode": "return !timezonesMap;",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 19,
     "comment": ""
   },
@@ -51,6 +55,7 @@
     },
     "originalCode": "return result;",
     "rewrittenCode": "return !result;",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 29,
     "comment": "location adjusted: model reported code on line 28, but found on line 29"
   },
@@ -62,6 +67,7 @@
     },
     "originalCode": "return result;",
     "rewrittenCode": "return !result;",
+    "fileName": "experiments/origFile.txt",
     "lineApplied": 37,
     "comment": ""
   }

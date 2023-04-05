@@ -5,10 +5,11 @@ exports.Mutant = void 0;
  * Represents a mutant
  */
 class Mutant {
-    constructor(rule, originalCode, rewrittenCode, lineApplied) {
+    constructor(rule, originalCode, rewrittenCode, fileName, lineApplied) {
         this.rule = rule;
         this.originalCode = originalCode;
         this.rewrittenCode = rewrittenCode;
+        this.fileName = fileName;
         this.lineApplied = lineApplied;
         this.comment = "";
     }

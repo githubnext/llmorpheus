@@ -83,7 +83,7 @@ class MutantGenerator {
                         const lineNr = parseInt(match[1]);
                         const originalCode = match[2];
                         const rewrittenCode = match[3];
-                        const mutant = new mutant_1.Mutant(rule, originalCode, rewrittenCode, lineNr); //{ ruleId: rule.id, rule: rule.rule, originalCode: originalCode, rewrittenCode: rewrittenCode, lineApplied: lineNr, comment: "" };
+                        const mutant = new mutant_1.Mutant(rule, originalCode, rewrittenCode, origFileName, lineNr);
                         nrMutants++;
                         this.mutants.push(mutant);
                         const isUseful = !mutant.isTrivialRewrite() && mutant.originalCodeMatchesLHS() && mutant.rewrittenCodeMatchesRHS();

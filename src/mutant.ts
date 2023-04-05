@@ -8,6 +8,7 @@ export class Mutant {
   constructor(private rule: Rule, 
               private originalCode: string, 
               private rewrittenCode: string, 
+              private fileName: string,
               private lineApplied: number){
      this.comment = "";
   }
