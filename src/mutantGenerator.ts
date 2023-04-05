@@ -55,7 +55,12 @@ export class MutantGenerator {
       const chunks = this.createChunks(origCode);
       for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
         const chunk = chunks[chunkNr];
-        this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName})`);
+        if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
+          this.printAndLog(`  skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}`);
+          continue;
+        } else {
+          this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName})`);
+        }
         const prompt = this.promptGenerator.createPrompt(chunk, rule);  
         const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
         this.appendToLog(`    prompt for chunk ${chunkNr} of ${origFileName}:\n\n${prompt}\n\n`);
@@ -116,6 +121,16 @@ export class MutantGenerator {
       chunks.push(lines.slice(i, i + MutantGenerator.CHUNK_SIZE).join("\n")); // do we need MAX here?
     }
     return chunks;
+  }
+
+  /**
+   * Check if a chunk contains all of the terminals.
+   * @param chunk: the chunk of code
+   * @param terminals: the set of terminals
+   * @returns true if the chunk contains all of the terminals, false otherwise
+   */
+  private chunkContainsTerminals(chunk: string, terminals: Set<string>) : boolean {
+    return [...terminals].reduce((result, terminal) => result && chunk.includes(terminal), true);
   }
 
   private getLineRange(chunk: string) : string {
