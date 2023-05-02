@@ -11,15 +11,15 @@ if (require.main === module) {
         const parser = (0, yargs_1.default)((0, helpers_1.hideBin)(process.argv))
             .strict()
             .options({
-            origFileName: {
+            path: {
                 type: "string",
                 demandOption: true,
-                description: "name of file containing the original code",
+                description: "path to file/directory containing the original code",
             },
-            outputFileName: {
+            outputDir: {
                 type: "string",
-                default: "mutants.json",
-                description: "name of file where output will be written (default: \"mutants.json\")",
+                default: "./output",
+                description: "path to directory where output files will be written (default: \"./output\")",
             },
             rulesFileName: {
                 type: "string",
@@ -30,11 +30,6 @@ if (require.main === module) {
                 type: "string",
                 default: "template.hb",
                 description: "name of file containing the prompt template (default: \"template.hb\")",
-            },
-            logFileName: {
-                type: "string",
-                default: "log.txt",
-                description: "name of file where log will be written (default: \"log.txt\")",
             },
             rules: {
                 type: "string",
@@ -57,8 +52,8 @@ if (require.main === module) {
         const ruleFilter = (value) => {
             return argv.rules === undefined || rules.includes(value);
         };
-        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.numCompletions, argv.logFileName, argv.removeInvalid);
-        mutantGenerator.generateMutants(argv.origFileName, argv.outputFileName);
+        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.numCompletions, argv.outputDir, argv.removeInvalid);
+        mutantGenerator.generateMutants(argv.path);
     })();
 }
 //# sourceMappingURL=createMutants.js.map

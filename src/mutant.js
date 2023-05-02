@@ -42,6 +42,15 @@ class Mutant {
         }
         return true;
     }
+    /**
+     * Detect mutants that are invalid (when the original code is not present in the source code)
+     * or trivial (when the original code is the same as the rewritten code). Accounts for situations
+     * where the original code is not present on the exact line where the mutation was reported
+     * by checking up to WINDOW_SIZE lines before and after the line where the mutation was reported.
+     */
+    isInvalid() {
+        return this.isTrivialRewrite() || !this.originalCodeMatchesLHS() || !this.rewrittenCodeMatchesRHS() || this.getLineApplied() === -1;
+    }
     addComment(comment) {
         if (this.comment === undefined || this.comment === "") {
             this.comment = comment;
@@ -59,6 +68,14 @@ class Mutant {
     getRuleId() {
         return this.rule.getRuleId();
     }
+    getFileName() {
+        return this.fileName;
+    }
+    isDuplicateOf(other) {
+        return this.getRuleId() === other.getRuleId() &&
+            this.getFileName() === other.getFileName() &&
+            this.getLineApplied() === other.getLineApplied();
+    }
     /**
      * Adjusts the line number of the mutant if the original code is not found on the line reported by the model.
      * Checks up to WINDOW_SIZE lines before and after the line where the mutation was reported. If the line
@@ -67,29 +84,31 @@ class Mutant {
      * @returns void
      */
     adjustLocationAsNeeded(origCode) {
-        const origLine = origCode.split("\n")[this.lineApplied - 1];
-        if (origLine && origLine.trim().indexOf(this.originalCode.trim()) !== -1) {
-            return; // found the original code on the line reported by the model, no need to adjust
+        const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied);
+        const origLine = origCode.split("\n")[newMutant.lineApplied - 1];
+        if (origLine && origLine.trim().indexOf(newMutant.originalCode.trim()) !== -1) {
+            return newMutant; // found the original code on the line reported by the model, no need to adjust
         }
         else { // else, check up to WINDOW_SIZE lines before and after the line where the mutation was reported
             for (let i = 1; i <= Mutant.WINDOW_SIZE; i++) {
                 const line = origCode.split("\n")[this.lineApplied - 1 - i];
                 if (line && line.trim().indexOf(this.originalCode.trim()) !== -1) {
-                    this.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied - i}`);
-                    this.lineApplied -= i;
-                    return;
+                    newMutant.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied - i}`);
+                    newMutant.lineApplied -= i;
+                    return newMutant;
                 }
                 else {
                     const line = origCode.split("\n")[this.lineApplied - 1 + i];
                     if (line && line.trim().indexOf(this.originalCode.trim()) !== -1) {
-                        this.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied + i}`);
-                        this.lineApplied += i;
-                        return;
+                        newMutant.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied + i}`);
+                        newMutant.lineApplied += i;
+                        return newMutant;
                     }
                 }
             }
-            this.lineApplied = -1; // if we get here, we couldn't find the original code anywhere in the file
+            newMutant.lineApplied = -1; // if we get here, we couldn't find the original code anywhere in the file
         }
+        return newMutant;
     }
 }
 exports.Mutant = Mutant;

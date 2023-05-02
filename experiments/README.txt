@@ -1,3 +1,3 @@
 How to run:
 
-node benchmark/createMutants.js --origFileName experiments/origFile.txt --outputFileName experiments/mutants.json --rulesFileName experiments/rules.json --logFileName experiments/log.txt --promptTemplateFileName experiments/template.hb
+node benchmark/createMutants.js --path ~/sabbatical/projects/countries-and-timezones --outputDir experiments/output --rulesFileName experiments/rules.json --promptTemplateFileName experiments/template.hb

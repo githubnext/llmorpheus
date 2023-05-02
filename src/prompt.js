@@ -46,8 +46,12 @@ class PromptGenerator {
      */
     createPrompt(origCode, rule) {
         const compiledTemplate = handlebars.compile(this.template);
-        return compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
+        return {
+            id: PromptGenerator.cnt++,
+            text: compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() })
+        };
     }
 }
 exports.PromptGenerator = PromptGenerator;
+PromptGenerator.cnt = 0;
 //# sourceMappingURL=prompt.js.map

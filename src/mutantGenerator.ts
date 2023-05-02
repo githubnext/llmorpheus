@@ -1,8 +1,9 @@
 import fs from "fs";
+import fg from 'fast-glob';
 import { Codex } from "./codex";
 
 import { Mutant } from "./mutant";
-import { PromptGenerator } from "./prompt";
+import { IPrompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 
 /**
@@ -11,102 +12,142 @@ import { Rule, IRuleFilter } from "./rule";
 export class MutantGenerator {
 
   private rules: Rule[] = [];
-  private mutants : Mutant[] = [];
+  // private mutants : Mutant[] = [];
   private promptGenerator : PromptGenerator;
-  private static CHUNK_SIZE = 10; // max number of LOC to include in one prompt
+  private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
+  private nrMutants = 0;
+  private nrUsefulMutants = 0;
 
-  constructor(promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private numCompletions: number, private logFileName: string, private removeInvalid: boolean) {
+  constructor(promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private numCompletions: number, private outputDir: string, private removeInvalid: boolean) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
     this.promptGenerator = new PromptGenerator(promptTemplateFileName);
+
+    // remove output files from previous run, if they exist
+    if (!fs.existsSync(this.outputDir)) {
+        fs.mkdirSync(this.outputDir);   
+    } 
+    if (fs.existsSync(this.outputDir + '/mutants.json')) {
+      fs.unlinkSync(this.outputDir + '/mutants.json');
+    }
+    if (fs.existsSync(this.outputDir + '/log.txt')) {
+      fs.unlinkSync(this.outputDir + '/log.txt');
+    }
+    if (fs.existsSync(this.outputDir + '/prompts')) {
+      fs.rmdirSync(this.outputDir + '/prompts');
+    }
+    fs.writeFileSync(this.outputDir + '/log.txt', '');
   }
 
-  private appendToLog(msg: string) : void {
-    fs.appendFileSync(this.logFileName, msg);
+  private log(msg: string) : void {
+    fs.appendFileSync(this.outputDir + '/log.txt', msg);
   }
 
   private printAndLog(msg: string) : void {
     console.log(msg);
-    this.appendToLog(msg);
+    this.log(msg);
   }
 
-  public async generateMutants(origFileName: string, outputFileName: string) : Promise<void> { 
-
-    // remove output file from previous run, if it exists
-    if (fs.existsSync(outputFileName)) {
-      fs.unlinkSync(outputFileName);
-    }
-
-    // remove log file from previous run, if it exists
-    if (fs.existsSync(this.logFileName)) {
-      fs.unlinkSync(this.logFileName);
-    }
-
+  public async generateMutants(path: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
 
-    const origCode = this.addLineNumbers(fs.readFileSync(origFileName, "utf8"));
+    const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
+
+    // apply to each .js/.ts/.jsx/.tsx file under src 
+    const pattern = `${path}/**/src/*.{js,ts,.jsx,.tsx}`; 
+    const files = await fg([pattern], {ignore: ['**/node_modules']})
+    const shortFileNames = files.map((file) => file.replace(`${path}/`, ""));
+    this.log(`files: ${shortFileNames}`);
+
+    const mutants = new Array<Mutant>();
+    for (const file of files){
+      mutants.push(...await this.generateMutantsForFile(model, file));
+    }
+    
+    // write mutant info to JSON file
+    fs.writeFileSync(this.outputDir + '/mutants.json', JSON.stringify(mutants, null, 2));
+  }
+
+  /**
+   * Generate mutants for a given file
+   */
+  private async generateMutantsForFile(model: Codex, fileName: string) : Promise<Array<Mutant>> {
    
-    // create mutants using each of the selected rules
-    for (const rule of this.rules){      
-      if (!this.ruleFilter(rule.getRuleId())){ // skip rules that are not selected
-        continue;
-      }
-      this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${origFileName}`);
-
-      const chunks = this.createChunks(origCode);
-      for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
-        const chunk = chunks[chunkNr];
+    // const mutantsForFile = new Array<Mutant>();
+    // let nrMutantsForFile = 0;
+    // let nrUsefulMutantsForFile = 0;
+    const mutants = new Array<Mutant>();
+    this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n\n`);
+    const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
+    const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
+    
+    const chunks = this.createChunks(origCode);
+    for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
+      const chunk = chunks[chunkNr];
+      for (const rule of rules){  
+        this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}\n`);
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-          this.printAndLog(`  skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}`);
-          continue;
+          this.printAndLog(`  skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
         } else {
-          this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${origFileName})`);
+          this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
+          const prompt = this.promptGenerator.createPrompt(chunk, rule);  
+          this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.text}\n\n`);
+          try {
+            const completions = await model.query(prompt.text);
+            const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
+            const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
+            mutants.push(...postProcessedMutants);
+         } catch (err) {
+           this.printAndLog(`    Error: ${err}`);
+         }
         }
-        const prompt = this.promptGenerator.createPrompt(chunk, rule);  
-        const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
-        this.appendToLog(`    prompt for chunk ${chunkNr} of ${origFileName}:\n\n${prompt}\n\n`);
-        let completions;
-        try {
-           completions = await model.query(prompt);
-        } catch (err) {
-          this.printAndLog(`    Error: ${err}`);
-          continue;
-        }
-        this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${origFileName} .`);
-        let completionNr = 1;
-        for (const completion of completions) {
-          this.appendToLog(`completion ${completionNr}:\n${completion}`);
-
-          // extract the mutants from the completion
-          // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-          const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-          let match;
-          let nrMutants = 0;
-          let nrUsefulMutants = 0;
-          while ((match = regExp.exec(completion)) !== null) {
-              const lineNr = parseInt(match[1]);
-              const originalCode = match[2];
-              const rewrittenCode = match[3];
-              const mutant = new Mutant(rule, originalCode, rewrittenCode, origFileName, lineNr);
-              nrMutants++;
-              this.mutants.push(mutant);
-              const isUseful = !mutant.isTrivialRewrite() && mutant.originalCodeMatchesLHS() && mutant.rewrittenCodeMatchesRHS();
-              this.appendToLog(`\tcandidate mutant: ${JSON.stringify(mutant)} (useful: ${isUseful})\n`);
-              if (isUseful){
-                nrUsefulMutants++;
-              }
-          }
-          this.printAndLog(`    completion ${completionNr} for chunk ${chunkNr} of file ${origFileName} contains ${nrMutants} candidate mutants, of which ${nrUsefulMutants} are useful`);
-          completionNr++;
-          this.appendToLog("--------------------------------------------\n");
-        } 
       }
     }
-    this.adjustLineNumbers(origCode);
-    this.removeInvalidMutants();
-    this.removeDuplicates();
+    return mutants;
+  }
 
-    // write mutant info to JSON file
-    fs.writeFileSync(outputFileName, JSON.stringify(this.mutants, null, 2));   
+  /** 
+   * Extract candidate mutants from the completions by matching a RegExp
+   */
+  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: IPrompt, completions: Set<string>) : Array<Mutant> {
+    let mutants = new Array<Mutant>();
+    this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+    let completionNr = 1;
+    for (const completion of completions) {
+      this.log(`completion ${completionNr++}:\n${completion}`);
+      // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
+      const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
+      let match;
+      while ((match = regExp.exec(completion)) !== null) {
+        const lineNr = parseInt(match[1]);
+        const originalCode = match[2];
+        const rewrittenCode = match[3];
+        mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr));
+      }
+    }
+    return mutants;
+  }
+
+  /**
+   * Remove invalid mutants and duplicate mutants, and adjust line numbers if needed.
+   */
+  private postProcessMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
+    const nrCandidateMutants = mutants.length;
+    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)); 
+    const validMutants = adjustedMutants.filter(m => !m.isInvalid());
+    const nrInvalidMutants = nrCandidateMutants - validMutants.length;
+
+    // filter duplicates
+    const nonDuplicateMutants = new Array<Mutant>();
+    for (const mutant of validMutants){
+      const duplicatesOf = nonDuplicateMutants.filter(m => m.isDuplicateOf(mutant));
+      if (duplicatesOf.length === 0){
+        nonDuplicateMutants.push(mutant);
+      }  
+    }
+    const nrDuplicateMutants = validMutants.length - nonDuplicateMutants.length;
+
+    this.printAndLog(`    Found ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).\n`);
+    return nonDuplicateMutants;
   }
 
   /**
@@ -138,45 +179,6 @@ export class MutantGenerator {
     const firstLine = lines[0];
     const lastLine = lines[lines.length-1];
     return firstLine.substring(0, firstLine.indexOf(":")) + '-' + lastLine.substring(0, lastLine.indexOf(":"));
-  }
-
-  /**
-   * Account for the fact that the model sometimes reports the wrong line number for the mutation.
-   */
-  private adjustLineNumbers(origCode: string) : void {
-    this.mutants.forEach((mutant) =>  mutant.adjustLocationAsNeeded(origCode)); // adjust location of mutant if needed
-  }
-
-  /**
-   * Detect mutants that are invalid (when the original code is not present in the source code) 
-   * or trivial (when the original code is the same as the rewritten code). Accounts for situations
-   * where the original code is not present on the exact line where the mutation was reported
-   * by checking up to WINDOW_SIZE lines before and after the line where the mutation was reported.
-   * 
-   * @param origCode The original source code.
-   */
-  private removeInvalidMutants() : void {
-    this.mutants = this.mutants.filter((mutant) => !mutant.isTrivialRewrite()); // remove trivial rewrites
-    this.mutants = this.mutants.filter((mutant) => mutant.originalCodeMatchesLHS()); // remove mutants that do not match LHS of applied rule
-    this.mutants = this.mutants.filter((mutant) => mutant.rewrittenCodeMatchesRHS()); // remove mutants that do not match RHS of applied rule
-    this.mutants = this.mutants.filter((mutant) => mutant.getLineApplied() !== -1); // remove mutants that are not found in source code
-  }
-
-  /**
-   * Detect duplicates in the list of mutants. Mutants are considered duplicates if they have the same ruleId and 
-   * lineApplied. Merge the notes of the duplicates into one comment.
-   */
-  private removeDuplicates() : void {
-    const newMutants = [];
-    for (const mutant of this.mutants) {
-      const existingMutant = newMutants.find((m) => m.getRuleId() === mutant.getRuleId() && m.getLineApplied() === mutant.getLineApplied());
-      if (existingMutant === undefined) {
-        newMutants.push(mutant);
-      } else {
-        existingMutant.addComment(mutant.getComment());
-      }
-    }
-    this.mutants = newMutants;
   }
 
   /** 
