@@ -1,4 +1,4 @@
-Starting generation of mutants on: Tue, 02 May 2023 18:52:51 GMT
+Starting generation of mutants on: Wed, 03 May 2023 15:27:46 GMT
 
 files: src/build-country-mutated.js,src/build-country.js,src/build-timezone.js,src/index.js
 
@@ -138,7 +138,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2.
+    Received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2.
 completion 1:
 
 The rewriting rule is not applicable to LINE #1
@@ -161,6 +161,27 @@ The rewriting rule is not applicable to LINE #17
 The rewriting rule is not applicable to LINE #18
 The rewriting rule is not applicable to LINE #19
 The rewriting rule is not applicable to LINE #20
+completion 2:
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+The rewriting rule is not applicable to LINE #6
+The rewriting rule is not applicable to LINE #7
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
     Found 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2 (after removing 0 invalid mutants and 0 duplicate mutants).
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   prompting for chunk 0 (lines 1-20) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -236,6 +257,7 @@ The rewriting rule is not applicable to LINE #16
 The rewriting rule is not applicable to LINE #17
 The rewriting rule is not applicable to LINE #18
 The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20
 completion 2:
 
 The rewriting rule is not applicable to LINE #1
@@ -257,7 +279,6 @@ The rewriting rule is not applicable to LINE #16
 The rewriting rule is not applicable to LINE #17
 The rewriting rule is not applicable to LINE #18
 The rewriting rule is not applicable to LINE #19
-The rewriting rule is not applicable to LINE #20
     Found 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 3 (after removing 0 invalid mutants and 0 duplicate mutants).
 Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   prompting for chunk 0 (lines 1-20) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -311,7 +332,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 3 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4.
+    Received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4.
 completion 1:
 
 The rewriting rule is not applicable to LINE #1
@@ -368,48 +389,6 @@ TO:
 ```
 const tzMap = getTimezonesMap(data)[id];
 ```
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
-The rewriting rule is not applicable to LINE #18
-CHANGE LINE #19 FROM:
-```
-allTimezones: tzMap.all || [],
-```
-TO:
-```
-allTimezones: tzMap.all,
-```
-The rewriting rule is not applicable to LINE #20
-completion 3:
-
-The rewriting rule is not applicable to LINE #1
-The rewriting rule is not applicable to LINE #2
-The rewriting rule is not applicable to LINE #3
-The rewriting rule is not applicable to LINE #4
-The rewriting rule is not applicable to LINE #5
-The rewriting rule is not applicable to LINE #6
-The rewriting rule is not applicable to LINE #7
-The rewriting rule is not applicable to LINE #8
-The rewriting rule is not applicable to LINE #9
-The rewriting rule is not applicable to LINE #10
-The rewriting rule is not applicable to LINE #11
-The rewriting rule is not applicable to LINE #12
-CHANGE LINE #12 FROM:
-```
-const tzMap = getTimezonesMap(data)[id] || {};
-```
-TO:
-```
-const tzMap = getTimezonesMap(data)[id];
-```
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
 CHANGE LINE #17 FROM:
 ```
 timezones: tzMap.current || [],
@@ -418,7 +397,6 @@ TO:
 ```
 timezones: tzMap.current,
 ```
-The rewriting rule is not applicable to LINE #18
 CHANGE LINE #18 FROM:
 ```
 allTimezones: tzMap.all || [],
@@ -428,7 +406,7 @@ TO:
 allTimezones: tzMap.all,
 ```
 The rewriting rule is not applicable to LINE #19
-    Found 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4 (after removing 4 invalid mutants and 2 duplicate mutants).
+    Found 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4 (after removing 3 invalid mutants and 1 duplicate mutants).
 Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   prompting for chunk 0 (lines 1-20) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
     prompt for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js:
@@ -481,7 +459,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5.
+    Received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5.
 completion 1:
 
 The rewriting rule is not applicable to LINE #1
@@ -520,42 +498,7 @@ return {
   };
 ```
 The rewriting rule is not applicable to LINE #19
-completion 2:
-
-The rewriting rule is not applicable to LINE #1
-The rewriting rule is not applicable to LINE #2
-The rewriting rule is not applicable to LINE #3
-The rewriting rule is not applicable to LINE #4
-The rewriting rule is not applicable to LINE #5
-The rewriting rule is not applicable to LINE #6
-The rewriting rule is not applicable to LINE #7
-The rewriting rule is not applicable to LINE #8
-The rewriting rule is not applicable to LINE #9
-The rewriting rule is not applicable to LINE #10
-The rewriting rule is not applicable to LINE #11
-The rewriting rule is not applicable to LINE #12
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
-CHANGE LINE #18 FROM:
-```
-timezones: tzMap.current || [],
-```
-TO:
-```
-timezones: !(tzMap.current || []),
-```
-CHANGE LINE #19 FROM:
-```
-allTimezones: tzMap.all || [],
-```
-TO:
-```
-allTimezones: !(tzMap.all || []),
-```
-    Found 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
+    Found 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5 (after removing 0 invalid mutants and 0 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals +
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -625,11 +568,32 @@ The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
 The rewriting rule is not applicable to LINE #31
 The rewriting rule is not applicable to LINE #32
-The rewriting rule is not applicable to LINE #33
+CHANGE LINE #33 FROM:
+```
+if (!countries) return result;
+```
+TO:
+```
+if (countries !== undefined) return result;
+```
 The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
-The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
+CHANGE LINE #36 FROM:
+```
+countries.forEach((country) => {
+```
+TO:
+```
+countries.forEach((country) => {
+```
+CHANGE LINE #37 FROM:
+```
+if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
+```
+TO:
+```
+if (result[country] !== undefined) Object.assign(result, { [country]: { current: [], all: [] } });
+```
 CHANGE LINE #38 FROM:
 ```
 if (tz.r === undefined) result[country].current.push(id);
@@ -639,7 +603,6 @@ TO:
 if (tz.r !== undefined) result[country].current.push(id);
 ```
 The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40
 completion 2:
 
 The rewriting rule is not applicable to LINE #21
@@ -682,7 +645,8 @@ The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
 The rewriting rule is not applicable to LINE #31
 The rewriting rule is not applicable to LINE #32
-CHANGE LINE #33 FROM:
+
+CHANGE LINE #34 FROM:
 ```
 if (!countries) return result;
 ```
@@ -690,8 +654,9 @@ TO:
 ```
 if (countries !== undefined) return result;
 ```
-The rewriting rule is not applicable to LINE #34
+
 The rewriting rule is not applicable to LINE #35
+
 CHANGE LINE #36 FROM:
 ```
 countries.forEach((country) => {
@@ -700,14 +665,9 @@ TO:
 ```
 countries.forEach((country) => {
 ```
-CHANGE LINE #37 FROM:
-```
-if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
-```
-TO:
-```
-if (result[country] !== undefined) Object.assign(result, { [country]: { current: [], all: [] } });
-```
+
+The rewriting rule is not applicable to LINE #37
+
 CHANGE LINE #38 FROM:
 ```
 if (tz.r === undefined) result[country].current.push(id);
@@ -716,8 +676,10 @@ TO:
 ```
 if (tz.r !== undefined) result[country].current.push(id);
 ```
+
 The rewriting rule is not applicable to LINE #39
-    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2 (after removing 4 invalid mutants and 1 duplicate mutants).
+
+    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2 (after removing 6 invalid mutants and 1 duplicate mutants).
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals !==
 Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -854,7 +816,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5.
+    Received 3 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5.
 completion 1:
 
 The rewriting rule is not applicable to LINE #21
@@ -919,7 +881,115 @@ TO:
 ```
 The rewriting rule is not applicable to LINE #40
 
-    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5 (after removing 4 invalid mutants and 0 duplicate mutants).
+completion 2:
+
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+CHANGE LINE #33 FROM:
+```
+
+```
+TO:
+```
+return !Object.keys(data.timezones).reduce((result, id) => {
+```
+CHANGE LINE #34 FROM:
+```
+if (!countries) return result;
+```
+TO:
+```
+if (!countries) return !result;
+```
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+CHANGE LINE #38 FROM:
+```
+if (tz.r === undefined) result[country].current.push(id);
+```
+TO:
+```
+if (tz.r === undefined) !result[country].current.push(id);
+```
+The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
+completion 3:
+
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+CHANGE LINE #33 FROM:
+```
+
+```
+TO:
+```
+return !Object.keys(data.timezones).reduce((result, id) => {
+```
+CHANGE LINE #34 FROM:
+```
+if (!countries) return result;
+```
+TO:
+```
+if (!countries) return !result;
+```
+The rewriting rule is not applicable to LINE #35
+CHANGE LINE #36 FROM:
+```
+countries.forEach((country) => {
+```
+TO:
+```
+countries.forEach((country) => {
+```
+CHANGE LINE #37 FROM:
+```
+if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
+```
+TO:
+```
+if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
+```
+CHANGE LINE #38 FROM:
+```
+if (tz.r === undefined) result[country].current.push(id);
+```
+TO:
+```
+if (tz.r === undefined) !result[country].current.push(id);
+```
+CHANGE LINE #39 FROM:
+```
+result[country].all.push(id);
+```
+TO:
+```
+!result[country].all.push(id);
+```
+The rewriting rule is not applicable to LINE #40
+
+    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5 (after removing 11 invalid mutants and 2 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 2 (lines 41-60) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals +
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -974,7 +1044,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 2 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2.
+    Received 1 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2.
 completion 1:
 
 The rewriting rule is not applicable to LINE #41.
@@ -1006,36 +1076,7 @@ The rewriting rule is not applicable to LINE #58.
 The rewriting rule is not applicable to LINE #59.
 The rewriting rule is not applicable to LINE #60.
 
-completion 2:
-
-The rewriting rule is not applicable to LINE #41.
-The rewriting rule is not applicable to LINE #42.
-The rewriting rule is not applicable to LINE #43.
-The rewriting rule is not applicable to LINE #44.
-The rewriting rule is not applicable to LINE #45.
-The rewriting rule is not applicable to LINE #46.
-The rewriting rule is not applicable to LINE #47.
-The rewriting rule is not applicable to LINE #48.
-The rewriting rule is not applicable to LINE #49.
-The rewriting rule is not applicable to LINE #50.
-CHANGE LINE #51 FROM:
-```
-if (name === undefined) return null;
-```
-TO:
-```
-if (name !== undefined) return null;
-```
-The rewriting rule is not applicable to LINE #52.
-The rewriting rule is not applicable to LINE #53.
-The rewriting rule is not applicable to LINE #54.
-The rewriting rule is not applicable to LINE #55.
-The rewriting rule is not applicable to LINE #56.
-The rewriting rule is not applicable to LINE #57.
-The rewriting rule is not applicable to LINE #58.
-The rewriting rule is not applicable to LINE #59.
-The rewriting rule is not applicable to LINE #60.
-    Found 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2 (after removing 0 invalid mutants and 1 duplicate mutants).
+    Found 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 2 (after removing 0 invalid mutants and 0 duplicate mutants).
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 2 (lines 41-60) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals !==
 Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
@@ -1090,7 +1131,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 3 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4.
+    Received 1 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4.
 completion 1:
 
 The rewriting rule is not applicable to LINE #41
@@ -1104,77 +1145,6 @@ The rewriting rule is not applicable to LINE #48
 The rewriting rule is not applicable to LINE #49
 The rewriting rule is not applicable to LINE #50
 The rewriting rule is not applicable to LINE #51
-CHANGE LINE #53 FROM:
-```
-const tzMap = getTimezonesMap(data)[id] || {};
-```
-TO:
-```
-const tzMap = getTimezonesMap(data)[id];
-```
-The rewriting rule is not applicable to LINE #54
-The rewriting rule is not applicable to LINE #55
-The rewriting rule is not applicable to LINE #56
-The rewriting rule is not applicable to LINE #57
-The rewriting rule is not applicable to LINE #58
-CHANGE LINE #59 FROM:
-```
-allTimezones: tzMap.all || [],
-```
-TO:
-```
-allTimezones: tzMap.all,
-```
-The rewriting rule is not applicable to LINE #60
-completion 2:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #42
-The rewriting rule is not applicable to LINE #43
-The rewriting rule is not applicable to LINE #44
-The rewriting rule is not applicable to LINE #45
-The rewriting rule is not applicable to LINE #46
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #48
-The rewriting rule is not applicable to LINE #49
-The rewriting rule is not applicable to LINE #50
-The rewriting rule is not applicable to LINE #51
-CHANGE LINE #52 FROM:
-```
-const tzMap = getTimezonesMap(data)[id] || {};
-```
-TO:
-```
-const tzMap = getTimezonesMap(data)[id];
-```
-The rewriting rule is not applicable to LINE #53
-The rewriting rule is not applicable to LINE #54
-The rewriting rule is not applicable to LINE #55
-The rewriting rule is not applicable to LINE #56
-The rewriting rule is not applicable to LINE #57
-The rewriting rule is not applicable to LINE #58
-The rewriting rule is not applicable to LINE #59
-CHANGE LINE #60 FROM:
-```
-timezones: tzMap.current || [],
-```
-TO:
-```
-timezones: tzMap.current,
-```
-completion 3:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #42
-The rewriting rule is not applicable to LINE #43
-The rewriting rule is not applicable to LINE #44
-The rewriting rule is not applicable to LINE #45
-The rewriting rule is not applicable to LINE #46
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #48
-The rewriting rule is not applicable to LINE #49
-The rewriting rule is not applicable to LINE #50
-The rewriting rule is not applicable to LINE #51
 CHANGE LINE #52 FROM:
 ```
 const tzMap = getTimezonesMap(data)[id] || {};
@@ -1199,7 +1169,7 @@ allTimezones: tzMap.all,
 ```
 The rewriting rule is not applicable to LINE #60
 
-    Found 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4 (after removing 3 invalid mutants and 2 duplicate mutants).
+    Found 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 4 (after removing 1 invalid mutants and 0 duplicate mutants).
 Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   prompting for chunk 2 (lines 41-60) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
     prompt for chunk 2 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js:
@@ -1252,75 +1222,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 2 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5.
-completion 1:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #42
-The rewriting rule is not applicable to LINE #43
-The rewriting rule is not applicable to LINE #44
-The rewriting rule is not applicable to LINE #45
-The rewriting rule is not applicable to LINE #46
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #48
-The rewriting rule is not applicable to LINE #49
-The rewriting rule is not applicable to LINE #50
-The rewriting rule is not applicable to LINE #51
-The rewriting rule is not applicable to LINE #52
-The rewriting rule is not applicable to LINE #53
-CHANGE LINE #54 FROM:
-```
-return {
-```
-TO:
-```
-return !{
-```
-CHANGE LINE #56 FROM:
-```
-return {
-```
-TO:
-```
-return !{
-```
-The rewriting rule is not applicable to LINE #57
-The rewriting rule is not applicable to LINE #58
-The rewriting rule is not applicable to LINE #59
-The rewriting rule is not applicable to LINE #60
-completion 2:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #42
-The rewriting rule is not applicable to LINE #43
-The rewriting rule is not applicable to LINE #44
-The rewriting rule is not applicable to LINE #45
-The rewriting rule is not applicable to LINE #46
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #48
-The rewriting rule is not applicable to LINE #49
-The rewriting rule is not applicable to LINE #50
-The rewriting rule is not applicable to LINE #51
-The rewriting rule is not applicable to LINE #52
-The rewriting rule is not applicable to LINE #53
-CHANGE LINE #54 FROM:
-```
-return {
-```
-TO:
-```
-return !{
-```
-CHANGE LINE #59 FROM:
-```
-return result;
-```
-TO:
-```
-return !result;
-```
-    Found 0 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js, given rule 5 (after removing 4 invalid mutants and 0 duplicate mutants).
-Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
+    Error: AxiosError: Request failed with status code 500Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 3 (lines 61-65) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals +
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js
   skipping chunk 3 (lines 61-65) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js because it does not contain any of the terminals ===
@@ -1489,8 +1391,44 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 3 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
+    Received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
 completion 1:
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+The rewriting rule is not applicable to LINE #6
+The rewriting rule is not applicable to LINE #7
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+CHANGE LINE #18 FROM:
+```
+if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
+```
+TO:
+```
+if (timezonesMap) timezonesMap = buildTimezonesMap(data);
+```
+CHANGE LINE #19 FROM:
+```
+return timezonesMap;
+```
+TO:
+```
+return !timezonesMap;
+```
+The rewriting rule is not applicable to LINE #20
+completion 2:
 
 The rewriting rule is not applicable to LINE #1
 The rewriting rule is not applicable to LINE #2
@@ -1529,71 +1467,7 @@ The rewriting rule is not applicable to LINE #17
 The rewriting rule is not applicable to LINE #18
 The rewriting rule is not applicable to LINE #19
 The rewriting rule is not applicable to LINE #20
-completion 2:
-
-The rewriting rule is not applicable to LINE #1
-The rewriting rule is not applicable to LINE #2
-The rewriting rule is not applicable to LINE #3
-The rewriting rule is not applicable to LINE #4
-The rewriting rule is not applicable to LINE #5
-The rewriting rule is not applicable to LINE #6
-The rewriting rule is not applicable to LINE #7
-The rewriting rule is not applicable to LINE #8
-The rewriting rule is not applicable to LINE #9
-The rewriting rule is not applicable to LINE #10
-The rewriting rule is not applicable to LINE #11
-The rewriting rule is not applicable to LINE #12
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #17
-CHANGE LINE #18 FROM:
-```
-if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-TO:
-```
-if (timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-The rewriting rule is not applicable to LINE #19
-The rewriting rule is not applicable to LINE #20
-completion 3:
-
-The rewriting rule is not applicable to LINE #1
-The rewriting rule is not applicable to LINE #2
-The rewriting rule is not applicable to LINE #3
-The rewriting rule is not applicable to LINE #4
-The rewriting rule is not applicable to LINE #5
-The rewriting rule is not applicable to LINE #6
-The rewriting rule is not applicable to LINE #7
-The rewriting rule is not applicable to LINE #8
-The rewriting rule is not applicable to LINE #9
-The rewriting rule is not applicable to LINE #10
-The rewriting rule is not applicable to LINE #11
-The rewriting rule is not applicable to LINE #12
-The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
-The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
-CHANGE LINE #18 FROM:
-```
-if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-TO:
-```
-if (timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-CHANGE LINE #19 FROM:
-```
-return timezonesMap;
-```
-TO:
-```
-return !timezonesMap;
-```
-The rewriting rule is not applicable to LINE #20
-    Found 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
+    Found 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
   skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js because it does not contain any of the terminals +
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
@@ -1648,67 +1522,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2.
-completion 1:
-
-The rewriting rule is not applicable to LINE #21
-The rewriting rule is not applicable to LINE #22
-The rewriting rule is not applicable to LINE #23
-The rewriting rule is not applicable to LINE #24
-The rewriting rule is not applicable to LINE #25
-The rewriting rule is not applicable to LINE #26
-The rewriting rule is not applicable to LINE #27
-The rewriting rule is not applicable to LINE #28
-The rewriting rule is not applicable to LINE #29
-The rewriting rule is not applicable to LINE #30
-The rewriting rule is not applicable to LINE #31
-The rewriting rule is not applicable to LINE #32
-The rewriting rule is not applicable to LINE #33
-CHANGE LINE #34 FROM:
-```
-result[country].all.push(id);
-```
-TO:
-```
-result[country].all.push(id) !== undefined;
-```
-The rewriting rule is not applicable to LINE #35
-The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
-The rewriting rule is not applicable to LINE #38
-The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40
-completion 2:
-
-The rewriting rule is not applicable to LINE #21
-The rewriting rule is not applicable to LINE #22
-The rewriting rule is not applicable to LINE #23
-The rewriting rule is not applicable to LINE #24
-The rewriting rule is not applicable to LINE #25
-The rewriting rule is not applicable to LINE #26
-The rewriting rule is not applicable to LINE #27
-The rewriting rule is not applicable to LINE #28
-The rewriting rule is not applicable to LINE #29
-The rewriting rule is not applicable to LINE #30
-The rewriting rule is not applicable to LINE #31
-The rewriting rule is not applicable to LINE #32
-CHANGE LINE #33 FROM:
-```
-if (tz.r === undefined) result[country].current.push(id);
-```
-TO:
-```
-if (tz.r !== undefined) result[country].current.push(id);
-```
-The rewriting rule is not applicable to LINE #34
-The rewriting rule is not applicable to LINE #35
-The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
-The rewriting rule is not applicable to LINE #38
-The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40
-    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2 (after removing 1 invalid mutants and 0 duplicate mutants).
-Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
+    Error: AxiosError: Request failed with status code 429Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
   skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js because it does not contain any of the terminals !==
 Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
   prompting for chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
@@ -1899,16 +1713,10 @@ The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
-CHANGE LINE #37 FROM:
-```
-return result;
-```
-TO:
-```
-return !result;
-```
+The rewriting rule is not applicable to LINE #37
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
 completion 2:
 
 The rewriting rule is not applicable to LINE #21
@@ -1934,10 +1742,16 @@ The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
+CHANGE LINE #37 FROM:
+```
+return result;
+```
+TO:
+```
+return !result;
+```
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40
     Found 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 0 invalid mutants and 1 duplicate mutants).
 
 
@@ -2024,7 +1838,14 @@ The rewriting rule is not applicable to LINE #10
 The rewriting rule is not applicable to LINE #11
 The rewriting rule is not applicable to LINE #12
 The rewriting rule is not applicable to LINE #13
-The rewriting rule is not applicable to LINE #14
+CHANGE LINE #14 FROM:
+```
+const dstOffset = Number.isInteger(tz.d) ? tz.d : utcOffset;
+```
+TO:
+```
+const dstOffset = Number.isInteger(tz.d) ? tz.d : tz.d;
+```
 The rewriting rule is not applicable to LINE #15
 The rewriting rule is not applicable to LINE #16
 The rewriting rule is not applicable to LINE #17
@@ -2053,14 +1874,7 @@ The rewriting rule is not applicable to LINE #10
 The rewriting rule is not applicable to LINE #11
 The rewriting rule is not applicable to LINE #12
 The rewriting rule is not applicable to LINE #13
-CHANGE LINE #14 FROM:
-```
-const dstOffset = Number.isInteger(tz.d) ? tz.d : utcOffset;
-```
-TO:
-```
-const dstOffset = Number.isInteger(tz.d) ? tz.d : tz.d;
-```
+The rewriting rule is not applicable to LINE #14
 The rewriting rule is not applicable to LINE #15
 The rewriting rule is not applicable to LINE #16
 The rewriting rule is not applicable to LINE #17
@@ -2148,7 +1962,7 @@ utcOffsetStr: getOffsetStr(utcOffset),
 ```
 TO:
 ```
-utcOffsetStr: !getOffsetStr(utcOffset),
+utcOffsetStr: getOffsetStr(!utcOffset),
 ```
 completion 2:
 
@@ -2177,7 +1991,7 @@ utcOffsetStr: getOffsetStr(utcOffset),
 ```
 TO:
 ```
-utcOffsetStr: getOffsetStr(!utcOffset),
+utcOffsetStr: !getOffsetStr(utcOffset),
 ```
     Found 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
@@ -2300,19 +2114,11 @@ const num = Math.abs(input);
 ```
 TO:
 ```
-const num = -Math.abs(input);
+const num = Math.abs(-input);
 ```
-CHANGE LINE #39 FROM:
-```
-const prefix = num < 10 ? '0' : '';
-```
-TO:
-```
-const prefix = num < 10 ? '' : '0';
-```
+The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-
-    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1 (after removing 3 invalid mutants and 1 duplicate mutants).
+    Found 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1 (after removing 2 invalid mutants and 1 duplicate mutants).
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
   skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js because it does not contain any of the terminals ===
 Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
@@ -2371,7 +2177,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 3 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
+    Received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
 completion 1:
 
 The rewriting rule is not applicable to LINE #21
@@ -2447,43 +2253,7 @@ TO:
 ```
 return `${prefix}${!num}`;
 ```
-completion 3:
-
-The rewriting rule is not applicable to LINE #21
-The rewriting rule is not applicable to LINE #22
-The rewriting rule is not applicable to LINE #23
-The rewriting rule is not applicable to LINE #24
-The rewriting rule is not applicable to LINE #25
-CHANGE LINE #26 FROM:
-```
-return result;
-```
-TO:
-```
-return !result;
-```
-The rewriting rule is not applicable to LINE #27
-The rewriting rule is not applicable to LINE #28
-The rewriting rule is not applicable to LINE #29
-The rewriting rule is not applicable to LINE #30
-The rewriting rule is not applicable to LINE #31
-The rewriting rule is not applicable to LINE #32
-The rewriting rule is not applicable to LINE #33
-The rewriting rule is not applicable to LINE #34
-The rewriting rule is not applicable to LINE #35
-CHANGE LINE #36 FROM:
-```
-return `${prefix}${num}`;
-```
-TO:
-```
-return `${prefix}${!num}`;
-```
-The rewriting rule is not applicable to LINE #37
-The rewriting rule is not applicable to LINE #38
-The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40
-    Found 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 3 invalid mutants and 2 duplicate mutants).
+    Found 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 2 invalid mutants and 1 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
   skipping chunk 2 (lines 41-42) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js because it does not contain any of the terminals +
 Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
@@ -2834,6 +2604,34 @@ TO:
 const timezone = getTimezone(tzName);
 ```
 
+CHANGE LINE #54 FROM:
+```
+const country = getCountry(countryId, options) || {};
+```
+TO:
+```
+const country = getCountry(countryId, options);
+```
+
+The rewriting rule is not applicable to LINE #55
+The rewriting rule is not applicable to LINE #59
+The rewriting rule is not applicable to LINE #60
+
+completion 2:
+
+The rewriting rule is not applicable to LINE #41
+The rewriting rule is not applicable to LINE #47
+The rewriting rule is not applicable to LINE #52
+
+CHANGE LINE #43 FROM:
+```
+const timezone = getTimezone(tzName) || {};
+```
+TO:
+```
+const timezone = getTimezone(tzName);
+```
+
 CHANGE LINE #48 FROM:
 ```
 const [main] = getCountriesForTimezone(tzName, options);
@@ -2851,33 +2649,6 @@ TO:
 ```
 const country = getCountry(countryId);
 ```
-
-completion 2:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #52
-
-CHANGE LINE #43 FROM:
-```
-const timezone = getTimezone(tzName) || {};
-```
-TO:
-```
-const timezone = getTimezone(tzName);
-```
-
-CHANGE LINE #54 FROM:
-```
-const country = getCountry(countryId, options) || {};
-```
-TO:
-```
-const country = getCountry(countryId, options);
-```
-
-The rewriting rule is not applicable to LINE #55
-The rewriting rule is not applicable to LINE #59
 
     Found 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4 (after removing 3 invalid mutants and 1 duplicate mutants).
 Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
@@ -2956,6 +2727,35 @@ return !null;
 The rewriting rule is not applicable to LINE #52
 The rewriting rule is not applicable to LINE #53
 The rewriting rule is not applicable to LINE #54
+The rewriting rule is not applicable to LINE #55
+The rewriting rule is not applicable to LINE #56
+The rewriting rule is not applicable to LINE #57
+The rewriting rule is not applicable to LINE #58
+The rewriting rule is not applicable to LINE #59
+The rewriting rule is not applicable to LINE #60
+completion 2:
+
+The rewriting rule is not applicable to LINE #41
+The rewriting rule is not applicable to LINE #42
+The rewriting rule is not applicable to LINE #43
+The rewriting rule is not applicable to LINE #44
+The rewriting rule is not applicable to LINE #45
+The rewriting rule is not applicable to LINE #46
+The rewriting rule is not applicable to LINE #47
+The rewriting rule is not applicable to LINE #48
+The rewriting rule is not applicable to LINE #49
+The rewriting rule is not applicable to LINE #50
+CHANGE LINE #51 FROM:
+```
+return null;
+```
+TO:
+```
+return !null;
+```
+The rewriting rule is not applicable to LINE #52
+The rewriting rule is not applicable to LINE #53
+The rewriting rule is not applicable to LINE #54
 CHANGE LINE #55 FROM:
 ```
 if (!country) return null;
@@ -2969,7 +2769,7 @@ The rewriting rule is not applicable to LINE #57
 The rewriting rule is not applicable to LINE #58
 The rewriting rule is not applicable to LINE #59
 The rewriting rule is not applicable to LINE #60
-completion 2:
+completion 3:
 
 The rewriting rule is not applicable to LINE #41
 The rewriting rule is not applicable to LINE #42
@@ -2997,35 +2797,6 @@ The rewriting rule is not applicable to LINE #56
 The rewriting rule is not applicable to LINE #57
 The rewriting rule is not applicable to LINE #58
 The rewriting rule is not applicable to LINE #59
-completion 3:
-
-The rewriting rule is not applicable to LINE #41
-The rewriting rule is not applicable to LINE #42
-The rewriting rule is not applicable to LINE #43
-The rewriting rule is not applicable to LINE #44
-The rewriting rule is not applicable to LINE #45
-The rewriting rule is not applicable to LINE #46
-The rewriting rule is not applicable to LINE #47
-The rewriting rule is not applicable to LINE #48
-The rewriting rule is not applicable to LINE #49
-The rewriting rule is not applicable to LINE #50
-CHANGE LINE #51 FROM:
-```
-return null;
-```
-TO:
-```
-return !null;
-```
-The rewriting rule is not applicable to LINE #52
-The rewriting rule is not applicable to LINE #53
-The rewriting rule is not applicable to LINE #54
-The rewriting rule is not applicable to LINE #55
-The rewriting rule is not applicable to LINE #56
-The rewriting rule is not applicable to LINE #57
-The rewriting rule is not applicable to LINE #58
-The rewriting rule is not applicable to LINE #59
-The rewriting rule is not applicable to LINE #60
     Found 2 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
 Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
   skipping chunk 3 (lines 61-80) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals +
@@ -3081,81 +2852,7 @@ on every line where it is applicable.
 After responding to all of the lines in the code, please conclude your response with "DONE". 
 
 
-    Received 2 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2.
-completion 1:
-
-The rewriting rule is not applicable to LINE #61
-The rewriting rule is not applicable to LINE #62
-The rewriting rule is not applicable to LINE #63
-The rewriting rule is not applicable to LINE #64
-The rewriting rule is not applicable to LINE #65
-The rewriting rule is not applicable to LINE #66
-The rewriting rule is not applicable to LINE #67
-The rewriting rule is not applicable to LINE #68
-The rewriting rule is not applicable to LINE #69
-The rewriting rule is not applicable to LINE #70
-The rewriting rule is not applicable to LINE #71
-CHANGE LINE #72 FROM:
-```
-const { allTimezones, ...other } = country;
-```
-TO:
-```
-const { allTimezones, ...other } = country;
-```
-CHANGE LINE #73 FROM:
-```
-const tz = deprecated ? country.allTimezones : country.timezones;
-```
-TO:
-```
-const tz = deprecated !== true ? country.allTimezones : country.timezones;
-```
-The rewriting rule is not applicable to LINE #74
-The rewriting rule is not applicable to LINE #75
-The rewriting rule is not applicable to LINE #76
-The rewriting rule is not applicable to LINE #77
-The rewriting rule is not applicable to LINE #78
-The rewriting rule is not applicable to LINE #79
-The rewriting rule is not applicable to LINE #80
-completion 2:
-
-The rewriting rule is not applicable to LINE #61
-The rewriting rule is not applicable to LINE #62
-The rewriting rule is not applicable to LINE #63
-The rewriting rule is not applicable to LINE #64
-The rewriting rule is not applicable to LINE #65
-The rewriting rule is not applicable to LINE #66
-The rewriting rule is not applicable to LINE #67
-The rewriting rule is not applicable to LINE #68
-The rewriting rule is not applicable to LINE #69
-The rewriting rule is not applicable to LINE #70
-CHANGE LINE #71 FROM:
-```
-const { deprecated } = options || {};
-```
-TO:
-```
-const { deprecated } = options || {};
-```
-The rewriting rule is not applicable to LINE #72
-CHANGE LINE #73 FROM:
-```
-const tz = deprecated ? country.allTimezones : country.timezones;
-```
-TO:
-```
-const tz = deprecated !== true ? country.allTimezones : country.timezones;
-```
-The rewriting rule is not applicable to LINE #74
-The rewriting rule is not applicable to LINE #75
-The rewriting rule is not applicable to LINE #76
-The rewriting rule is not applicable to LINE #77
-The rewriting rule is not applicable to LINE #78
-The rewriting rule is not applicable to LINE #79
-The rewriting rule is not applicable to LINE #80
-    Found 0 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2 (after removing 4 invalid mutants and 0 duplicate mutants).
-Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
+    Error: AxiosError: Request failed with status code 500Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
   skipping chunk 3 (lines 61-80) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals !==
 Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
   prompting for chunk 3 (lines 61-80) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js

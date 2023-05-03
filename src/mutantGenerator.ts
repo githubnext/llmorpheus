@@ -3,7 +3,7 @@ import fg from 'fast-glob';
 import { Codex } from "./codex";
 
 import { Mutant } from "./mutant";
-import { IPrompt, PromptGenerator } from "./prompt";
+import { Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 
 /**
@@ -71,10 +71,6 @@ export class MutantGenerator {
    * Generate mutants for a given file
    */
   private async generateMutantsForFile(model: Codex, fileName: string) : Promise<Array<Mutant>> {
-   
-    // const mutantsForFile = new Array<Mutant>();
-    // let nrMutantsForFile = 0;
-    // let nrUsefulMutantsForFile = 0;
     const mutants = new Array<Mutant>();
     this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n\n`);
     const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
@@ -90,9 +86,9 @@ export class MutantGenerator {
         } else {
           this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
           const prompt = this.promptGenerator.createPrompt(chunk, rule);  
-          this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.text}\n\n`);
+          this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.getText()}\n\n`);
           try {
-            const completions = await model.query(prompt.text);
+            const completions = await model.query(prompt.getText());
             const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
             const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
             mutants.push(...postProcessedMutants);
@@ -108,7 +104,7 @@ export class MutantGenerator {
   /** 
    * Extract candidate mutants from the completions by matching a RegExp
    */
-  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: IPrompt, completions: Set<string>) : Array<Mutant> {
+  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Set<string>) : Array<Mutant> {
     let mutants = new Array<Mutant>();
     this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     let completionNr = 1;

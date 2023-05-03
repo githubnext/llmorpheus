@@ -69,7 +69,7 @@
     "rewrittenCode": "const tzMap = getTimezonesMap(data)[id];",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country-mutated.js",
     "lineApplied": 53,
-    "comment": ""
+    "comment": "location adjusted: model reported code on line 52, but found on line 53"
   },
   {
     "rule": {
@@ -93,18 +93,6 @@
     "rewrittenCode": "return !timezonesMap;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 19,
-    "comment": ""
-  },
-  {
-    "rule": {
-      "ruleId": "2",
-      "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
-      "description": "replace === operator in condition with !=="
-    },
-    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
-    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
-    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
-    "lineApplied": 33,
     "comment": ""
   },
   {

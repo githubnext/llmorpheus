@@ -66,9 +66,6 @@ class MutantGenerator {
      * Generate mutants for a given file
      */
     async generateMutantsForFile(model, fileName) {
-        // const mutantsForFile = new Array<Mutant>();
-        // let nrMutantsForFile = 0;
-        // let nrUsefulMutantsForFile = 0;
         const mutants = new Array();
         this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n\n`);
         const origCode = this.addLineNumbers(fs_1.default.readFileSync(fileName, "utf8"));
@@ -84,9 +81,9 @@ class MutantGenerator {
                 else {
                     this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
                     const prompt = this.promptGenerator.createPrompt(chunk, rule);
-                    this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.text}\n\n`);
+                    this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.getText()}\n\n`);
                     try {
-                        const completions = await model.query(prompt.text);
+                        const completions = await model.query(prompt.getText());
                         const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
                         const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants, origCode);
                         mutants.push(...postProcessedMutants);
@@ -98,68 +95,6 @@ class MutantGenerator {
             }
         }
         return mutants;
-        // // create mutants using each of the selected rules
-        // for (const rule of this.rules){      
-        //   if (!this.ruleFilter(rule.getRuleId())){ // skip rules that are not selected
-        //     continue;
-        //   }
-        //   this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}`);
-        //   const chunks = this.createChunks(origCode);
-        //   for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
-        //     const chunk = chunks[chunkNr];
-        //     if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-        //       this.printAndLog(`  skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}`);
-        //       continue;
-        //     } else {
-        //       this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}`);
-        //     }
-        //     const prompt = this.promptGenerator.createPrompt(chunk, rule);  
-        //     this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt}\n\n`);
-        //     let completions;
-        //     try {
-        //        completions = await model.query(prompt.text);
-        //     } catch (err) {
-        //       this.printAndLog(`    Error: ${err}`);
-        //       continue;
-        //     }
-        //     this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${fileName} .`);
-        //     let completionNr = 1;
-        //     for (const completion of completions) {
-        //       this.log(`completion ${completionNr}:\n${completion}`);
-        //       // extract the mutants from the completion
-        //       // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-        //       const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-        //       let match;
-        //       while ((match = regExp.exec(completion)) !== null) {
-        //           const lineNr = parseInt(match[1]);
-        //           const originalCode = match[2];
-        //           const rewrittenCode = match[3];
-        //           const mutant = new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr);
-        //           if (mutant.isInvalid()){
-        //              continue;
-        //           }
-        //           mutant.adjustLocationAsNeeded(origCode); // Account for the fact that the model sometimes reports the wrong line number
-        //           if (this.isDuplicate(mutant, mutantsForFile)){
-        //             continue;
-        //           }
-        //           nrMutantsForFile++;
-        //           mutantsForFile.push(mutant);
-        //           const isUseful = !mutant.isTrivialRewrite() && mutant.originalCodeMatchesLHS() && mutant.rewrittenCodeMatchesRHS();
-        //           this.log(`\tcandidate mutant: ${JSON.stringify(mutant)} (useful: ${isUseful})\n`);
-        //           if (isUseful){
-        //             nrUsefulMutantsForFile++;
-        //           }
-        //       }
-        //       this.printAndLog(`    completion ${completionNr} for chunk ${chunkNr} of file ${fileName} contains ${nrMutantsForFile} candidate mutants, of which ${nrUsefulMutantsForFile} are useful`);
-        //       completionNr++;
-        //       this.log("--------------------------------------------\n");
-        //     } 
-        //     this.mutants.push(...mutantsForFile);
-        //     this.nrMutants += nrMutantsForFile;
-        //     this.nrUsefulMutants += nrUsefulMutantsForFile;
-        //   }
-        // }
-        // // this.removeDuplicates();
     }
     /**
      * Extract candidate mutants from the completions by matching a RegExp
@@ -230,43 +165,6 @@ class MutantGenerator {
         const lastLine = lines[lines.length - 1];
         return firstLine.substring(0, firstLine.indexOf(":")) + '-' + lastLine.substring(0, lastLine.indexOf(":"));
     }
-    // /**
-    //  * Detect duplicates in the list of mutants. Mutants are considered duplicates if they have the same ruleId and 
-    //  * lineApplied. Merge the notes of the duplicates into one comment.
-    //  */
-    // private removeDuplicates() : void {
-    //   const newMutants = [];
-    //   for (const mutant of this.mutants) {
-    //     const existingMutant = newMutants.find((m) => m.getRuleId() === mutant.getRuleId() && m.getLineApplied() === mutant.getLineApplied());
-    //     if (existingMutant === undefined) {
-    //       newMutants.push(mutant);
-    //     } else {
-    //       existingMutant.addComment(mutant.getComment());
-    //     }
-    //   }
-    //   this.mutants = newMutants;
-    // }
-    // private isDuplicate(newMutant: Mutant, existingMutants: Mutant[]) : boolean {
-    //   for (let i=0; i < existingMutants.length; i++){
-    //     const existingMutant = existingMutants[i];
-    //     if (newMutant.getFileName() === existingMutant.getFileName() && newMutant.getRuleId() === existingMutant.getRuleId() && newMutant.getLineApplied() === existingMutant.getLineApplied()){
-    //       this.printAndLog(`    duplicate mutant: ${JSON.stringify(newMutant)}\n`);
-    //       return true;
-    //     } 
-    //   }
-    //   this.printAndLog(`    not a duplicate: ${JSON.stringify(newMutant)}\n`);
-    //   return false;
-    // }
-    // private mergeDuplicate(newMutant: Mutant, existingMutants: Mutant[]) : boolean {
-    //   const matchingMutant = existingMutants.find((m) => m.getFileName() === newMutant.getFileName() && m.getRuleId() === newMutant.getRuleId() && m.getLineApplied() === newMutant.getLineApplied());
-    //   if (matchingMutant !== undefined) {
-    //     if (matchingMutant.getComment() !== newMutant.getComment()){
-    //       matchingMutant.addComment(newMutant.getComment());
-    //     }
-    //     return true;
-    //   }
-    //   return false;
-    // }
     /**
      * Add line numbers to the source code.
      */

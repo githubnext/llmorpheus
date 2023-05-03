@@ -26,9 +26,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromptGenerator = void 0;
+exports.PromptGenerator = exports.Completion = exports.Prompt = void 0;
 const fs_1 = __importDefault(require("fs"));
 const handlebars = __importStar(require("handlebars"));
+class Prompt {
+    constructor(text) {
+        this.text = text;
+        this.id = Prompt.cnt++;
+    }
+    getId() {
+        return this.id;
+    }
+    getText() {
+        return this.text;
+    }
+}
+exports.Prompt = Prompt;
+Prompt.cnt = 0;
+class Completion {
+    constructor(prompt, text) {
+        this.prompt = prompt;
+        this.text = text;
+        this.id = Completion.cnt++;
+    }
+    getId() {
+        return this.id;
+    }
+    getText() {
+        return this.text;
+    }
+}
+exports.Completion = Completion;
+Completion.cnt = 0;
 /**
  * Component for creating a prompt for a given rule and original code.
  *  @param promptTemplateFileName The name of the file containing the prompt template.
@@ -46,12 +75,8 @@ class PromptGenerator {
      */
     createPrompt(origCode, rule) {
         const compiledTemplate = handlebars.compile(this.template);
-        return {
-            id: PromptGenerator.cnt++,
-            text: compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() })
-        };
+        return new Prompt(compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() }));
     }
 }
 exports.PromptGenerator = PromptGenerator;
-PromptGenerator.cnt = 0;
 //# sourceMappingURL=prompt.js.map
