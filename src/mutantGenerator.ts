@@ -3,7 +3,7 @@ import fg from 'fast-glob';
 import { Codex } from "./codex";
 
 import { Mutant } from "./mutant";
-import { Prompt, PromptGenerator } from "./prompt";
+import { Completion, Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 
 /**
@@ -12,11 +12,8 @@ import { Rule, IRuleFilter } from "./rule";
 export class MutantGenerator {
 
   private rules: Rule[] = [];
-  // private mutants : Mutant[] = [];
   private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
-  private nrMutants = 0;
-  private nrUsefulMutants = 0;
 
   constructor(promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private numCompletions: number, private outputDir: string, private removeInvalid: boolean) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
@@ -33,9 +30,10 @@ export class MutantGenerator {
       fs.unlinkSync(this.outputDir + '/log.txt');
     }
     if (fs.existsSync(this.outputDir + '/prompts')) {
-      fs.rmdirSync(this.outputDir + '/prompts');
+      fs.rmdirSync(this.outputDir + '/prompts', { recursive: true });
     }
     fs.writeFileSync(this.outputDir + '/log.txt', '');
+    fs.mkdirSync(this.outputDir + '/prompts');
   }
 
   private log(msg: string) : void {
@@ -86,9 +84,13 @@ export class MutantGenerator {
         } else {
           this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
           const prompt = this.promptGenerator.createPrompt(chunk, rule);  
+          fs.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`, prompt.getText()); // write prompt to file
           this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.getText()}\n\n`);
           try {
-            const completions = await model.query(prompt.getText());
+            const completions = [...await model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
+            completions.forEach((completion) => { // write completions to files
+              fs.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`, completion.getText());
+            }); 
             const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
             const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
             mutants.push(...postProcessedMutants);
@@ -104,16 +106,16 @@ export class MutantGenerator {
   /** 
    * Extract candidate mutants from the completions by matching a RegExp
    */
-  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Set<string>) : Array<Mutant> {
+  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
     let mutants = new Array<Mutant>();
-    this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+    this.printAndLog(`    Received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     let completionNr = 1;
     for (const completion of completions) {
       this.log(`completion ${completionNr++}:\n${completion}`);
       // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
       const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
       let match;
-      while ((match = regExp.exec(completion)) !== null) {
+      while ((match = regExp.exec(completion.getText())) !== null) {
         const lineNr = parseInt(match[1]);
         const originalCode = match[2];
         const rewrittenCode = match[3];

@@ -21,8 +21,6 @@ class MutantGenerator {
         this.outputDir = outputDir;
         this.removeInvalid = removeInvalid;
         this.rules = [];
-        this.nrMutants = 0;
-        this.nrUsefulMutants = 0;
         this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8")).map((rule) => new rule_1.Rule(rule.id, rule.rule, rule.description));
         this.promptGenerator = new prompt_1.PromptGenerator(promptTemplateFileName);
         // remove output files from previous run, if they exist
@@ -36,9 +34,10 @@ class MutantGenerator {
             fs_1.default.unlinkSync(this.outputDir + '/log.txt');
         }
         if (fs_1.default.existsSync(this.outputDir + '/prompts')) {
-            fs_1.default.rmdirSync(this.outputDir + '/prompts');
+            fs_1.default.rmdirSync(this.outputDir + '/prompts', { recursive: true });
         }
         fs_1.default.writeFileSync(this.outputDir + '/log.txt', '');
+        fs_1.default.mkdirSync(this.outputDir + '/prompts');
     }
     log(msg) {
         fs_1.default.appendFileSync(this.outputDir + '/log.txt', msg);
@@ -81,9 +80,13 @@ class MutantGenerator {
                 else {
                     this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
                     const prompt = this.promptGenerator.createPrompt(chunk, rule);
+                    fs_1.default.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`, prompt.getText()); // write prompt to file
                     this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.getText()}\n\n`);
                     try {
-                        const completions = await model.query(prompt.getText());
+                        const completions = [...await model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt, completionText));
+                        completions.forEach((completion) => {
+                            fs_1.default.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`, completion.getText());
+                        });
                         const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
                         const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants, origCode);
                         mutants.push(...postProcessedMutants);
@@ -101,14 +104,14 @@ class MutantGenerator {
      */
     extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions) {
         let mutants = new Array();
-        this.printAndLog(`    Received ${completions.size} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+        this.printAndLog(`    Received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
         let completionNr = 1;
         for (const completion of completions) {
             this.log(`completion ${completionNr++}:\n${completion}`);
             // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
             const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
             let match;
-            while ((match = regExp.exec(completion)) !== null) {
+            while ((match = regExp.exec(completion.getText())) !== null) {
                 const lineNr = parseInt(match[1]);
                 const originalCode = match[2];
                 const rewrittenCode = match[3];

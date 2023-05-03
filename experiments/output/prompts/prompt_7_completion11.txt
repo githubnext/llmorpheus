@@ -1,0 +1,41 @@
+
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+CHANGE LINE #31 FROM:
+```
+const min = offset % 60;
+```
+TO:
+```
+const min = offset - 60;
+```
+CHANGE LINE #32 FROM:
+```
+const sign = offset < 0 ? '-' : '+';
+```
+TO:
+```
+const sign = offset > 0 ? '-' : '+';
+```
+The rewriting rule is not applicable to LINE #33
+The rewriting rule is not applicable to LINE #34
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+CHANGE LINE #37 FROM:
+```
+const num = Math.abs(input);
+```
+TO:
+```
+const num = Math.abs(input - 0);
+```
+The rewriting rule is not applicable to LINE #39
+The rewriting rule is not applicable to LINE #40
