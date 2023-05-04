@@ -1,3 +1,4 @@
+import { Completion, Prompt } from "./prompt";
 import { Rule } from "./rule";
 
 /**
@@ -9,7 +10,9 @@ export class Mutant {
               private originalCode: string, 
               private rewrittenCode: string, 
               private fileName: string,
-              private lineApplied: number){
+              private lineApplied: number,
+              private promptId: number,
+              private completionId: number) {
      this.comment = "";
   }
 
@@ -95,7 +98,7 @@ export class Mutant {
    * @returns void
    */
   public adjustLocationAsNeeded(origCode: string) : Mutant {
-    const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied);
+    const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied, this.promptId, this.completionId);
     const origLine = origCode.split("\n")[newMutant.lineApplied - 1];
     if (origLine && origLine.trim().indexOf(newMutant.originalCode.trim()) !== -1) {
       return newMutant; // found the original code on the line reported by the model, no need to adjust

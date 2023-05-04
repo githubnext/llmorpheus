@@ -70,7 +70,7 @@ export class MutantGenerator {
    */
   private async generateMutantsForFile(model: Codex, fileName: string) : Promise<Array<Mutant>> {
     const mutants = new Array<Mutant>();
-    this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n\n`);
+    this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n`);
     const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
     const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
     
@@ -78,25 +78,22 @@ export class MutantGenerator {
     for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
       const chunk = chunks[chunkNr];
       for (const rule of rules){  
-        this.printAndLog(`Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}\n`);
+        this.printAndLog(`  Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}\n`);
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-          this.printAndLog(`  skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
+          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
         } else {
-          this.printAndLog(`  prompting for chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName}\n`);
           const prompt = this.promptGenerator.createPrompt(chunk, rule);  
-          fs.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`, prompt.getText()); // write prompt to file
-          this.log(`    prompt for chunk ${chunkNr} of ${fileName}:\n\n${prompt.getText()}\n\n`);
+          const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
+          fs.writeFileSync(promptFileName, prompt.getText()); // write prompt to file
+          this.printAndLog(`    created prompt ${prompt.getId()} for chunk ${chunkNr} of ${fileName}; written to ${promptFileName}\n`);
           try {
             const completions = [...await model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
-            completions.forEach((completion) => { // write completions to files
-              fs.writeFileSync(`${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`, completion.getText());
-            }); 
             const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
             const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
             mutants.push(...postProcessedMutants);
-         } catch (err) {
-           this.printAndLog(`    Error: ${err}`);
-         }
+          } catch (err) {
+            this.printAndLog(`    Error: ${err}`);
+          }
         }
       }
     }
@@ -108,10 +105,14 @@ export class MutantGenerator {
    */
   private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
     let mutants = new Array<Mutant>();
-    this.printAndLog(`    Received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+    this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+    completions.forEach((completion) => { // write completions to files
+      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`;
+      fs.writeFileSync(completionFileName, completion.getText());
+      this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
+    }); 
     let completionNr = 1;
     for (const completion of completions) {
-      this.log(`completion ${completionNr++}:\n${completion}`);
       // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
       const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
       let match;
@@ -119,7 +120,7 @@ export class MutantGenerator {
         const lineNr = parseInt(match[1]);
         const originalCode = match[2];
         const rewrittenCode = match[3];
-        mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr));
+        mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
       }
     }
     return mutants;
@@ -144,7 +145,7 @@ export class MutantGenerator {
     }
     const nrDuplicateMutants = validMutants.length - nonDuplicateMutants.length;
 
-    this.printAndLog(`    Found ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).\n`);
+    this.printAndLog(`        extracted ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).\n`);
     return nonDuplicateMutants;
   }
 

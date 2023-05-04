@@ -9,14 +9,21 @@ The rewriting rule is not applicable to LINE #27
 The rewriting rule is not applicable to LINE #28
 The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
-The rewriting rule is not applicable to LINE #31
+CHANGE LINE #31 FROM:
+```
+const min = offset % 60;
+```
+TO:
+```
+const min = offset - 60;
+```
 CHANGE LINE #32 FROM:
 ```
 const sign = offset < 0 ? '-' : '+';
 ```
 TO:
 ```
-const sign = offset < 0 ? '+' : '-';
+const sign = offset > 0 ? '-' : '+';
 ```
 The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
@@ -28,8 +35,7 @@ const num = Math.abs(input);
 ```
 TO:
 ```
-const num = Math.abs(-input);
+const num = Math.abs(input - 0);
 ```
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-

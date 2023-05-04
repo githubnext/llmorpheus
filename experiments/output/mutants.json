@@ -1,6 +1,20 @@
 [
   {
     "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "getTimezonesMap(data)[id] || {}",
+    "rewrittenCode": "getTimezonesMap(data)[id]",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
+    "lineApplied": 7,
+    "promptId": 0,
+    "completionId": 0,
+    "comment": ""
+  },
+  {
+    "rule": {
       "ruleId": "5",
       "rule": "return <Expr>; -> return !<Expr>;",
       "description": "negate return expression"
@@ -9,6 +23,22 @@
     "rewrittenCode": "return !timezonesMap;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 19,
+    "promptId": 1,
+    "completionId": 1,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "2",
+      "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
+      "description": "replace === operator in condition with !=="
+    },
+    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
+    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
+    "lineApplied": 33,
+    "promptId": 2,
+    "completionId": 2,
     "comment": ""
   },
   {
@@ -21,6 +51,8 @@
     "rewrittenCode": "const aliasTz = data.timezones[a];",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 26,
+    "promptId": 3,
+    "completionId": 4,
     "comment": ""
   },
   {
@@ -33,6 +65,8 @@
     "rewrittenCode": "if (countries) return !result;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 29,
+    "promptId": 4,
+    "completionId": 5,
     "comment": "location adjusted: model reported code on line 30, but found on line 29"
   },
   {
@@ -45,6 +79,8 @@
     "rewrittenCode": "return !result;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 37,
+    "promptId": 4,
+    "completionId": 5,
     "comment": ""
   },
   {
@@ -57,6 +93,8 @@
     "rewrittenCode": "const sign = offset < 0 ? '+' : '-';",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js",
     "lineApplied": 32,
+    "promptId": 7,
+    "completionId": 9,
     "comment": ""
   },
   {
@@ -69,6 +107,50 @@
     "rewrittenCode": "return !result;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js",
     "lineApplied": 26,
+    "promptId": 8,
+    "completionId": 12,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "3",
+      "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+      "description": "replace !== operator in condition with ==="
+    },
+    "originalCode": "if (totalTimezones !== memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);",
+    "rewrittenCode": "if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 17,
+    "promptId": 9,
+    "completionId": 13,
+    "comment": "location adjusted: model reported code on line 16, but found on line 17"
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return timezones[name] ? { ...timezones[name] } : null;",
+    "rewrittenCode": "return !timezones[name] ? { ...timezones[name] } : null;",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 33,
+    "promptId": 11,
+    "completionId": 16,
+    "comment": "location adjusted: model reported code on line 34, but found on line 33"
+  },
+  {
+    "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "const timezone = getTimezone(tzName) || {};",
+    "rewrittenCode": "const timezone = getTimezone(tzName);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 43,
+    "promptId": 12,
+    "completionId": 17,
     "comment": ""
   },
   {
@@ -81,19 +163,9 @@
     "rewrittenCode": "return !(main || null);",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 50,
+    "promptId": 13,
+    "completionId": 19,
     "comment": "location adjusted: model reported code on line 51, but found on line 50"
-  },
-  {
-    "rule": {
-      "ruleId": "5",
-      "rule": "return <Expr>; -> return !<Expr>;",
-      "description": "negate return expression"
-    },
-    "originalCode": "if (!country) return null;",
-    "rewrittenCode": "if (!country) return !null;",
-    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
-    "lineApplied": 55,
-    "comment": ""
   },
   {
     "rule": {
@@ -105,6 +177,8 @@
     "rewrittenCode": "const { deprecated } = options;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 71,
+    "promptId": 15,
+    "completionId": 22,
     "comment": ""
   }
 ]

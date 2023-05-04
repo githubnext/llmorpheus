@@ -14,15 +14,15 @@ The rewriting rule is not applicable to LINE #12
 The rewriting rule is not applicable to LINE #13
 The rewriting rule is not applicable to LINE #14
 The rewriting rule is not applicable to LINE #15
-The rewriting rule is not applicable to LINE #16
-The rewriting rule is not applicable to LINE #17
-The rewriting rule is not applicable to LINE #18
-The rewriting rule is not applicable to LINE #19
-CHANGE LINE #20 FROM:
+CHANGE LINE #16 FROM:
 ```
-utcOffsetStr: getOffsetStr(utcOffset),
+if (totalTimezones !== memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);
 ```
 TO:
 ```
-utcOffsetStr: !getOffsetStr(utcOffset),
+if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);
 ```
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20

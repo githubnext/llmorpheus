@@ -10,26 +10,19 @@ The rewriting rule is not applicable to LINE #28
 The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
 The rewriting rule is not applicable to LINE #31
-CHANGE LINE #32 FROM:
+The rewriting rule is not applicable to LINE #32
+CHANGE LINE #33 FROM:
 ```
-const sign = offset < 0 ? '-' : '+';
+if (tz.r === undefined) result[country].current.push(id);
 ```
 TO:
 ```
-const sign = offset < 0 ? '+' : '-';
+if (tz.r !== undefined) result[country].current.push(id);
 ```
-The rewriting rule is not applicable to LINE #33
 The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
-CHANGE LINE #37 FROM:
-```
-const num = Math.abs(input);
-```
-TO:
-```
-const num = Math.abs(-input);
-```
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
-

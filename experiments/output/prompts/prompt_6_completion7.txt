@@ -16,20 +16,13 @@ The rewriting rule is not applicable to LINE #14
 The rewriting rule is not applicable to LINE #15
 The rewriting rule is not applicable to LINE #16
 The rewriting rule is not applicable to LINE #17
-CHANGE LINE #18 FROM:
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+CHANGE LINE #20 FROM:
 ```
-if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-TO:
-```
-if (timezonesMap) timezonesMap = buildTimezonesMap(data);
-```
-CHANGE LINE #19 FROM:
-```
-return timezonesMap;
+utcOffsetStr: getOffsetStr(utcOffset),
 ```
 TO:
 ```
-return !timezonesMap;
+utcOffsetStr: getOffsetStr(!utcOffset),
 ```
-The rewriting rule is not applicable to LINE #20

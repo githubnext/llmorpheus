@@ -14,20 +14,15 @@ The rewriting rule is not applicable to LINE #12
 The rewriting rule is not applicable to LINE #13
 The rewriting rule is not applicable to LINE #14
 The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
 CHANGE LINE #17 FROM:
 ```
-function getTimezonesMap(data) {
+if (totalTimezones !== memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);
 ```
 TO:
 ```
-function getTimezonesMap(data) {
-    return !timezonesMap;
+if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);
 ```
-CHANGE LINE #19 FROM:
-```
-return timezonesMap;
-```
-TO:
-```
-return !timezonesMap;
-```
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20

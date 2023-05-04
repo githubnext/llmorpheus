@@ -5,12 +5,14 @@ exports.Mutant = void 0;
  * Represents a mutant
  */
 class Mutant {
-    constructor(rule, originalCode, rewrittenCode, fileName, lineApplied) {
+    constructor(rule, originalCode, rewrittenCode, fileName, lineApplied, promptId, completionId) {
         this.rule = rule;
         this.originalCode = originalCode;
         this.rewrittenCode = rewrittenCode;
         this.fileName = fileName;
         this.lineApplied = lineApplied;
+        this.promptId = promptId;
+        this.completionId = completionId;
         this.comment = "";
     }
     /**
@@ -84,7 +86,7 @@ class Mutant {
      * @returns void
      */
     adjustLocationAsNeeded(origCode) {
-        const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied);
+        const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied, this.promptId, this.completionId);
         const origLine = origCode.split("\n")[newMutant.lineApplied - 1];
         if (origLine && origLine.trim().indexOf(newMutant.originalCode.trim()) !== -1) {
             return newMutant; // found the original code on the line reported by the model, no need to adjust
