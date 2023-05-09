@@ -11,11 +11,11 @@ The rewriting rule is not applicable to LINE #49
 The rewriting rule is not applicable to LINE #50
 CHANGE LINE #51 FROM:
 ```
-return null;
+return main || null;
 ```
 TO:
 ```
-return !null;
+return !(main || null);
 ```
 The rewriting rule is not applicable to LINE #52
 The rewriting rule is not applicable to LINE #53
@@ -25,4 +25,3 @@ The rewriting rule is not applicable to LINE #56
 The rewriting rule is not applicable to LINE #57
 The rewriting rule is not applicable to LINE #58
 The rewriting rule is not applicable to LINE #59
-The rewriting rule is not applicable to LINE #60

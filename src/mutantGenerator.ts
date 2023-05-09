@@ -1,6 +1,6 @@
 import fs from "fs";
 import fg from 'fast-glob';
-import { Codex } from "./codex";
+import { Model, IModel, CachingModel } from "./model";
 
 import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
@@ -48,7 +48,7 @@ export class MutantGenerator {
   public async generateMutants(path: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
 
-    const model = new Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
+    const model : IModel = new CachingModel(new Model({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions }));
 
     // apply to each .js/.ts/.jsx/.tsx file under src 
     const pattern = `${path}/**/src/*.{js,ts,.jsx,.tsx}`; 
@@ -68,7 +68,7 @@ export class MutantGenerator {
   /**
    * Generate mutants for a given file
    */
-  private async generateMutantsForFile(model: Codex, fileName: string) : Promise<Array<Mutant>> {
+  private async generateMutantsForFile(model: IModel, fileName: string) : Promise<Array<Mutant>> {
     const mutants = new Array<Mutant>();
     this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n`);
     const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
@@ -111,7 +111,6 @@ export class MutantGenerator {
       fs.writeFileSync(completionFileName, completion.getText());
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
     }); 
-    let completionNr = 1;
     for (const completion of completions) {
       // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
       const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;

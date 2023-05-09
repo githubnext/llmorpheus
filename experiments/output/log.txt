@@ -1,4 +1,4 @@
-Starting generation of mutants on: Thu, 04 May 2023 19:21:42 GMT
+Starting generation of mutants on: Tue, 09 May 2023 01:18:25 GMT
 
 files: src/build-country.js,src/build-timezone.js,src/index.js
 
@@ -16,29 +16,31 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
         extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4 (after removing 2 invalid mutants and 0 duplicate mutants).
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     created prompt 1 for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_1.txt
-      received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
+      received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
       completion 1 for prompt 1 written to experiments/output/prompts/prompt_1_completion1.txt
-        extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
+      completion 2 for prompt 1 written to experiments/output/prompts/prompt_1_completion2.txt
+        extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
   Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js because it does not contain any of the terminals +
   Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     created prompt 2 for chunk 1 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_2.txt
-      received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2.
-      completion 2 for prompt 2 written to experiments/output/prompts/prompt_2_completion2.txt
+      received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2.
       completion 3 for prompt 2 written to experiments/output/prompts/prompt_2_completion3.txt
-        extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2 (after removing 1 invalid mutants and 0 duplicate mutants).
+        extracted 0 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2 (after removing 1 invalid mutants and 0 duplicate mutants).
   Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js because it does not contain any of the terminals !==
   Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     created prompt 3 for chunk 1 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_3.txt
-      received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4.
+      received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4.
       completion 4 for prompt 3 written to experiments/output/prompts/prompt_3_completion4.txt
-        extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4 (after removing 0 invalid mutants and 0 duplicate mutants).
+      completion 5 for prompt 3 written to experiments/output/prompts/prompt_3_completion5.txt
+        extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4 (after removing 0 invalid mutants and 1 duplicate mutants).
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js
     created prompt 4 for chunk 1 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_4.txt
-      received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
-      completion 5 for prompt 4 written to experiments/output/prompts/prompt_4_completion5.txt
-        extracted 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 0 invalid mutants and 0 duplicate mutants).
+      received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
+      completion 6 for prompt 4 written to experiments/output/prompts/prompt_4_completion6.txt
+      completion 7 for prompt 4 written to experiments/output/prompts/prompt_4_completion7.txt
+        extracted 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 3 invalid mutants and 1 duplicate mutants).
 
 
 Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js:
@@ -51,21 +53,20 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
   Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     created prompt 5 for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_5.txt
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 4.
-      completion 6 for prompt 5 written to experiments/output/prompts/prompt_5_completion6.txt
+      completion 8 for prompt 5 written to experiments/output/prompts/prompt_5_completion8.txt
         extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 4 (after removing 1 invalid mutants and 0 duplicate mutants).
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     created prompt 6 for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_6.txt
       received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
-      completion 7 for prompt 6 written to experiments/output/prompts/prompt_6_completion7.txt
-      completion 8 for prompt 6 written to experiments/output/prompts/prompt_6_completion8.txt
+      completion 9 for prompt 6 written to experiments/output/prompts/prompt_6_completion9.txt
+      completion 10 for prompt 6 written to experiments/output/prompts/prompt_6_completion10.txt
         extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
   Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     created prompt 7 for chunk 1 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_7.txt
-      received 3 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1.
-      completion 9 for prompt 7 written to experiments/output/prompts/prompt_7_completion9.txt
-      completion 10 for prompt 7 written to experiments/output/prompts/prompt_7_completion10.txt
+      received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1.
       completion 11 for prompt 7 written to experiments/output/prompts/prompt_7_completion11.txt
-        extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1 (after removing 4 invalid mutants and 2 duplicate mutants).
+      completion 12 for prompt 7 written to experiments/output/prompts/prompt_7_completion12.txt
+        extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1 (after removing 2 invalid mutants and 1 duplicate mutants).
   Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js because it does not contain any of the terminals ===
   Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
@@ -75,7 +76,7 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     created prompt 8 for chunk 1 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_8.txt
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
-      completion 12 for prompt 8 written to experiments/output/prompts/prompt_8_completion12.txt
+      completion 13 for prompt 8 written to experiments/output/prompts/prompt_8_completion13.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
   Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js
     skipping chunk 2 (lines 41-42) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js because it does not contain any of the terminals +
@@ -97,16 +98,15 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
   Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     created prompt 9 for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_9.txt
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 3.
-      completion 13 for prompt 9 written to experiments/output/prompts/prompt_9_completion13.txt
+      completion 14 for prompt 9 written to experiments/output/prompts/prompt_9_completion14.txt
         extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 3 (after removing 0 invalid mutants and 0 duplicate mutants).
   Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     skipping chunk 0 (lines 1-20) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals ||,{}
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     created prompt 10 for chunk 0 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_10.txt
-      received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
-      completion 14 for prompt 10 written to experiments/output/prompts/prompt_10_completion14.txt
+      received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 15 for prompt 10 written to experiments/output/prompts/prompt_10_completion15.txt
-        extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
+        extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
   Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     skipping chunk 1 (lines 21-40) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals +
   Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
@@ -131,20 +131,20 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
       received 2 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4.
       completion 17 for prompt 12 written to experiments/output/prompts/prompt_12_completion17.txt
       completion 18 for prompt 12 written to experiments/output/prompts/prompt_12_completion18.txt
-        extracted 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4 (after removing 3 invalid mutants and 1 duplicate mutants).
+        extracted 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4 (after removing 2 invalid mutants and 1 duplicate mutants).
   Applying rule "5" return <Expr>; -> return !<Expr>; (negate return expression) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     created prompt 13 for chunk 2 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_13.txt
-      received 1 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
+      received 2 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 19 for prompt 13 written to experiments/output/prompts/prompt_13_completion19.txt
-        extracted 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 0 invalid mutants and 0 duplicate mutants).
+      completion 20 for prompt 13 written to experiments/output/prompts/prompt_13_completion20.txt
+        extracted 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
   Applying rule "1" <Expr> + <Expr> -> <Expr> - <Expr> (replace + operator in binary expression with -) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     skipping chunk 3 (lines 61-80) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals +
   Applying rule "2" <Expr> === <Expr> -> <Expr> !== <Expr> (replace === operator in condition with !==) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     created prompt 14 for chunk 3 of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_14.txt
-      received 2 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2.
-      completion 20 for prompt 14 written to experiments/output/prompts/prompt_14_completion20.txt
+      received 1 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2.
       completion 21 for prompt 14 written to experiments/output/prompts/prompt_14_completion21.txt
-        extracted 0 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2 (after removing 4 invalid mutants and 0 duplicate mutants).
+        extracted 0 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2 (after removing 2 invalid mutants and 0 duplicate mutants).
   Applying rule "3" <Expr> !== <Expr> -> <Expr> === <Expr> (replace !== operator in condition with ===) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js
     skipping chunk 3 (lines 61-80) of /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js because it does not contain any of the terminals !==
   Applying rule "4" <Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal) to /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js

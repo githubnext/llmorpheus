@@ -21,7 +21,7 @@ if (totalTimezones !== memoizedTimezones) Object.keys(data.timezones).forEach(ge
 ```
 TO:
 ```
-if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);
+if (totalTimezones !== memoizedTimezones) !Object.keys(data.timezones).forEach(getTimezone);
 ```
 The rewriting rule is not applicable to LINE #18
 The rewriting rule is not applicable to LINE #19

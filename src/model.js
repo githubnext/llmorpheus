@@ -3,10 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Codex = void 0;
+exports.Model = exports.CachingModel = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
 const perf_hooks_1 = require("perf_hooks");
+const path_1 = __importDefault(require("path"));
+const crypto_1 = __importDefault(require("crypto"));
 const defaultPostOptions = {
     max_tokens: 100,
     temperature: 0,
@@ -24,12 +26,58 @@ function getEnv(name) {
     }
     return value;
 }
-class Codex {
+const ROOT_CACHE_DIR = path_1.default.join(__dirname, "..", ".llm-cache");
+console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+class CachingModel {
+    constructor(model) {
+        this.cache = new Map();
+        this.modelName = `Caching<${model.getModelName()}>`;
+        this.model = model;
+    }
+    getModelName() {
+        return `Cached<${this.model.getModelName()}>`;
+    }
+    async query(prompt, options = {}) {
+        // compute hash using npm package `crypto`
+        const hash = crypto_1.default
+            .createHash("sha256")
+            .update(JSON.stringify({
+            modelName: this.model.getModelName(),
+            prompt,
+            options,
+        }))
+            .digest("hex");
+        // compute path to cache file
+        const cacheDir = path_1.default.join(ROOT_CACHE_DIR, hash.slice(0, 2));
+        const cacheFile = path_1.default.join(cacheDir, hash);
+        // if the cache file exists, return its contents
+        if (fs_1.default.existsSync(cacheFile)) {
+            const completionsJSON = JSON.parse(fs_1.default.readFileSync(cacheFile, "utf-8"));
+            const completions = new Set();
+            for (const completion of completionsJSON) {
+                completions.add(completion);
+            }
+            return completions;
+        }
+        else {
+            // otherwise, call the wrapped model and cache the result
+            const completions = await this.model.query(prompt, options);
+            fs_1.default.mkdirSync(cacheDir, { recursive: true });
+            fs_1.default.writeFileSync(cacheFile, JSON.stringify([...completions]));
+            return completions;
+        }
+    }
+}
+exports.CachingModel = CachingModel;
+class Model {
     constructor(instanceOptions = {}) {
         this.instanceOptions = instanceOptions;
     }
+    getModelName() {
+        return "text-davinci-003";
+    }
     /**
-     * Query Codex for completions with a given prompt.
+     * Query Model for completions with a given prompt.
      *
      * @param prompt The prompt to use for the completion.
      * @param requestPostOptions The options to use for the request.
@@ -80,16 +128,16 @@ class Codex {
         return completions;
     }
 }
-exports.Codex = Codex;
+exports.Model = Model;
 if (require.main === module) {
     (async () => {
-        const codex = new Codex();
+        const model = new Model();
         const prompt = fs_1.default.readFileSync(0, "utf8");
-        const responses = await codex.query(prompt, { n: 1 });
+        const responses = await model.query(prompt, { n: 1 });
         console.log([...responses][0]);
     })().catch((err) => {
         console.error(err);
         process.exit(1);
     });
 }
-//# sourceMappingURL=codex.js.map
+//# sourceMappingURL=model.js.map

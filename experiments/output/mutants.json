@@ -29,20 +29,6 @@
   },
   {
     "rule": {
-      "ruleId": "2",
-      "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
-      "description": "replace === operator in condition with !=="
-    },
-    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
-    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
-    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
-    "lineApplied": 33,
-    "promptId": 2,
-    "completionId": 2,
-    "comment": ""
-  },
-  {
-    "rule": {
       "ruleId": "4",
       "rule": "<Expr> || {} -> <Expr>",
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
@@ -61,13 +47,13 @@
       "rule": "return <Expr>; -> return !<Expr>;",
       "description": "negate return expression"
     },
-    "originalCode": "if (!countries) return result;",
-    "rewrittenCode": "if (countries) return !result;",
+    "originalCode": "return result;",
+    "rewrittenCode": "return !result;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
-    "lineApplied": 29,
+    "lineApplied": 37,
     "promptId": 4,
-    "completionId": 5,
-    "comment": "location adjusted: model reported code on line 30, but found on line 29"
+    "completionId": 6,
+    "comment": ""
   },
   {
     "rule": {
@@ -75,13 +61,13 @@
       "rule": "return <Expr>; -> return !<Expr>;",
       "description": "negate return expression"
     },
-    "originalCode": "return result;",
-    "rewrittenCode": "return !result;",
+    "originalCode": "if (!countries) return result;",
+    "rewrittenCode": "if (countries) return !result;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
-    "lineApplied": 37,
+    "lineApplied": 29,
     "promptId": 4,
-    "completionId": 5,
-    "comment": ""
+    "completionId": 7,
+    "comment": "location adjusted: model reported code on line 30, but found on line 29"
   },
   {
     "rule": {
@@ -94,7 +80,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js",
     "lineApplied": 32,
     "promptId": 7,
-    "completionId": 9,
+    "completionId": 11,
     "comment": ""
   },
   {
@@ -108,7 +94,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js",
     "lineApplied": 26,
     "promptId": 8,
-    "completionId": 12,
+    "completionId": 13,
     "comment": ""
   },
   {
@@ -122,7 +108,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 17,
     "promptId": 9,
-    "completionId": 13,
+    "completionId": 14,
     "comment": "location adjusted: model reported code on line 16, but found on line 17"
   },
   {
@@ -164,7 +150,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 50,
     "promptId": 13,
-    "completionId": 19,
+    "completionId": 20,
     "comment": "location adjusted: model reported code on line 51, but found on line 50"
   },
   {

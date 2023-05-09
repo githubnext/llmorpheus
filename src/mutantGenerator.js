@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MutantGenerator = void 0;
 const fs_1 = __importDefault(require("fs"));
 const fast_glob_1 = __importDefault(require("fast-glob"));
-const codex_1 = require("./codex");
+const model_1 = require("./model");
 const mutant_1 = require("./mutant");
 const prompt_1 = require("./prompt");
 const rule_1 = require("./rule");
@@ -48,7 +48,7 @@ class MutantGenerator {
     }
     async generateMutants(path) {
         this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
-        const model = new codex_1.Codex({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions });
+        const model = new model_1.CachingModel(new model_1.Model({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions }));
         // apply to each .js/.ts/.jsx/.tsx file under src 
         const pattern = `${path}/**/src/*.{js,ts,.jsx,.tsx}`;
         const files = await (0, fast_glob_1.default)([pattern], { ignore: ['**/node_modules'] });
@@ -107,7 +107,6 @@ class MutantGenerator {
             fs_1.default.writeFileSync(completionFileName, completion.getText());
             this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
         });
-        let completionNr = 1;
         for (const completion of completions) {
             // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
             const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;

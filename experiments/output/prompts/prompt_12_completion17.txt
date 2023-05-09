@@ -12,21 +12,15 @@ TO:
 const timezone = getTimezone(tzName);
 ```
 
-CHANGE LINE #48 FROM:
+CHANGE LINE #54 FROM:
 ```
-const [main] = getCountriesForTimezone(tzName, options);
+const country = getCountry(countryId, options) || {};
 ```
 TO:
-```
-const [main] = getCountriesForTimezone(tzName);
-```
-
-CHANGE LINE #54 FROM:
 ```
 const country = getCountry(countryId, options);
 ```
-TO:
-```
-const country = getCountry(countryId);
-```
+
+The rewriting rule is not applicable to LINE #55
+The rewriting rule is not applicable to LINE #59
 

@@ -11,31 +11,39 @@ The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
 CHANGE LINE #31 FROM:
 ```
-const min = offset % 60;
+countries.forEach((country) => {
 ```
 TO:
 ```
-const min = offset - 60;
+countries.forEach((country) => {
 ```
-CHANGE LINE #32 FROM:
+The rewriting rule is not applicable to LINE #32
+CHANGE LINE #33 FROM:
 ```
-const sign = offset < 0 ? '-' : '+';
+if (tz.r === undefined) result[country].current.push(id);
 ```
 TO:
 ```
-const sign = offset > 0 ? '-' : '+';
+if (tz.r !== undefined) result[country].current.push(id);
 ```
-The rewriting rule is not applicable to LINE #33
-The rewriting rule is not applicable to LINE #34
+CHANGE LINE #34 FROM:
+```
+result[country].all.push(id);
+```
+TO:
+```
+result[country].all.push(id);
+```
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
 CHANGE LINE #37 FROM:
 ```
-const num = Math.abs(input);
+return result;
 ```
 TO:
 ```
-const num = Math.abs(input - 0);
+return !result;
 ```
+The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40

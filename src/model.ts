@@ -1,6 +1,8 @@
 import axios from "axios";
 import fs from "fs";
 import { performance } from "perf_hooks";
+import path from "path";
+import crypto from "crypto";
 
 const defaultPostOptions = {
   max_tokens: 100, // maximum number of tokens to return
@@ -22,15 +24,74 @@ function getEnv(name: string): string {
   return value;
 }
 
-export class Codex {
+export interface IModel {
+  query(prompt: string, requestPostOptions?: PostOptions): Promise<Set<string>>;
+  getModelName(): string;
+}
+
+const ROOT_CACHE_DIR = path.join(__dirname, "..", ".llm-cache");
+console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+
+export class CachingModel implements IModel {
+  private model: IModel;
+  private modelName: string;
+  private cache: Map<string, Set<string>> = new Map();
+
+  constructor(model: IModel) {
+    this.modelName = `Caching<${model.getModelName()}>`;
+    this.model = model;
+  }
+  getModelName(): string {
+    return `Cached<${this.model.getModelName()}>`;
+  }
+
+  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
+    // compute hash using npm package `crypto`
+    const hash = crypto
+    .createHash("sha256")
+    .update(
+      JSON.stringify({
+        modelName: this.model.getModelName(),
+        prompt,
+        options,
+      })
+    )
+    .digest("hex");
+  
+    // compute path to cache file
+    const cacheDir = path.join(ROOT_CACHE_DIR, hash.slice(0, 2));
+    const cacheFile = path.join(cacheDir, hash);
+    // if the cache file exists, return its contents
+    if (fs.existsSync(cacheFile)) {
+      const completionsJSON = JSON.parse(fs.readFileSync(cacheFile, "utf-8"));
+      const completions = new Set<string>();
+      for (const completion of completionsJSON) {
+        completions.add(completion);
+      }
+      return completions;
+    } else {
+      // otherwise, call the wrapped model and cache the result
+      const completions = await this.model.query(prompt, options);
+      fs.mkdirSync(cacheDir, { recursive: true });
+      fs.writeFileSync(cacheFile, JSON.stringify([...completions]));
+      return completions;
+    }
+  }
+}
+
+export class Model implements IModel {
   private instanceOptions: PostOptions;
 
   constructor(instanceOptions: PostOptions = {}) {
     this.instanceOptions = instanceOptions;
   }
 
+  public getModelName(): string {
+    return "text-davinci-003";
+  }
+
   /**
-   * Query Codex for completions with a given prompt.
+   * Query Model for completions with a given prompt.
    *
    * @param prompt The prompt to use for the completion.
    * @param requestPostOptions The options to use for the request.
@@ -104,9 +165,9 @@ export class Codex {
 
 if (require.main === module) {
   (async () => {
-    const codex = new Codex();
+    const model = new Model();
     const prompt = fs.readFileSync(0, "utf8");
-    const responses = await codex.query(prompt, { n: 1 });
+    const responses = await model.query(prompt, { n: 1 });
     console.log([...responses][0]);
   })().catch((err) => {
     console.error(err);
