@@ -24,61 +24,17 @@ function getEnv(name: string): string {
   return value;
 }
 
+/**
+ * A model that can be queried to generate a set of completions for a given prompt.
+ */
 export interface IModel {
   query(prompt: string, requestPostOptions?: PostOptions): Promise<Set<string>>;
   getModelName(): string;
 }
 
-const ROOT_CACHE_DIR = path.join(__dirname, "..", ".llm-cache");
-console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
-
-export class CachingModel implements IModel {
-  private model: IModel;
-  private modelName: string;
-  private cache: Map<string, Set<string>> = new Map();
-
-  constructor(model: IModel) {
-    this.modelName = `Caching<${model.getModelName()}>`;
-    this.model = model;
-  }
-  getModelName(): string {
-    return `Cached<${this.model.getModelName()}>`;
-  }
-
-  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
-    // compute hash using npm package `crypto`
-    const hash = crypto
-    .createHash("sha256")
-    .update(
-      JSON.stringify({
-        modelName: this.model.getModelName(),
-        prompt,
-        options,
-      })
-    )
-    .digest("hex");
-  
-    // compute path to cache file
-    const cacheDir = path.join(ROOT_CACHE_DIR, hash.slice(0, 2));
-    const cacheFile = path.join(cacheDir, hash);
-    // if the cache file exists, return its contents
-    if (fs.existsSync(cacheFile)) {
-      const completionsJSON = JSON.parse(fs.readFileSync(cacheFile, "utf-8"));
-      const completions = new Set<string>();
-      for (const completion of completionsJSON) {
-        completions.add(completion);
-      }
-      return completions;
-    } else {
-      // otherwise, call the wrapped model and cache the result
-      const completions = await this.model.query(prompt, options);
-      fs.mkdirSync(cacheDir, { recursive: true });
-      fs.writeFileSync(cacheFile, JSON.stringify([...completions]));
-      return completions;
-    }
-  }
-}
-
+/**
+ * The basic model relies on text-davinci-003.
+ */
 export class Model implements IModel {
   private instanceOptions: PostOptions;
 
@@ -158,10 +114,105 @@ export class Model implements IModel {
       );
     }
     return completions;
+  } 
+}
+
+const ROOT_CACHE_DIR = path.join(__dirname, "..", ".llm-cache");
+console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+
+/**
+ * A model that wraps another model and caches its results.
+ */
+export class CachingModel implements IModel {
+  private model: IModel;
+  private modelName: string;
+
+  constructor(model: IModel) {
+    this.modelName = `Caching<${model.getModelName()}>`;
+    this.model = model;
+  }
+  getModelName(): string {
+    return `${this.modelName}>`;
   }
 
+  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
+    // compute hash using npm package `crypto`
+    const hash = crypto
+    .createHash("sha256")
+    .update(
+      JSON.stringify({
+        modelName: this.model.getModelName(),
+        prompt,
+        options,
+      })
+    )
+    .digest("hex");
   
+    // compute path to cache file
+    const cacheDir = path.join(ROOT_CACHE_DIR, hash.slice(0, 2));
+    const cacheFile = path.join(cacheDir, hash);
+    // if the cache file exists, return its contents
+    if (fs.existsSync(cacheFile)) {
+      const completionsJSON = JSON.parse(fs.readFileSync(cacheFile, "utf-8"));
+      const completions = new Set<string>();
+      for (const completion of completionsJSON) {
+        completions.add(completion);
+      }
+      return completions;
+    } else {
+      // otherwise, call the wrapped model and cache the result
+      const completions = await this.model.query(prompt, options);
+      fs.mkdirSync(cacheDir, { recursive: true });
+      fs.writeFileSync(cacheFile, JSON.stringify([...completions]));
+      return completions;
+    }
+  }
 }
+
+/**
+ * A mock model that extracts its responses from a directory containing previously recorded cache files.
+ */
+export class MockModel implements IModel {
+  constructor(private modelName: string, private modelDir: string) {}
+
+  getModelName(): string {
+    return this.modelName;
+  }
+
+  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
+    // compute hash using npm package `crypto`
+    const hash = crypto
+    .createHash("sha256")
+    .update(
+      JSON.stringify({
+        modelName: this.modelName, 
+        prompt,
+        options,
+      })
+    )
+    .digest("hex");
+  
+    // compute path to cache file
+    const cacheDir = path.join(this.modelDir, hash.slice(0, 2));
+    const cacheFile = path.join(cacheDir, hash);
+    // if the cache file exists, return its contents
+    if (fs.existsSync(cacheFile)) {
+      const completionsJSON = JSON.parse(fs.readFileSync(cacheFile, "utf-8"));
+      const completions = new Set<string>();
+      for (const completion of completionsJSON) {
+        completions.add(completion);
+      }
+      return completions;
+    } else {
+      throw new Error(`MockModel: cache file ${cacheFile} does not exist`);
+    }
+  }
+}
+
+
+
+
+
 
 if (require.main === module) {
   (async () => {

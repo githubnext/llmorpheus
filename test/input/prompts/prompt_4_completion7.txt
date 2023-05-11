@@ -8,32 +8,18 @@ The rewriting rule is not applicable to LINE #26
 The rewriting rule is not applicable to LINE #27
 The rewriting rule is not applicable to LINE #28
 The rewriting rule is not applicable to LINE #29
-The rewriting rule is not applicable to LINE #30
-CHANGE LINE #31 FROM:
+CHANGE LINE #30 FROM:
 ```
-countries.forEach((country) => {
+if (!countries) return result;
 ```
 TO:
 ```
-countries.forEach((country) => {
+if (countries) return !result;
 ```
+The rewriting rule is not applicable to LINE #31
 The rewriting rule is not applicable to LINE #32
-CHANGE LINE #33 FROM:
-```
-if (tz.r === undefined) result[country].current.push(id);
-```
-TO:
-```
-if (tz.r !== undefined) result[country].current.push(id);
-```
-CHANGE LINE #34 FROM:
-```
-result[country].all.push(id);
-```
-TO:
-```
-result[country].all.push(id);
-```
+The rewriting rule is not applicable to LINE #33
+The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
 CHANGE LINE #37 FROM:
@@ -46,4 +32,3 @@ return !result;
 ```
 The rewriting rule is not applicable to LINE #38
 The rewriting rule is not applicable to LINE #39
-The rewriting rule is not applicable to LINE #40

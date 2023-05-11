@@ -5,7 +5,7 @@ Given the following code, where line numbers have been added for ease of referen
 <END>
 
 Identify where the following rewrite rule is applicable:
-		{{{rule.rule}}} ({{rule.description}})
+		{{{rule.rule}}} ({{{rule.description}}})
 Going through EACH of the lines in the code in order, please respond EITHER:
 The rewriting rule is not applicable to LINE #N
 OR respond by providing: 

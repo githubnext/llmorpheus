@@ -1,0 +1,35 @@
+
+The rewriting rule is not applicable to LINE #61
+The rewriting rule is not applicable to LINE #62
+The rewriting rule is not applicable to LINE #63
+The rewriting rule is not applicable to LINE #64
+The rewriting rule is not applicable to LINE #65
+The rewriting rule is not applicable to LINE #66
+The rewriting rule is not applicable to LINE #67
+The rewriting rule is not applicable to LINE #68
+The rewriting rule is not applicable to LINE #69
+The rewriting rule is not applicable to LINE #70
+CHANGE LINE #71 FROM:
+```
+const { deprecated } = options || {};
+```
+TO:
+```
+const { deprecated } = options || {};
+```
+The rewriting rule is not applicable to LINE #72
+CHANGE LINE #73 FROM:
+```
+const tz = deprecated ? country.allTimezones : country.timezones;
+```
+TO:
+```
+const tz = deprecated !== true ? country.allTimezones : country.timezones;
+```
+The rewriting rule is not applicable to LINE #74
+The rewriting rule is not applicable to LINE #75
+The rewriting rule is not applicable to LINE #76
+The rewriting rule is not applicable to LINE #77
+The rewriting rule is not applicable to LINE #78
+The rewriting rule is not applicable to LINE #79
+The rewriting rule is not applicable to LINE #80

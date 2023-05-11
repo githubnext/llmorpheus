@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Model = exports.CachingModel = void 0;
+exports.MockModel = exports.CachingModel = exports.Model = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
 const perf_hooks_1 = require("perf_hooks");
@@ -26,49 +26,9 @@ function getEnv(name) {
     }
     return value;
 }
-const ROOT_CACHE_DIR = path_1.default.join(__dirname, "..", ".llm-cache");
-console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
-class CachingModel {
-    constructor(model) {
-        this.cache = new Map();
-        this.modelName = `Caching<${model.getModelName()}>`;
-        this.model = model;
-    }
-    getModelName() {
-        return `Cached<${this.model.getModelName()}>`;
-    }
-    async query(prompt, options = {}) {
-        // compute hash using npm package `crypto`
-        const hash = crypto_1.default
-            .createHash("sha256")
-            .update(JSON.stringify({
-            modelName: this.model.getModelName(),
-            prompt,
-            options,
-        }))
-            .digest("hex");
-        // compute path to cache file
-        const cacheDir = path_1.default.join(ROOT_CACHE_DIR, hash.slice(0, 2));
-        const cacheFile = path_1.default.join(cacheDir, hash);
-        // if the cache file exists, return its contents
-        if (fs_1.default.existsSync(cacheFile)) {
-            const completionsJSON = JSON.parse(fs_1.default.readFileSync(cacheFile, "utf-8"));
-            const completions = new Set();
-            for (const completion of completionsJSON) {
-                completions.add(completion);
-            }
-            return completions;
-        }
-        else {
-            // otherwise, call the wrapped model and cache the result
-            const completions = await this.model.query(prompt, options);
-            fs_1.default.mkdirSync(cacheDir, { recursive: true });
-            fs_1.default.writeFileSync(cacheFile, JSON.stringify([...completions]));
-            return completions;
-        }
-    }
-}
-exports.CachingModel = CachingModel;
+/**
+ * The basic model relies on text-davinci-003.
+ */
 class Model {
     constructor(instanceOptions = {}) {
         this.instanceOptions = instanceOptions;
@@ -129,6 +89,90 @@ class Model {
     }
 }
 exports.Model = Model;
+const ROOT_CACHE_DIR = path_1.default.join(__dirname, "..", ".llm-cache");
+console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+/**
+ * A model that wraps another model and caches its results.
+ */
+class CachingModel {
+    constructor(model) {
+        this.modelName = `Caching<${model.getModelName()}>`;
+        this.model = model;
+    }
+    getModelName() {
+        return `${this.modelName}>`;
+    }
+    async query(prompt, options = {}) {
+        // compute hash using npm package `crypto`
+        const hash = crypto_1.default
+            .createHash("sha256")
+            .update(JSON.stringify({
+            modelName: this.model.getModelName(),
+            prompt,
+            options,
+        }))
+            .digest("hex");
+        // compute path to cache file
+        const cacheDir = path_1.default.join(ROOT_CACHE_DIR, hash.slice(0, 2));
+        const cacheFile = path_1.default.join(cacheDir, hash);
+        // if the cache file exists, return its contents
+        if (fs_1.default.existsSync(cacheFile)) {
+            const completionsJSON = JSON.parse(fs_1.default.readFileSync(cacheFile, "utf-8"));
+            const completions = new Set();
+            for (const completion of completionsJSON) {
+                completions.add(completion);
+            }
+            return completions;
+        }
+        else {
+            // otherwise, call the wrapped model and cache the result
+            const completions = await this.model.query(prompt, options);
+            fs_1.default.mkdirSync(cacheDir, { recursive: true });
+            fs_1.default.writeFileSync(cacheFile, JSON.stringify([...completions]));
+            return completions;
+        }
+    }
+}
+exports.CachingModel = CachingModel;
+/**
+ * A mock model that extracts its responses from a directory containing previously recorded cache files.
+ */
+class MockModel {
+    constructor(modelName, modelDir) {
+        this.modelName = modelName;
+        this.modelDir = modelDir;
+    }
+    getModelName() {
+        return this.modelName;
+    }
+    async query(prompt, options = {}) {
+        // compute hash using npm package `crypto`
+        const hash = crypto_1.default
+            .createHash("sha256")
+            .update(JSON.stringify({
+            modelName: this.modelName,
+            prompt,
+            options,
+        }))
+            .digest("hex");
+        // compute path to cache file
+        const cacheDir = path_1.default.join(this.modelDir, hash.slice(0, 2));
+        const cacheFile = path_1.default.join(cacheDir, hash);
+        // if the cache file exists, return its contents
+        if (fs_1.default.existsSync(cacheFile)) {
+            const completionsJSON = JSON.parse(fs_1.default.readFileSync(cacheFile, "utf-8"));
+            const completions = new Set();
+            for (const completion of completionsJSON) {
+                completions.add(completion);
+            }
+            return completions;
+        }
+        else {
+            throw new Error(`MockModel: cache file ${cacheFile} does not exist`);
+        }
+    }
+}
+exports.MockModel = MockModel;
 if (require.main === module) {
     (async () => {
         const model = new Model();

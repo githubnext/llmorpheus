@@ -10,19 +10,26 @@ The rewriting rule is not applicable to LINE #28
 The rewriting rule is not applicable to LINE #29
 The rewriting rule is not applicable to LINE #30
 The rewriting rule is not applicable to LINE #31
-The rewriting rule is not applicable to LINE #32
-The rewriting rule is not applicable to LINE #33
-CHANGE LINE #34 FROM:
+CHANGE LINE #32 FROM:
 ```
-result[country].all.push(id);
+const sign = offset < 0 ? '-' : '+';
 ```
 TO:
 ```
-result[country].all.push(id) !== undefined;
+const sign = offset < 0 ? '+' : '-';
 ```
+The rewriting rule is not applicable to LINE #33
+The rewriting rule is not applicable to LINE #34
 The rewriting rule is not applicable to LINE #35
 The rewriting rule is not applicable to LINE #36
-The rewriting rule is not applicable to LINE #37
-The rewriting rule is not applicable to LINE #38
+CHANGE LINE #37 FROM:
+```
+const num = Math.abs(input);
+```
+TO:
+```
+const num = Math.abs(-input);
+```
 The rewriting rule is not applicable to LINE #39
 The rewriting rule is not applicable to LINE #40
+

@@ -1,3 +1,4 @@
 dist
 node_modules
 .llm-cache
+test/temp_output

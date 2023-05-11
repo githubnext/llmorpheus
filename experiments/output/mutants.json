@@ -29,6 +29,20 @@
   },
   {
     "rule": {
+      "ruleId": "2",
+      "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
+      "description": "replace === operator in condition with !=="
+    },
+    "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
+    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
+    "lineApplied": 33,
+    "promptId": 2,
+    "completionId": 4,
+    "comment": ""
+  },
+  {
+    "rule": {
       "ruleId": "4",
       "rule": "<Expr> || {} -> <Expr>",
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
@@ -38,21 +52,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
     "lineApplied": 26,
     "promptId": 3,
-    "completionId": 4,
-    "comment": ""
-  },
-  {
-    "rule": {
-      "ruleId": "5",
-      "rule": "return <Expr>; -> return !<Expr>;",
-      "description": "negate return expression"
-    },
-    "originalCode": "return result;",
-    "rewrittenCode": "return !result;",
-    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
-    "lineApplied": 37,
-    "promptId": 4,
-    "completionId": 6,
+    "completionId": 5,
     "comment": ""
   },
   {
@@ -68,6 +68,20 @@
     "promptId": 4,
     "completionId": 7,
     "comment": "location adjusted: model reported code on line 30, but found on line 29"
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return result;",
+    "rewrittenCode": "return !result;",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js",
+    "lineApplied": 37,
+    "promptId": 4,
+    "completionId": 7,
+    "comment": ""
   },
   {
     "rule": {
@@ -94,7 +108,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js",
     "lineApplied": 26,
     "promptId": 8,
-    "completionId": 13,
+    "completionId": 12,
     "comment": ""
   },
   {
@@ -108,8 +122,8 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 17,
     "promptId": 9,
-    "completionId": 14,
-    "comment": "location adjusted: model reported code on line 16, but found on line 17"
+    "completionId": 13,
+    "comment": ""
   },
   {
     "rule": {
@@ -122,7 +136,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 33,
     "promptId": 11,
-    "completionId": 16,
+    "completionId": 15,
     "comment": "location adjusted: model reported code on line 34, but found on line 33"
   },
   {
@@ -136,7 +150,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 43,
     "promptId": 12,
-    "completionId": 17,
+    "completionId": 16,
     "comment": ""
   },
   {
@@ -150,8 +164,22 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 50,
     "promptId": 13,
-    "completionId": 20,
+    "completionId": 18,
     "comment": "location adjusted: model reported code on line 51, but found on line 50"
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return values.map(getTimezone);",
+    "rewrittenCode": "return !values.map(getTimezone);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 57,
+    "promptId": 13,
+    "completionId": 19,
+    "comment": "location adjusted: model reported code on line 58, but found on line 57"
   },
   {
     "rule": {
@@ -164,7 +192,7 @@
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 71,
     "promptId": 15,
-    "completionId": 22,
+    "completionId": 23,
     "comment": ""
   }
 ]

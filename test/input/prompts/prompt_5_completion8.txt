@@ -1,0 +1,28 @@
+
+The rewriting rule is not applicable to LINE #1
+The rewriting rule is not applicable to LINE #2
+The rewriting rule is not applicable to LINE #3
+The rewriting rule is not applicable to LINE #4
+The rewriting rule is not applicable to LINE #5
+CHANGE LINE #6 FROM:
+```
+const aliasTz = aliasOf ? data.timezones[aliasOf] : {};
+```
+TO:
+```
+const aliasTz = aliasOf ? data.timezones[aliasOf] : aliasOf;
+```
+The rewriting rule is not applicable to LINE #7
+The rewriting rule is not applicable to LINE #8
+The rewriting rule is not applicable to LINE #9
+The rewriting rule is not applicable to LINE #10
+The rewriting rule is not applicable to LINE #11
+The rewriting rule is not applicable to LINE #12
+The rewriting rule is not applicable to LINE #13
+The rewriting rule is not applicable to LINE #14
+The rewriting rule is not applicable to LINE #15
+The rewriting rule is not applicable to LINE #16
+The rewriting rule is not applicable to LINE #17
+The rewriting rule is not applicable to LINE #18
+The rewriting rule is not applicable to LINE #19
+The rewriting rule is not applicable to LINE #20

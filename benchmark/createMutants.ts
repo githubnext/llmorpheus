@@ -1,5 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import { CachingModel, Model } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { IRuleFilter } from "../src/rule";
 
@@ -37,12 +38,7 @@ if (require.main === module) {
           type: "number",
           default: 5,
           description: "number of completions to generate for each prompt (default: 5)",
-        },
-        removeInvalid: {
-          type: "boolean",
-          default: false,
-          description: "whether to remove invalid mutants (default: false)",
-        },
+        }
     });
     const argv = await parser.argv;
     const rules = argv.rules === undefined ? [] : argv.rules!.substring(1, argv.rules!.length-1).split(",");
@@ -52,7 +48,9 @@ if (require.main === module) {
       return argv.rules === undefined || rules.includes(value);
     }
 
-    const mutantGenerator = new MutantGenerator(argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.numCompletions, argv.outputDir, argv.removeInvalid);
+    const model = new CachingModel(new Model({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: argv.numCompletions }));
+
+    const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.outputDir);
     mutantGenerator.generateMutants(argv.path);
   })();
 }

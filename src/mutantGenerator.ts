@@ -15,7 +15,7 @@ export class MutantGenerator {
   private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
 
-  constructor(promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private numCompletions: number, private outputDir: string, private removeInvalid: boolean) {
+  constructor(private model: IModel, promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
     this.promptGenerator = new PromptGenerator(promptTemplateFileName);
 
@@ -45,20 +45,27 @@ export class MutantGenerator {
     this.log(msg);
   }
 
-  public async generateMutants(path: string) : Promise<void> { 
-    this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
-
-    const model : IModel = new CachingModel(new Model({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: this.numCompletions }));
-
-    // apply to each .js/.ts/.jsx/.tsx file under src 
-    const pattern = `${path}/**/src/*.{js,ts,.jsx,.tsx}`; 
+  /**
+   * Find the files to mutate
+   * @param path the path to the project to mutate
+   * @returns the files to mutate
+   */
+  public async findSourceFilesToMutate(path: string) : Promise<Array<string>> {
+    const pattern = `${path}/**/src/*.{js,ts,.jsx,.tsx}`;  // apply to each .js/.ts/.jsx/.tsx file under src 
     const files = await fg([pattern], {ignore: ['**/node_modules']})
     const shortFileNames = files.map((file) => file.replace(`${path}/`, ""));
     this.log(`files: ${shortFileNames}`);
+    return files;
+  }
+
+
+  public async generateMutants(path: string) : Promise<void> { 
+    this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
+    const files = await this.findSourceFilesToMutate(path);
 
     const mutants = new Array<Mutant>();
     for (const file of files){
-      mutants.push(...await this.generateMutantsForFile(model, file));
+      mutants.push(...await this.generateMutantsForFile(file));
     }
     
     // write mutant info to JSON file
@@ -68,16 +75,21 @@ export class MutantGenerator {
   /**
    * Generate mutants for a given file
    */
-  private async generateMutantsForFile(model: IModel, fileName: string) : Promise<Array<Mutant>> {
+  private async generateMutantsForFile(fileName: string) : Promise<Array<Mutant>> {
     const mutants = new Array<Mutant>();
     this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n`);
     const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
-    const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
+    let rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
+    // sort rules by id
+    rules.sort((a,b) => a.getRuleId().localeCompare(b.getRuleId()));
+
     
     const chunks = this.createChunks(origCode);
     for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
       const chunk = chunks[chunkNr];
-      for (const rule of rules){  
+      // for (const rule of rules){  
+      for (let ruleNr=0; ruleNr < rules.length; ruleNr++ ){
+        const rule = rules[ruleNr];
         this.printAndLog(`  Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}\n`);
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
           this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
@@ -87,7 +99,7 @@ export class MutantGenerator {
           fs.writeFileSync(promptFileName, prompt.getText()); // write prompt to file
           this.printAndLog(`    created prompt ${prompt.getId()} for chunk ${chunkNr} of ${fileName}; written to ${promptFileName}\n`);
           try {
-            const completions = [...await model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
+            const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
             const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
             const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
             mutants.push(...postProcessedMutants);
@@ -153,7 +165,7 @@ export class MutantGenerator {
    * @param origCode: the source code
    * @returns an array of strings, each of which is a chunk of the source code
    */
-  private createChunks(origCode: string) : string[] {
+  public createChunks(origCode: string) : string[] {
     const chunks : string[] = [];
     const lines = origCode.split("\n");
     for (let i = 0; i < lines.length; i += MutantGenerator.CHUNK_SIZE) {
@@ -168,7 +180,7 @@ export class MutantGenerator {
    * @param terminals: the set of terminals
    * @returns true if the chunk contains all of the terminals, false otherwise
    */
-  private chunkContainsTerminals(chunk: string, terminals: Set<string>) : boolean {
+  public chunkContainsTerminals(chunk: string, terminals: Set<string>) : boolean {
     return [...terminals].reduce((result, terminal) => result && chunk.includes(terminal), true);
   }
 
@@ -182,7 +194,7 @@ export class MutantGenerator {
   /** 
    * Add line numbers to the source code.
    */
-  private addLineNumbers(code: string) : string {
+  public addLineNumbers(code: string) : string {
     const lines = code.split("\n");
     const maxDigits = Math.floor(Math.log10(lines.length)) + 1;
     const paddedLines = lines.map((line, i) => {

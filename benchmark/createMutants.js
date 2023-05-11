@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const yargs_1 = __importDefault(require("yargs"));
 const helpers_1 = require("yargs/helpers");
+const model_1 = require("../src/model");
 const mutantGenerator_1 = require("../src/mutantGenerator");
 if (require.main === module) {
     (async () => {
@@ -39,12 +40,7 @@ if (require.main === module) {
                 type: "number",
                 default: 5,
                 description: "number of completions to generate for each prompt (default: 5)",
-            },
-            removeInvalid: {
-                type: "boolean",
-                default: false,
-                description: "whether to remove invalid mutants (default: false)",
-            },
+            }
         });
         const argv = await parser.argv;
         const rules = argv.rules === undefined ? [] : argv.rules.substring(1, argv.rules.length - 1).split(",");
@@ -52,7 +48,8 @@ if (require.main === module) {
         const ruleFilter = (value) => {
             return argv.rules === undefined || rules.includes(value);
         };
-        const mutantGenerator = new mutantGenerator_1.MutantGenerator(argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.numCompletions, argv.outputDir, argv.removeInvalid);
+        const model = new model_1.CachingModel(new model_1.Model({ max_tokens: 750, stop: ["DONE"], temperature: 0.0, n: argv.numCompletions }));
+        const mutantGenerator = new mutantGenerator_1.MutantGenerator(model, argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.outputDir);
         mutantGenerator.generateMutants(argv.path);
     })();
 }
