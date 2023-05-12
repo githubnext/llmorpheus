@@ -1,4 +1,4 @@
-Starting generation of mutants on: Fri, 12 May 2023 19:06:33 GMT
+Starting generation of mutants on: Fri, 12 May 2023 19:11:17 GMT
 
 files: src/build-country.js,src/build-timezone.js,src/index.js
 
@@ -8,26 +8,26 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
     skipping chunk 0 (lines 1-20) because it does not contain any of the terminals !==
     skipping chunk 1 (lines 21-40) because it does not contain any of the terminals +
     skipping chunk 1 (lines 21-40) because it does not contain any of the terminals !==
-    created prompt 0 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_0.txt
+    created prompt 0 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_0.json
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4.
       completion 0 for prompt 0 written to experiments/output/prompts/prompt_0_completion0.txt
         extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4 (after removing 2 invalid mutants and 0 duplicate mutants).
-    created prompt 1 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_1.txt
+    created prompt 1 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_1.json
       received 3 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
       completion 1 for prompt 1 written to experiments/output/prompts/prompt_1_completion1.txt
       completion 2 for prompt 1 written to experiments/output/prompts/prompt_1_completion2.txt
       completion 3 for prompt 1 written to experiments/output/prompts/prompt_1_completion3.txt
         extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 3 invalid mutants and 0 duplicate mutants).
-    created prompt 2 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_2.txt
+    created prompt 2 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_2.json
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2.
       completion 4 for prompt 2 written to experiments/output/prompts/prompt_2_completion4.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 2 (after removing 0 invalid mutants and 0 duplicate mutants).
-    created prompt 3 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_3.txt
+    created prompt 3 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_3.json
       received 2 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4.
       completion 5 for prompt 3 written to experiments/output/prompts/prompt_3_completion5.txt
       completion 6 for prompt 3 written to experiments/output/prompts/prompt_3_completion6.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 4 (after removing 0 invalid mutants and 1 duplicate mutants).
-    created prompt 4 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_4.txt
+    created prompt 4 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js; written to experiments/output/prompts/prompt_4.json
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5.
       completion 7 for prompt 4 written to experiments/output/prompts/prompt_4_completion7.txt
         extracted 2 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-country.js, given rule 5 (after removing 0 invalid mutants and 0 duplicate mutants).
@@ -45,20 +45,20 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
     skipping chunk 2 (lines 41-42) because it does not contain any of the terminals !==
     skipping chunk 2 (lines 41-42) because it does not contain any of the terminals ||,{}
     skipping chunk 2 (lines 41-42) because it does not contain any of the terminals return,;
-    created prompt 5 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_5.txt
+    created prompt 5 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_5.json
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 4.
       completion 8 for prompt 5 written to experiments/output/prompts/prompt_5_completion8.txt
         extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 4 (after removing 1 invalid mutants and 0 duplicate mutants).
-    created prompt 6 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_6.txt
+    created prompt 6 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_6.json
       received 2 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
       completion 9 for prompt 6 written to experiments/output/prompts/prompt_6_completion9.txt
       completion 10 for prompt 6 written to experiments/output/prompts/prompt_6_completion10.txt
         extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).
-    created prompt 7 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_7.txt
+    created prompt 7 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_7.json
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1.
       completion 11 for prompt 7 written to experiments/output/prompts/prompt_7_completion11.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 1 (after removing 1 invalid mutants and 0 duplicate mutants).
-    created prompt 8 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_8.txt
+    created prompt 8 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js; written to experiments/output/prompts/prompt_8.json
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5.
       completion 12 for prompt 8 written to experiments/output/prompts/prompt_8_completion12.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/build-timezone.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
@@ -82,39 +82,39 @@ Generating mutants for /Users/franktip/sabbatical/projects/countries-and-timezon
     skipping chunk 4 (lines 81-86) because it does not contain any of the terminals !==
     skipping chunk 4 (lines 81-86) because it does not contain any of the terminals ||,{}
     skipping chunk 4 (lines 81-86) because it does not contain any of the terminals return,;
-    created prompt 9 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_9.txt
+    created prompt 9 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_9.json
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 3.
       completion 13 for prompt 9 written to experiments/output/prompts/prompt_9_completion13.txt
         extracted 1 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 3 (after removing 0 invalid mutants and 0 duplicate mutants).
-    created prompt 10 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_10.txt
+    created prompt 10 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_10.json
       received 1 completions for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 14 for prompt 10 written to experiments/output/prompts/prompt_10_completion14.txt
         extracted 0 mutants for chunk 0 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 1 invalid mutants and 0 duplicate mutants).
-    created prompt 11 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_11.txt
+    created prompt 11 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_11.json
       received 1 completions for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 15 for prompt 11 written to experiments/output/prompts/prompt_11_completion15.txt
         extracted 1 mutants for chunk 1 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 0 invalid mutants and 0 duplicate mutants).
-    created prompt 12 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_12.txt
+    created prompt 12 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_12.json
       received 2 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4.
       completion 16 for prompt 12 written to experiments/output/prompts/prompt_12_completion16.txt
       completion 17 for prompt 12 written to experiments/output/prompts/prompt_12_completion17.txt
         extracted 1 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4 (after removing 3 invalid mutants and 1 duplicate mutants).
-    created prompt 13 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_13.txt
+    created prompt 13 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_13.json
       received 3 completions for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 18 for prompt 13 written to experiments/output/prompts/prompt_13_completion18.txt
       completion 19 for prompt 13 written to experiments/output/prompts/prompt_13_completion19.txt
       completion 20 for prompt 13 written to experiments/output/prompts/prompt_13_completion20.txt
         extracted 2 mutants for chunk 2 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 2 invalid mutants and 1 duplicate mutants).
-    created prompt 14 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_14.txt
+    created prompt 14 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_14.json
       received 2 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2.
       completion 21 for prompt 14 written to experiments/output/prompts/prompt_14_completion21.txt
       completion 22 for prompt 14 written to experiments/output/prompts/prompt_14_completion22.txt
         extracted 0 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 2 (after removing 4 invalid mutants and 0 duplicate mutants).
-    created prompt 15 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_15.txt
+    created prompt 15 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_15.json
       received 1 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4.
       completion 23 for prompt 15 written to experiments/output/prompts/prompt_15_completion23.txt
         extracted 1 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 4 (after removing 1 invalid mutants and 0 duplicate mutants).
-    created prompt 16 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_16.txt
+    created prompt 16 for /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js; written to experiments/output/prompts/prompt_16.json
       received 1 completions for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5.
       completion 24 for prompt 16 written to experiments/output/prompts/prompt_16_completion24.txt
         extracted 0 mutants for chunk 3 of file /Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js, given rule 5 (after removing 2 invalid mutants and 0 duplicate mutants).

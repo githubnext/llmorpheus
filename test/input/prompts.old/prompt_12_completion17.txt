@@ -1,0 +1,27 @@
+
+The rewriting rule is not applicable to LINE #41
+The rewriting rule is not applicable to LINE #47
+The rewriting rule is not applicable to LINE #52
+
+CHANGE LINE #43 FROM:
+```
+const timezone = getTimezone(tzName) || {};
+```
+TO:
+```
+const timezone = getTimezone(tzName);
+```
+
+CHANGE LINE #54 FROM:
+```
+const country = getCountry(countryId, options) || {};
+```
+TO:
+```
+const country = getCountry(countryId, options);
+```
+
+The rewriting rule is not applicable to LINE #55
+The rewriting rule is not applicable to LINE #59
+The rewriting rule is not applicable to LINE #60
+

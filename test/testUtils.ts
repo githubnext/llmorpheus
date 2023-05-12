@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { Prompt } from '../src/prompt';
 
 export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
@@ -8,15 +9,26 @@ export const rulesFileName = "./test/input/rules.json";
 export const mockModelDir =  "./test/input/mockModel";
 export const outputDir = "./test/temp_output";
 
+export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolean {
+  for (const p of prompts){
+    if (p.getText() === prompt.getText()){
+      return true;
+    }
+  }
+  return false;
+}
 
-export function findExpectedPrompts(promptDir: string) {
-  const expectedPrompts = new Set<string>();
+export function findExpectedPrompts(promptDir: string) : Set<Prompt> {
+  const expectedPrompts = new Set<Prompt>();
   const expectedPromptFiles = fs.readdirSync(promptDir);
   for (const expectedPromptFile of expectedPromptFiles) {
 
-    // if the file matches 'prompt_*.txt' then add it to the set of expected prompts
+    // if the file matches 'prompt_*.json' then add it to the set of expected prompts
     if (expectedPromptFile.indexOf("completion") === -1) {
-      expectedPrompts.add(fs.readFileSync("./test/input/prompts/" + expectedPromptFile, "utf8"));
+      const jsonObj = JSON.parse(fs.readFileSync("./test/input/prompts/" + expectedPromptFile, "utf8"));
+      // console.log(`jsonObj: ${jsonObj}`);
+      const prompt = Prompt.fromJSON(jsonObj);
+      expectedPrompts.add(prompt);
     }
 
   }

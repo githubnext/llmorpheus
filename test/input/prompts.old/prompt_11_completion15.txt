@@ -1,0 +1,27 @@
+
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+The rewriting rule is not applicable to LINE #30
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+The rewriting rule is not applicable to LINE #33
+CHANGE LINE #34 FROM:
+```
+return timezones[name] ? { ...timezones[name] } : null;
+```
+TO:
+```
+return !timezones[name] ? { ...timezones[name] } : null;
+```
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+The rewriting rule is not applicable to LINE #37
+The rewriting rule is not applicable to LINE #38
+The rewriting rule is not applicable to LINE #39

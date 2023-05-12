@@ -78,8 +78,8 @@ class MutantGenerator {
         const prompts = this.createUsefulPrompts(fileName, origCode, rules);
         for (let promptNr = 0; promptNr < prompts.length; promptNr++) {
             const prompt = prompts[promptNr];
-            const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
-            fs_1.default.writeFileSync(promptFileName, prompt.getText()); // write prompt to file
+            const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.json`;
+            fs_1.default.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
             this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
             try {
                 const completions = [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt, completionText));
