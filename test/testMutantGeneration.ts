@@ -4,6 +4,8 @@ import { IRuleFilter, Rule } from "../src/rule";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
+import { PromptGenerator } from "../src/prompt";
+import { expectedPromptsDir, findExpectedPrompts } from "./testUtils";
  
 const promptTemplateFileName = "./test/input/promptTemplate.hb";
 const rulesFileName = "./test/input/rules.json";
@@ -27,6 +29,19 @@ describe("test mutant generation", () => {
     expect(sourceFiles).to.include('src/build-timezone.js');
     expect(sourceFiles).to.include('src/index.js');
   });
+
+  // it("should produce the expected completions for each prompt", async () => {
+  //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
+  //   const model = new MockModel('text-davinci-003', mockModelDir);
+  //   const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+  //   const promptGenerator = new PromptGenerator(promptTemplateFileName);
+  //   const expectedPrompts = findExpectedPrompts(expectedPromptsDir);
+  //   for (const prompt of expectedPrompts){
+  //     const completions = await generator.getCompletions(prompt);
+  //     fs.writeFileSync(`./test/temp_output/completions/completion_${prompt}.txt`, completions.join("\n"));
+  //   }
+  
+  // });
   
   // it("should be able to generate mutants using all rules", async () => {
   //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;

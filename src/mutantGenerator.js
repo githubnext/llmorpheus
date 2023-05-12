@@ -93,6 +93,9 @@ class MutantGenerator {
         }
         return mutants;
     }
+    async getCompletionsForPrompt(prompt) {
+        return [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt, completionText));
+    }
     /**
      * Generate prompts for the given file and rules. Prompts are only generated for
      * chunks that contain at least one of the LHS terminals of the rule.

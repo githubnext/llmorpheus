@@ -4,23 +4,13 @@ import { IRuleFilter, Rule } from "../src/rule";
 import { PromptGenerator } from "../src/prompt";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
+import { expectedPromptsDir, findExpectedPrompts, mockModelDir, outputDir, promptTemplateFileName, rulesFileName, sourceFileName, sourceProject } from "./testUtils";
  
-
-const sourceFileName = "./test/input/countriesandtimezones_index.js";
-const sourceProject = "/Users/franktip/sabbatical/projects/countries-and-timezones"; 
-const promptTemplateFileName = "./test/input/promptTemplate.hb";
-const rulesFileName = "./test/input/rules.json";
-const mockModelDir =  "./test/input/mockModel";
-const outputDir = "./test/temp_output";
-const expectedPromptsDir = "./test/input/prompts"
-
 let sourceFile = "";
-let promptTemplate = "";
 let rules : Rule[] = [];
 
 before(() => {
   sourceFile = fs.readFileSync(sourceFileName, "utf8");
-  promptTemplate = fs.readFileSync(promptTemplateFileName, "utf8");
   rules = JSON.parse(fs.readFileSync(rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
 });
 
@@ -77,18 +67,3 @@ describe("test prompt crafting", () => {
     expect(diff, `expected ${diff.join(',')} to be empty`).to.be.empty;
   });
 });
-
-function findExpectedPrompts(promptDir: string) {
-  const expectedPrompts = new Set<string>();
-  const expectedPromptFiles = fs.readdirSync(promptDir);
-  for (const expectedPromptFile of expectedPromptFiles) {
-
-    // if the file matches 'prompt_*.txt' then add it to the set of expected prompts
-    if (expectedPromptFile.indexOf("completion") === -1) {
-      expectedPrompts.add(fs.readFileSync("./test/input/prompts/" + expectedPromptFile, "utf8"));
-    }
-
-  }
-  return expectedPrompts;
-}
-

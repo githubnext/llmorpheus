@@ -8,6 +8,9 @@ export class Prompt {
   constructor(private fileName: string, private chunkNr: number, private rule: Rule, private text: string) {
     this.id = Prompt.cnt++;
   }
+  public static fromJSON(json: any) : Prompt {
+    return new Prompt(json.fileName, json.chunkNr, Rule.fromJSON(json.rule), json.text);
+  }
 
   public getId() : number {
     return this.id;

@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromptGenerator = exports.Completion = exports.Prompt = void 0;
 const fs_1 = __importDefault(require("fs"));
 const handlebars = __importStar(require("handlebars"));
+const rule_1 = require("./rule");
 class Prompt {
     constructor(fileName, chunkNr, rule, text) {
         this.fileName = fileName;
@@ -36,6 +37,9 @@ class Prompt {
         this.rule = rule;
         this.text = text;
         this.id = Prompt.cnt++;
+    }
+    static fromJSON(json) {
+        return new Prompt(json.fileName, json.chunkNr, rule_1.Rule.fromJSON(json.rule), json.text);
     }
     getId() {
         return this.id;
