@@ -5,6 +5,7 @@ import { Rule } from "./rule";
  * Represents a mutant
  */
 export class Mutant {
+
   private comment: string;
   constructor(private rule: Rule, 
               private originalCode: string, 
@@ -14,6 +15,33 @@ export class Mutant {
               private promptId: number,
               private completionId: number) {
      this.comment = "";
+  }
+
+  public static fromJSON(json: any) : Mutant {
+    return new Mutant(
+      Rule.fromJSON(json.rule),
+      json.originalCode,
+      json.rewrittenCode,
+      json.fileName,
+      json.lineApplied,
+      json.promptId,
+      json.completionId
+    );
+  }
+
+
+  public toString(){
+    return "<" + "rule: " + this.rule.toString() + ", " +
+      "originalCode: " + this.originalCode + ", " +
+      "rewrittenCode: " + this.rewrittenCode + ", " +
+      "fileName: " + this.fileName + ", " +
+      "lineApplied: " + this.lineApplied + ", " +
+      "promptId: " + this.promptId + ", " +
+      "completionId: " + this.completionId + ">";
+  }
+
+  getCompletionId() {
+    return this.completionId;
   }
 
   /**

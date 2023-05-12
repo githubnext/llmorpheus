@@ -30,7 +30,10 @@ exports.PromptGenerator = exports.Completion = exports.Prompt = void 0;
 const fs_1 = __importDefault(require("fs"));
 const handlebars = __importStar(require("handlebars"));
 class Prompt {
-    constructor(text) {
+    constructor(fileName, chunkNr, rule, text) {
+        this.fileName = fileName;
+        this.chunkNr = chunkNr;
+        this.rule = rule;
         this.text = text;
         this.id = Prompt.cnt++;
     }
@@ -39,6 +42,15 @@ class Prompt {
     }
     getText() {
         return this.text;
+    }
+    getFileName() {
+        return this.fileName;
+    }
+    getChunkNr() {
+        return this.chunkNr;
+    }
+    getRule() {
+        return this.rule;
     }
 }
 exports.Prompt = Prompt;
@@ -73,9 +85,10 @@ class PromptGenerator {
      * @param rule The rule.
      * @returns The prompt.
      */
-    createPrompt(origCode, rule) {
+    createPrompt(fileName, chunkNr, origCode, rule) {
         const compiledTemplate = handlebars.compile(this.template);
-        return new Prompt(compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() }));
+        const text = compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
+        return new Prompt(fileName, chunkNr, rule, text);
     }
 }
 exports.PromptGenerator = PromptGenerator;

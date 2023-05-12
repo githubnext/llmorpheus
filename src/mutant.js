@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Mutant = void 0;
+const rule_1 = require("./rule");
 /**
  * Represents a mutant
  */
@@ -14,6 +15,21 @@ class Mutant {
         this.promptId = promptId;
         this.completionId = completionId;
         this.comment = "";
+    }
+    static fromJSON(json) {
+        return new Mutant(rule_1.Rule.fromJSON(json.rule), json.originalCode, json.rewrittenCode, json.fileName, json.lineApplied, json.promptId, json.completionId);
+    }
+    toString() {
+        return "<" + "rule: " + this.rule.toString() + ", " +
+            "originalCode: " + this.originalCode + ", " +
+            "rewrittenCode: " + this.rewrittenCode + ", " +
+            "fileName: " + this.fileName + ", " +
+            "lineApplied: " + this.lineApplied + ", " +
+            "promptId: " + this.promptId + ", " +
+            "completionId: " + this.completionId + ">";
+    }
+    getCompletionId() {
+        return this.completionId;
     }
     /**
      * Returns true if the mutant is trivial, i.e., the original code and the rewritten code are identical

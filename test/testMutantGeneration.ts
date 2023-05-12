@@ -3,6 +3,7 @@ import fs from "fs";
 import { IRuleFilter, Rule } from "../src/rule";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
+import { Mutant } from "../src/mutant";
  
 const promptTemplateFileName = "./test/input/promptTemplate.hb";
 const rulesFileName = "./test/input/rules.json";
@@ -27,8 +28,7 @@ describe("test mutant generation", () => {
     expect(sourceFiles).to.include('src/index.js');
   });
   
-
-  // it("should be able to generate mutants using rule 2", async () => {
+  // it("should be able to generate mutants using all rules", async () => {
   //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
     
   //   // remove outputDir if it exists
@@ -39,9 +39,38 @@ describe("test mutant generation", () => {
   //   const model = new MockModel('text-davinci-003', mockModelDir);
   //   const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
   //   await generator.generateMutants(sourceProject);
-  //   const actualMutants = JSON.stringify(fs.readFileSync(outputDir + '/mutants.json', 'utf8'));
-  //   const expectedMutants = JSON.stringify(fs.readFileSync('./test/output/expectedMutants.json', 'utf8'));
-  //   const diff = actualMutants.split("\n").filter((line, index) => line !== expectedMutants.split("\n")[index]);
-  //   expect(diff, `expected ${diff.join(',')} to be empty`).to.be.empty;
+    
+    
+
+
+  //   const actualMutants = [];
+  //   // const expectedMutants = JSON.parse(fs.readFileSync('./test/input/mutants.json', 'utf8')).split("\n");
+  //   for (const jsonObj of JSON.parse(fs.readFileSync(outputDir + '/mutants.json', 'utf8'))) {
+  //     actualMutants.push(Mutant.fromJSON(jsonObj));
+  //   }
+
+  //   const expectedMutants = [];
+  //   for (const jsonObj of JSON.parse(fs.readFileSync('./test/input/mutants.json', 'utf8'))) {
+  //     expectedMutants.push(Mutant.fromJSON(jsonObj));
+  //   }
+
+  //   const compare = (n1: number, n2: number) => {
+  //     if (n1 < n2) {
+  //       return -1;
+  //     } else if (n1 > n2) {
+  //       return 1;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+
+  //   // sort according to completionId using compare
+  //   actualMutants.sort((m1, m2) => compare(m1.getCompletionId(), m2.getCompletionId()));
+  //   expectedMutants.sort((m1, m2) => compare(m1.getCompletionId(), m2.getCompletionId()));
+  //   expect(actualMutants.length).to.equal(expectedMutants.length);
+  //   for (let i = 0; i < actualMutants.length; i++) {
+  //      expect(actualMutants[i].getCompletionId()).to.equal(expectedMutants[i].getCompletionId());
+  //   }
+
   // });
 });

@@ -5,7 +5,7 @@ import { Rule } from "./rule";
 export class Prompt {
   private id: number;
   private static cnt = 0;
-  constructor(private text: string) {
+  constructor(private fileName: string, private chunkNr: number, private rule: Rule, private text: string) {
     this.id = Prompt.cnt++;
   }
 
@@ -14,6 +14,15 @@ export class Prompt {
   }
   public getText() : string {
     return this.text;
+  }
+  public getFileName() : string {
+    return this.fileName;
+  }
+  public getChunkNr() : number {
+    return this.chunkNr;
+  }
+  public getRule() : Rule {
+    return this.rule;
   }
 }
 
@@ -48,10 +57,9 @@ export class PromptGenerator {
    * @param rule The rule.
    * @returns The prompt.
    */
-  public createPrompt(origCode: string, rule: Rule) : Prompt {  
+  public createPrompt(fileName: string, chunkNr: number, origCode: string, rule: Rule) : Prompt {  
     const compiledTemplate = handlebars.compile(this.template);
-    return new Prompt(
-      compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() })
-    );
+    const text = compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
+    return new Prompt(fileName, chunkNr, rule, text);
   }
 }

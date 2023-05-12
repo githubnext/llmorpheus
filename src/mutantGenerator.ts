@@ -69,6 +69,7 @@ export class MutantGenerator {
     }
     
     // write mutant info to JSON file
+    console.log(`writing ${mutants.length} mutants to ${this.outputDir}/mutants.json`);
     fs.writeFileSync(this.outputDir + '/mutants.json', JSON.stringify(mutants, null, 2));
   }
 
@@ -78,38 +79,51 @@ export class MutantGenerator {
   private async generateMutantsForFile(fileName: string) : Promise<Array<Mutant>> {
     const mutants = new Array<Mutant>();
     this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n`);
-    const origCode = this.addLineNumbers(fs.readFileSync(fileName, "utf8"));
-    let rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
-    // sort rules by id
-    rules.sort((a,b) => a.getRuleId().localeCompare(b.getRuleId()));
-
+    const origCode = fs.readFileSync(fileName, "utf8");
+    const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
     
-    const chunks = this.createChunks(origCode);
-    for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
-      const chunk = chunks[chunkNr];
-      // for (const rule of rules){  
-      for (let ruleNr=0; ruleNr < rules.length; ruleNr++ ){
-        const rule = rules[ruleNr];
-        this.printAndLog(`  Applying rule \"${rule.getRuleId()}\" ${rule.getRule()} (${rule.getDescription()}) to ${fileName}\n`);
-        if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) of ${fileName} because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
-        } else {
-          const prompt = this.promptGenerator.createPrompt(chunk, rule);  
-          const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
-          fs.writeFileSync(promptFileName, prompt.getText()); // write prompt to file
-          this.printAndLog(`    created prompt ${prompt.getId()} for chunk ${chunkNr} of ${fileName}; written to ${promptFileName}\n`);
-          try {
-            const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
-            const candidateMutants = this.extractMutantsFromCompletions(fileName, chunkNr, rule, prompt, completions);
-            const postProcessedMutants = this.postProcessMutants(fileName, chunkNr, rule, candidateMutants,origCode);
-            mutants.push(...postProcessedMutants);
-          } catch (err) {
-            this.printAndLog(`    Error: ${err}`);
-          }
-        }
+    const prompts = this.createUsefulPrompts(fileName, origCode, rules);
+    for (let promptNr=0; promptNr < prompts.length; promptNr++ ){
+      const prompt = prompts[promptNr];
+      const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
+      fs.writeFileSync(promptFileName, prompt.getText()); // write prompt to file
+      this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
+      try {
+        const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
+        const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
+        const postProcessedMutants = this.postProcessMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
+        mutants.push(...postProcessedMutants);
+      } catch (e) {
+        this.printAndLog(`    error querying model for prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
       }
     }
     return mutants;
+  }
+
+  /**
+   * Generate prompts for the given file and rules. Prompts are only generated for
+   * chunks that contain at least one of the LHS terminals of the rule.
+   * @param fileName the name of the file to generate prompts for
+   * @param sourceCode the source code of the file
+   * @param rules the rules to generate prompts for
+   * @returns the generated prompts
+   */
+  public createUsefulPrompts(fileName: string, sourceCode: string, rules: Rule[]) : Prompt[] {
+    const chunks = this.createChunks(sourceCode);
+    const usefulPrompts = new Array<Prompt>();
+    for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
+      const chunk = chunks[chunkNr];
+      for (let ruleNr=0; ruleNr < rules.length; ruleNr++ ){
+        const rule = rules[ruleNr];
+        if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
+          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
+        } else {
+          const prompt = this.promptGenerator.createPrompt(fileName, chunkNr, chunk, rule);  
+          usefulPrompts.push(prompt);
+        }
+      }
+    }
+    return usefulPrompts;
   }
 
   /** 
@@ -161,13 +175,13 @@ export class MutantGenerator {
   }
 
   /**
-   * Break up the source code into chunks of at most CHUNK_SIZE lines.
+   * Add line numbers to source code and break it up into chunks of at most CHUNK_SIZE lines.
    * @param origCode: the source code
    * @returns an array of strings, each of which is a chunk of the source code
    */
   public createChunks(origCode: string) : string[] {
     const chunks : string[] = [];
-    const lines = origCode.split("\n");
+    const lines = this.addLineNumbers(origCode).split("\n");
     for (let i = 0; i < lines.length; i += MutantGenerator.CHUNK_SIZE) {
       chunks.push(lines.slice(i, i + MutantGenerator.CHUNK_SIZE).join("\n")); // do we need MAX here?
     }

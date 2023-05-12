@@ -7,6 +7,14 @@ class Rule {
         this.rule = rule;
         this.description = description;
     }
+    static fromJSON(json) {
+        return new Rule(json.ruleId, json.rule, json.description);
+    }
+    toString() {
+        return "<" + "ruleId: " + this.ruleId + ", " +
+            "rule: " + this.rule + ", " +
+            "description: " + this.description + ">";
+    }
     getRuleId() {
         return this.ruleId;
     }
