@@ -89,7 +89,7 @@ export class MutantGenerator {
       fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
       this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
       try {
-        const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
+        const completions = [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
         const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
         const postProcessedMutants = this.postProcessMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
         mutants.push(...postProcessedMutants);
@@ -101,7 +101,7 @@ export class MutantGenerator {
   }
 
   public async getCompletionsForPrompt(prompt: Prompt) : Promise<Completion[]> {
-    return [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt, completionText));
+    return [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
   }
 
   /**
@@ -137,8 +137,8 @@ export class MutantGenerator {
     let mutants = new Array<Mutant>();
     this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     completions.forEach((completion) => { // write completions to files
-      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`;
-      fs.writeFileSync(completionFileName, completion.getText());
+      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.json`;
+      fs.writeFileSync(completionFileName, JSON.stringify(completion));
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
     }); 
     for (const completion of completions) {

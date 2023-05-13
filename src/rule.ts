@@ -1,12 +1,10 @@
 export class Rule {
   constructor(private ruleId: string, private rule: string, private description: string) { }
 
-  public static fromJSON(json: any) : Rule {
-    return new Rule(json.ruleId, json.rule, json.description);
-  }
+  
 
   public toString() : string {
-    return "<" + "ruleId: " + this.ruleId + ", " +
+    return "rule<" + "ruleId: " + this.ruleId + ", " +
       "rule: " + this.rule + ", " +
       "description: " + this.description + ">";
   }

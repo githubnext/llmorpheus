@@ -4,8 +4,8 @@ import { IRuleFilter, Rule } from "../src/rule";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
-import { PromptGenerator } from "../src/prompt";
-import { expectedPromptsDir, findExpectedPrompts } from "./testUtils";
+import { Completion, Prompt, PromptGenerator } from "../src/prompt";
+import { expectedPromptsDir, findExpectedCompletions, findExpectedPrompts, setContainsCompletion } from "./testUtils";
  
 const promptTemplateFileName = "./test/input/promptTemplate.hb";
 const rulesFileName = "./test/input/rules.json";
@@ -30,19 +30,22 @@ describe("test mutant generation", () => {
     expect(sourceFiles).to.include('src/index.js');
   });
 
-  // it("should produce the expected completions for each prompt", async () => {
-  //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
-  //   const model = new MockModel('text-davinci-003', mockModelDir);
-  //   const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
-  //   const promptGenerator = new PromptGenerator(promptTemplateFileName);
-  //   const expectedPrompts = findExpectedPrompts(expectedPromptsDir);
-  //   for (const prompt of expectedPrompts){
-  //     const completions = await generator.getCompletions(prompt);
-  //     fs.writeFileSync(`./test/temp_output/completions/completion_${prompt}.txt`, completions.join("\n"));
-  //   }
-  
-  // });
-  
+  it("should generate the expected completions for each prompt in the sample project", async () => {
+    const ruleFilter : IRuleFilter = (value: string) : boolean => true;
+    const model = new MockModel('text-davinci-003', mockModelDir);
+    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+
+    for (let promptNr = 0; promptNr <= 16; promptNr++){
+      const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
+      const actualCompletions = await generator.getCompletionsForPrompt(prompt);
+      const expectedCompletions = findExpectedCompletions(promptNr);
+      expect(actualCompletions.length).to.equal(expectedCompletions.size);
+      const actualCompletionsText = actualCompletions.map((completion) => completion.getText());
+      const expectedCompletionsText = [...expectedCompletions].map((completion) => completion.getText());
+      expect(actualCompletionsText).to.have.members(expectedCompletionsText);
+    }
+  });
+    
   // it("should be able to generate mutants using all rules", async () => {
   //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
     

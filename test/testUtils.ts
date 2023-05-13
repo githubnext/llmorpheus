@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { Prompt } from '../src/prompt';
+import { Completion, Prompt } from '../src/prompt';
 
 export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
@@ -12,6 +12,15 @@ export const outputDir = "./test/temp_output";
 export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolean {
   for (const p of prompts){
     if (p.getText() === prompt.getText()){
+      return true;
+    }
+  }
+  return false;
+}
+
+export function setContainsCompletion(completions: Set<Completion>, completion: Completion) : boolean {
+  for (const c of completions){
+    if (c.getText() === completion.getText()){
       return true;
     }
   }
@@ -33,4 +42,17 @@ export function findExpectedPrompts(promptDir: string) : Set<Prompt> {
 
   }
   return expectedPrompts;
+}
+
+export function findExpectedCompletions(promptId: number) : Set<Completion> {
+  const expectedCompletions = new Set<Completion>();
+  const expectedCompletionFiles = fs.readdirSync(expectedPromptsDir);
+  for (const expectedCompletionFile of expectedCompletionFiles) {
+    if (expectedCompletionFile.indexOf(`prompt_${promptId}_completion`) !== -1) {
+      const jsonObj = JSON.parse(fs.readFileSync("./test/input/prompts/" + expectedCompletionFile, "utf8"));
+      const completion = Completion.fromJSON(jsonObj);
+      expectedCompletions.add(completion);
+    }
+  }
+  return expectedCompletions;
 }

@@ -82,7 +82,7 @@ class MutantGenerator {
             fs_1.default.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
             this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
             try {
-                const completions = [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt, completionText));
+                const completions = [...await this.model.query(prompt.getText())].map((completionText) => prompt_1.Completion.create(prompt.getId(), completionText));
                 const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
                 const postProcessedMutants = this.postProcessMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
                 mutants.push(...postProcessedMutants);
@@ -94,7 +94,7 @@ class MutantGenerator {
         return mutants;
     }
     async getCompletionsForPrompt(prompt) {
-        return [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt, completionText));
+        return [...await this.model.query(prompt.getText())].map((completionText) => prompt_1.Completion.create(prompt.getId(), completionText));
     }
     /**
      * Generate prompts for the given file and rules. Prompts are only generated for
@@ -129,8 +129,8 @@ class MutantGenerator {
         let mutants = new Array();
         this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
         completions.forEach((completion) => {
-            const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`;
-            fs_1.default.writeFileSync(completionFileName, completion.getText());
+            const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.json`;
+            fs_1.default.writeFileSync(completionFileName, JSON.stringify(completion));
             this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
         });
         for (const completion of completions) {

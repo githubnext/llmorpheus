@@ -39,7 +39,11 @@ class Prompt {
         this.id = Prompt.cnt++;
     }
     static fromJSON(json) {
-        return new Prompt(json.fileName, json.chunkNr, rule_1.Rule.fromJSON(json.rule), json.text);
+        const r = new rule_1.Rule(json.rule.ruleId, json.rule.rule, json.rule.description);
+        return new Prompt(json.fileName, json.chunkNr, r, json.text);
+    }
+    toString() {
+        return `prompt<id: ${this.id}, fileName: ${this.fileName}, chunkNr: ${this.chunkNr}, rule: ${this.rule}, text: ${this.text}>`;
     }
     getId() {
         return this.id;
@@ -60,10 +64,22 @@ class Prompt {
 exports.Prompt = Prompt;
 Prompt.cnt = 0;
 class Completion {
-    constructor(prompt, text) {
-        this.prompt = prompt;
+    constructor(promptId, id, text) {
+        this.promptId = promptId;
+        this.id = id;
         this.text = text;
-        this.id = Completion.cnt++;
+    }
+    static fromJSON(json) {
+        return new Completion(json.promptId, json.id, json.text);
+    }
+    static create(promptId, text) {
+        return new Completion(promptId, Completion.cnt++, text);
+    }
+    toString() {
+        return `completion<id: ${this.id}, promptId: ${this.promptId}, text: ${this.text}>`;
+    }
+    getPromptId() {
+        return this.promptId;
     }
     getId() {
         return this.id;

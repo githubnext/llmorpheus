@@ -19,7 +19,7 @@ export class Mutant {
 
   public static fromJSON(json: any) : Mutant {
     return new Mutant(
-      Rule.fromJSON(json.rule),
+      new Rule(json.rule.ruleId, json.rule.rule, json.rule.description),
       json.originalCode,
       json.rewrittenCode,
       json.fileName,

@@ -17,7 +17,7 @@ class Mutant {
         this.comment = "";
     }
     static fromJSON(json) {
-        return new Mutant(rule_1.Rule.fromJSON(json.rule), json.originalCode, json.rewrittenCode, json.fileName, json.lineApplied, json.promptId, json.completionId);
+        return new Mutant(new rule_1.Rule(json.rule.ruleId, json.rule.rule, json.rule.description), json.originalCode, json.rewrittenCode, json.fileName, json.lineApplied, json.promptId, json.completionId);
     }
     toString() {
         return "<" + "rule: " + this.rule.toString() + ", " +
