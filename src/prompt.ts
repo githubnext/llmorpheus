@@ -32,14 +32,10 @@ export class Prompt {
 }
 
 export class Completion {
-  private static cnt = 0;
-  private constructor(private promptId: number, private id: number, private text: string){}
+  public constructor(private promptId: number, private id: number, private text: string){}
   
   public static fromJSON(json: any) {
     return new Completion(json.promptId, json.id, json.text);
-  }
-  public static create(promptId: number, text: string) {
-    return new Completion(promptId, Completion.cnt++, text);
   }
 
   public toString() : string {

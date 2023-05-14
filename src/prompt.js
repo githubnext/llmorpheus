@@ -71,9 +71,6 @@ class Completion {
     static fromJSON(json) {
         return new Completion(json.promptId, json.id, json.text);
     }
-    static create(promptId, text) {
-        return new Completion(promptId, Completion.cnt++, text);
-    }
     toString() {
         return `completion<id: ${this.id}, promptId: ${this.promptId}, text: ${this.text}>`;
     }
@@ -88,7 +85,6 @@ class Completion {
     }
 }
 exports.Completion = Completion;
-Completion.cnt = 0;
 /**
  * Component for creating a prompt for a given rule and original code.
  *  @param promptTemplateFileName The name of the file containing the prompt template.

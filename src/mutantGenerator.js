@@ -19,6 +19,7 @@ class MutantGenerator {
         this.ruleFilter = ruleFilter;
         this.outputDir = outputDir;
         this.rules = [];
+        this.completionCnt = 0;
         this.promptCnt = 0;
         this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8")).map((rule) => new rule_1.Rule(rule.id, rule.rule, rule.description));
         this.promptGenerator = new prompt_1.PromptGenerator(promptTemplateFileName);
@@ -83,7 +84,7 @@ class MutantGenerator {
             fs_1.default.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
             this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
             try {
-                const completions = [...await this.model.query(prompt.getText())].map((completionText) => prompt_1.Completion.create(prompt.getId(), completionText));
+                const completions = [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt.getId(), this.completionCnt++, completionText));
                 const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
                 const postProcessedMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
                 mutants.push(...postProcessedMutants);
@@ -95,7 +96,7 @@ class MutantGenerator {
         return mutants;
     }
     async getCompletionsForPrompt(prompt) {
-        return [...await this.model.query(prompt.getText())].map((completionText) => prompt_1.Completion.create(prompt.getId(), completionText));
+        return [...await this.model.query(prompt.getText())].map((completionText) => new prompt_1.Completion(prompt.getId(), this.completionCnt++, completionText));
     }
     /**
      * Generate prompts for the given file and rules. Prompts are only generated for

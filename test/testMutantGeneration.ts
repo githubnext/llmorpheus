@@ -46,7 +46,7 @@ describe("test mutant generation", () => {
     }
   });
 
-  it("should extract mutants from completions for prompt", async () => {
+  it("shouldbe able to extract mutants from completions for prompt", async () => {
     let promptNr = 13;
     const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
     const ruleFilter : IRuleFilter = (value: string) : boolean => true;
@@ -66,7 +66,7 @@ describe("test mutant generation", () => {
     expect(actualMutants).to.equal(expectedMutants);
   });
 
-  it("filter useless mutants", async () => {
+  it("should be able to filter out useless mutants", async () => {
     const ruleFilter : IRuleFilter = (value: string) : boolean => true;
     const model = new MockModel('text-davinci-003', mockModelDir);
     const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
@@ -79,52 +79,16 @@ describe("test mutant generation", () => {
     // fs.writeFileSync(outputDir + '/filteredMutantsForPrompt13.json', JSON.stringify(filteredMutants, null, 2));
     expect(JSON.stringify(filteredMutants)).to.equal(JSON.stringify(expectedMutants));
    });
-
-  // TODO: write test for creating mutants.json file
     
-  // it("should be able to generate mutants using all rules", async () => {
-  //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
-    
-  //   // remove outputDir if it exists
-  //   if (fs.existsSync(outputDir)) {
-  //     fs.rmdirSync(outputDir, { recursive: true });
-  //   }
+   it("should be able to generate the expected mutants for a test project", async () => {
+    const ruleFilter : IRuleFilter = (value: string) : boolean => true;
+    const model = new MockModel('text-davinci-003', mockModelDir);
+    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+    await generator.generateMutants(sourceProject);
+    const actualMutants = fs.readFileSync(outputDir + '/mutants.json', 'utf8');
+    const expectedMutants = fs.readFileSync('./test/input/mutants.json', 'utf8');
+    expect(actualMutants.length).to.equal(expectedMutants.length);
+    expect(actualMutants).to.equal(expectedMutants);
+  });
 
-  //   const model = new MockModel('text-davinci-003', mockModelDir);
-  //   const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
-  //   await generator.generateMutants(sourceProject);
-    
-    
-
-
-  //   const actualMutants = [];
-  //   // const expectedMutants = JSON.parse(fs.readFileSync('./test/input/mutants.json', 'utf8')).split("\n");
-  //   for (const jsonObj of JSON.parse(fs.readFileSync(outputDir + '/mutants.json', 'utf8'))) {
-  //     actualMutants.push(Mutant.fromJSON(jsonObj));
-  //   }
-
-  //   const expectedMutants = [];
-  //   for (const jsonObj of JSON.parse(fs.readFileSync('./test/input/mutants.json', 'utf8'))) {
-  //     expectedMutants.push(Mutant.fromJSON(jsonObj));
-  //   }
-
-  //   const compare = (n1: number, n2: number) => {
-  //     if (n1 < n2) {
-  //       return -1;
-  //     } else if (n1 > n2) {
-  //       return 1;
-  //     } else {
-  //       return 0;
-  //     }
-  //   }
-
-  //   // sort according to completionId using compare
-  //   actualMutants.sort((m1, m2) => compare(m1.getCompletionId(), m2.getCompletionId()));
-  //   expectedMutants.sort((m1, m2) => compare(m1.getCompletionId(), m2.getCompletionId()));
-  //   expect(actualMutants.length).to.equal(expectedMutants.length);
-  //   for (let i = 0; i < actualMutants.length; i++) {
-  //      expect(actualMutants[i].getCompletionId()).to.equal(expectedMutants[i].getCompletionId());
-  //   }
-
-  // });
 });

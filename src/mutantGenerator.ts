@@ -73,6 +73,8 @@ export class MutantGenerator {
     fs.writeFileSync(this.outputDir + '/mutants.json', JSON.stringify(mutants, null, 2));
   }
 
+  private completionCnt = 0;
+
   /**
    * Generate mutants for a given file
    */
@@ -89,7 +91,7 @@ export class MutantGenerator {
       fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
       this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
       try {
-        const completions = [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
+        const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
         const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
         const postProcessedMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
         mutants.push(...postProcessedMutants);
@@ -101,7 +103,7 @@ export class MutantGenerator {
   }
 
   public async getCompletionsForPrompt(prompt: Prompt) : Promise<Completion[]> {
-    return [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
+    return [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
   }
 
   private promptCnt = 0;
