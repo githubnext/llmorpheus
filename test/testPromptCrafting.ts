@@ -19,7 +19,7 @@ describe("test prompt crafting", () => {
     const promptGenerator = new PromptGenerator(promptTemplateFileName);
     const rule = rules[0];
     sourceFile = fs.readFileSync(sourceFileName, "utf8");
-    const actualPrompt = promptGenerator.createPrompt(sourceFileName, 0, sourceFile, rule).getText();
+    const actualPrompt = promptGenerator.createPrompt(0, sourceFileName, 0, sourceFile, rule).getText();
     const expectedPrompt = fs.readFileSync("./test/output/expectedPrompt1.txt", "utf8");
     const diff = actualPrompt.split("\n").filter((line, index) => line !== expectedPrompt.split("\n")[index]);
     expect(diff, `expected ${diff.join(',')} to be empty`).to.be.empty;
@@ -29,7 +29,7 @@ describe("test prompt crafting", () => {
     const promptGenerator = new PromptGenerator(promptTemplateFileName);
     const rule = rules[1];
     sourceFile = fs.readFileSync(sourceFileName, "utf8");
-    const actualPrompt = promptGenerator.createPrompt(sourceFileName, 0, sourceFile, rule).getText();
+    const actualPrompt = promptGenerator.createPrompt(0, sourceFileName, 0, sourceFile, rule).getText();
     const expectedPrompt = fs.readFileSync("./test/output/expectedPrompt2.txt", "utf8");
     const diff = actualPrompt.split("\n").filter((line, index) => line !== expectedPrompt.split("\n")[index]);
     expect(diff, `expected ${diff.join(',')} to be empty`).to.be.empty;
@@ -52,9 +52,9 @@ describe("test prompt crafting", () => {
         for (let ruleNr=0; ruleNr < ruleCnt; ruleNr++){
           const rule = rules[ruleNr];
           if (generator.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-            const prompt = promptGenerator.createPrompt(sourceFileName, chunkNr, chunk, rule);
+            const prompt = promptGenerator.createPrompt(promptCnt++, sourceFileName, chunkNr, chunk, rule);
             actualPrompts.add(prompt);
-            fs.writeFileSync(`./test/temp_output/prompts/prompt_${promptCnt++}.json`, JSON.stringify(prompt));
+            fs.writeFileSync(`./test/temp_output/prompts/prompt_${prompt.getId()}.json`, JSON.stringify(prompt));
           }
         }
       }

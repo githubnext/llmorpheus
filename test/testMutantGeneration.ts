@@ -67,7 +67,20 @@ describe("test mutant generation", () => {
     expect(actualMutants).to.equal(expectedMutants);
   });
 
-  // TODO: write test for filtering useless mutants
+  it("filter useless mutants", async () => {
+    const ruleFilter : IRuleFilter = (value: string) : boolean => true;
+    const model = new MockModel('text-davinci-003', mockModelDir);
+    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+    let promptNr = 13;
+    const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
+    const expectedMutants = JSON.parse(fs.readFileSync(`./test/input/filteredMutantsForPrompt13.json`, "utf8"));
+    const mutants = expectedMutants.map((jsonObj: any) => Mutant.fromJSON(jsonObj));
+    const origCode = fs.readFileSync(prompt.getFileName(), "utf8");
+    const filteredMutants = generator.postProcessMutants(prompt.getFileName(), prompt.getChunkNr(), prompt.getRule(), mutants, origCode);
+    // fs.writeFileSync(outputDir + '/filteredMutantsForPrompt13.json', JSON.stringify(filteredMutants, null, 2));
+    expect(JSON.stringify(filteredMutants)).to.equal(JSON.stringify(expectedMutants));
+   });
+
   // TODO: write test for creating mutants.json file
     
   // it("should be able to generate mutants using all rules", async () => {

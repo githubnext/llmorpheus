@@ -19,6 +19,7 @@ class MutantGenerator {
         this.ruleFilter = ruleFilter;
         this.outputDir = outputDir;
         this.rules = [];
+        this.promptCnt = 0;
         this.rules = JSON.parse(fs_1.default.readFileSync(this.rulesFileName, "utf8")).map((rule) => new rule_1.Rule(rule.id, rule.rule, rule.description));
         this.promptGenerator = new prompt_1.PromptGenerator(promptTemplateFileName);
         // remove output files from previous run, if they exist
@@ -115,7 +116,7 @@ class MutantGenerator {
                     this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
                 }
                 else {
-                    const prompt = this.promptGenerator.createPrompt(fileName, chunkNr, chunk, rule);
+                    const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule);
                     usefulPrompts.push(prompt);
                 }
             }

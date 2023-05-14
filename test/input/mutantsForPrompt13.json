@@ -9,7 +9,7 @@
     "rewrittenCode": "return !(main || null);",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 51,
-    "promptId": 17,
+    "promptId": 13,
     "completionId": 18,
     "comment": ""
   },
@@ -23,7 +23,7 @@
     "rewrittenCode": "return !null;",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 51,
-    "promptId": 17,
+    "promptId": 13,
     "completionId": 19,
     "comment": ""
   },
@@ -37,7 +37,7 @@
     "rewrittenCode": "return !values.map(getTimezone);",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 58,
-    "promptId": 17,
+    "promptId": 13,
     "completionId": 19,
     "comment": ""
   },
@@ -51,7 +51,7 @@
     "rewrittenCode": "export function getTimezonesForCountry(countryId, options = {}) {",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 51,
-    "promptId": 17,
+    "promptId": 13,
     "completionId": 20,
     "comment": ""
   },
@@ -65,7 +65,7 @@
     "rewrittenCode": "return !values.map(getTimezone);",
     "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
     "lineApplied": 58,
-    "promptId": 17,
+    "promptId": 13,
     "completionId": 20,
     "comment": ""
   }

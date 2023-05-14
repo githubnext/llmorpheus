@@ -104,6 +104,8 @@ export class MutantGenerator {
     return [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
   }
 
+  private promptCnt = 0;
+
   /**
    * Generate prompts for the given file and rules. Prompts are only generated for
    * chunks that contain at least one of the LHS terminals of the rule.
@@ -122,7 +124,7 @@ export class MutantGenerator {
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
           this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
         } else {
-          const prompt = this.promptGenerator.createPrompt(fileName, chunkNr, chunk, rule);  
+          const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule);  
           usefulPrompts.push(prompt);
         }
       }
@@ -173,7 +175,7 @@ export class MutantGenerator {
   /**
    * Remove invalid mutants and duplicate mutants, and adjust line numbers if needed.
    */
-  private postProcessMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
+  public postProcessMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
     const nrCandidateMutants = mutants.length;
     const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)); 
     const validMutants = adjustedMutants.filter(m => !m.isInvalid());

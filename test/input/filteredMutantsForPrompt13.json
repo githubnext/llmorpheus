@@ -1,0 +1,30 @@
+[
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return main || null;",
+    "rewrittenCode": "return !(main || null);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 50,
+    "promptId": 13,
+    "completionId": 18,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "return values.map(getTimezone);",
+    "rewrittenCode": "return !values.map(getTimezone);",
+    "fileName": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "lineApplied": 57,
+    "promptId": 13,
+    "completionId": 19,
+    "comment": ""
+  }
+]

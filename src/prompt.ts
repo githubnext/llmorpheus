@@ -3,14 +3,11 @@ import * as handlebars from 'handlebars';
 import { Rule } from "./rule";
 
 export class Prompt {
-  private id: number;
-  private static cnt = 0;
-  constructor(private fileName: string, private chunkNr: number, private rule: Rule, private text: string) {
-    this.id = Prompt.cnt++;
-  }
+
+  constructor(private id: number, private fileName: string, private chunkNr: number, private rule: Rule, private text: string){}
   public static fromJSON(json: any) : Prompt {
     const r = new Rule(json.rule.ruleId, json.rule.rule, json.rule.description);
-    return new Prompt(json.fileName, json.chunkNr, r, json.text);
+    return new Prompt(json.id, json.fileName, json.chunkNr, r, json.text);
   }
 
   public toString() : string {
@@ -77,9 +74,9 @@ export class PromptGenerator {
    * @param rule The rule.
    * @returns The prompt.
    */
-  public createPrompt(fileName: string, chunkNr: number, origCode: string, rule: Rule) : Prompt {  
+  public createPrompt(id: number, fileName: string, chunkNr: number, origCode: string, rule: Rule) : Prompt {  
     const compiledTemplate = handlebars.compile(this.template);
     const text = compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
-    return new Prompt(fileName, chunkNr, rule, text);
+    return new Prompt(id, fileName, chunkNr, rule, text);
   }
 }

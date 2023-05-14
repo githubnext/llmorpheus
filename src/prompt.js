@@ -31,16 +31,16 @@ const fs_1 = __importDefault(require("fs"));
 const handlebars = __importStar(require("handlebars"));
 const rule_1 = require("./rule");
 class Prompt {
-    constructor(fileName, chunkNr, rule, text) {
+    constructor(id, fileName, chunkNr, rule, text) {
+        this.id = id;
         this.fileName = fileName;
         this.chunkNr = chunkNr;
         this.rule = rule;
         this.text = text;
-        this.id = Prompt.cnt++;
     }
     static fromJSON(json) {
         const r = new rule_1.Rule(json.rule.ruleId, json.rule.rule, json.rule.description);
-        return new Prompt(json.fileName, json.chunkNr, r, json.text);
+        return new Prompt(json.id, json.fileName, json.chunkNr, r, json.text);
     }
     toString() {
         return `prompt<id: ${this.id}, fileName: ${this.fileName}, chunkNr: ${this.chunkNr}, rule: ${this.rule}, text: ${this.text}>`;
@@ -62,7 +62,6 @@ class Prompt {
     }
 }
 exports.Prompt = Prompt;
-Prompt.cnt = 0;
 class Completion {
     constructor(promptId, id, text) {
         this.promptId = promptId;
@@ -105,10 +104,10 @@ class PromptGenerator {
      * @param rule The rule.
      * @returns The prompt.
      */
-    createPrompt(fileName, chunkNr, origCode, rule) {
+    createPrompt(id, fileName, chunkNr, origCode, rule) {
         const compiledTemplate = handlebars.compile(this.template);
         const text = compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
-        return new Prompt(fileName, chunkNr, rule, text);
+        return new Prompt(id, fileName, chunkNr, rule, text);
     }
 }
 exports.PromptGenerator = PromptGenerator;
