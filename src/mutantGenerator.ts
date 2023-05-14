@@ -91,7 +91,7 @@ export class MutantGenerator {
       try {
         const completions = [...await this.model.query(prompt.getText())].map((completionText) => Completion.create(prompt.getId(), completionText));
         const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
-        const postProcessedMutants = this.postProcessMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
+        const postProcessedMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
         mutants.push(...postProcessedMutants);
       } catch (e) {
         this.printAndLog(`    error querying model for prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
@@ -144,15 +144,6 @@ export class MutantGenerator {
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
     }); 
     for (const completion of completions) {
-      // // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-      // const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-      // let match;
-      // while ((match = regExp.exec(completion.getText())) !== null) {
-      //   const lineNr = parseInt(match[1]);
-      //   const originalCode = match[2];
-      //   const rewrittenCode = match[3];
-      //   mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
-      // }
       mutants.push(...this.extractMutantsFromCompletion(prompt, completion));
     }
     return mutants;
@@ -175,7 +166,7 @@ export class MutantGenerator {
   /**
    * Remove invalid mutants and duplicate mutants, and adjust line numbers if needed.
    */
-  public postProcessMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
+  public filterMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
     const nrCandidateMutants = mutants.length;
     const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)); 
     const validMutants = adjustedMutants.filter(m => !m.isInvalid());

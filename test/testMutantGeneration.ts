@@ -4,9 +4,8 @@ import { IRuleFilter, Rule } from "../src/rule";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
-import { Completion, Prompt, PromptGenerator } from "../src/prompt";
-import { expectedPromptsDir, findExpectedCompletions, findExpectedPrompts, setContainsCompletion } from "./testUtils";
-import { completion } from "yargs";
+import { Prompt } from "../src/prompt";
+import { findExpectedCompletions } from "./testUtils";
  
 const promptTemplateFileName = "./test/input/promptTemplate.hb";
 const rulesFileName = "./test/input/rules.json";
@@ -76,7 +75,7 @@ describe("test mutant generation", () => {
     const expectedMutants = JSON.parse(fs.readFileSync(`./test/input/filteredMutantsForPrompt13.json`, "utf8"));
     const mutants = expectedMutants.map((jsonObj: any) => Mutant.fromJSON(jsonObj));
     const origCode = fs.readFileSync(prompt.getFileName(), "utf8");
-    const filteredMutants = generator.postProcessMutants(prompt.getFileName(), prompt.getChunkNr(), prompt.getRule(), mutants, origCode);
+    const filteredMutants = generator.filterMutants(prompt.getFileName(), prompt.getChunkNr(), prompt.getRule(), mutants, origCode);
     // fs.writeFileSync(outputDir + '/filteredMutantsForPrompt13.json', JSON.stringify(filteredMutants, null, 2));
     expect(JSON.stringify(filteredMutants)).to.equal(JSON.stringify(expectedMutants));
    });
