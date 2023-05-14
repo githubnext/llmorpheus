@@ -134,15 +134,29 @@ class MutantGenerator {
             this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
         });
         for (const completion of completions) {
-            // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-            const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-            let match;
-            while ((match = regExp.exec(completion.getText())) !== null) {
-                const lineNr = parseInt(match[1]);
-                const originalCode = match[2];
-                const rewrittenCode = match[3];
-                mutants.push(new mutant_1.Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
-            }
+            // // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
+            // const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
+            // let match;
+            // while ((match = regExp.exec(completion.getText())) !== null) {
+            //   const lineNr = parseInt(match[1]);
+            //   const originalCode = match[2];
+            //   const rewrittenCode = match[3];
+            //   mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
+            // }
+            mutants.push(...this.extractMutantsFromCompletion(prompt, completion));
+        }
+        return mutants;
+    }
+    extractMutantsFromCompletion(prompt, completion) {
+        const mutants = new Array();
+        // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
+        const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
+        let match;
+        while ((match = regExp.exec(completion.getText())) !== null) {
+            const lineNr = parseInt(match[1]);
+            const originalCode = match[2];
+            const rewrittenCode = match[3];
+            mutants.push(new mutant_1.Mutant(prompt.getRule(), originalCode, rewrittenCode, prompt.getFileName(), lineNr, prompt.getId(), completion.getId()));
         }
         return mutants;
     }

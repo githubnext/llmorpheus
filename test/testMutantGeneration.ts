@@ -6,6 +6,7 @@ import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
 import { Completion, Prompt, PromptGenerator } from "../src/prompt";
 import { expectedPromptsDir, findExpectedCompletions, findExpectedPrompts, setContainsCompletion } from "./testUtils";
+import { completion } from "yargs";
  
 const promptTemplateFileName = "./test/input/promptTemplate.hb";
 const rulesFileName = "./test/input/rules.json";
@@ -45,6 +46,29 @@ describe("test mutant generation", () => {
       expect(actualCompletionsText).to.have.members(expectedCompletionsText);
     }
   });
+
+  it("should extract mutants from completions for prompt", async () => {
+    let promptNr = 13;
+    const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
+    const ruleFilter : IRuleFilter = (value: string) : boolean => true;
+    const model = new MockModel('text-davinci-003', mockModelDir);
+    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+    const expectedCompletions = findExpectedCompletions(promptNr);
+    expect(expectedCompletions.size).to.equal(3);
+    const allMutants = [];
+    for (const completion of expectedCompletions) {
+      const mutants = generator.extractMutantsFromCompletion(prompt, completion);
+      allMutants.push(...mutants);
+    }
+    expect(allMutants.length).to.equal(5);
+    // fs.writeFileSync(outputDir + '/mutantsForPrompt13.json', JSON.stringify(allMutants, null, 2));
+    const actualMutants = JSON.stringify(allMutants, null, 2);
+    const expectedMutants = fs.readFileSync(`./test/input/mutantsForPrompt13.json`, "utf8");
+    expect(actualMutants).to.equal(expectedMutants);
+  });
+
+  // TODO: write test for filtering useless mutants
+  // TODO: write test for creating mutants.json file
     
   // it("should be able to generate mutants using all rules", async () => {
   //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;

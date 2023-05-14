@@ -133,7 +133,7 @@ export class MutantGenerator {
   /** 
    * Extract candidate mutants from the completions by matching a RegExp
    */
-  private extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
+  public extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
     let mutants = new Array<Mutant>();
     this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     completions.forEach((completion) => { // write completions to files
@@ -142,17 +142,32 @@ export class MutantGenerator {
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
     }); 
     for (const completion of completions) {
-      // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-      const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-      let match;
-      while ((match = regExp.exec(completion.getText())) !== null) {
-        const lineNr = parseInt(match[1]);
-        const originalCode = match[2];
-        const rewrittenCode = match[3];
-        mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
-      }
+      // // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
+      // const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
+      // let match;
+      // while ((match = regExp.exec(completion.getText())) !== null) {
+      //   const lineNr = parseInt(match[1]);
+      //   const originalCode = match[2];
+      //   const rewrittenCode = match[3];
+      //   mutants.push(new Mutant(rule, originalCode, rewrittenCode, fileName, lineNr, prompt.getId(), completion.getId()));
+      // }
+      mutants.push(...this.extractMutantsFromCompletion(prompt, completion));
     }
     return mutants;
+  }
+
+  public extractMutantsFromCompletion(prompt: Prompt, completion: Completion): Mutant[] {
+    const mutants = new Array();
+    // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
+    const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
+    let match;
+    while ((match = regExp.exec(completion.getText())) !== null) {
+      const lineNr = parseInt(match[1]);
+      const originalCode = match[2];
+      const rewrittenCode = match[3];
+      mutants.push(new Mutant(prompt.getRule(), originalCode, rewrittenCode, prompt.getFileName(), lineNr, prompt.getId(), completion.getId()));
+    }
+   return mutants;
   }
 
   /**
