@@ -1,18 +1,11 @@
 import { expect } from "chai";
 import fs from "fs";
-import { IRuleFilter, Rule } from "../src/rule";
+import { IRuleFilter } from "../src/rule";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
 import { Prompt } from "../src/prompt";
-import { findExpectedCompletions } from "./testUtils";
- 
-const promptTemplateFileName = "./test/input/promptTemplate.hb";
-const rulesFileName = "./test/input/rules.json";
-const mockModelDir =  "./test/input/mockModel";
-const outputDir = "./test/temp_output";
-
-const sourceProject = "./test/input/testProject/countries-and-timezones";
+import { findExpectedCompletions, mockModelDir, outputDir, promptTemplateFileName, rulesFileName, sourceProject } from "./testUtils";
  
 describe("test mutant generation", () => {
 

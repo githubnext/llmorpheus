@@ -3,11 +3,11 @@ import { Completion, Prompt } from '../src/prompt';
 
 export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
-export const sourceProject = "/Users/franktip/sabbatical/projects/countries-and-timezones"; 
 export const promptTemplateFileName = "./test/input/promptTemplate.hb";
 export const rulesFileName = "./test/input/rules.json";
 export const mockModelDir =  "./test/input/mockModel";
 export const outputDir = "./test/temp_output";
+export const sourceProject = "./test/input/testProject/countries-and-timezones";
 
 export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolean {
   for (const p of prompts){
@@ -18,14 +18,14 @@ export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolea
   return false;
 }
 
-export function setContainsCompletion(completions: Set<Completion>, completion: Completion) : boolean {
-  for (const c of completions){
-    if (c.getText() === completion.getText()){
-      return true;
-    }
-  }
-  return false;
-}
+// export function setContainsCompletion(completions: Set<Completion>, completion: Completion) : boolean {
+//   for (const c of completions){
+//     if (c.getText() === completion.getText()){
+//       return true;
+//     }
+//   }
+//   return false;
+// }
 
 export function findExpectedPrompts(promptDir: string) : Set<Prompt> {
   const expectedPrompts = new Set<Prompt>();
