@@ -3,3 +3,5 @@ node_modules
 .llm-cache
 test/temp_output
 experiments
+src/*.js
+src/*.js.map
