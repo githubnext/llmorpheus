@@ -5,3 +5,5 @@ test/temp_output
 experiments
 src/*.js
 src/*.js.map
+benchmark/*.js
+benchmark/*.js.map
