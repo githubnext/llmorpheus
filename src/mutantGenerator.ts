@@ -134,6 +134,10 @@ export class MutantGenerator {
     return usefulPrompts;
   }
 
+  private removePrefix(fileName: string) : string {
+    return fileName.substring(this.outputDir.length);
+  }
+
   /** 
    * Extract candidate mutants from the completions by matching a RegExp
    */

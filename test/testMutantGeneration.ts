@@ -12,7 +12,7 @@ const rulesFileName = "./test/input/rules.json";
 const mockModelDir =  "./test/input/mockModel";
 const outputDir = "./test/temp_output";
 
-const sourceProject = "/Users/franktip/sabbatical/projects/countries-and-timezones";
+const sourceProject = "./test/input/testProject/countries-and-timezones";
  
 describe("test mutant generation", () => {
 
@@ -86,6 +86,7 @@ describe("test mutant generation", () => {
     const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
     await generator.generateMutants(sourceProject);
     const actualMutants = fs.readFileSync(outputDir + '/mutants.json', 'utf8');
+    // fs.writeFileSync(outputDir + '/actual.json', actualMutants);
     const expectedMutants = fs.readFileSync('./test/input/mutants.json', 'utf8');
     expect(actualMutants.length).to.equal(expectedMutants.length);
     expect(actualMutants).to.equal(expectedMutants);
