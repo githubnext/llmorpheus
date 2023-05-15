@@ -18,15 +18,6 @@ export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolea
   return false;
 }
 
-// export function setContainsCompletion(completions: Set<Completion>, completion: Completion) : boolean {
-//   for (const c of completions){
-//     if (c.getText() === completion.getText()){
-//       return true;
-//     }
-//   }
-//   return false;
-// }
-
 export function findExpectedPrompts(promptDir: string) : Set<Prompt> {
   const expectedPrompts = new Set<Prompt>();
   const expectedPromptFiles = fs.readdirSync(promptDir);
