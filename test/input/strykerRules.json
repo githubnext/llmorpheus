@@ -1,0 +1,394 @@
+[
+  {     "id": "1",
+        "rule": "<Expr> + <Expr> -> <Expr> - <Expr>",
+        "description": "Arithmetic Operator: replace + operator in binary expression with -"
+  },
+  {     "id": "2",
+        "rule": "<Expr> - <Expr> -> <Expr> + <Expr>",
+        "description": "Arithmetic Operator: replace - operator in binary expression with +"
+  },
+  {     "id": "3",
+        "rule": "<Expr> * <Expr> -> <Expr> / <Expr>",
+        "description": "Arithmetic Operator: replace * operator in binary expression with /"
+  },
+  {     "id": "4",
+        "rule": "<Expr> / <Expr> -> <Expr> * <Expr>",
+        "description": "Arithmetic Operator: replace / operator in binary expression with *"
+  },
+  {     "id": "5",
+        "rule": "<Expr> % <Expr> -> <Expr> * <Expr>",
+        "description": "Arithmetic Operator: replace % operator in binary expression with *"
+  },
+  {     "id": "6",
+        "rule": "new Array(<ExprList>) -> new Array()",
+        "description": "Array Declaration: remove all elements from array declaration"
+  },
+  {     "id": "7",
+        "rule": "[ <ExprList> ] -> []",
+        "description": "Array Declaration: remove all elements from array literal"
+  },
+  {     "id": "8",
+        "rule": "<Expr> += <Expr> -> <Expr> -= <Expr>",
+        "description": "Assignment Expression: replace += operator with -= operator"
+  },
+  {     "id": "9",
+        "rule": "<Expr> -= <Expr> -> <Expr> += <Expr>",
+        "description": "Assignment Expression: replace -= operator with += operator"
+  },
+  {     "id": "10",
+        "rule": "<Expr> *= <Expr> -> <Expr> /= <Expr>",
+        "description": "Assignment Expression: replace *= operator with /= operator"
+  },
+  {     "id": "11",
+        "rule": "<Expr> /= <Expr> -> <Expr> *= <Expr>",
+        "description": "Assignment Expression: replace /= operator with *= operator"
+  },
+  {     "id": "12",
+        "rule": "<Expr> %= <Expr> -> <Expr> *= <Expr>",
+        "description": "Assignment Expression: replace %= operator with *= operator"
+  },
+  {     "id": "13",
+        "rule": "<Expr> <<= <Expr> -> <Expr> >>= <Expr>",
+        "description": "Assignment Expression: replace <<= operator with >>= operator"
+  },
+  {     "id": "14",
+        "rule": "<Expr> >>= <Expr> -> <Expr> <<= <Expr>",
+        "description": "Assignment Expression: replace >>= operator with <<= operator"
+  },
+  {     "id": "15",
+        "rule": "<Expr> &= <Expr> -> <Expr> |= <Expr>",
+        "description": "Assignment Expression: replace &= operator with |= operator"
+  },
+  {     "id": "16",
+        "rule": "<Expr> |= <Expr> -> <Expr> &= <Expr>",
+        "description": "Assignment Expression: replace |= operator with &= operator"
+  },
+  {     "id": "17",
+        "rule": "<Expr> ??= <Expr> -> <Expr> &&= <Expr>",
+        "description": "Assignment Expression: replace ??= operator with &&= operator"
+  },
+  {     "id": "18",
+        "rule": "{ <StmtList> } -> { }",
+        "description": "Block Statement : remove all statements from block"
+  },
+  {     "id": "19",
+        "rule": "true -> false",
+        "description": "Boolean Literal: replace true with false"
+  },
+  {     "id": "20",
+        "rule": "false -> true",
+        "description": "Boolean Literal: replace false with true"
+  },
+  {     "id": "21",
+        "rule": "!(<Expr> == <Expr>) -> <Expr> == <Expr>",
+        "description": "Boolean Literal: negate condition"
+  },
+  {     "id": "22",
+        "rule": "for (var <Var> = <Number>; <Var> < <Number>; <Var>++) { <StmtList> } -> for (var <Var> = <Number>; false; <Var>++) { <StmtList> }",
+        "description": "Conditional Expression: replace condition in for loop with false"
+  },
+  {     "id": "23",
+        "rule": "while (<Expr> > <Expr>) { <StmtList> } -> while (false) { <StmtList> }",
+        "description": "Conditional Expression: replace condition in while loop with false"
+  },
+  {     "id": "24",
+        "rule": "do { <StmtList> } while (<Expr> > <Expr>) -> do { <StmtList> } while (false)",
+        "description": "Conditional Expression: replace condition in do while loop with false"
+  },
+  {     "id": "25",
+        "rule": "if (<Expr> > <Expr>) { <StmtList> } -> if (true) { <StmtList> }",
+        "description": "Conditional Expression: replace condition in if statement with true"
+  },
+  {     "id": "26",
+        "rule": "if (<Expr> > <Expr>) { <StmtList> } -> if (false) { <StmtList> }",
+        "description": "Conditional Expression: replace condition in if statement with false"
+  },
+  {     "id": "27",
+        "rule": "var <Var> = <Expr> ? <Expr> : <Expr> -> var <Var> = true ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with true"
+  },
+  {     "id": "28",
+        "rule": "var <Var> = <Expr> ? <Expr> : <Expr> -> var <Var> = false ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with false"
+  },
+  {     "id": "29",
+        "rule": "<Exp> < <Expr> -> <Exp> <= <Expr>",
+        "description": "Equality Operator: replace < operator with <= operator"
+  },
+  {     "id": "30",
+        "rule": "<Exp> < <Expr> -> <Exp> >= <Expr>",
+        "description": "Equality Operator: replace < operator with >= operator"
+  },
+  {     "id": "31",
+        "rule": "<Exp> <= <Expr> -> <Exp> < <Expr>",
+        "description": "Equality Operator: replace <= operator with < operator"
+  },
+  {     "id": "32",
+        "rule": "<Exp> <= <Expr> -> <Exp> > <Expr>",
+        "description": "Equality Operator: replace <= operator with > operator"
+  },
+  {     "id": "33",
+        "rule": "<Exp> > <Expr> -> <Exp> >= <Expr>",
+        "description": "Equality Operator: replace > operator with >= operator"
+  },
+  {     "id": "34",
+        "rule": "<Exp> > <Expr> -> <Exp> <= <Expr>",
+        "description": "Equality Operator: replace > operator with <= operator"
+  },
+  {     "id": "35",
+        "rule": "<Exp> >= <Expr> -> <Exp> > <Expr>",
+        "description": "Equality Operator: replace >= operator with > operator"
+  },
+  {     "id": "36",
+        "rule": "<Exp> >= <Expr> -> <Exp> < <Expr>",
+        "description": "Equality Operator: replace >= operator with < operator"
+  },
+  {     "id": "37",
+        "rule": "<Exp> == <Expr> -> <Exp> != <Expr>",
+        "description": "Equality Operator: replace == operator with != operator"
+  },
+  {     "id": "38",
+        "rule": "<Exp> != <Expr> -> <Exp> == <Expr>",
+        "description": "Equality Operator: replace != operator with == operator"
+  },
+  {     "id": "39",
+        "rule": "<Exp> === <Expr> -> <Exp> !== <Expr>",
+        "description": "Equality Operator: replace === operator with !== operator"
+  },
+  {     "id": "40",
+        "rule": "<Exp> !== <Expr> -> <Exp> === <Expr>",
+        "description": "Equality Operator: replace !== operator with === operator"
+  },
+  {     "id": "41",
+        "rule": "<Exp> && <Expr> -> <Exp> || <Expr>",
+        "description": "Logical Operator: replace && operator with || operator"
+  },
+  {     "id": "42",
+        "rule": "<Exp> || <Expr> -> <Exp> && <Expr>",
+        "description": "Logical Operator: replace || operator with && operator"
+  },
+  {     "id": "43",
+        "rule": "<Exp> ?? <Expr> -> <Exp> && <Expr>",
+        "description": "Logical Operator: replace ?? operator with && operator"
+  },
+  {     "id": "44",
+        "rule": "<Expr>.endsWith(<Expr>) -> <Expr>.startsWith(<Expr>)",
+        "description": "Method Expression: replace call to endsWith method with call to startsWith method"
+  },
+  {     "id": "45",
+        "rule": "<Expr>.startsWith(<Expr>) -> <Expr>.endsWith(<Expr>)",
+        "description": "Method Expression: replace call to startsWith method with call to endsWith method"
+  },
+  {     "id": "46",
+        "rule": "<Expr>.trim() -> <Expr>",
+        "description": "Method Expression: remove call to trim method"
+  },
+  {     "id": "47",
+        "rule": "<Expr>.trimEnd() -> <Expr>.trimStart()",
+        "description": "Method Expression: replace call to trimEnd method with call to trimStart method"
+  },
+  {     "id": "48",
+        "rule": "<Expr>.trimStart() -> <Expr>.trimEnd()",
+        "description": "Method Expression: replace call to trimStart method with call to trimEnd method"
+  },
+  {     "id": "49",
+        "rule": "<Expr>.substring(<ExprList>) -> <Expr>",
+        "description": "Method Expression: remove call to substring method"
+  },
+  {     "id": "50",
+        "rule": "<Expr>.toUpperCase() -> <Expr>.toLowerCase()",
+        "description": "Method Expression: replace call to toUpperCase method with call to toLowerCase method"
+  },
+  {     "id": "51",
+        "rule": "<Expr>.toLowerCase() -> <Expr>.toUpperCase()",
+        "description": "Method Expression: replace call to toLowerCase method with call to toUpperCase method"
+  },
+  {     "id": "52",
+        "rule": "<Expr>.toLocalUpperCase() -> <Expr>.toLocalLowerCase()",
+        "description": "Method Expression: replace call to toLocalUpperCase method with call to toLocalLowerCase method"
+  },
+  {     "id": "53",
+        "rule": "<Expr>.toLocalLowerCase() -> <Expr>.toLocalUpperCase()",
+        "description": "Method Expression: replace call to toLocalLowerCase method with call to toLocalUpperCase method"
+  },
+  {     "id": "54",
+        "rule": "<Expr>.sort(<Expr>) -> <Expr>",
+        "description": "Method Expression: remove call to sort method"
+  },
+  {     "id": "55",
+        "rule": "<Expr>.some() -> <Expr>.every()",
+        "description": "Method Expression: replace call to some method with call to every method"
+  },
+  {     "id": "56",
+        "rule": "<Expr>.every() -> <Expr>.some()",
+        "description": "Method Expression: replace call to every method with call to some method"
+  },
+  {     "id": "57",
+        "rule": "<Expr>.reverse() -> <Expr>",
+        "description": "Method Expression: remove call to reverse method"
+  },
+  {     "id": "58",
+        "rule": "<Expr>.filter(<Expr>) -> <Expr>",
+        "description": "Method Expression: remove call to filter method"
+  },
+  {     "id": "59",
+        "rule": "<Expr>.slice(<ExprList>) -> <Expr>",
+        "description": "Method Expression: remove call to slice method"
+  },
+  {     "id": "60",
+        "rule": "<Expr>.charAt(<Expr>) -> <Expr>",
+        "description": "Method Expression: remove call to charAt method"
+  },
+  {     "id": "61",
+        "rule": "max(ExprList) -> min(<ExprList>)",
+        "description": "Method Expression: replace call to max method with call to min method"
+  },
+  {     "id": "62",
+        "rule": "min(ExprList) -> max(<ExprList>)",
+        "description": "Method Expression: replace call to min method with call to max method"
+  },
+  {     "id": "63",
+        "rule": "{ <VarExpPairList>, <Var> : <Expr>, <VarExpPairList> } -> { <VarExpPairList>, <VarExpPairList> }",
+        "description": "Object Literal: remove element from object literal"
+  },
+  {     "id": "64",
+        "rule": "<Expr>?.<Name> -> <Expr>?.<Name>",
+        "description": "Optional Chaining: remove optional chaining operator from property access"
+  },
+  {     "id": "65",
+        "rule": "<Expr>?[<Expr>] -> <Expr>[Expr]",
+        "description": "Optional Chaining: remove optional chaining operator from element access"
+  },
+  {     "id": "66",
+        "rule": "<Expr>?.(<ExprList>) -> <Expr>.(<ExprList>)",
+        "description": "Optional Chaining: remove optional chaining operator from method call"
+  },
+  {     "id": "67",
+        "rule": "^<RegexExpr> -> <RegexExpr>",
+        "description": "Regex: remove ^ from regular expression"
+  },
+  {     "id": "68",
+        "rule": "<RegexExpr>$ -> <RegexExpr>",
+        "description": "Regex: remove $ from regular expression"
+  },
+  {     "id": "69",
+        "rule": "[<RegexExpr>] -> [^<RegexExpr>]",
+        "description": "Regex: insert ^ into character class in regular expression"
+  },
+  {     "id": "70",
+        "rule": "[^<RegexExpr>] -> [<RegexExpr>]",
+        "description": "Regex: remove ^ from character class in regular expression"
+  },
+  {     "id": "71",
+        "rule": "\\d -> \\D",
+        "description": "Regex: replace \\d with \\D in regular expression"
+  },
+  {     "id": "72",
+        "rule": "\\D -> \\d",
+        "description": "Regex: replace \\D with \\d in regular expression"
+  },
+  {     "id": "73",
+        "rule": "\\s -> \\S",
+        "description": "Regex: replace \\s with \\S in regular expression"
+  },
+  {     "id": "74",
+        "rule": "\\S -> \\s",
+        "description": "Regex: replace \\S with \\s in regular expression"
+  },
+  {     "id": "75",
+        "rule": "\\w -> \\W",
+        "description": "Regex: replace \\w with \\W in regular expression"
+  },
+  {     "id": "76",
+        "rule": "\\W -> \\w",
+        "description": "Regex: replace \\W with \\w in regular expression"
+  },
+  {     "id": "77",
+        "rule": "<RegexExpr>? -> <RegexExpr>",
+        "description": "Regex: remove ? from regular expression"
+  },
+  {     "id": "78",
+        "rule": "<RegexExpr>* -> <RegexExpr>",
+        "description": "Regex: remove * from regular expression"
+  },
+  {     "id": "79",
+        "rule": "<RegexExpr>+ -> <RegexExpr>",
+        "description": "Regex: remove + from regular expression"
+  },
+  {     "id": "80",
+        "rule": "<RegexExpr>{<Number>,<Number>} -> <RegexExpr>",
+        "description": "Regex: remove numeric quantifier from regular expression"
+  },
+  {     "id": "81",
+        "rule": "<RegexExpr>*? -> <RegexExpr>",
+        "description": "Regex: remove lazy * quantifier from regular expression"
+  },
+  {     "id": "82",
+        "rule": "<RegexExpr>+? -> <RegexExpr>",
+        "description": "Regex: remove lazy + quantifier from regular expression"
+  },
+  {     "id": "83",
+        "rule": "<RegexExpr>{<Number>,<Number>}? -> <RegexExpr>",
+        "description": "Regex: remove lazy numeric quantifier from regular expression"
+  },
+  {     "id": "84",
+        "rule": "(?=<RegexExpr>) -> (!=<RegexExpr>)",
+        "description": "Regex: replace positive lookahead with negative lookahead in regular expression"
+  },
+  {     "id": "85",
+        "rule": "(!=<RegexExpr>) -> (?=<RegexExpr>)",
+        "description": "Regex: replace negative lookahead with positive lookahead in regular expression"
+  },
+  {     "id": "86",
+        "rule": "(<=<RegexExpr>) -> (<!<RegexExpr>)",
+        "description": "Regex: replace positive lookbehind with negative lookbehind in regular expression"
+  },
+  {     "id": "87",
+        "rule": "(<!<RegexExpr>) -> (<=<RegexExpr>)",
+        "description": "Regex: replace negative lookbehind with positive lookbehind in regular expression"
+  },
+  {     "id": "88",
+        "rule": "\\p{<UnicodeProperty>} -> \\P{<UnicodeProperty>}",
+        "description": "Regex: replace positive unicode property with negative unicode property in regular expression"
+  },
+  {     "id": "89",
+        "rule": "\\P{<UnicodeProperty>} -> \\p{<UnicodeProperty>}",
+        "description": "Regex: replace negative unicode property with positive unicode property in regular expression"
+  },
+  {     "id": "90",
+        "rule": " \"<StringLiteral>\" -> \"\"",
+        "description": "String Literal: replace nonempty string literal with empty string literal"
+  },
+  {     "id": "91",
+        "rule": "\"\" -> \"Stryker was here\"",
+        "description": "String Literal: replace empty string literal with nonempty string literal"
+  },
+  {     "id": "92",
+        "rule": "`<StringLiteral>` -> ``",
+        "description": "String Literal: replace nonempty template literal with empty template literal"
+  },
+  {     "id": "93",
+        "rule": "+<Expr> -> -<Expr>",
+        "description": "Unary Operator: replace unary plus with unary minus"
+  },
+  {     "id": "94",
+        "rule": "-<Expr> -> +<Expr>",
+        "description": "Unary Operator: replace unary minus with unary plus"
+  },
+  {     "id": "95",
+        "rule": "<Expr>++ -> <Expr>--",
+        "description": "Update Operator: replace postfix increment with postfix decrement"
+  },
+  {     "id": "96",
+        "rule": "<Expr>-- -> <Expr>++",
+        "description": "Update Operator: replace postfix decrement with postfix increment"
+  },
+  {     "id": "97",
+        "rule": "++<Expr> -> --<Expr>",
+        "description": "Update Operator: replace prefix increment with prefix decrement"
+  },
+  {     "id": "98",
+        "rule": "--<Expr> -> ++<Expr>",
+        "description": "Update Operator: replace prefix decrement with prefix increment"
+  }
+  ]
