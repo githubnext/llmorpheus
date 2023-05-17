@@ -356,7 +356,7 @@
         "description": "Regex: replace negative unicode property with positive unicode property in regular expression"
   },
   {     "id": "90",
-        "rule": " \"<StringLiteral>\" -> \"\"",
+        "rule": "\"<StringLiteral>\" -> \"\"",
         "description": "String Literal: replace nonempty string literal with empty string literal"
   },
   {     "id": "91",

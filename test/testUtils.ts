@@ -5,6 +5,7 @@ export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
 export const promptTemplateFileName = "./test/input/promptTemplate.hb";
 export const rulesFileName = "./test/input/rules.json";
+export const strykerRulesFileName = "./test/input/strykerRules.json";
 export const mockModelDir =  "./test/input/mockModel";
 export const outputDir = "./test/temp_output";
 export const sourceProject = "./test/input/testProject/countries-and-timezones";
