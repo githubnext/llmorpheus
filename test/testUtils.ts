@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { Completion, Prompt } from '../src/prompt';
+import { Rule } from '../src/rule';
 
 export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
@@ -47,4 +48,13 @@ export function findExpectedCompletions(promptId: number) : Set<Completion> {
     }
   }
   return expectedCompletions;
+}
+
+export function findRule(ruleId: string, rules: Rule[]) : Rule {
+  for (const rule of rules) {
+    if (rule.getRuleId() === ruleId) {
+      return rule;
+    }
+  }
+  throw new Error(`Rule ${ruleId} not found`);
 }

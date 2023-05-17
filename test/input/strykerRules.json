@@ -87,6 +87,10 @@
         "rule": "for (var <Var> = <Number>; <Var> < <Number>; <Var>++) { <StmtList> } -> for (var <Var> = <Number>; false; <Var>++) { <StmtList> }",
         "description": "Conditional Expression: replace condition in for loop with false"
   },
+  {     "id": "22b",
+        "rule": "for (let <Var> = <Number>; <Var> < <Number>; <Var>++) { <StmtList> } -> for (let <Var> = <Number>; false; <Var>++) { <StmtList> }",
+        "description": "Conditional Expression: replace condition in for loop with false"
+  },
   {     "id": "23",
         "rule": "while (<Expr> > <Expr>) { <StmtList> } -> while (false) { <StmtList> }",
         "description": "Conditional Expression: replace condition in while loop with false"
@@ -107,8 +111,24 @@
         "rule": "var <Var> = <Expr> ? <Expr> : <Expr> -> var <Var> = true ? <Expr> : <Expr>",
         "description": "Conditional Expression: replace condition in ternary operator with true"
   },
+  {     "id": "27b",
+        "rule": "let <Var> = <Expr> ? <Expr> : <Expr> -> let <Var> = true ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with true"
+  },
+  {     "id": "27c",
+        "rule": "const <Var> = <Expr> ? <Expr> : <Expr> -> const <Var> = true ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with true"
+  },
   {     "id": "28",
         "rule": "var <Var> = <Expr> ? <Expr> : <Expr> -> var <Var> = false ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with false"
+  },
+  {     "id": "28b",
+        "rule": "let <Var> = <Expr> ? <Expr> : <Expr> -> let <Var> = false ? <Expr> : <Expr>",
+        "description": "Conditional Expression: replace condition in ternary operator with false"
+  },
+  {     "id": "28c",
+        "rule": "const <Var> = <Expr> ? <Expr> : <Expr> -> const <Var> = false ? <Expr> : <Expr>",
         "description": "Conditional Expression: replace condition in ternary operator with false"
   },
   {     "id": "29",
