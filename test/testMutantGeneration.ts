@@ -20,33 +20,37 @@ describe("test mutant generation", () => {
 
     // sourceFiles should be equal to ['src/build-country.js','src/build-timezone.js','src/index.js']
     expect(sourceFiles.length).to.equal(3);
-    expect(sourceFiles).to.include('src/build-country.js');
-    expect(sourceFiles).to.include('src/build-timezone.js');
-    expect(sourceFiles).to.include('src/index.js');
+    expect(sourceFiles).to.have.members(['src/build-country.js','src/build-timezone.js','src/index.js']);
   });
 
   it("should find the correct terminals in the LHS of each of the rules", async () => {
     const rules : Rule[] = JSON.parse(fs.readFileSync(rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
     expect(rules.length).to.equal(5);
-    expect(rules[0].getRuleId()).to.equal("1");
-    expect(rules[0].getRule()).to.equal("<Expr> + <Expr> -> <Expr> - <Expr>");
-    expect([...rules[0].getLHSterminals()]).to.have.members(["+"]);
 
-    expect(rules[1].getRuleId()).to.equal("2");
-    expect(rules[1].getRule()).to.equal("<Expr> === <Expr> -> <Expr> !== <Expr>");
-    expect([...rules[1].getLHSterminals()]).to.have.members(["==="]);
+    const rule1 = findRule("1", rules);
+    expect(rule1.getRuleId()).to.equal("1");
+    expect(rule1.getRule()).to.equal("<Expr> + <Expr> -> <Expr> - <Expr>");
+    expect([...rule1.getLHSterminals()]).to.have.members(["+"]);
 
-    expect(rules[2].getRuleId()).to.equal("3");
-    expect(rules[2].getRule()).to.equal("<Expr> !== <Expr> -> <Expr> === <Expr>");
-    expect([...rules[2].getLHSterminals()]).to.have.members(["!=="]);
+    const rule2 = findRule("2", rules);
+    expect(rule2.getRuleId()).to.equal("2");
+    expect(rule2.getRule()).to.equal("<Expr> === <Expr> -> <Expr> !== <Expr>");
+    expect([...rule2.getLHSterminals()]).to.have.members(["==="]);
 
-    expect(rules[3].getRuleId()).to.equal("4");
-    expect(rules[3].getRule()).to.equal("<Expr> || {} -> <Expr>");
-    expect([...rules[3].getLHSterminals()]).to.have.members(["||", "{}"]);
+    const rule3 = findRule("3", rules);
+    expect(rule3.getRuleId()).to.equal("3");
+    expect(rule3.getRule()).to.equal("<Expr> !== <Expr> -> <Expr> === <Expr>");
+    expect([...rule3.getLHSterminals()]).to.have.members(["!=="]);
 
-    expect(rules[4].getRuleId()).to.equal("5");
-    expect(rules[4].getRule()).to.equal("return <Expr>; -> return !<Expr>;");
-    expect([...rules[4].getLHSterminals()]).to.have.members(["return", ";"]);
+    const rule4 = findRule("4", rules);
+    expect(rule4.getRuleId()).to.equal("4");
+    expect(rule4.getRule()).to.equal("<Expr> || {} -> <Expr>");
+    expect([...rule4.getLHSterminals()]).to.have.members(["||", "{}"]);
+
+    const rule5 = findRule("5", rules);
+    expect(rule5.getRuleId()).to.equal("5");
+    expect(rule5.getRule()).to.equal("return <Expr>; -> return !<Expr>;");
+    expect([...rule5.getLHSterminals()]).to.have.members(["return", ";"]);
   });
 
   function findRule(ruleId: string, rules: Rule[]) : Rule {
