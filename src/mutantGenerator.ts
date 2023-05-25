@@ -69,7 +69,7 @@ export class MutantGenerator {
     }
     
     // write mutant info to JSON file
-    console.log(`writing ${mutants.length} mutants to ${this.outputDir}/mutants.json`);
+    this.printAndLog(`writing ${mutants.length} mutants to ${this.outputDir}/mutants.json`);
     fs.writeFileSync(this.outputDir + '/mutants.json', JSON.stringify(mutants, null, 2));
   }
 
@@ -88,7 +88,9 @@ export class MutantGenerator {
     for (let promptNr=0; promptNr < prompts.length; promptNr++ ){
       const prompt = prompts[promptNr];
       const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.json`;
+      const promptTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
       fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
+      fs.writeFileSync(promptTextFileName, prompt.getText()); // write prompt text to file
       this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
       try {
         const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
@@ -142,7 +144,9 @@ export class MutantGenerator {
     this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     completions.forEach((completion) => { // write completions to files
       const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.json`;
+      const completionTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`;
       fs.writeFileSync(completionFileName, JSON.stringify(completion));
+      fs.writeFileSync(completionTextFileName, completion.getText());
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
     }); 
     for (const completion of completions) {
