@@ -68,11 +68,14 @@ export class PromptGenerator {
    * Creates a prompt for a given rule and original code.
    * @param origCode The original code.
    * @param rule The rule.
+   * @param line The line of code where the rule would be applied.
    * @returns The prompt.
    */
-  public createPrompt(id: number, fileName: string, chunkNr: number, origCode: string, rule: Rule) : Prompt {  
+  public createPrompt(id: number, fileName: string, chunkNr: number, origCode: string, rule: Rule, line?: string) : Prompt {  
     const compiledTemplate = handlebars.compile(this.template);
-    const text = compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
+    const text = line ? 
+                 compiledTemplate({ origCode: origCode, rule: rule, line: line, symbols: [...rule.getLHSterminals()].toString() }) :
+                 compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
     return new Prompt(id, fileName, chunkNr, rule, text);
   }
 }
