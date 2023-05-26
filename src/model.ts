@@ -10,8 +10,6 @@ const defaultPostOptions = {
   n: 5, // number of completions to return
   stop: ['\n\n'],   // list of tokens to stop at
   top_p: 1, // no need to change this
-  logprobs: 1, // no need to change this
-  logit_bias: { "50256": -100 },
 };
 export type PostOptions = Partial<typeof defaultPostOptions>;
 
@@ -35,7 +33,7 @@ export interface IModel {
 /**
  * The basic model relies on text-davinci-003.
  */
-export class Model implements IModel {
+export class TextDavinci003Model implements IModel {
   private instanceOptions: PostOptions;
 
   constructor(instanceOptions: PostOptions = {}) {
@@ -53,14 +51,10 @@ export class Model implements IModel {
    * @param requestPostOptions The options to use for the request.
    * @returns A promise that resolves to a set of completions.
    */
-  public async query(
-    prompt: string,
-    requestPostOptions: PostOptions = {}
-  ): Promise<Set<string>> {
-    // const apiEndpoint = getEnv("TESTPILOT_CODEX_API_ENDPOINT");
-    // const authHeaders = getEnv("TESTPILOT_CODEX_AUTH_HEADERS");
-    const apiEndpoint = getEnv("MTEST_CODEX_API_ENDPOINT"); 
-    const authHeaders = getEnv("MTEST_CODEX_AUTH_HEADERS"); 
+  public async query(prompt: string, requestPostOptions: PostOptions = {}): Promise<Set<string>> {
+   
+    const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT"); 
+    const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS"); 
 
     const headers = {
       "Content-Type": "application/json",
@@ -149,7 +143,7 @@ export class CachingModel implements IModel {
     .digest("hex");
   
     // compute path to cache file
-    const cacheDir = path.join(ROOT_CACHE_DIR, hash.slice(0, 2));
+    const cacheDir = path.join(ROOT_CACHE_DIR, this.model.getModelName(), hash.slice(0, 2));
     const cacheFile = path.join(cacheDir, hash);
     // if the cache file exists, return its contents
     if (fs.existsSync(cacheFile)) {
@@ -216,7 +210,7 @@ export class MockModel implements IModel {
 
 if (require.main === module) {
   (async () => {
-    const model = new Model();
+    const model = new TextDavinci003Model();
     const prompt = fs.readFileSync(0, "utf8");
     const responses = await model.query(prompt, { n: 1 });
     console.log([...responses][0]);

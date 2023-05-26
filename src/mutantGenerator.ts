@@ -1,6 +1,6 @@
 import fs from "fs";
 import fg from 'fast-glob';
-import { Model, IModel, CachingModel } from "./model";
+import { IModel } from "./model";
 
 import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
