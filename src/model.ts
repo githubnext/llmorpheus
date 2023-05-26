@@ -31,7 +31,7 @@ export interface IModel {
 }
 
 /**
- * The basic model relies on text-davinci-003.
+ * Abstraction for the text-davinci-003 model.
  */
 export class TextDavinci003Model implements IModel {
   private instanceOptions: PostOptions;
@@ -59,6 +59,87 @@ export class TextDavinci003Model implements IModel {
     const headers = {
       "Content-Type": "application/json",
       ...JSON.parse(authHeaders),
+    };
+    const options = {
+      ...defaultPostOptions,
+      // options provided to constructor override default options
+      ...this.instanceOptions,
+      // options provided to this function override default and instance options
+      ...requestPostOptions,
+    };
+
+    performance.mark("codex-query-start");
+    const res = await axios.post(
+      apiEndpoint,
+      { prompt, ...options },
+      { headers }
+    );
+    performance.measure(
+      `codex-query:${JSON.stringify({
+        ...options,
+        promptLength: prompt.length,
+      })}`,
+      "codex-query-start"
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        `Request failed with status ${res.status} and message ${res.statusText}`
+      );
+    }
+    if (!res.data) {
+      throw new Error("Response data is empty");
+    }
+    const json = res.data;
+    if (json.error) {
+      throw new Error(json.error);
+    }
+    let numContentFiltered = 0;
+    const completions = new Set<string>(
+      (json.choices || [{ text: "" }]).map((c: any) => {
+        if (c.finish_reason === "content_filter") {
+          numContentFiltered++;
+        }
+        return c.text;
+      })
+    );
+    if (numContentFiltered > 0) {
+      console.warn(
+        `${numContentFiltered} completions were truncated due to content filtering.`
+      );
+    }
+    return completions;
+  } 
+}
+
+/**
+ * Abstraction for the gpt3.5-turbo model.
+ */
+export class Gpt35TurboModel implements IModel {
+  private instanceOptions: PostOptions;
+
+  constructor(instanceOptions: PostOptions = {}) {
+    this.instanceOptions = instanceOptions;
+  }
+
+  public getModelName(): string {
+    return "gpt3.5-turbo";
+  }
+
+  /**
+   * Query Model for completions with a given prompt.
+   *
+   * @param prompt The prompt to use for the completion.
+   * @param requestPostOptions The options to use for the request.
+   * @returns A promise that resolves to a set of completions.
+   */
+  public async query(prompt: string, requestPostOptions: PostOptions = {}): Promise<Set<string>> {
+   
+    const apiEndpoint = getEnv("GPT35_API_ENDPOINT"); 
+    const apiKey = getEnv("GPT35_API_KEY"); 
+
+    const headers = {
+      "Content-Type": "application/json",
+      "api-key": apiKey
     };
     const options = {
       ...defaultPostOptions,
