@@ -39,7 +39,7 @@ describe("test mutant generation", () => {
     }
   });
 
-  it("shouldbe able to extract mutants from completions for prompt", async () => {
+  it("should be able to extract mutants from completions for prompt", async () => {
     let promptNr = 13;
     const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
     const ruleFilter : IRuleFilter = (value: string) : boolean => true;
@@ -65,6 +65,7 @@ describe("test mutant generation", () => {
     const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
     let promptNr = 13;
     const prompt = Prompt.fromJSON(JSON.parse(fs.readFileSync(`./test/input/prompts/prompt_${promptNr}.json`, "utf8")));
+
     const expectedMutants = JSON.parse(fs.readFileSync(`./test/input/filteredMutantsForPrompt13.json`, "utf8"));
     const mutants = expectedMutants.map((jsonObj: any) => Mutant.fromJSON(jsonObj));
     const origCode = fs.readFileSync(prompt.getFileName(), "utf8");

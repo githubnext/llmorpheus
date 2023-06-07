@@ -6,9 +6,12 @@
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
     },
     "originalCode": "getTimezonesMap(data)[id] || {}",
-    "rewrittenCode": "getTimezonesMap(data)[id]",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 7,
+    "replacement": "getTimezonesMap(data)[id]",
+    "file": "src/build-country.js",
+    "startLine": 7,
+    "startColumn": 16,
+    "endLine": 7,
+    "endColumn": 47,
     "promptId": 0,
     "completionId": 0,
     "comment": ""
@@ -20,9 +23,12 @@
       "description": "negate return expression"
     },
     "originalCode": "return timezonesMap;",
-    "rewrittenCode": "return !timezonesMap;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 19,
+    "replacement": "return !timezonesMap;",
+    "file": "src/build-country.js",
+    "startLine": 19,
+    "startColumn": 2,
+    "endLine": 19,
+    "endColumn": 22,
     "promptId": 1,
     "completionId": 1,
     "comment": ""
@@ -34,9 +40,12 @@
       "description": "replace === operator in condition with !=="
     },
     "originalCode": "if (tz.r === undefined) result[country].current.push(id);",
-    "rewrittenCode": "if (tz.r !== undefined) result[country].current.push(id);",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 33,
+    "replacement": "if (tz.r !== undefined) result[country].current.push(id);",
+    "file": "src/build-country.js",
+    "startLine": 33,
+    "startColumn": 6,
+    "endLine": 33,
+    "endColumn": 63,
     "promptId": 2,
     "completionId": 4,
     "comment": ""
@@ -48,9 +57,12 @@
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
     },
     "originalCode": "const aliasTz = data.timezones[a] || {};",
-    "rewrittenCode": "const aliasTz = data.timezones[a];",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 26,
+    "replacement": "const aliasTz = data.timezones[a];",
+    "file": "src/build-country.js",
+    "startLine": 26,
+    "startColumn": 4,
+    "endLine": 26,
+    "endColumn": 44,
     "promptId": 3,
     "completionId": 5,
     "comment": ""
@@ -62,12 +74,15 @@
       "description": "negate return expression"
     },
     "originalCode": "if (!countries) return result;",
-    "rewrittenCode": "if (countries) return !result;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 29,
+    "replacement": "if (countries) return !result;",
+    "file": "src/build-country.js",
+    "startLine": 29,
+    "startColumn": 4,
+    "endLine": 29,
+    "endColumn": 34,
     "promptId": 4,
     "completionId": 7,
-    "comment": "location adjusted: model reported code on line 30, but found on line 29"
+    "comment": ""
   },
   {
     "rule": {
@@ -76,9 +91,12 @@
       "description": "negate return expression"
     },
     "originalCode": "return result;",
-    "rewrittenCode": "return !result;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "lineApplied": 37,
+    "replacement": "return !result;",
+    "file": "src/build-country.js",
+    "startLine": 37,
+    "startColumn": 4,
+    "endLine": 37,
+    "endColumn": 18,
     "promptId": 4,
     "completionId": 7,
     "comment": ""
@@ -90,9 +108,12 @@
       "description": "replace + operator in binary expression with -"
     },
     "originalCode": "const sign = offset < 0 ? '-' : '+';",
-    "rewrittenCode": "const sign = offset < 0 ? '+' : '-';",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "lineApplied": 32,
+    "replacement": "const sign = offset < 0 ? '+' : '-';",
+    "file": "src/build-timezone.js",
+    "startLine": 32,
+    "startColumn": 2,
+    "endLine": 32,
+    "endColumn": 38,
     "promptId": 7,
     "completionId": 11,
     "comment": ""
@@ -104,9 +125,12 @@
       "description": "negate return expression"
     },
     "originalCode": "return result;",
-    "rewrittenCode": "return !result;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "lineApplied": 26,
+    "replacement": "return !result;",
+    "file": "src/build-timezone.js",
+    "startLine": 26,
+    "startColumn": 2,
+    "endLine": 26,
+    "endColumn": 16,
     "promptId": 8,
     "completionId": 12,
     "comment": ""
@@ -118,9 +142,12 @@
       "description": "replace !== operator in condition with ==="
     },
     "originalCode": "if (totalTimezones !== memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);",
-    "rewrittenCode": "if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 17,
+    "replacement": "if (totalTimezones === memoizedTimezones) Object.keys(data.timezones).forEach(getTimezone);",
+    "file": "src/index.js",
+    "startLine": 17,
+    "startColumn": 2,
+    "endLine": 17,
+    "endColumn": 93,
     "promptId": 9,
     "completionId": 13,
     "comment": ""
@@ -132,12 +159,15 @@
       "description": "negate return expression"
     },
     "originalCode": "return timezones[name] ? { ...timezones[name] } : null;",
-    "rewrittenCode": "return !timezones[name] ? { ...timezones[name] } : null;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 33,
+    "replacement": "return !timezones[name] ? { ...timezones[name] } : null;",
+    "file": "src/index.js",
+    "startLine": 33,
+    "startColumn": 2,
+    "endLine": 33,
+    "endColumn": 57,
     "promptId": 11,
     "completionId": 15,
-    "comment": "location adjusted: model reported code on line 34, but found on line 33"
+    "comment": ""
   },
   {
     "rule": {
@@ -146,9 +176,12 @@
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
     },
     "originalCode": "const timezone = getTimezone(tzName) || {};",
-    "rewrittenCode": "const timezone = getTimezone(tzName);",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 43,
+    "replacement": "const timezone = getTimezone(tzName);",
+    "file": "src/index.js",
+    "startLine": 43,
+    "startColumn": 2,
+    "endLine": 43,
+    "endColumn": 45,
     "promptId": 12,
     "completionId": 16,
     "comment": ""
@@ -160,12 +193,15 @@
       "description": "negate return expression"
     },
     "originalCode": "return main || null;",
-    "rewrittenCode": "return !(main || null);",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 50,
+    "replacement": "return !(main || null);",
+    "file": "src/index.js",
+    "startLine": 50,
+    "startColumn": 2,
+    "endLine": 50,
+    "endColumn": 22,
     "promptId": 13,
     "completionId": 18,
-    "comment": "location adjusted: model reported code on line 51, but found on line 50"
+    "comment": ""
   },
   {
     "rule": {
@@ -174,12 +210,15 @@
       "description": "negate return expression"
     },
     "originalCode": "return values.map(getTimezone);",
-    "rewrittenCode": "return !values.map(getTimezone);",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 57,
+    "replacement": "return !values.map(getTimezone);",
+    "file": "src/index.js",
+    "startLine": 57,
+    "startColumn": 2,
+    "endLine": 57,
+    "endColumn": 33,
     "promptId": 13,
     "completionId": 19,
-    "comment": "location adjusted: model reported code on line 58, but found on line 57"
+    "comment": ""
   },
   {
     "rule": {
@@ -188,9 +227,12 @@
       "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
     },
     "originalCode": "const { deprecated } = options || {};",
-    "rewrittenCode": "const { deprecated } = options;",
-    "fileName": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "lineApplied": 71,
+    "replacement": "const { deprecated } = options;",
+    "file": "src/index.js",
+    "startLine": 71,
+    "startColumn": 2,
+    "endLine": 71,
+    "endColumn": 39,
     "promptId": 15,
     "completionId": 23,
     "comment": ""

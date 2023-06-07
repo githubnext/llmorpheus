@@ -1,6 +1,6 @@
 import fs from "fs";
 import fg from 'fast-glob';
-import { IModel } from "./model";
+import { Model, IModel, CachingModel } from "./model";
 
 import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
@@ -128,12 +128,27 @@ export class MutantGenerator {
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
           this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
         } else {
-          const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule);  
-          usefulPrompts.push(prompt);
+          const lines = this.getLinesContainingTerminals(chunk, rule.getLHSterminals());
+          for (const line of lines){
+            const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule, line);  
+            usefulPrompts.push(prompt);
+          }
         }
       }
     }
     return usefulPrompts;
+  }
+
+  private getLinesContainingTerminals(chunk: string, terminals: Set<string>) : Set<string> {
+    const lines = new Set<string>();
+    const chunkLines = chunk.split('\n');
+    for (let lineNr=0; lineNr < chunkLines.length; lineNr++){
+      const line = chunkLines[lineNr];
+      if ([...terminals].reduce((acc, terminal) => acc && line.includes(terminal), true)){
+        lines.add(line.substring(0, line.indexOf(':')));
+      }
+    }
+    return lines;
   }
 
   /** 
@@ -164,32 +179,17 @@ export class MutantGenerator {
       const lineNr = parseInt(match[1]);
       const originalCode = match[2];
       const replacement = match[3];
-      const fileName = prompt.getFileName(); 
-      const startCol = this.getStartColumn(fileName, lineNr, originalCode); // note: this will not work if the line number was wrong
-      const endCol = this.getEndColumn(fileName, lineNr, originalCode);
-      mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, fileName, lineNr, startCol, lineNr, endCol, prompt.getId(), completion.getId()));
+      mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, prompt.getFileName(), lineNr, prompt.getId(), completion.getId()));
     }
    return mutants;
   }
 
-  private getStartColumn(fileName: string, lineNr: number, originalCode: string): number {
-    const lines = fs.readFileSync(fileName).toString().split("\n");
-    const line = lines[lineNr-1];
-    return line.indexOf(originalCode);    
-  }
-
-  private getEndColumn(fileName: string, lineNr: number, originalCode: string): number {
-    const lines = fs.readFileSync(fileName).toString().split("\n");
-    const line = lines[lineNr-1];
-    return line.indexOf(originalCode) + originalCode.length;
-  }
-
   /**
-   * Remove invalid mutants and duplicate mutants, adjust line numbers if needed, make file name relative.
+   * Remove invalid mutants and duplicate mutants, and adjust line numbers if needed.
    */
   public filterMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
     const nrCandidateMutants = mutants.length;
-    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)).map(m => m.makeFileNameRelative());
+    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)); 
     const validMutants = adjustedMutants.filter(m => !m.isInvalid());
     const nrInvalidMutants = nrCandidateMutants - validMutants.length;
 
@@ -199,9 +199,10 @@ export class MutantGenerator {
       const duplicatesOf = nonDuplicateMutants.filter(m => m.isDuplicateOf(mutant));
       if (duplicatesOf.length === 0){
         nonDuplicateMutants.push(mutant);
-      } 
+      }  
     }
     const nrDuplicateMutants = validMutants.length - nonDuplicateMutants.length;
+
     this.printAndLog(`        extracted ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).\n`);
     return nonDuplicateMutants;
   }

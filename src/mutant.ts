@@ -1,5 +1,6 @@
 import { Completion, Prompt } from "./prompt";
 import { Rule } from "./rule";
+import { getEndColumn, getStartColumn } from "./util";
 
 /**
  * Represents a mutant
@@ -9,9 +10,12 @@ export class Mutant {
   private comment: string;
   constructor(private rule: Rule, 
               private originalCode: string, 
-              private rewrittenCode: string, 
-              private fileName: string,
-              private lineApplied: number,
+              private replacement: string, 
+              private file: string,
+              private startLine: number,
+              private startColumn: number,
+              private endLine: number,
+              private endColumn: number,
               private promptId: number,
               private completionId: number) {
      this.comment = "";
@@ -21,9 +25,12 @@ export class Mutant {
     return new Mutant(
       new Rule(json.rule.ruleId, json.rule.rule, json.rule.description),
       json.originalCode,
-      json.rewrittenCode,
-      json.fileName,
-      json.lineApplied,
+      json.replacement,
+      json.file,
+      json.startLine,
+      json.startColumn,
+      json.endLine,
+      json.endColumn,
       json.promptId,
       json.completionId
     );
@@ -33,9 +40,12 @@ export class Mutant {
   public toString(){
     return "<" + "rule: " + this.rule.toString() + ", " +
       "originalCode: " + this.originalCode + ", " +
-      "rewrittenCode: " + this.rewrittenCode + ", " +
-      "fileName: " + this.fileName + ", " +
-      "lineApplied: " + this.lineApplied + ", " +
+      "replacement: " + this.replacement + ", " +
+      "file: " + this.file + ", " +
+      "startLine: " + this.startLine + ", " +
+      "startColumn: " + this.startColumn + ", " +
+      "endLine: " + this.endLine + ", " +
+      "endColumn: " + this.endColumn + ", " +
       "promptId: " + this.promptId + ", " +
       "completionId: " + this.completionId + ">";
   }
@@ -49,7 +59,7 @@ export class Mutant {
    * after trimming whitespace
    */
   public isTrivialRewrite() : boolean {
-    return this.rewrittenCode.trim() === this.originalCode.trim();
+    return this.replacement.trim() === this.originalCode.trim();
   }
   
   /**
@@ -67,9 +77,9 @@ export class Mutant {
   /**
    * Returns true if the rewritten code contains all the terminals on the RHS of the rule
    */ 
-  public rewrittenCodeMatchesRHS() : boolean {
+  public replacementMatchesRHS() : boolean {
     for (const symbol of this.rule.getRHSterminals()) {
-      if (this.rewrittenCode.indexOf(symbol) === -1) {
+      if (this.replacement.indexOf(symbol) === -1) {
         return false;
       }
     }
@@ -83,7 +93,14 @@ export class Mutant {
    * by checking up to WINDOW_SIZE lines before and after the line where the mutation was reported. 
    */
   public isInvalid(){
-    return this.isTrivialRewrite() || !this.originalCodeMatchesLHS() || !this.rewrittenCodeMatchesRHS() || this.getLineApplied() === -1;
+    // console.log(`Checking if mutant is invalid: ${this.toString()}`);
+    // console.log(`  isTrivialRewrite: ${this.isTrivialRewrite()}`);
+    // console.log(`  originalCodeMatchesLHS: ${this.originalCodeMatchesLHS()}`);
+    // console.log(`  replacementMatchesRHS: ${this.replacementMatchesRHS()}`);
+    // console.log(`  startLine: ${this.startLine}`);
+    // console.log(`  endLine: ${this.endLine}`);
+    // console.log(`  fileName: ${this.file}`);
+    return this.isTrivialRewrite() || !this.originalCodeMatchesLHS() || !this.replacementMatchesRHS() || this.getStartLine() === -1;
   }
 
   public addComment(comment: string) {
@@ -98,8 +115,20 @@ export class Mutant {
     return this.comment;
   }
 
-  public getLineApplied() : number {
-    return this.lineApplied;
+  public getStartLine() : number {
+    return this.startLine;
+  }
+
+  public getStartColumn() : number {
+    return this.startColumn;
+  }
+
+  public getEndLine() : number {
+    return this.endLine;
+  }
+
+  public getEndColumn() : number {
+    return this.endColumn;
   }
 
   public getRuleId() : string {
@@ -107,13 +136,16 @@ export class Mutant {
   }
 
   public getFileName() : string {
-    return this.fileName;
+    return this.file;
   }
 
   public isDuplicateOf(other: Mutant) : boolean {
     return this.getRuleId() === other.getRuleId() && 
            this.getFileName() === other.getFileName() && 
-           this.getLineApplied() === other.getLineApplied();
+           this.getStartLine() === other.getStartLine() &&
+           this.getStartColumn() === other.getStartColumn() &&
+           this.getEndLine() === other.getEndLine() &&
+           this.getEndColumn() === other.getEndColumn();
   }
 
   private static WINDOW_SIZE = 2;
@@ -126,28 +158,40 @@ export class Mutant {
    * @returns void
    */
   public adjustLocationAsNeeded(origCode: string) : Mutant {
-    const newMutant = new Mutant(this.rule, this.originalCode, this.rewrittenCode, this.fileName, this.lineApplied, this.promptId, this.completionId);
-    const origLine = origCode.split("\n")[newMutant.lineApplied - 1];
+    const newMutant = new Mutant(this.rule, this.originalCode, this.replacement, this.file, this.startLine, this.startColumn, this.endLine, this.endColumn, this.promptId, this.completionId);
+    const origLine = origCode.split("\n")[newMutant.startLine - 1];
     if (origLine && origLine.trim().indexOf(newMutant.originalCode.trim()) !== -1) {
       return newMutant; // found the original code on the line reported by the model, no need to adjust
     } else { // else, check up to WINDOW_SIZE lines before and after the line where the mutation was reported
       for (let i=1; i<=Mutant.WINDOW_SIZE; i++) {
-        const line = origCode.split("\n")[this.lineApplied - 1 - i];
+        const line = origCode.split("\n")[this.startLine - 1 - i];
         if (line && line.trim().indexOf(this.originalCode.trim()) !== -1) {
-          newMutant.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied - i}`);
-          newMutant.lineApplied -= i;
+          newMutant.addComment(`location adjusted: model reported code on line ${this.startLine}, but found on line ${this.startLine - i}`);
+          newMutant.startLine -= i;
+          newMutant.endLine -= i;
+          newMutant.startColumn = getStartColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+          newMutant.endColumn = getEndColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
           return newMutant;
         } else {
-          const line = origCode.split("\n")[this.lineApplied - 1 + i];
+          const line = origCode.split("\n")[this.startLine - 1 + i];
           if (line && line.trim().indexOf(this.originalCode.trim()) !== -1) {
-            newMutant.addComment(`location adjusted: model reported code on line ${this.lineApplied}, but found on line ${this.lineApplied + i}`);
-            newMutant.lineApplied += i;
+            newMutant.addComment(`location adjusted: model reported code on line ${this.startLine}, but found on line ${this.startLine + i}`);
+            newMutant.startLine += i;
+            newMutant.endLine += i;
+            newMutant.startColumn = getStartColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+            newMutant.endColumn = getEndColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
             return newMutant;
           }
         }
       }
-      newMutant.lineApplied = -1; // if we get here, we couldn't find the original code anywhere in the file
+      newMutant.startLine = -1; // if we get here, we couldn't find the original code anywhere in the file
     }
     return newMutant;
   } 
+
+  public makeFileNameRelative() : Mutant {
+    const newMutant = new Mutant(this.rule, this.originalCode, this.replacement, this.file, this.startLine, this.startColumn, this.endLine, this.endColumn, this.promptId, this.completionId);
+    newMutant.file = newMutant.file.substring(newMutant.file.indexOf("src"));
+    return newMutant;
+  }
 }
