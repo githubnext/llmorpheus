@@ -4,7 +4,7 @@ import { IRuleFilter, Rule } from "../src/rule";
 import { Prompt, PromptGenerator } from "../src/prompt";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { MockModel } from "../src/model";
-import { expectedPromptsDir, findExpectedPrompts, mockModelDir, outputDir, promptTemplateFileName, rulesFileName, setContainsPrompt, sourceFileName, sourceProject } from "./testUtils";
+import { expectedPromptsDir, findExpectedPrompts, mockModelDir, outputDir, promptTemplateFileName, rulesFileName, setContainsPrompt, sourceFileName, testProjectPath } from "./testUtils";
  
 let sourceFile = "";
 let rules : Rule[] = [];
@@ -38,9 +38,9 @@ describe("test prompt crafting", () => {
   it("should generate the expected prompts for a given source project", async () => {
     const ruleFilter : IRuleFilter = (value: string) : boolean => true;
     const model = new MockModel('text-davinci-003', mockModelDir);
-    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir);
+    const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir, testProjectPath);
     const promptGenerator = new PromptGenerator(promptTemplateFileName);
-    const sourceFileNames = await generator.findSourceFilesToMutate(sourceProject);
+    const sourceFileNames = await generator.findSourceFilesToMutate(testProjectPath);
     const actualPrompts = new Set<Prompt>();
     let promptCnt = 0;
     for (const sourceFileName of sourceFileNames){

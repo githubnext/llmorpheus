@@ -7,7 +7,7 @@
     },
     "originalCode": "return main || null;",
     "replacement": "return !(main || null);",
-    "file": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "file": "src/index.js",
     "startLine": 51,
     "startColumn": -1,
     "endLine": 51,
@@ -22,13 +22,13 @@
       "rule": "return <Expr>; -> return !<Expr>;",
       "description": "negate return expression"
     },
-    "originalCode": "return null;",
-    "replacement": "return !null;",
-    "file": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "originalCode": "return main || null;",
+    "replacement": "return !(main || null);",
+    "file": "src/index.js",
     "startLine": 51,
     "startColumn": -1,
     "endLine": 51,
-    "endColumn": 11,
+    "endColumn": 19,
     "promptId": 13,
     "completionId": 19,
     "comment": ""
@@ -41,47 +41,13 @@
     },
     "originalCode": "return values.map(getTimezone);",
     "replacement": "return !values.map(getTimezone);",
-    "file": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
+    "file": "src/index.js",
     "startLine": 58,
     "startColumn": -1,
     "endLine": 58,
     "endColumn": 30,
     "promptId": 13,
     "completionId": 19,
-    "comment": ""
-  },
-  {
-    "rule": {
-      "ruleId": "5",
-      "rule": "return <Expr>; -> return !<Expr>;",
-      "description": "negate return expression"
-    },
-    "originalCode": "export function getTimezonesForCountry(countryId, options = {}) {",
-    "replacement": "export function getTimezonesForCountry(countryId, options = {}) {",
-    "file": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
-    "startLine": 51,
-    "startColumn": -1,
-    "endLine": 51,
-    "endColumn": 64,
-    "promptId": 13,
-    "completionId": 20,
-    "comment": ""
-  },
-  {
-    "rule": {
-      "ruleId": "5",
-      "rule": "return <Expr>; -> return !<Expr>;",
-      "description": "negate return expression"
-    },
-    "originalCode": "return values.map(getTimezone);",
-    "replacement": "return !values.map(getTimezone);",
-    "file": "/Users/franktip/sabbatical/projects/countries-and-timezones/src/index.js",
-    "startLine": 58,
-    "startColumn": -1,
-    "endLine": 58,
-    "endColumn": 30,
-    "promptId": 13,
-    "completionId": 20,
     "comment": ""
   }
 ]

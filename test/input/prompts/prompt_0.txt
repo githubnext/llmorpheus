@@ -1,0 +1,46 @@
+In this task, we will change the behavior of a program by applying mutation testing.
+Given the following code, where line numbers have been added for ease of reference:
+<BEGIN>
+ 1: let timezonesMap;
+ 2: 
+ 3: export default function buildCountry(data, id) {
+ 4:   const name = data.countries[id];
+ 5:   if (!name) return null;
+ 6: 
+ 7:   const tzMap = getTimezonesMap(data)[id] || {};
+ 8: 
+ 9:   return {
+10:     id,
+11:     name,
+12:     timezones: tzMap.current || [],
+13:     allTimezones: tzMap.all || [],
+14:   };
+15: }
+16: 
+17: function getTimezonesMap(data) {
+18:   if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
+19:   return timezonesMap;
+20: }
+<END>
+
+Identify where the following rewrite rule is applicable:
+		<Expr> || {} -> <Expr> (replace binary || expression with its first operand if the second operand is an empty object literal)
+Going through EACH of the lines in the code in order, please respond EITHER:
+The rewriting rule is not applicable to LINE #N
+OR respond by providing: 
+	  (i) the line number of the code that matched the rewriting rule, 
+	  (ii) a Markdown code block with the original code on that line, and
+	  (iii) a Markdown code block with the rewritten code replacing the original code
+using the following template:  
+CHANGE LINE #N FROM:
+```
+<original code>
+```
+TO:
+```
+<rewritten code>
+```
+Please assume that each change is made in isolation and apply the rule
+on every line where it is applicable.
+
+After responding to all of the lines in the code, please conclude your response with "DONE". 

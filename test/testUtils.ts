@@ -9,7 +9,7 @@ export const rulesFileName = "./test/input/rules.json";
 export const strykerRulesFileName = "./test/input/strykerRules.json";
 export const mockModelDir =  "./test/input/mockModel";
 export const outputDir = "./test/temp_output";
-export const sourceProject = "./test/input/testProject/countries-and-timezones";
+export const testProjectPath = "./test/input/testProject/countries-and-timezones";
 
 export function setContainsPrompt(prompts: Set<Prompt>, prompt: Prompt) : boolean {
   for (const p of prompts){
@@ -26,7 +26,7 @@ export function findExpectedPrompts(promptDir: string) : Set<Prompt> {
   for (const expectedPromptFile of expectedPromptFiles) {
 
     // if the file matches 'prompt_*.json' then add it to the set of expected prompts
-    if (expectedPromptFile.indexOf("completion") === -1) {
+    if (expectedPromptFile.indexOf("completion") === -1 && expectedPromptFile.endsWith(".json")) {
       const jsonObj = JSON.parse(fs.readFileSync("./test/input/prompts/" + expectedPromptFile, "utf8"));
       // console.log(`jsonObj: ${jsonObj}`);
       const prompt = Prompt.fromJSON(jsonObj);
@@ -41,7 +41,7 @@ export function findExpectedCompletions(promptId: number) : Set<Completion> {
   const expectedCompletions = new Set<Completion>();
   const expectedCompletionFiles = fs.readdirSync(expectedPromptsDir);
   for (const expectedCompletionFile of expectedCompletionFiles) {
-    if (expectedCompletionFile.indexOf(`prompt_${promptId}_completion`) !== -1) {
+    if (expectedCompletionFile.indexOf(`prompt_${promptId}_completion`) !== -1 && !expectedCompletionFile.endsWith(".txt")) {
       const jsonObj = JSON.parse(fs.readFileSync("./test/input/prompts/" + expectedCompletionFile, "utf8"));
       const completion = Completion.fromJSON(jsonObj);
       expectedCompletions.add(completion);

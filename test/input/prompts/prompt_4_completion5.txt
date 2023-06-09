@@ -1,0 +1,34 @@
+
+The rewriting rule is not applicable to LINE #21
+The rewriting rule is not applicable to LINE #22
+The rewriting rule is not applicable to LINE #23
+The rewriting rule is not applicable to LINE #24
+The rewriting rule is not applicable to LINE #25
+The rewriting rule is not applicable to LINE #26
+The rewriting rule is not applicable to LINE #27
+The rewriting rule is not applicable to LINE #28
+The rewriting rule is not applicable to LINE #29
+CHANGE LINE #30 FROM:
+```
+if (!countries) return result;
+```
+TO:
+```
+if (countries) return !result;
+```
+The rewriting rule is not applicable to LINE #31
+The rewriting rule is not applicable to LINE #32
+The rewriting rule is not applicable to LINE #33
+The rewriting rule is not applicable to LINE #34
+The rewriting rule is not applicable to LINE #35
+The rewriting rule is not applicable to LINE #36
+CHANGE LINE #37 FROM:
+```
+return result;
+```
+TO:
+```
+return !result;
+```
+The rewriting rule is not applicable to LINE #38
+The rewriting rule is not applicable to LINE #39

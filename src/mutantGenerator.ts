@@ -1,5 +1,6 @@
 import fs from "fs";
 import fg from 'fast-glob';
+import path from 'path';
 import { IModel } from "./model";
 
 import { Mutant } from "./mutant";
@@ -15,7 +16,7 @@ export class MutantGenerator {
   private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
 
-  constructor(private model: IModel, promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string) {
+  constructor(private model: IModel, promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string, private projectPath: string) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
     this.promptGenerator = new PromptGenerator(promptTemplateFileName);
 
@@ -34,6 +35,10 @@ export class MutantGenerator {
     }
     fs.writeFileSync(this.outputDir + '/log.txt', '');
     fs.mkdirSync(this.outputDir + '/prompts');
+  }
+
+  public getProjectPath() : string {
+    return this.projectPath;
   }
 
   private log(msg: string) : void {
@@ -140,6 +145,7 @@ export class MutantGenerator {
    * Extract candidate mutants from the completions by matching a RegExp
    */
   public extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
+    // console.log(`extractMutantsFromCompletions: fileName=${fileName}, chunkNr=${chunkNr}, rule=${rule.getRuleId()}, prompt=${prompt.getId()}, completions=${completions.length}`);
     let mutants = new Array<Mutant>();
     this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     completions.forEach((completion) => { // write completions to files
@@ -161,13 +167,16 @@ export class MutantGenerator {
     const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
     let match;
     while ((match = regExp.exec(completion.getText())) !== null) {
+      // console.log(`***match ${match} found at ${match.index}`);
       const lineNr = parseInt(match[1]);
       const originalCode = match[2];
       const replacement = match[3];
-      const fileName = prompt.getFileName(); 
+      const fileName = path.join(this.projectPath, prompt.getFileName()); 
+      // console.log(`match: ${match}`);
+      // console.log(`lineNr: ${lineNr}, originalCode: ${originalCode}, replacement: ${replacement}, fileName: ${fileName}`);
       const startCol = this.getStartColumn(fileName, lineNr, originalCode); // note: this will not work if the line number was wrong
       const endCol = this.getEndColumn(fileName, lineNr, originalCode);
-      mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, fileName, lineNr, startCol, lineNr, endCol, prompt.getId(), completion.getId()));
+      mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, prompt.getFileName(), lineNr, startCol, lineNr, endCol, prompt.getId(), completion.getId()));
     }
    return mutants;
   }

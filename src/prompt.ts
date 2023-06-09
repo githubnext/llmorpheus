@@ -76,6 +76,6 @@ export class PromptGenerator {
     const text = line ? 
                  compiledTemplate({ origCode: origCode, rule: rule, line: line, symbols: [...rule.getLHSterminals()].toString() }) :
                  compiledTemplate({ origCode: origCode, rule: rule, symbols: [...rule.getLHSterminals()].toString() });
-    return new Prompt(id, fileName, chunkNr, rule, text);
+    return new Prompt(id, fileName.substring(fileName.indexOf('src')), chunkNr, rule, text);
   }
 }

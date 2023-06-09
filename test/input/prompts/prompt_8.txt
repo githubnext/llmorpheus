@@ -1,0 +1,46 @@
+In this task, we will change the behavior of a program by applying mutation testing.
+Given the following code, where line numbers have been added for ease of reference:
+<BEGIN>
+21:     dstOffset,
+22:     dstOffsetStr: getOffsetStr(dstOffset),
+23:     aliasOf,
+24:   };
+25:   if (timezone.r) result.deprecated = true;
+26:   return result;
+27: }
+28: 
+29: function getOffsetStr(offset) {
+30:   const hours = Math.floor(offset / 60);
+31:   const min = offset % 60;
+32:   const sign = offset < 0 ? '-' : '+';
+33: 
+34:   return `${sign}${getNumStr(hours)}:${getNumStr(min)}`;
+35: }
+36: 
+37: function getNumStr(input) {
+38:   const num = Math.abs(input);
+39:   const prefix = num < 10 ? '0' : '';
+40:   return `${prefix}${num}`;
+<END>
+
+Identify where the following rewrite rule is applicable:
+		return <Expr>; -> return !<Expr>; (negate return expression)
+Going through EACH of the lines in the code in order, please respond EITHER:
+The rewriting rule is not applicable to LINE #N
+OR respond by providing: 
+	  (i) the line number of the code that matched the rewriting rule, 
+	  (ii) a Markdown code block with the original code on that line, and
+	  (iii) a Markdown code block with the rewritten code replacing the original code
+using the following template:  
+CHANGE LINE #N FROM:
+```
+<original code>
+```
+TO:
+```
+<rewritten code>
+```
+Please assume that each change is made in isolation and apply the rule
+on every line where it is applicable.
+
+After responding to all of the lines in the code, please conclude your response with "DONE". 

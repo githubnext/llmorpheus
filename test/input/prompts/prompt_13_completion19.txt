@@ -1,0 +1,35 @@
+
+The rewriting rule is not applicable to LINE #41
+The rewriting rule is not applicable to LINE #42
+The rewriting rule is not applicable to LINE #43
+The rewriting rule is not applicable to LINE #44
+The rewriting rule is not applicable to LINE #45
+The rewriting rule is not applicable to LINE #46
+The rewriting rule is not applicable to LINE #47
+The rewriting rule is not applicable to LINE #48
+The rewriting rule is not applicable to LINE #49
+The rewriting rule is not applicable to LINE #50
+CHANGE LINE #51 FROM:
+```
+return main || null;
+```
+TO:
+```
+return !(main || null);
+```
+The rewriting rule is not applicable to LINE #52
+The rewriting rule is not applicable to LINE #53
+The rewriting rule is not applicable to LINE #54
+The rewriting rule is not applicable to LINE #55
+The rewriting rule is not applicable to LINE #56
+The rewriting rule is not applicable to LINE #57
+CHANGE LINE #58 FROM:
+```
+return values.map(getTimezone);
+```
+TO:
+```
+return !values.map(getTimezone);
+```
+The rewriting rule is not applicable to LINE #59
+The rewriting rule is not applicable to LINE #60

@@ -75,7 +75,7 @@ if (require.main === module) {
       model = baseModel;
     }
 
-    const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.outputDir);
+    const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, argv.rulesFileName, ruleFilter, argv.outputDir, argv.path);
     mutantGenerator.generateMutants(argv.path);
   })();
 }

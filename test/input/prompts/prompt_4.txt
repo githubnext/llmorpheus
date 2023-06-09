@@ -1,0 +1,46 @@
+In this task, we will change the behavior of a program by applying mutation testing.
+Given the following code, where line numbers have been added for ease of reference:
+<BEGIN>
+21: 
+22: function buildTimezonesMap(data) {
+23:   return Object.keys(data.timezones).reduce((result, id) => {
+24:     const tz = data.timezones[id];
+25:     const { c, a } = tz;
+26:     const aliasTz = data.timezones[a] || {};
+27:     const countries = c || aliasTz.c;
+28: 
+29:     if (!countries) return result;
+30: 
+31:     countries.forEach((country) => {
+32:       if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
+33:       if (tz.r === undefined) result[country].current.push(id);
+34:       result[country].all.push(id);
+35:     });
+36: 
+37:     return result;
+38:   }, {});
+39: }
+40: 
+<END>
+
+Identify where the following rewrite rule is applicable:
+		return <Expr>; -> return !<Expr>; (negate return expression)
+Going through EACH of the lines in the code in order, please respond EITHER:
+The rewriting rule is not applicable to LINE #N
+OR respond by providing: 
+	  (i) the line number of the code that matched the rewriting rule, 
+	  (ii) a Markdown code block with the original code on that line, and
+	  (iii) a Markdown code block with the rewritten code replacing the original code
+using the following template:  
+CHANGE LINE #N FROM:
+```
+<original code>
+```
+TO:
+```
+<rewritten code>
+```
+Please assume that each change is made in isolation and apply the rule
+on every line where it is applicable.
+
+After responding to all of the lines in the code, please conclude your response with "DONE". 
