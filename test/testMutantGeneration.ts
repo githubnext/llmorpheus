@@ -30,7 +30,7 @@ describe("test mutant generation", () => {
     const completions = await model.query(prompt0.getText());
     expect(completions.size).to.equal(1);
     const actualCompletion = completions.values().next().value;
-    const expectedCompletion = fs.readFileSync(`./test/input/prompts/prompt_0_completion0.txt`, "utf8");
+    const expectedCompletion = fs.readFileSync(`./test/input/prompts/prompt_0_completion_0.txt`, "utf8");
     expect(actualCompletion).to.equal(expectedCompletion);
 
     // for prompt_13, the mockModel should return prompt_3_completion18.txt and prompt_3_completion19.txt
@@ -40,8 +40,8 @@ describe("test mutant generation", () => {
     const iterator = completions13.values();
     const actualCompletion1 = iterator.next().value;
     const actualCompletion2 = iterator.next().value;
-    const expectedCompletion1 = fs.readFileSync(`./test/input/prompts/prompt_13_completion18.txt`, "utf8");
-    const expectedCompletion2 = fs.readFileSync(`./test/input/prompts/prompt_13_completion19.txt`, "utf8");
+    const expectedCompletion1 = fs.readFileSync(`./test/input/prompts/prompt_13_completion_18.txt`, "utf8");
+    const expectedCompletion2 = fs.readFileSync(`./test/input/prompts/prompt_13_completion_19.txt`, "utf8");
     expect(actualCompletion1).to.equal(expectedCompletion1);
     expect(actualCompletion2).to.equal(expectedCompletion2);
   });

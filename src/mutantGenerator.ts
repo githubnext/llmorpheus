@@ -149,8 +149,8 @@ export class MutantGenerator {
     let mutants = new Array<Mutant>();
     this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
     completions.forEach((completion) => { // write completions to files
-      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.json`;
-      const completionTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion${completion.getId()}.txt`;
+      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.json`;
+      const completionTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.txt`;
       fs.writeFileSync(completionFileName, JSON.stringify(completion));
       fs.writeFileSync(completionTextFileName, completion.getText());
       this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
