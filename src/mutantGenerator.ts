@@ -100,8 +100,8 @@ export class MutantGenerator {
       try {
         const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
         const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
-        const postProcessedMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
-        const mappedMutants = mapMutantsToASTNodes(this.projectPath, postProcessedMutants);
+        const filteredMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
+        const mappedMutants = mapMutantsToASTNodes(this.projectPath, filteredMutants);
         mutants.push(...mappedMutants);
       } catch (e) {
         this.printAndLog(`    error occurred while processing prompt ${prompt.getId()} for ${fileName}: ${e}\n`);

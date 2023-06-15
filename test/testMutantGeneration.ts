@@ -7,6 +7,7 @@ import { MockModel } from "../src/model";
 import { Mutant } from "../src/mutant";
 import { Completion, Prompt } from "../src/prompt";
 import { findExpectedCompletions, mockModelDir, outputDir, promptTemplateFileName, rulesFileName, testProjectPath } from "./testUtils";
+import { mapMutantsToASTNodes } from "../src/astMapper";
 
 describe("test mutant generation", () => {
 
@@ -96,6 +97,16 @@ describe("test mutant generation", () => {
     // fs.writeFileSync(outputDir + '/filteredMutantsForPrompt13.json', JSON.stringify(filteredMutants, null, 2));
     expect(JSON.stringify(filteredMutants)).to.equal(JSON.stringify(expectedMutants));
   });
+
+
+  it("should map raw source locations to the appropriate AST nodes", async () => {
+    const rawMutants  = JSON.parse(fs.readFileSync(`./test/input/rawMutants.json`, "utf8"));
+    const projectPath = "./test/input/testProject/countries-and-timezones";
+    const mappedMutants = mapMutantsToASTNodes(projectPath, rawMutants);
+    const expectedMutants = JSON.parse(fs.readFileSync('./test/input/mutants.json', 'utf8'));
+    expect(mappedMutants.length).to.equal(expectedMutants.length);
+    expect(JSON.stringify(mappedMutants)).to.equal(JSON.stringify(expectedMutants));
+   });
 
   it("should be able to generate the expected mutants for a test project", async () => {
     const ruleFilter : IRuleFilter = (value: string) : boolean => true;
