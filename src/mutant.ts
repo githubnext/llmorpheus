@@ -8,16 +8,16 @@ import { getEndColumn, getStartColumn } from "./util";
 export class Mutant {
 
   private comment: string;
-  constructor(private rule: Rule, 
-              private originalCode: string, 
-              private replacement: string, 
-              private file: string,
-              private startLine: number,
-              private startColumn: number,
-              private endLine: number,
-              private endColumn: number,
-              private promptId: number,
-              private completionId: number) {
+  constructor(public readonly rule: Rule, 
+              public originalCode: string, 
+              public replacement: string, 
+              public file: string,
+              public startLine: number,
+              public startColumn: number,
+              public endLine: number,
+              public endColumn: number,
+              public readonly promptId: number,
+              public readonly completionId: number) {
      this.comment = "";
   }
 
@@ -157,7 +157,7 @@ export class Mutant {
    * @param origCode the original code of the file where the mutant was applied
    * @returns void
    */
-  public adjustLocationAsNeeded(origCode: string) : Mutant {
+  public adjustLocationAsNeeded(projectPath: string, origCode: string) : Mutant {
     const newMutant = new Mutant(this.rule, this.originalCode, this.replacement, this.file, this.startLine, this.startColumn, this.endLine, this.endColumn, this.promptId, this.completionId);
     const origLine = origCode.split("\n")[newMutant.startLine - 1];
     if (origLine && origLine.trim().indexOf(newMutant.originalCode.trim()) !== -1) {
@@ -169,8 +169,11 @@ export class Mutant {
           newMutant.addComment(`location adjusted: model reported code on line ${this.startLine}, but found on line ${this.startLine - i}`);
           newMutant.startLine -= i;
           newMutant.endLine -= i;
-          newMutant.startColumn = getStartColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
-          newMutant.endColumn = getEndColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+          // console.log(`**X** newMutant.getFileName() = ${newMutant.getFileName()}`);
+          newMutant.startColumn = getStartColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+          // console.log("**Y**");
+          newMutant.endColumn = getEndColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+          // console.log("**Z**");
           return newMutant;
         } else {
           const line = origCode.split("\n")[this.startLine - 1 + i];
@@ -178,8 +181,8 @@ export class Mutant {
             newMutant.addComment(`location adjusted: model reported code on line ${this.startLine}, but found on line ${this.startLine + i}`);
             newMutant.startLine += i;
             newMutant.endLine += i;
-            newMutant.startColumn = getStartColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
-            newMutant.endColumn = getEndColumn(newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+            newMutant.startColumn = getStartColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
+            newMutant.endColumn = getEndColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
             return newMutant;
           }
         }

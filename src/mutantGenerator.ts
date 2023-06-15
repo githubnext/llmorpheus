@@ -6,6 +6,7 @@ import { IModel } from "./model";
 import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
+import { mapMutantsToASTNodes } from "./astMapper";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -63,7 +64,6 @@ export class MutantGenerator {
     return files;
   }
 
-
   public async generateMutants(path: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
     const files = await this.findSourceFilesToMutate(path);
@@ -85,7 +85,7 @@ export class MutantGenerator {
    */
   private async generateMutantsForFile(fileName: string) : Promise<Array<Mutant>> {
     const mutants = new Array<Mutant>();
-    this.printAndLog(`\n\nGenerating mutants for ${fileName}:\n`);
+    this.printAndLog(`\nGenerating mutants for ${fileName}:`);
     const origCode = fs.readFileSync(fileName, "utf8");
     const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
     
@@ -96,14 +96,15 @@ export class MutantGenerator {
       const promptTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
       fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
       fs.writeFileSync(promptTextFileName, prompt.getText()); // write prompt text to file
-      this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}\n`);
+      this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}`);
       try {
         const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
         const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
         const postProcessedMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
-        mutants.push(...postProcessedMutants);
+        const mappedMutants = mapMutantsToASTNodes(this.projectPath, postProcessedMutants);
+        mutants.push(...mappedMutants);
       } catch (e) {
-        this.printAndLog(`    error querying model for prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
+        this.printAndLog(`    error occurred while processing prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
       }
     }
     return mutants;
@@ -131,7 +132,7 @@ export class MutantGenerator {
       for (let ruleNr=0; ruleNr < rules.length; ruleNr++ ){
         const rule = rules[ruleNr];
         if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}\n`);
+          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}`);
         } else {
           const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule);  
           usefulPrompts.push(prompt);
@@ -147,13 +148,13 @@ export class MutantGenerator {
   public extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
     // console.log(`extractMutantsFromCompletions: fileName=${fileName}, chunkNr=${chunkNr}, rule=${rule.getRuleId()}, prompt=${prompt.getId()}, completions=${completions.length}`);
     let mutants = new Array<Mutant>();
-    this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.\n`);
+    this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.`);
     completions.forEach((completion) => { // write completions to files
       const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.json`;
       const completionTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.txt`;
       fs.writeFileSync(completionFileName, JSON.stringify(completion));
       fs.writeFileSync(completionTextFileName, completion.getText());
-      this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}\n`);
+      this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}`);
     }); 
     for (const completion of completions) {
       mutants.push(...this.extractMutantsFromCompletion(prompt, completion));
@@ -198,7 +199,7 @@ export class MutantGenerator {
    */
   public filterMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
     const nrCandidateMutants = mutants.length;
-    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(origCode)).map(m => m.makeFileNameRelative());
+    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(this.projectPath, origCode));
     const validMutants = adjustedMutants.filter(m => !m.isInvalid());
     const nrInvalidMutants = nrCandidateMutants - validMutants.length;
 
@@ -211,7 +212,8 @@ export class MutantGenerator {
       } 
     }
     const nrDuplicateMutants = validMutants.length - nonDuplicateMutants.length;
-    this.printAndLog(`        extracted ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).\n`);
+
+    this.printAndLog(`        extracted ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).`);
     return nonDuplicateMutants;
   }
 

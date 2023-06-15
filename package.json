@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.0",
+    "@types/babel__traverse": "^7.20.1",
     "@types/chai": "^4.3.1",
     "@types/dedent": "^0.7.0",
     "@types/deep-equal-in-any-order": "^1.0.1",
@@ -37,6 +38,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@babel/traverse": "^7.22.5",
     "adm-zip": "^0.5.9",
     "axios": "^0.27.2",
     "common-js-file-extensions": "^1.0.4",
