@@ -168,13 +168,10 @@ export class MutantGenerator {
     const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
     let match;
     while ((match = regExp.exec(completion.getText())) !== null) {
-      // console.log(`***match ${match} found at ${match.index}`);
       const lineNr = parseInt(match[1]);
       const originalCode = match[2];
       const replacement = match[3];
       const fileName = path.join(this.projectPath, prompt.getFileName()); 
-      // console.log(`match: ${match}`);
-      // console.log(`lineNr: ${lineNr}, originalCode: ${originalCode}, replacement: ${replacement}, fileName: ${fileName}`);
       const startCol = this.getStartColumn(fileName, lineNr, originalCode); // note: this will not work if the line number was wrong
       const endCol = this.getEndColumn(fileName, lineNr, originalCode);
       mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, prompt.getFileName(), lineNr, startCol, lineNr, endCol, prompt.getId(), completion.getId()));

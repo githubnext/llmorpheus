@@ -1,4 +1,3 @@
-import { Completion, Prompt } from "./prompt";
 import { Rule } from "./rule";
 import { getEndColumn, getStartColumn } from "./util";
 
@@ -35,7 +34,6 @@ export class Mutant {
       json.completionId
     );
   }
-
 
   public toString(){
     return "<" + "rule: " + this.rule.toString() + ", " +
@@ -93,13 +91,6 @@ export class Mutant {
    * by checking up to WINDOW_SIZE lines before and after the line where the mutation was reported. 
    */
   public isInvalid(){
-    // console.log(`Checking if mutant is invalid: ${this.toString()}`);
-    // console.log(`  isTrivialRewrite: ${this.isTrivialRewrite()}`);
-    // console.log(`  originalCodeMatchesLHS: ${this.originalCodeMatchesLHS()}`);
-    // console.log(`  replacementMatchesRHS: ${this.replacementMatchesRHS()}`);
-    // console.log(`  startLine: ${this.startLine}`);
-    // console.log(`  endLine: ${this.endLine}`);
-    // console.log(`  fileName: ${this.file}`);
     return this.isTrivialRewrite() || !this.originalCodeMatchesLHS() || !this.replacementMatchesRHS() || this.getStartLine() === -1;
   }
 
@@ -169,11 +160,8 @@ export class Mutant {
           newMutant.addComment(`location adjusted: model reported code on line ${this.startLine}, but found on line ${this.startLine - i}`);
           newMutant.startLine -= i;
           newMutant.endLine -= i;
-          // console.log(`**X** newMutant.getFileName() = ${newMutant.getFileName()}`);
           newMutant.startColumn = getStartColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
-          // console.log("**Y**");
           newMutant.endColumn = getEndColumn(projectPath, newMutant.getFileName(), newMutant.getStartLine(), newMutant.originalCode);
-          // console.log("**Z**");
           return newMutant;
         } else {
           const line = origCode.split("\n")[this.startLine - 1 + i];
