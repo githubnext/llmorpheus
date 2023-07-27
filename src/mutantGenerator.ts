@@ -7,6 +7,7 @@ import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 import { mapMutantsToASTNodes } from "./astMapper";
+import { PromptSpecGenerator } from "./promptSpecGenerator";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -17,7 +18,7 @@ export class MutantGenerator {
   private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
 
-  constructor(private model: IModel, promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string, private projectPath: string) {
+  constructor(private model: IModel, private promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string, private projectPath: string) {
     this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
     this.promptGenerator = new PromptGenerator(promptTemplateFileName);
 
@@ -64,18 +65,16 @@ export class MutantGenerator {
     return files;
   }
 
-  public async generateMutants(path: string) : Promise<void> { 
+  public async generateMutants(packagePath: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
-    const files = await this.findSourceFilesToMutate(path);
+    const files = await this.findSourceFilesToMutate(packagePath);
 
-    const mutants = new Array<Mutant>();
-    for (const file of files){
-      mutants.push(...await this.generateMutantsForFile(file));
-    }
-    
-    // write mutant info to JSON file
-    this.printAndLog(`writing ${mutants.length} mutants to ${this.outputDir}/mutants.json`);
-    fs.writeFileSync(this.outputDir + '/mutants.json', JSON.stringify(mutants, null, 2));
+    // print files
+    console.log(files);
+
+    const generator = new PromptSpecGenerator(files, this.promptTemplateFileName);
+    // generator.printResults();
+    generator.writeToJSON(path.join(this.outputDir,'/promptSpecs.json'));
   }
 
   private completionCnt = 0;
