@@ -74,7 +74,15 @@ export class MutantGenerator {
 
     const generator = new PromptSpecGenerator(files, this.promptTemplateFileName);
     // generator.printResults();
-    generator.writeToJSON(path.join(this.outputDir,'/promptSpecs.json'));
+    generator.writePromptFiles(path.join(this.outputDir));
+
+    // next up:
+    //  - prompt LLM for completions
+    //  - extract mutant candidates from completions
+    //  - filter mutant candidates that are identical to the original code
+    //  - write mutants to file
+    //  - try out mutants with StrykerJS
+
   }
 
   private completionCnt = 0;
