@@ -7,7 +7,7 @@ import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 import { mapMutantsToASTNodes } from "./astMapper";
-import { PromptSpecGenerator } from "./promptSpecGenerator";
+import { NewPrompt, PromptSpecGenerator } from "./promptSpecGenerator";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -67,12 +67,19 @@ export class MutantGenerator {
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
     const files = await this.findSourceFilesToMutate(packagePath);
 
-    // print files
-    console.log(files);
+    console.log(`generating mutants for the following files: ${files.join(", ")}`);
 
-    const generator = new PromptSpecGenerator(files, this.promptTemplateFileName);
-    // generator.printResults();
-    generator.writePromptFiles(path.join(this.outputDir));
+    const generator = new PromptSpecGenerator(files, this.promptTemplateFileName, this.outputDir);
+    
+    for (const prompt of generator.getPrompts()){
+      const completions = await this.getCompletionsForPrompt(prompt);
+      for (const completion of completions){
+        console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
+        fs.writeFileSync(`${this.outputDir}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`, completion.getText());
+      }
+      break;
+    }
+
 
     // next up:
     //  - prompt LLM for completions
@@ -115,7 +122,7 @@ export class MutantGenerator {
   //   return mutants;
   // }
 
-  public async getCompletionsForPrompt(prompt: Prompt) : Promise<Completion[]> {
+  public async getCompletionsForPrompt(prompt: NewPrompt) : Promise<Completion[]> {
     return [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
   }
 

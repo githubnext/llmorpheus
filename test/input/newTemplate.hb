@@ -7,15 +7,15 @@ Please state the three most likely code fragments that the PLACEHOLDER should be
 Provide your answer as fenced code blocks containing a single line of code, 
 using the following template:
 
-Option 1: The line containing PLACEHOLDER should be replaced with:
+Option 1: The PLACEHOLDER should be replaced with:
 ```
 <code fragment>
 ```
-Option 2: The line containing PLACEHOLDER should be replaced with:
+Option 2: The PLACEHOLDER should be replaced with:
 ```
 <code fragment>
 ```
-Option 3: The line containing PLACEHOLDER should be replaced with:
+Option 3: The PLACEHOLDER should be replaced with:
 ```
 <code fragment>
 ```

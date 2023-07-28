@@ -8,9 +8,18 @@ export class PromptSpecGenerator {
   private promptSpecs = new Array<PromptSpec>();
   private prompts = new Array<NewPrompt>();
   private promptTemplate: string = fs.readFileSync(this.promptTemplateFileName, "utf8");
-  constructor(private readonly files: string[], private readonly promptTemplateFileName: string) {
+  constructor(private readonly files: string[], private readonly promptTemplateFileName: string, outputDir: string) {
     this.createPromptSpecs();
     this.createPrompts(); 
+    this.writePromptFiles(path.join(outputDir));
+  }
+
+  public getPromptSpecs(): PromptSpec[] {
+    return this.promptSpecs;
+  }
+
+  public getPrompts(): NewPrompt[] {
+    return this.prompts;
   }
 
   private createPrompts() {
@@ -153,9 +162,7 @@ export class PromptSpecGenerator {
     return prompts;
   }
 
-  public getPromptSpecs(): PromptSpec[] {
-    return this.promptSpecs;
-  }
+
 
 
 
@@ -187,7 +194,7 @@ export class PromptSpecGenerator {
    * Write the promptSpecs to promptSpecs.JSON and the prompts to files "prompts/prompt<NUM>.txt".
    * @param outputDir the name of directory to write the files to
    */
-  public writePromptFiles(outputDir: string){
+  private writePromptFiles(outputDir: string){
     // write promptSpecs to JSON file
     const json = JSON.stringify(this.promptSpecs, null, 2);
     fs.writeFileSync(path.join(outputDir, 'promptSpecs.json'), json);
