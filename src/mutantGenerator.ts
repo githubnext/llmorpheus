@@ -76,6 +76,20 @@ export class MutantGenerator {
       for (const completion of completions){
         console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
         fs.writeFileSync(`${this.outputDir}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`, completion.getText());
+
+        const regExp = /```\n(.*)\n```\n/g;
+        let match;
+        while ((match = regExp.exec(completion.getText())) !== null) {
+          const substitution = match[1];
+          if (substitution !== prompt.getOrig()) {
+            console.log(`substitution: ${substitution}`);
+            const candidateMutant =  prompt.spec.getCodeWithPlaceholder().replace('<PLACEHOLDER>', substitution);
+            console.log(`candidate mutant:\n${candidateMutant}\n`);
+
+          } else {
+            console.log(`substitution equal to original code: ${prompt.getOrig()}`);
+          }
+        }
       }
       break;
     }

@@ -24,16 +24,10 @@ export class PromptSpecGenerator {
 
   private createPrompts() {
     for (const promptSpec of this.promptSpecs) {
-      const code = fs.readFileSync(path.join('.', promptSpec.file), 'utf8');
-      const lines = code.split('\n');
-      const lastLine = lines.length;
-      const endColumnOfLastLine = lines[lastLine - 1].length;
-      const codeWithPlaceholder = getText(code, 1, 0, promptSpec.location.startLine, promptSpec.location.startColumn) +
-        "<PLACEHOLDER>" +
-        getText(code, promptSpec.location.endLine, promptSpec.location.endColumn, lastLine, endColumnOfLastLine);
+      const codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
       const compiledTemplate = handlebars.compile(this.promptTemplate); // promote to field?
       const prompt = compiledTemplate({ code: codeWithPlaceholder });
-      this.prompts.push(new NewPrompt(prompt));
+      this.prompts.push(new NewPrompt(prompt, promptSpec));
     }
   }
 
@@ -224,12 +218,22 @@ export class PromptSpecGenerator {
 export class PromptSpec {
   constructor(public readonly file: string, public readonly feature: string, public readonly component: string, 
               public readonly location: SourceLocation, public readonly orig: string){}
+
+  public getCodeWithPlaceholder() {
+    const code = fs.readFileSync(path.join('.', this.file), 'utf8');
+    const lines = code.split('\n');
+    const lastLine = lines.length;
+    const endColumnOfLastLine = lines[lastLine - 1].length;
+    return getText(code, 1, 0, this.location.startLine, this.location.startColumn) +
+           "<PLACEHOLDER>" +
+           getText(code, this.location.endLine, this.location.endColumn, lastLine, endColumnOfLastLine);
+  }
 }
 
 export class NewPrompt {
   private static idCounter = 0;
   private id: number;
-  constructor(private readonly text: string){
+  constructor(private readonly text: string, public readonly spec: PromptSpec){
     this.id = NewPrompt.idCounter++;
   }
   public getText(): string {
@@ -237,6 +241,9 @@ export class NewPrompt {
   }
   public getId(): number {
     return this.id;
+  }
+  public getOrig(): string {
+    return this.spec.orig;
   }
 }
 
