@@ -14,12 +14,10 @@ import { PromptSpecGenerator } from "./promptSpecGenerator";
  */ 
 export class MutantGenerator {
 
-  private rules: Rule[] = [];
   private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
 
-  constructor(private model: IModel, private promptTemplateFileName: string, private rulesFileName: string, private ruleFilter: IRuleFilter, private outputDir: string, private projectPath: string) {
-    this.rules = JSON.parse(fs.readFileSync(this.rulesFileName, "utf8")).map((rule: any) => new Rule(rule.id, rule.rule, rule.description));
+  constructor(private model: IModel, private promptTemplateFileName: string, private outputDir: string, private projectPath: string) {
     this.promptGenerator = new PromptGenerator(promptTemplateFileName);
 
     // remove output files from previous run, if they exist
@@ -90,32 +88,32 @@ export class MutantGenerator {
   /**
    * Generate mutants for a given file
    */
-  private async generateMutantsForFile(fileName: string) : Promise<Array<Mutant>> {
-    const mutants = new Array<Mutant>();
-    this.printAndLog(`\nGenerating mutants for ${fileName}:`);
-    const origCode = fs.readFileSync(fileName, "utf8");
-    const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
+  // private async generateMutantsForFile(fileName: string) : Promise<Array<Mutant>> {
+  //   const mutants = new Array<Mutant>();
+  //   this.printAndLog(`\nGenerating mutants for ${fileName}:`);
+  //   const origCode = fs.readFileSync(fileName, "utf8");
+  //   const rules = this.rules.filter((rule) => this.ruleFilter(rule.getRuleId())); // filter out rules that are not selected
     
-    const prompts = this.createUsefulPrompts(fileName, origCode, rules);
-    for (let promptNr=0; promptNr < prompts.length; promptNr++ ){
-      const prompt = prompts[promptNr];
-      const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.json`;
-      const promptTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
-      fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
-      fs.writeFileSync(promptTextFileName, prompt.getText()); // write prompt text to file
-      this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}`);
-      try {
-        const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
-        const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
-        const filteredMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
-        const mappedMutants = mapMutantsToASTNodes(this.projectPath, filteredMutants);
-        mutants.push(...mappedMutants);
-      } catch (e) {
-        this.printAndLog(`    error occurred while processing prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
-      }
-    }
-    return mutants;
-  }
+  //   const prompts = this.createUsefulPrompts(fileName, origCode, rules);
+  //   for (let promptNr=0; promptNr < prompts.length; promptNr++ ){
+  //     const prompt = prompts[promptNr];
+  //     const promptFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.json`;
+  //     const promptTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}.txt`;
+  //     fs.writeFileSync(promptFileName, JSON.stringify(prompt)); // write prompt to file
+  //     fs.writeFileSync(promptTextFileName, prompt.getText()); // write prompt text to file
+  //     this.printAndLog(`    created prompt ${prompt.getId()} for ${fileName}; written to ${promptFileName}`);
+  //     try {
+  //       const completions = [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
+  //       const candidateMutants = this.extractMutantsFromCompletions(fileName, prompt.getChunkNr(), prompt.getRule(), prompt, completions);
+  //       const filteredMutants = this.filterMutants(fileName, prompt.getChunkNr(), prompt.getRule(), candidateMutants, origCode);
+  //       const mappedMutants = mapMutantsToASTNodes(this.projectPath, filteredMutants);
+  //       mutants.push(...mappedMutants);
+  //     } catch (e) {
+  //       this.printAndLog(`    error occurred while processing prompt ${prompt.getId()} for ${fileName}: ${e}\n`);
+  //     }
+  //   }
+  //   return mutants;
+  // }
 
   public async getCompletionsForPrompt(prompt: Prompt) : Promise<Completion[]> {
     return [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
