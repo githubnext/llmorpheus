@@ -61,5 +61,6 @@ if (require.main === module) {
 
     const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, argv.outputDir, argv.path);
     mutantGenerator.generateMutants(argv.path);
+    console.log("*** Done! ***");
   })();
 }

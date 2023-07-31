@@ -7,7 +7,10 @@ import { Mutant } from "./mutant";
 import { Completion, Prompt, PromptGenerator } from "./prompt";
 import { Rule, IRuleFilter } from "./rule";
 import { mapMutantsToASTNodes } from "./astMapper";
-import { NewPrompt, PromptSpecGenerator } from "./promptSpecGenerator";
+import { NewCompletion, NewMutant, NewPrompt, PromptSpecGenerator } from "./promptSpecGenerator";
+import { parse } from "yargs";
+import * as parser from "@babel/parser";
+import { isObject } from "util";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -63,6 +66,23 @@ export class MutantGenerator {
     return files;
   }
 
+  public isObjectLiteral(code: string) : boolean {
+    return code.startsWith('{') && code.endsWith('}');
+  }
+
+  public hasUnbalancedParens(code: string) : boolean {
+    let nrOpen = 0;
+    let nrClose = 0;
+    for (const c of code) {
+      if (c === '(') {
+        nrOpen++;
+      } else if (c === ')') {
+        nrClose++;
+      }
+    }
+    return nrOpen !== nrClose;
+  }
+
   public async generateMutants(packagePath: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
     const files = await this.findSourceFilesToMutate(packagePath);
@@ -71,28 +91,82 @@ export class MutantGenerator {
 
     const generator = new PromptSpecGenerator(files, this.promptTemplateFileName, this.outputDir);
     
+    let nrGood = 0;
+    let nrBad = 0;
+    let nrSame = 0
+    let nrSkip = 0; 
+    const mutants = new Array<NewMutant>();
     for (const prompt of generator.getPrompts()){
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions){
-        console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
-        fs.writeFileSync(`${this.outputDir}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`, completion.getText());
+        // console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
+        fs.writeFileSync(`${this.outputDir}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`, completion.text);
 
         const regExp = /```\n(.*)\n```\n/g;
         let match;
-        while ((match = regExp.exec(completion.getText())) !== null) {
+        while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
-          if (substitution !== prompt.getOrig()) {
-            console.log(`substitution: ${substitution}`);
+          if (substitution !== prompt.getOrig() && !prompt.getOrig().includes('Object.')) {
+            // console.log(`substitution: ${substitution}`);
             const candidateMutant =  prompt.spec.getCodeWithPlaceholder().replace('<PLACEHOLDER>', substitution);
-            console.log(`candidate mutant:\n${candidateMutant}\n`);
+            // console.log(`candidate mutant:\n${candidateMutant}\n`);
+            try {
+              if (this.hasUnbalancedParens(substitution)) {
+                // console.log(`*** unbalanced parens: ${substitution} replacing ${prompt.getOrig()}\n`);
+                nrBad++;
+              } else if (prompt.spec.isExpressionPlaceholder()) {
+                parser.parseExpression(substitution);
+                // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                nrGood++;
+                const mutant = new NewMutant(prompt.spec.file,
+                                             prompt.spec.location.startLine,
+                                             prompt.spec.location.startColumn,
+                                             prompt.spec.location.endLine,
+                                             prompt.spec.location.endColumn,
+                                             prompt.getOrig(),
+                                             substitution,
+                                             prompt.getId(),
+                                             completion.getId());    
+                mutants.push(mutant);  
+              } else if (this.isObjectLiteral(substitution) && !this.isObjectLiteral(prompt.getOrig())) {
+                parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});
+                // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                nrGood++;
+                const mutant = new NewMutant(prompt.spec.file,
+                                             prompt.spec.location.startLine,
+                                             prompt.spec.location.startColumn,
+                                             prompt.spec.location.endLine,
+                                             prompt.spec.location.endColumn,
+                                             prompt.getOrig(),
+                                             substitution,
+                                             prompt.getId(),
+                                             completion.getId());    
+                mutants.push(mutant);  
+              } else {
+                parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});
+                console.log(`*** ignoring for now: ${substitution} replacing ${prompt.getOrig()}\n (feature: ${prompt.spec.feature}, component: ${prompt.spec.component})\n`);
+                nrSkip++;
+              }
+            } catch (e){
+              console.log(`*** invalid code: ${e}\n`);
+              console.log(`  *** original code: ${prompt.getOrig()}\n`);
+              console.log(`  *** substitution: ${substitution}\n`);
+              // console.log(`-----------------\n${candidateMutant}\n-----------------\n`);
+              nrBad++;
+            }
 
           } else {
-            console.log(`substitution equal to original code: ${prompt.getOrig()}`);
+            // console.log(`substitution equal to original code: ${prompt.getOrig()}`);
+            nrSame++;
           }
         }
       }
-      break;
+      // break;
     }
+    console.log(`total number of mutants: ${nrGood+nrBad+nrSame+nrSkip} (nrGood: ${nrGood}, nrBad: ${nrBad}, nrSame: ${nrSame}, nrSkip: ${nrSkip})`);
+
+    // write mutants to file
+    fs.writeFileSync(`${this.outputDir}/mutants.json`, JSON.stringify(mutants, null, 2));
 
 
     // next up:
@@ -136,8 +210,8 @@ export class MutantGenerator {
   //   return mutants;
   // }
 
-  public async getCompletionsForPrompt(prompt: NewPrompt) : Promise<Completion[]> {
-    return [...await this.model.query(prompt.getText())].map((completionText) => new Completion(prompt.getId(), this.completionCnt++, completionText));
+  public async getCompletionsForPrompt(prompt: NewPrompt) : Promise<NewCompletion[]> {
+    return [...await this.model.query(prompt.getText())].map((completionText) => new NewCompletion(completionText, prompt.getId()));
   }
 
   private promptCnt = 0;

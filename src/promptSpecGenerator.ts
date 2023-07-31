@@ -228,6 +228,20 @@ export class PromptSpec {
            "<PLACEHOLDER>" +
            getText(code, this.location.endLine, this.location.endColumn, lastLine, endColumnOfLastLine);
   }
+
+  public isExpressionPlaceholder(): boolean {
+    return this.feature === "if" && this.component === "test" ||
+           this.feature === "switch" && this.component === "discriminant" ||
+           this.feature === "while" && this.component === "test" ||
+           this.feature === "do-while" && this.component === "test" ||
+           this.feature === "for" && this.component === "test" ||
+           this.feature === "for-in" && this.component === "right" ||  
+           this.feature === "for-of" && this.component === "right" ||
+           this.feature === "call" && this.component.startsWith("arg") ||
+           this.feature === "call" && this.component === "callee" ||
+           this.feature === "call" && this.component === "allArgs";
+  }
+
 }
 
 export class NewPrompt {
@@ -244,6 +258,30 @@ export class NewPrompt {
   }
   public getOrig(): string {
     return this.spec.orig;
+  }
+}
+
+export class NewCompletion {
+  private static idCounter = 0;
+  private id: number;
+  constructor(public readonly text: string, public readonly promptId: number){
+    this.id = NewCompletion.idCounter++;
+  }
+  public getId(): number {
+    return this.id;
+  }
+}
+
+export class NewMutant {
+  constructor(public file: string,
+              public startLine: number,
+              public startColumn: number,
+              public endLine: number,
+              public endColumn: number,
+              public originalCode: string, 
+              public replacement: string, 
+              public readonly promptId: number,
+              public readonly completionId: number) {
   }
 }
 
