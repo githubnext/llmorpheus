@@ -126,8 +126,28 @@ export class MutantGenerator {
                                              prompt.getOrig(),
                                              substitution,
                                              prompt.getId(),
-                                             completion.getId());    
+                                             completion.getId(),
+                                             prompt.spec.feature + '/' + prompt.spec.component);    
                 mutants.push(mutant);  
+              } else if (prompt.spec.isArgListPlaceHolder()){
+                nrGood++;
+                const expandedOrig = prompt.spec.parentLocation!.getText();
+                const expandedSubstitution = expandedOrig.replace(prompt.getOrig(), substitution);
+                console.log(`*** VALID mutant: ${expandedSubstitution} replacing ${expandedOrig}\n`);
+
+                const mutant = new NewMutant(prompt.spec.file,
+                                             prompt.spec.parentLocation!.startLine,
+                                             prompt.spec.parentLocation!.startColumn,
+                                             prompt.spec.parentLocation!.endLine,
+                                             prompt.spec.parentLocation!.endColumn,
+                                             expandedOrig, // prompt.getOrig(),
+                                             expandedSubstitution, // substitution,                                                                                
+                                             prompt.getId(),
+                                             completion.getId(),
+                                             prompt.spec.feature + '/' + prompt.spec.component);    
+                mutants.push(mutant);   
+                  
+
               } else if (this.isObjectLiteral(substitution) && !this.isObjectLiteral(prompt.getOrig())) {
                 parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});
                 // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
@@ -140,7 +160,8 @@ export class MutantGenerator {
                                              prompt.getOrig(),
                                              substitution,
                                              prompt.getId(),
-                                             completion.getId());    
+                                             completion.getId(),
+                                             prompt.spec.feature + '/' + prompt.spec.component);    
                 mutants.push(mutant);  
               } else {
                 parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});

@@ -147,11 +147,20 @@ export class PromptSpecGenerator {
       const loc = path.node.loc!;
       const allArgsLoc = new SourceLocation(file, callee.loc!.end.line, callee.loc!.end.column+1, loc.end.line, loc.end.column-1);
       prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText()));
+      // const parentLoc = path.node.loc;
+      // const parentText = path.node.getText();
+      // const allArgsText = parentText.substring(allArgsLoc.startColumn - parentLoc!.start.column, allArgsLoc.endColumn - parentLoc!.start.column);
+      // console.log(`*** allArgsText: ${allArgsText}, parentText: ${parentText}`);
+
     } else if (args.length !== 1){ // skip if there is only one argument because then the same placeholder is already created for the first argument
       const firstArg = args[0];
       const lastArg = args[args.length - 1];
       const allArgsLoc = new SourceLocation(file, firstArg.loc!.start.line, firstArg.loc!.start.column, lastArg.loc!.end.line, lastArg.loc!.end.column);
-      prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText()));
+      const parentLoc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
+      prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText(), parentLoc));
+      // const parentText = parentLoc.getText();
+      // const allArgsText = parentText.substring(allArgsLoc.startColumn - parentLoc!.startColumn, allArgsLoc.endColumn - parentLoc!.startColumn);
+      // console.log(`*** allArgsText: ${allArgsText}, parentText: ${parentText}`);
     }
     return prompts;
   }
@@ -217,7 +226,8 @@ export class PromptSpecGenerator {
  */
 export class PromptSpec {
   constructor(public readonly file: string, public readonly feature: string, public readonly component: string, 
-              public readonly location: SourceLocation, public readonly orig: string){}
+              public readonly location: SourceLocation, public readonly orig: string,
+              public readonly parentLocation? : SourceLocation){}
 
   public getCodeWithPlaceholder() {
     const code = fs.readFileSync(path.join('.', this.file), 'utf8');
@@ -238,10 +248,12 @@ export class PromptSpec {
            this.feature === "for-in" && this.component === "right" ||  
            this.feature === "for-of" && this.component === "right" ||
            this.feature === "call" && this.component.startsWith("arg") ||
-           this.feature === "call" && this.component === "callee" ||
-           this.feature === "call" && this.component === "allArgs";
+           this.feature === "call" && this.component === "callee";
   }
 
+  public isArgListPlaceHolder(): boolean {
+    return this.feature === "call" && this.component === "allArgs";
+  }
 }
 
 export class NewPrompt {
@@ -281,7 +293,8 @@ export class NewMutant {
               public originalCode: string, 
               public replacement: string, 
               public readonly promptId: number,
-              public readonly completionId: number) {
+              public readonly completionId: number,
+              public readonly reason: string) {
   }
 }
 
