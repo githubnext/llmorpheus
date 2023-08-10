@@ -42,7 +42,6 @@ export class PromptSpecGenerator {
     const promptSpecs = new Array<PromptSpec>();
     const code = fs.readFileSync("./" + file, 'utf8'); 
     const ast = parser.parse(code, { sourceType: "module", plugins: ["typescript"]});
-    console.log(`ast: ${file}:\n${ast}`);
     const outerThis = this; // TODO: is there a better way to do this?
     traverse(ast, {
       enter(path) {
@@ -147,51 +146,15 @@ export class PromptSpecGenerator {
       const loc = path.node.loc!;
       const allArgsLoc = new SourceLocation(file, callee.loc!.end.line, callee.loc!.end.column+1, loc.end.line, loc.end.column-1);
       prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText()));
-      // const parentLoc = path.node.loc;
-      // const parentText = path.node.getText();
-      // const allArgsText = parentText.substring(allArgsLoc.startColumn - parentLoc!.start.column, allArgsLoc.endColumn - parentLoc!.start.column);
-      // console.log(`*** allArgsText: ${allArgsText}, parentText: ${parentText}`);
-
     } else if (args.length !== 1){ // skip if there is only one argument because then the same placeholder is already created for the first argument
       const firstArg = args[0];
       const lastArg = args[args.length - 1];
       const allArgsLoc = new SourceLocation(file, firstArg.loc!.start.line, firstArg.loc!.start.column, lastArg.loc!.end.line, lastArg.loc!.end.column);
       const parentLoc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
       prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText(), parentLoc));
-      // const parentText = parentLoc.getText();
-      // const allArgsText = parentText.substring(allArgsLoc.startColumn - parentLoc!.startColumn, allArgsLoc.endColumn - parentLoc!.startColumn);
-      // console.log(`*** allArgsText: ${allArgsText}, parentText: ${parentText}`);
     }
     return prompts;
   }
-
-
-
-
-
-  // public printResults(){
-  //   for (let i=0; i < this.promptSpecs.length; i++){
-  //     const promptSpec = this.promptSpecs[i];
-  //     console.log(`${i}: ${promptSpec.feature}/${promptSpec.component}`);
-  //     console.log("***1***");
-  //     const code = fs.readFileSync(path.join('.', promptSpec.file), 'utf8');
-  //     console.log("***2***");
-  //     const feature = promptSpec.feature;
-  //     const component = promptSpec.component;
-  //     const orig = promptSpec.orig;
-  //     const startLine = promptSpec.location.startLine;
-  //     const startColumn = promptSpec.location.startColumn;
-  //     const endLine = promptSpec.location.endLine;
-  //     const endColumn = promptSpec.location.endColumn;
-  //     const lines = code.split('\n');
-  //     const lastLine = lines.length;
-  //     const endColumnOfLastLine = lines[lastLine-1].length;
-  //     const before = getText(code, 1, 0, startLine, startColumn);
-  //     const after = getText(code, endLine, endColumn, lastLine, endColumnOfLastLine);
-  //     const ccode = insertCommentOnLineWithPlaceholder(`${before}<PLACEHOLDER>${after}`, `${feature}/${component} (orig: ${orig})`);
-  //     console.log(`// PROMPT#${i} created for component ${component} on line ${startLine} in FILE ${promptSpec.file}:\n${ccode}`);    
-  //   }
-  // }
 
   /**
    * Write the promptSpecs to promptSpecs.JSON and the prompts to files "prompts/prompt<NUM>.txt".
@@ -209,7 +172,6 @@ export class PromptSpecGenerator {
     }
     for (const prompt of this.prompts){
        const fileName = path.join('./prompts', `prompt${prompt.getId()}.txt`);
-       console.log(`fileName: ${fileName}`);  
       fs.writeFileSync(fileName, prompt.getText());
     }
   }

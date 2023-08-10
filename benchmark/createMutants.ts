@@ -2,7 +2,6 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { CachingModel, Gpt35TurboModel, TextDavinci003Model } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
-import { IRuleFilter } from "../src/rule";
 
 if (require.main === module) {
   (async () => {

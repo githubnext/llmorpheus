@@ -3,25 +3,17 @@ import fg from 'fast-glob';
 import path from 'path';
 import { IModel } from "./model";
 
-import { Mutant } from "./mutant";
-import { Completion, Prompt, PromptGenerator } from "./prompt";
-import { Rule, IRuleFilter } from "./rule";
-import { mapMutantsToASTNodes } from "./astMapper";
 import { NewCompletion, NewMutant, NewPrompt, PromptSpecGenerator } from "./promptSpecGenerator";
-import { parse } from "yargs";
 import * as parser from "@babel/parser";
-import { isObject } from "util";
 
 /**
  * Suggests mutations in given files using the specified rules
  */ 
 export class MutantGenerator {
 
-  private promptGenerator : PromptGenerator;
   private static CHUNK_SIZE = 20; // max number of LOC to include in one prompt
 
   constructor(private model: IModel, private promptTemplateFileName: string, private outputDir: string, private projectPath: string) {
-    this.promptGenerator = new PromptGenerator(promptTemplateFileName);
 
     // remove output files from previous run, if they exist
     if (!fs.existsSync(this.outputDir)) {
@@ -91,9 +83,9 @@ export class MutantGenerator {
 
     const generator = new PromptSpecGenerator(files, this.promptTemplateFileName, this.outputDir);
     
-    let nrGood = 0;
-    let nrBad = 0;
-    let nrSame = 0
+    let nrSyntacticallyValid = 0;
+    let nrSyntacticallyInvalid = 0;
+    let nrIdentical = 0
     let nrSkip = 0; 
     const mutants = new Array<NewMutant>();
     for (const prompt of generator.getPrompts()){
@@ -113,11 +105,11 @@ export class MutantGenerator {
             try {
               if (this.hasUnbalancedParens(substitution)) {
                 // console.log(`*** unbalanced parens: ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrBad++;
+                nrSyntacticallyInvalid++;
               } else if (prompt.spec.isExpressionPlaceholder()) {
                 parser.parseExpression(substitution);
                 // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrGood++;
+                nrSyntacticallyValid++;
                 const mutant = new NewMutant(prompt.spec.file,
                                              prompt.spec.location.startLine,
                                              prompt.spec.location.startColumn,
@@ -130,10 +122,10 @@ export class MutantGenerator {
                                              prompt.spec.feature + '/' + prompt.spec.component);    
                 mutants.push(mutant);  
               } else if (prompt.spec.isArgListPlaceHolder()){
-                nrGood++;
+                nrSyntacticallyValid++;
                 const expandedOrig = prompt.spec.parentLocation!.getText();
                 const expandedSubstitution = expandedOrig.replace(prompt.getOrig(), substitution);
-                console.log(`*** VALID mutant: ${expandedSubstitution} replacing ${expandedOrig}\n`);
+                // console.log(`*** VALID mutant: ${expandedSubstitution} replacing ${expandedOrig}\n`);
 
                 const mutant = new NewMutant(prompt.spec.file,
                                              prompt.spec.parentLocation!.startLine,
@@ -148,10 +140,10 @@ export class MutantGenerator {
                 mutants.push(mutant);   
                   
 
-              } else if (this.isObjectLiteral(substitution) && !this.isObjectLiteral(prompt.getOrig())) {
+              } else { //if (this.isObjectLiteral(substitution) && !this.isObjectLiteral(prompt.getOrig())) {
                 parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});
                 // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrGood++;
+                nrSyntacticallyValid++;
                 const mutant = new NewMutant(prompt.spec.file,
                                              prompt.spec.location.startLine,
                                              prompt.spec.location.startColumn,
@@ -163,31 +155,41 @@ export class MutantGenerator {
                                              completion.getId(),
                                              prompt.spec.feature + '/' + prompt.spec.component);    
                 mutants.push(mutant);  
-              } else {
-                parser.parse(candidateMutant, {sourceType: "module", plugins: ["typescript", "jsx"]});
-                console.log(`*** ignoring for now: ${substitution} replacing ${prompt.getOrig()}\n (feature: ${prompt.spec.feature}, component: ${prompt.spec.component})\n`);
-                nrSkip++;
-              }
+              } 
             } catch (e){
-              console.log(`*** invalid code: ${e}\n`);
-              console.log(`  *** original code: ${prompt.getOrig()}\n`);
-              console.log(`  *** substitution: ${substitution}\n`);
-              // console.log(`-----------------\n${candidateMutant}\n-----------------\n`);
-              nrBad++;
+              nrSyntacticallyInvalid++;
             }
-
           } else {
             // console.log(`substitution equal to original code: ${prompt.getOrig()}`);
-            nrSame++;
+            nrIdentical++;
           }
         }
       }
-      // break;
     }
-    console.log(`total number of mutants: ${nrGood+nrBad+nrSame+nrSkip} (nrGood: ${nrGood}, nrBad: ${nrBad}, nrSame: ${nrSame}, nrSkip: ${nrSkip})`);
+
+    const nrCandidates = nrSyntacticallyValid+nrSyntacticallyInvalid+nrIdentical+nrSkip;
+    console.log(`found ${nrCandidates} mutant candidates`);
+
+    const locations = new Array<string>();
+    for (const mutant of mutants){
+      const location = `${mutant.file}:<${mutant.startLine},${mutant.startColumn}>-${mutant.endLine},${mutant.endColumn}`;
+      if (!locations.includes(location)){
+        locations.push(location);
+      }
+    }
+    const nrLocations = locations.length;
+
+    console.log(`discarding ${nrSyntacticallyInvalid} syntactically invalid mutants`);
+    console.log(`discarding ${nrIdentical} mutant candidates that are identical to the original code`);
+
+
+    // console.log(`total number of mutants: ${nrSyntacticallyValid+nrSyntacticallyInvalid+nrIdentical+nrSkip} (nrGood: ${nrSyntacticallyValid}, nrBad: ${nrSyntacticallyInvalid}, nrSame: ${nrIdentical}, nrSkip: ${nrSkip})`);
 
     // write mutants to file
-    fs.writeFileSync(`${this.outputDir}/mutants.json`, JSON.stringify(mutants, null, 2));
+    const mutantsFileName = `${this.outputDir}/mutants.json`;
+    fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
+
+    console.log(`wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}`);
 
 
     // next up:
@@ -237,69 +239,11 @@ export class MutantGenerator {
 
   private promptCnt = 0;
 
-  /**
-   * Generate prompts for the given file and rules. Prompts are only generated for
-   * chunks that contain at least one of the LHS terminals of the rule.
-   * @param fileName the name of the file to generate prompts for
-   * @param sourceCode the source code of the file
-   * @param rules the rules to generate prompts for
-   * @returns the generated prompts
-   */
-  public createUsefulPrompts(fileName: string, sourceCode: string, rules: Rule[]) : Prompt[] {
-    const chunks = this.createChunks(sourceCode);
-    const usefulPrompts = new Array<Prompt>();
-    for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
-      const chunk = chunks[chunkNr];
-      for (let ruleNr=0; ruleNr < rules.length; ruleNr++ ){
-        const rule = rules[ruleNr];
-        if (!this.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-          this.printAndLog(`    skipping chunk ${chunkNr} (lines ${this.getLineRange(chunk).trim()}) because it does not contain any of the terminals ${[...rule.getLHSterminals()].toString()}`);
-        } else {
-          const prompt = this.promptGenerator.createPrompt(this.promptCnt++, fileName, chunkNr, chunk, rule);  
-          usefulPrompts.push(prompt);
-        }
-      }
-    }
-    return usefulPrompts;
-  }
+   
 
-  /** 
-   * Extract candidate mutants from the completions by matching a RegExp
-   */
-  public extractMutantsFromCompletions(fileName: string, chunkNr: number, rule: Rule, prompt: Prompt, completions: Array<Completion>) : Array<Mutant> {
-    // console.log(`extractMutantsFromCompletions: fileName=${fileName}, chunkNr=${chunkNr}, rule=${rule.getRuleId()}, prompt=${prompt.getId()}, completions=${completions.length}`);
-    let mutants = new Array<Mutant>();
-    this.printAndLog(`      received ${completions.length} completions for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()}.`);
-    completions.forEach((completion) => { // write completions to files
-      const completionFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.json`;
-      const completionTextFileName = `${this.outputDir}/prompts/prompt_${prompt.getId()}_completion_${completion.getId()}.txt`;
-      fs.writeFileSync(completionFileName, JSON.stringify(completion));
-      fs.writeFileSync(completionTextFileName, completion.getText());
-      this.printAndLog(`      completion ${completion.getId()} for prompt ${prompt.getId()} written to ${completionFileName}`);
-    }); 
-    for (const completion of completions) {
-      mutants.push(...this.extractMutantsFromCompletion(prompt, completion));
-    }
-    return mutants;
-  }
+   
 
-  public extractMutantsFromCompletion(prompt: Prompt, completion: Completion): Mutant[] {
-    const mutants = new Array();
-    // regular expression that matches the string "CHANGE LINE #n FROM:\n```SomeLineOfCode```\nTO:\n```SomeLineOfCode```\n"
-    const regExp = /CHANGE LINE #(\d+) FROM:\n```\n(.*)\n```\nTO:\n```\n(.*)\n```\n/g;
-    let match;
-    while ((match = regExp.exec(completion.getText())) !== null) {
-      const lineNr = parseInt(match[1]);
-      const originalCode = match[2];
-      const replacement = match[3];
-      const fileName = path.join(this.projectPath, prompt.getFileName()); 
-      const startCol = this.getStartColumn(fileName, lineNr, originalCode); // note: this will not work if the line number was wrong
-      const endCol = this.getEndColumn(fileName, lineNr, originalCode);
-      mutants.push(new Mutant(prompt.getRule(), originalCode, replacement, prompt.getFileName(), lineNr, startCol, lineNr, endCol, prompt.getId(), completion.getId()));
-    }
-   return mutants;
-  }
-
+   
   private getStartColumn(fileName: string, lineNr: number, originalCode: string): number {
     const lines = fs.readFileSync(fileName).toString().split("\n");
     const line = lines[lineNr-1];
@@ -312,28 +256,7 @@ export class MutantGenerator {
     return line.indexOf(originalCode) + originalCode.length;
   }
 
-  /**
-   * Remove invalid mutants and duplicate mutants, adjust line numbers if needed, make file name relative.
-   */
-  public filterMutants(fileName: string, chunkNr: number, rule: Rule, mutants: Array<Mutant>, origCode: string) : Array<Mutant> {
-    const nrCandidateMutants = mutants.length;
-    const adjustedMutants = mutants.map(m => m.adjustLocationAsNeeded(this.projectPath, origCode));
-    const validMutants = adjustedMutants.filter(m => !m.isInvalid());
-    const nrInvalidMutants = nrCandidateMutants - validMutants.length;
-
-    // filter duplicates
-    const nonDuplicateMutants = new Array<Mutant>();
-    for (const mutant of validMutants){
-      const duplicatesOf = nonDuplicateMutants.filter(m => m.isDuplicateOf(mutant));
-      if (duplicatesOf.length === 0){
-        nonDuplicateMutants.push(mutant);
-      } 
-    }
-    const nrDuplicateMutants = validMutants.length - nonDuplicateMutants.length;
-
-    this.printAndLog(`        extracted ${nonDuplicateMutants.length} mutants for chunk ${chunkNr} of file ${fileName}, given rule ${rule.getRuleId()} (after removing ${nrInvalidMutants} invalid mutants and ${nrDuplicateMutants} duplicate mutants).`);
-    return nonDuplicateMutants;
-  }
+   
 
   /**
    * Add line numbers to source code and break it up into chunks of at most CHUNK_SIZE lines.
