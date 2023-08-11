@@ -1,10 +1,11 @@
 import fs from "fs";
 import fg from 'fast-glob';
-import path from 'path';
 import { IModel } from "./model";
 
 import { NewCompletion, NewMutant, NewPrompt, PromptSpecGenerator } from "./promptSpecGenerator";
 import * as parser from "@babel/parser";
+import { util } from "chai";
+import { hasUnbalancedParens } from "./util";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -58,23 +59,6 @@ export class MutantGenerator {
     return files;
   }
 
-  public isObjectLiteral(code: string) : boolean {
-    return code.startsWith('{') && code.endsWith('}');
-  }
-
-  public hasUnbalancedParens(code: string) : boolean {
-    let nrOpen = 0;
-    let nrClose = 0;
-    for (const c of code) {
-      if (c === '(') {
-        nrOpen++;
-      } else if (c === ')') {
-        nrClose++;
-      }
-    }
-    return nrOpen !== nrClose;
-  }
-
   public async generateMutants(packagePath: string) : Promise<void> { 
     this.printAndLog(`Starting generation of mutants on: ${new Date().toUTCString()}\n\n`);
     const files = await this.findSourceFilesToMutate(packagePath);
@@ -103,7 +87,7 @@ export class MutantGenerator {
             const candidateMutant =  prompt.spec.getCodeWithPlaceholder().replace('<PLACEHOLDER>', substitution);
             // console.log(`candidate mutant:\n${candidateMutant}\n`);
             try {
-              if (this.hasUnbalancedParens(substitution)) {
+              if (hasUnbalancedParens(substitution)) {
                 // console.log(`*** unbalanced parens: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
               } else if (prompt.spec.isExpressionPlaceholder()) {
@@ -182,23 +166,11 @@ export class MutantGenerator {
     console.log(`discarding ${nrSyntacticallyInvalid} syntactically invalid mutants`);
     console.log(`discarding ${nrIdentical} mutant candidates that are identical to the original code`);
 
-
-    // console.log(`total number of mutants: ${nrSyntacticallyValid+nrSyntacticallyInvalid+nrIdentical+nrSkip} (nrGood: ${nrSyntacticallyValid}, nrBad: ${nrSyntacticallyInvalid}, nrSame: ${nrIdentical}, nrSkip: ${nrSkip})`);
-
     // write mutants to file
     const mutantsFileName = `${this.outputDir}/mutants.json`;
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
     console.log(`wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}`);
-
-
-    // next up:
-    //  - prompt LLM for completions
-    //  - extract mutant candidates from completions
-    //  - filter mutant candidates that are identical to the original code
-    //  - write mutants to file
-    //  - try out mutants with StrykerJS
-
   }
 
   private completionCnt = 0;

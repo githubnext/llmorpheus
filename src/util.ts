@@ -12,3 +12,20 @@ export function getEndColumn(projectPath: string, fileName: string, lineNr: numb
   const line = lines[lineNr-1];
   return line.indexOf(originalCode) + originalCode.length;
 }
+
+export function isObjectLiteral(code: string) : boolean {
+  return code.startsWith('{') && code.endsWith('}');
+}
+
+export function hasUnbalancedParens(code: string) : boolean {
+  let nrOpen = 0;
+  let nrClose = 0;
+  for (const c of code) {
+    if (c === '(') {
+      nrOpen++;
+    } else if (c === ')') {
+      nrClose++;
+    }
+  }
+  return nrOpen !== nrClose;
+}
