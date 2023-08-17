@@ -2,6 +2,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { CachingModel, Gpt35TurboModel, TextDavinci003Model } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
+import path from "path";
 
 if (require.main === module) {
   (async () => {
@@ -12,11 +13,6 @@ if (require.main === module) {
           type: "string",
           demandOption: true,
           description: "path to file/directory containing the original code",
-        },
-        outputDir: {
-          type: "string",
-          default: "./output",
-          description: "path to directory where output files will be written (default: \"./output\")",
         },
         promptTemplateFileName: {
           type: "string",
@@ -58,8 +54,7 @@ if (require.main === module) {
       model = baseModel;
     }
 
-    const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, argv.outputDir, argv.path);
+    const mutantGenerator = new MutantGenerator(model, argv.promptTemplateFileName, path.join(argv.path,'MUTATION_TESTING'), argv.path);
     mutantGenerator.generateMutants(argv.path);
-    console.log("*** Done! ***");
   })();
 }

@@ -29,3 +29,60 @@ export function hasUnbalancedParens(code: string) : boolean {
   }
   return nrOpen !== nrClose;
 }
+
+function insertCommentOnLineWithPlaceholder(code: string, comment: string){
+  const lines = code.split('\n');
+  const lineWithPlaceholder = lines.findIndex(line => line.includes('<PLACEHOLDER>'));
+  if (lineWithPlaceholder === -1){
+    throw new Error("No line with placeholder found");
+  } else {
+    const line = lines[lineWithPlaceholder];  
+    const lineWithComment = line + ' // ' + comment;
+    lines[lineWithPlaceholder] = lineWithComment;
+    return lines.join('\n');
+  }
+}
+
+
+/**
+ * Convert [line,col] to index.
+ * @param code the code
+ * @param line the line
+ * @param column the column
+ * @returns the index
+ */
+export function toIndex(code: string, line: number, column: number) {
+  let index = 0;
+  let lineCount = 1;
+  let columnCount = 0;
+  for (let i = 0; i <= code.length; i++) {
+    if (lineCount === line && columnCount === column) {
+      index = i;
+      break;
+    }
+    if (code[i] === '\n') {
+      lineCount++;
+      columnCount = 0;
+    } else {
+      columnCount++;
+    }
+  }
+  return index;
+}
+
+/**
+ * Retrieve the code fragment from [startLine, startColumn] to [endLine, endColumn].
+ * @param code the code
+ * @param startLine the start line
+ * @param startColumn the start column
+ * @param endLine the end line
+ * @param endColumn the end column
+ * @returns the code fragment
+ */
+export function getText(code: string, startLine: number, startColumn: number, endLine: number, endColumn: number) {
+  const startIndex = toIndex(code, startLine, startColumn);
+  const endIndex = toIndex(code, endLine, endColumn);
+  return code.substring(startIndex, endIndex);
+}
+
+

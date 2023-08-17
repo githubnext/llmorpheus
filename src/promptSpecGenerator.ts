@@ -3,22 +3,25 @@ import * as path from 'path';
 import * as parser from "@babel/parser";
 import traverse from "@babel/traverse";
 import * as handlebars from 'handlebars';
+import { Prompt } from './Prompt';
+import { SourceLocation } from './SourceLocation';
+import { getText } from './util';
 
 export class PromptSpecGenerator {
   private promptSpecs = new Array<PromptSpec>();
-  private prompts = new Array<NewPrompt>();
+  private prompts = new Array<Prompt>();
   private promptTemplate: string = fs.readFileSync(this.promptTemplateFileName, "utf8");
   constructor(private readonly files: string[], private readonly promptTemplateFileName: string, outputDir: string) {
     this.createPromptSpecs();
     this.createPrompts(); 
-    this.writePromptFiles(path.join(outputDir));
+    this.writePromptFiles(outputDir);
   }
 
   public getPromptSpecs(): PromptSpec[] {
     return this.promptSpecs;
   }
 
-  public getPrompts(): NewPrompt[] {
+  public getPrompts(): Prompt[] {
     return this.prompts;
   }
 
@@ -27,7 +30,7 @@ export class PromptSpecGenerator {
       const codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
       const compiledTemplate = handlebars.compile(this.promptTemplate); // promote to field?
       const prompt = compiledTemplate({ code: codeWithPlaceholder });
-      this.prompts.push(new NewPrompt(prompt, promptSpec));
+      this.prompts.push(new Prompt(prompt, promptSpec));
     }
   }
 
@@ -40,64 +43,64 @@ export class PromptSpecGenerator {
 
   private createPromptSpecsForFile(file: string) : Array<PromptSpec> {
     const promptSpecs = new Array<PromptSpec>();
-    const code = fs.readFileSync("./" + file, 'utf8'); 
+    const code = fs.readFileSync(file, 'utf8'); 
     const ast = parser.parse(code, { sourceType: "module", plugins: ["typescript"]});
     const outerThis = this; // TODO: is there a better way to do this?
     traverse(ast, {
-      enter(path) {
+      enter(nodePath) {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
         // const loc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
   
-        if (path.isIfStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForIf(file, path));
-        } if (path.isSwitchStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForSwitch(file, path));
-        } else if (path.isWhileStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForWhile(file, path));
-        } else if (path.isDoWhileStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForDoWhile(file, path));
-        } else if (path.isForStatement()) {
-          promptSpecs.push(...outerThis.createPromptSpecsForFor(file, path));  
-        } else if (path.isForInStatement()) {
-          promptSpecs.push(...outerThis.createPromptSpecsForForIn(file, path)); 
-        } else if (path.isForOfStatement()) {
-          promptSpecs.push(...outerThis.createPromptSpecsForForOf(file, path)); 
-        } else if (path.isCallExpression() && path.node.loc!.start.line === path.node.loc!.end.line) { // for now, restrict to calls on a single line
-          promptSpecs.push(...outerThis.createPromptSpecsForCall(file, path)); 
+        if (nodePath.isIfStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForIf(file, nodePath));
+        } if (nodePath.isSwitchStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForSwitch(file, nodePath));
+        } else if (nodePath.isWhileStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForWhile(file, nodePath));
+        } else if (nodePath.isDoWhileStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForDoWhile(file, nodePath));
+        } else if (nodePath.isForStatement()) {
+          promptSpecs.push(...outerThis.createPromptSpecsForFor(file, nodePath));  
+        } else if (nodePath.isForInStatement()) {
+          promptSpecs.push(...outerThis.createPromptSpecsForForIn(file, nodePath)); 
+        } else if (nodePath.isForOfStatement()) {
+          promptSpecs.push(...outerThis.createPromptSpecsForForOf(file, nodePath)); 
+        } else if (nodePath.isCallExpression() && nodePath.node.loc!.start.line === nodePath.node.loc!.end.line) { // for now, restrict to calls on a single line
+          promptSpecs.push(...outerThis.createPromptSpecsForCall(file, nodePath)); 
         }
       }
     }); 
     return promptSpecs;
   }
 
-  private createPromptSpecForIf(file: string, path: any) : PromptSpec {
-    const test = path.node.test;
+  private createPromptSpecForIf(file: string, nodePath: any) : PromptSpec {
+    const test = nodePath.node.test;
     const loc = new SourceLocation(file, test.loc!.start.line, test.loc!.start.column, test.loc!.end.line, test.loc!.end.column);
     return new PromptSpec(file, "if", "test", loc, loc.getText());
   }
   
-  private createPromptSpecForSwitch(file: string, path: any) {
-    const discriminant = path.node.discriminant
+  private createPromptSpecForSwitch(file: string, nodePath: any) {
+    const discriminant = nodePath.node.discriminant
     const loc = new SourceLocation(file, discriminant.loc!.start.line, discriminant.loc!.start.column, discriminant.loc!.end.line, discriminant.loc!.end.column);
     return new PromptSpec(file, "switch", "discriminant", loc, loc.getText());
   }
   
-  private createPromptSpecForWhile(file: string, path: any) {
-    const test = path.node.test;
+  private createPromptSpecForWhile(file: string, nodePath: any) {
+    const test = nodePath.node.test;
     const loc = new SourceLocation(file, test.loc!.start.line, test.loc!.start.column, test.loc!.end.line, test.loc!.end.column);
     return new PromptSpec(file, "while", "test", loc, loc.getText());
   }
   
-  private createPromptSpecForDoWhile(file: string, path: any) {
-    const test = path.node.test;
+  private createPromptSpecForDoWhile(file: string, nodePath: any) {
+    const test = nodePath.node.test;
     const loc = new SourceLocation(file, test.loc!.start.line, test.loc!.start.column, test.loc!.end.line, test.loc!.end.column);
     return new PromptSpec(file, "do-while", "test", loc, loc.getText());
   }
   
-  private createPromptSpecsForFor(file: string, path: any) {
-    const init = path.node.init;
-    const test = path.node.test;
-    const update = path.node.update;
+  private createPromptSpecsForFor(file: string, nodePath: any) {
+    const init = nodePath.node.init;
+    const test = nodePath.node.test;
+    const update = nodePath.node.update;
     const initLoc = new SourceLocation(file, init!.loc!.start.line, init!.loc!.start.column, init!.loc!.end.line, init!.loc!.end.column);
     const testLoc = new SourceLocation(file, test!.loc!.start.line, test!.loc!.start.column, test!.loc!.end.line, test!.loc!.end.column);
     const updateLoc = new SourceLocation(file, update!.loc!.start.line, update!.loc!.start.column, update!.loc!.end.line, update!.loc!.end.column);
@@ -108,9 +111,9 @@ export class PromptSpecGenerator {
             new PromptSpec(file, "for", "header", loopHeaderLoc, loopHeaderLoc.getText())];
   }
   
-  private createPromptSpecsForForIn(file: string, path: any){
-    const left = path.node.left;
-    const right = path.node.right;
+  private createPromptSpecsForForIn(file: string, nodePath: any){
+    const left = nodePath.node.left;
+    const right = nodePath.node.right;
     const leftLoc = new SourceLocation(file, left!.loc!.start.line, left!.loc!.start.column, left!.loc!.end.line, left!.loc!.end.column);
     const rightLoc = new SourceLocation(file, right!.loc!.start.line, right!.loc!.start.column, right!.loc!.end.line, right!.loc!.end.column);
     const loopHeaderLoc = new SourceLocation(file, left!.loc!.start.line, left!.loc!.start.column, right!.loc!.end.line, right!.loc!.end.column);   
@@ -119,9 +122,9 @@ export class PromptSpecGenerator {
             new PromptSpec(file, "for-in", "loopHeader", loopHeaderLoc, loopHeaderLoc.getText())];
   }
   
-  private createPromptSpecsForForOf(file: string, path: any){
-    const left = path.node.left;
-    const right = path.node.right;
+  private createPromptSpecsForForOf(file: string, nodePath: any){
+    const left = nodePath.node.left;
+    const right = nodePath.node.right;
     const leftLoc = new SourceLocation(file, left!.loc!.start.line, left!.loc!.start.column, left!.loc!.end.line, left!.loc!.end.column);
     const rightLoc = new SourceLocation(file, right!.loc!.start.line, right!.loc!.start.column, right!.loc!.end.line, right!.loc!.end.column);
     const loopHeaderLoc = new SourceLocation(file, left!.loc!.start.line, left!.loc!.start.column, right!.loc!.end.line, right!.loc!.end.column);   
@@ -130,9 +133,9 @@ export class PromptSpecGenerator {
             new PromptSpec(file, "for-of", "loopHeader", loopHeaderLoc, loopHeaderLoc.getText())];
   }
   
-  private createPromptSpecsForCall(file: string, path: any) : Array<PromptSpec> {
-    const callee = path.node.callee;
-    const args = path.node.arguments;
+  private createPromptSpecsForCall(file: string, nodePath: any) : Array<PromptSpec> {
+    const callee = nodePath.node.callee;
+    const args = nodePath.node.arguments;
     const prompts = new Array<PromptSpec>();
     const calleeLoc = new SourceLocation(file, callee.loc!.start.line, callee.loc!.start.column, callee.loc!.end.line, callee.loc!.end.column);   
     prompts.push(new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())); 
@@ -143,14 +146,14 @@ export class PromptSpecGenerator {
     }
     if (args.length === 0){
       // find location between parentheses
-      const loc = path.node.loc!;
+      const loc = nodePath.node.loc!;
       const allArgsLoc = new SourceLocation(file, callee.loc!.end.line, callee.loc!.end.column+1, loc.end.line, loc.end.column-1);
       prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText()));
     } else if (args.length !== 1){ // skip if there is only one argument because then the same placeholder is already created for the first argument
       const firstArg = args[0];
       const lastArg = args[args.length - 1];
       const allArgsLoc = new SourceLocation(file, firstArg.loc!.start.line, firstArg.loc!.start.column, lastArg.loc!.end.line, lastArg.loc!.end.column);
-      const parentLoc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
+      const parentLoc = new SourceLocation(file, nodePath.node.loc!.start.line, nodePath.node.loc!.start.column, nodePath.node.loc!.end.line, nodePath.node.loc!.end.column);
       prompts.push(new PromptSpec(file, "call", "allArgs", allArgsLoc, allArgsLoc.getText(), parentLoc));
     }
     return prompts;
@@ -171,7 +174,7 @@ export class PromptSpecGenerator {
       fs.mkdirSync(dir);
     }
     for (const prompt of this.prompts){
-       const fileName = path.join('./prompts', `prompt${prompt.getId()}.txt`);
+       const fileName = path.join(outputDir, 'prompts', `prompt${prompt.getId()}.txt`);
       fs.writeFileSync(fileName, prompt.getText());
     }
   }
@@ -192,7 +195,7 @@ export class PromptSpec {
               public readonly parentLocation? : SourceLocation){}
 
   public getCodeWithPlaceholder() {
-    const code = fs.readFileSync(path.join('.', this.file), 'utf8');
+    const code = fs.readFileSync(this.file, 'utf8');
     const lines = code.split('\n');
     const lastLine = lines.length;
     const endColumnOfLastLine = lines[lastLine - 1].length;
@@ -217,116 +220,3 @@ export class PromptSpec {
     return this.feature === "call" && this.component === "allArgs";
   }
 }
-
-export class NewPrompt {
-  private static idCounter = 0;
-  private id: number;
-  constructor(private readonly text: string, public readonly spec: PromptSpec){
-    this.id = NewPrompt.idCounter++;
-  }
-  public getText(): string {
-    return this.text;
-  }
-  public getId(): number {
-    return this.id;
-  }
-  public getOrig(): string {
-    return this.spec.orig;
-  }
-}
-
-export class NewCompletion {
-  private static idCounter = 0;
-  private id: number;
-  constructor(public readonly text: string, public readonly promptId: number){
-    this.id = NewCompletion.idCounter++;
-  }
-  public getId(): number {
-    return this.id;
-  }
-}
-
-export class NewMutant {
-  constructor(public file: string,
-              public startLine: number,
-              public startColumn: number,
-              public endLine: number,
-              public endColumn: number,
-              public originalCode: string, 
-              public replacement: string, 
-              public readonly promptId: number,
-              public readonly completionId: number,
-              public readonly reason: string) {
-  }
-}
-
-class SourceLocation {
-  constructor(public readonly file: string, public readonly startLine: number, public readonly startColumn: number, public readonly endLine: number, public readonly endColumn: number, private originalCode?: string) {}
-  public getText() {
-    const code = fs.readFileSync(path.join('.', this.file), 'utf8');
-    const startIndex = toIndex(code, this.startLine, this.startColumn);
-    const endIndex = toIndex(code, this.endLine, this.endColumn);
-    return code.substring(startIndex, endIndex);
-  }
-  public toString(): string {
-    return `${this.file}:<${this.startLine},${this.startColumn}>-<${this.endLine},${this.endColumn}>`;
-  }
-}
-
-function insertCommentOnLineWithPlaceholder(code: string, comment: string){
-  const lines = code.split('\n');
-  const lineWithPlaceholder = lines.findIndex(line => line.includes('<PLACEHOLDER>'));
-  if (lineWithPlaceholder === -1){
-    throw new Error("No line with placeholder found");
-  } else {
-    const line = lines[lineWithPlaceholder];  
-    const lineWithComment = line + ' // ' + comment;
-    lines[lineWithPlaceholder] = lineWithComment;
-    return lines.join('\n');
-  }
-}
-
-
-/**
- * Convert [line,col] to index.
- * @param code the code
- * @param line the line
- * @param column the column
- * @returns the index
- */
-function toIndex(code: string, line: number, column: number) {
-  let index = 0;
-  let lineCount = 1;
-  let columnCount = 0;
-  for (let i = 0; i <= code.length; i++) {
-    if (lineCount === line && columnCount === column) {
-      index = i;
-      break;
-    }
-    if (code[i] === '\n') {
-      lineCount++;
-      columnCount = 0;
-    } else {
-      columnCount++;
-    }
-  }
-  return index;
-}
-
-/**
- * Retrieve the code fragment from [startLine, startColumn] to [endLine, endColumn].
- * @param code the code
- * @param startLine the start line
- * @param startColumn the start column
- * @param endLine the end line
- * @param endColumn the end column
- * @returns the code fragment
- */
-function getText(code: string, startLine: number, startColumn: number, endLine: number, endColumn: number) {
-  const startIndex = toIndex(code, startLine, startColumn);
-  const endIndex = toIndex(code, endLine, endColumn);
-  return code.substring(startIndex, endIndex);
-}
-
-
-
