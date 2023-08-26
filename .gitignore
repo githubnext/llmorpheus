@@ -8,3 +8,4 @@ src/*.js.map
 benchmark/*.js
 benchmark/*.js.map
 .DS_Store
+test/actual

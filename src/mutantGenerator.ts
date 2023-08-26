@@ -64,7 +64,8 @@ export class MutantGenerator {
     
     console.log(`generating mutants for the following files: ${files.join(", ")}`);
 
-    const generator = new PromptSpecGenerator(files, this.promptTemplateFileName, this.outputDir);
+    const generator = new PromptSpecGenerator(files, this.promptTemplateFileName);
+    generator.writePromptFiles(this.outputDir);
     
     let nrSyntacticallyValid = 0;
     let nrSyntacticallyInvalid = 0;

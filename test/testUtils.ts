@@ -1,12 +1,9 @@
 import * as fs from 'fs';
-import { Completion, Prompt } from '../src/prompt';
-import { Rule } from '../src/rule';
+import { Prompt } from '../src/Prompt';
 
 export const expectedPromptsDir = "./test/input/prompts"
 export const sourceFileName = "./test/input/countriesandtimezones_index.js";
-export const promptTemplateFileName = "./test/input/promptTemplate.hb";
-export const rulesFileName = "./test/input/rules.json";
-export const strykerRulesFileName = "./test/input/strykerRules.json";
+export const promptTemplateFileName = "./test/input/newTemplate.hb";
 export const mockModelDir =  "./test/input/mockModel";
 export const outputDir = "./test/temp_output";
 export const testProjectPath = "./test/input/testProject/countries-and-timezones";
@@ -50,11 +47,3 @@ export function findExpectedCompletions(promptId: number) : Set<Completion> {
   return expectedCompletions;
 }
 
-export function findRule(ruleId: string, rules: Rule[]) : Rule {
-  for (const rule of rules) {
-    if (rule.getRuleId() === ruleId) {
-      return rule;
-    }
-  }
-  throw new Error(`Rule ${ruleId} not found`);
-}

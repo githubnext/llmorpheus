@@ -7,14 +7,16 @@ import { Prompt } from './Prompt';
 import { SourceLocation } from './SourceLocation';
 import { getText } from './util';
 
+/**
+ * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
+ */
 export class PromptSpecGenerator {
   private promptSpecs = new Array<PromptSpec>();
   private prompts = new Array<Prompt>();
   private promptTemplate: string = fs.readFileSync(this.promptTemplateFileName, "utf8");
-  constructor(private readonly files: string[], private readonly promptTemplateFileName: string, outputDir: string) {
+  constructor(private readonly files: string[], private readonly promptTemplateFileName: string) {
     this.createPromptSpecs();
     this.createPrompts(); 
-    this.writePromptFiles(outputDir);
   }
 
   public getPromptSpecs(): PromptSpec[] {
@@ -163,7 +165,7 @@ export class PromptSpecGenerator {
    * Write the promptSpecs to promptSpecs.JSON and the prompts to files "prompts/prompt<NUM>.txt".
    * @param outputDir the name of directory to write the files to
    */
-  private writePromptFiles(outputDir: string){
+  public writePromptFiles(outputDir: string){
     // write promptSpecs to JSON file
     const json = JSON.stringify(this.promptSpecs, null, 2);
     fs.writeFileSync(path.join(outputDir, 'promptSpecs.json'), json);
