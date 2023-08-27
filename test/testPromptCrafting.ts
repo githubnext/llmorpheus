@@ -5,6 +5,7 @@ import { PromptSpec, PromptSpecGenerator } from "../src/promptSpecGenerator";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { expect } from "chai";
 import { Prompt } from "../src/Prompt";
+import { assert } from "console";
 
 let sourceFile = "";
 
@@ -64,16 +65,16 @@ describe("test prompt crafting", () => {
     expect(actualSourceFilesJson).to.equal(expectedSourceFiles);
   });
 
-  // it("should generate the expected completion for a prompt", async () => {
-  //   const model = new MockModel('text-davinci-003', mockModelDir);
-  //   const mutantGenerator = new MutantGenerator(model, promptTemplateFileName, outputDir, testProjectPath);
-  //   const fileName = "./test/input/prompts/prompt1.txt";
-  //   const promptText = fs.readFileSync(fileName, "utf8");
-  //   const promptSpec = new PromptSpec(fileName, promptText);
-  //   // const completions = await mutantGenerator.getCompletionsForPrompt({
-  //   //   new Prompt(promptText, new PromptSpec());
-  //     });
-
+  
+  it("mock model should generate the expected completion for a prompt", async () => {
+    const prompt1 = fs.readFileSync('test/input/prompts/prompt1.txt', "utf8");
+    // console.log(`prompt1:\n${prompt1}\n`);
+    const model = new MockModel('text-davinci-003', mockModelDir);
+    const completions = await model.query(prompt1);
+    assert(completions.size === 1);
+    const expectedCompletion = fs.readFileSync('test/expected/prompt1_completion_0.txt', "utf8");
+    assert([...completions][0] === expectedCompletion);
+  });
   
 
   // it("should generate the expected prompts for a given source project", async () => {

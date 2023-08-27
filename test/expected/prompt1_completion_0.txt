@@ -1,0 +1,14 @@
+
+
+Option 1: The PLACEHOLDER should be replaced with:
+```
+!name
+```
+Option 2: The PLACEHOLDER should be replaced with:
+```
+name === undefined
+```
+Option 3: The PLACEHOLDER should be replaced with:
+```
+name == null
+```

@@ -212,15 +212,14 @@ export class CachingModel implements IModel {
 
   public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
     // compute hash using npm package `crypto`
+    const hashKey = JSON.stringify({
+      modelName: this.model.getModelName(),
+      prompt,
+      options,
+    });
     const hash = crypto
     .createHash("sha256")
-    .update(
-      JSON.stringify({
-        modelName: this.model.getModelName(),
-        prompt,
-        options,
-      })
-    )
+    .update(hashKey)
     .digest("hex");
   
     // compute path to cache file
@@ -248,7 +247,10 @@ export class CachingModel implements IModel {
  * A mock model that extracts its responses from a directory containing previously recorded cache files.
  */
 export class MockModel implements IModel {
-  constructor(private modelName: string, private modelDir: string) {}
+  private modelName: string;
+  constructor(modelName: string, private modelDir: string) {
+    this.modelName = `${modelName}`;
+  }
 
   getModelName(): string {
     return this.modelName;
@@ -256,15 +258,14 @@ export class MockModel implements IModel {
 
   public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
     // compute hash using npm package `crypto`
+    const hashKey = JSON.stringify({
+      modelName: this.modelName, 
+      prompt,
+      options,
+    });
     const hash = crypto
     .createHash("sha256")
-    .update(
-      JSON.stringify({
-        modelName: this.modelName, 
-        prompt,
-        options,
-      })
-    )
+    .update(hashKey)
     .digest("hex");
   
     // compute path to cache file
