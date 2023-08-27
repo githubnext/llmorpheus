@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.round(d1.longitude).should.equals(0);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nd1.longitude.should.equals(0);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nd1.longitude.should.equals(360);\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nString('test').plural()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural('test')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.doesNotThrow(String('test').plural(), 'plural should be monkeypatched into String')\n```\n"]

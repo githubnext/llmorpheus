@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nexpect(point2).to.deep.equals({\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nexpect(point2).to.deep.equal({\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nexpect(point2).to.deep.eql({\n```\n"]

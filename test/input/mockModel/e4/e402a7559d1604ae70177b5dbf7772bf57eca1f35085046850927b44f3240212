@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateDestination\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nthis.calculateDestination\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateDestination(this, distance, bearing)\n```\n"]

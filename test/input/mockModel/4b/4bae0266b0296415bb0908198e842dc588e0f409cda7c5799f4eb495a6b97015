@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('stereo'), 'stereos')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('stereos'), 'stereos')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('stereo'), 'stereos')\n```\n"]

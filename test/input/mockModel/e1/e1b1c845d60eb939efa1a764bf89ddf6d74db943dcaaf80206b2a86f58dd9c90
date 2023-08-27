@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\np1.toGeoJSON()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\np1.toGeoJSONObject()\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\np1.toGeoJSONString()\n```\n"]

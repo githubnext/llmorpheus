@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ni = 0; i < rules.length; i++\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nlet i = 0; i < rules.length; i++\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nfor (let i = 0; i < rules.length; i++)\n```\n"]

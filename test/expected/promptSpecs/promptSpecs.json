@@ -1,6 +1,6 @@
 [
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -13,7 +13,7 @@
     "orig": "Object.keys"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -26,7 +26,7 @@
     "orig": "data.timezones"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -39,7 +39,7 @@
     "orig": "Object.keys"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -52,7 +52,7 @@
     "orig": "data.countries"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -65,7 +65,7 @@
     "orig": "Object.assign"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -78,7 +78,7 @@
     "orig": "prev"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -91,7 +91,7 @@
     "orig": "{ [id]: getCountry(id, options) }"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -111,7 +111,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -124,7 +124,7 @@
     "orig": "getCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -137,7 +137,7 @@
     "orig": "id"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -150,7 +150,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -170,7 +170,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -183,7 +183,7 @@
     "orig": "totalTimezones !== memoizedTimezones"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -196,7 +196,7 @@
     "orig": "Object.keys(data.timezones).forEach"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -209,7 +209,7 @@
     "orig": "getTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -222,7 +222,7 @@
     "orig": "Object.keys"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -235,7 +235,7 @@
     "orig": "data.timezones"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -248,7 +248,7 @@
     "orig": "deliverTimezones"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -261,7 +261,7 @@
     "orig": "timezones"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -274,7 +274,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -294,7 +294,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -307,7 +307,7 @@
     "orig": "!countries[id]"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -320,7 +320,7 @@
     "orig": "memoizeCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -333,7 +333,7 @@
     "orig": "buildCountry(data, id)"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -346,7 +346,7 @@
     "orig": "buildCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -359,7 +359,7 @@
     "orig": "data"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -372,7 +372,7 @@
     "orig": "id"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -392,7 +392,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -405,7 +405,7 @@
     "orig": "deliverCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -418,7 +418,7 @@
     "orig": "countries[id]"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -431,7 +431,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -451,7 +451,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -464,7 +464,7 @@
     "orig": "!country"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -477,7 +477,7 @@
     "orig": "!timezones[name]"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -490,7 +490,7 @@
     "orig": "memoizeTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -503,7 +503,7 @@
     "orig": "buildTimezone(data, name)"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -516,7 +516,7 @@
     "orig": "buildTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -529,7 +529,7 @@
     "orig": "data"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -542,7 +542,7 @@
     "orig": "name"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -562,7 +562,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -575,7 +575,7 @@
     "orig": "!timezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -588,7 +588,7 @@
     "orig": "Object.keys"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -601,7 +601,7 @@
     "orig": "timezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -614,7 +614,7 @@
     "orig": "getTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -627,7 +627,7 @@
     "orig": "tzName"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -640,7 +640,7 @@
     "orig": "values.map"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -653,7 +653,7 @@
     "orig": "(c) => getCountry(c, options)"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -666,7 +666,7 @@
     "orig": "getCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -679,7 +679,7 @@
     "orig": "c"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -692,7 +692,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -712,7 +712,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -725,7 +725,7 @@
     "orig": "getCountriesForTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -738,7 +738,7 @@
     "orig": "tzName"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -751,7 +751,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -771,7 +771,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -784,7 +784,7 @@
     "orig": "getCountry"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -797,7 +797,7 @@
     "orig": "countryId"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -810,7 +810,7 @@
     "orig": "options"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -830,7 +830,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -843,7 +843,7 @@
     "orig": "!country"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -856,7 +856,7 @@
     "orig": "values.map"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -869,7 +869,7 @@
     "orig": "getTimezone"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -882,7 +882,7 @@
     "orig": "deprecated === true"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -895,7 +895,7 @@
     "orig": "Object.keys"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -908,7 +908,7 @@
     "orig": "tzs"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {
@@ -921,7 +921,7 @@
     "orig": "!tzs[key].deprecated"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "callee",
     "location": {
@@ -934,7 +934,7 @@
     "orig": "Object.assign"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg0",
     "location": {
@@ -947,7 +947,7 @@
     "orig": "prev"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "arg1",
     "location": {
@@ -960,7 +960,7 @@
     "orig": "{ [key]: tzs[key] }"
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "call",
     "component": "allArgs",
     "location": {
@@ -980,7 +980,7 @@
     }
   },
   {
-    "file": "./test/input/countriesandtimezones_index.js",
+    "file": "countriesandtimezones_index.js",
     "feature": "if",
     "component": "test",
     "location": {

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nw !== 'dwarf' && w !== 'roof'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nw != 'dwarf' && w != 'roof'\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nw !== 'dwarf' && w !== 'roof'\n```\n"]

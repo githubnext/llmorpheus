@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n!point.hasOwnProperty('type') || !point.hasOwnProperty('coordinates')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n!point.type || !point.coordinates\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n!point.type || !Array.isArray(point.coordinates)\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\naddRule('bacterium', 'bacteria')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrules.unshift(['bacterium', 'bacteria'])\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrules.push(['bacterium', 'bacteria'])\n```\n"]

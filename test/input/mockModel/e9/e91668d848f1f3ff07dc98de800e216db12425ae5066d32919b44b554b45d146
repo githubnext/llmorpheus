@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nisGlob(src)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nsrc.includes(',')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nsrc.indexOf(',') !== -1\n```\n"]

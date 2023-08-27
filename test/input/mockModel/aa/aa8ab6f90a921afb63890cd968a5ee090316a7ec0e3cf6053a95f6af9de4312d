@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nthis.toObject()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n{ latitude: this.latitude, longitude: this.longitude }\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n{ longitude: this.longitude, latitude: this.latitude }\n```\n\n"]

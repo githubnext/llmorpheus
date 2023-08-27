@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\npoint.getTileCoordinates(zoom)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\npoint.toTileCoordinates(zoom)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint.getTile(zoom)\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nφ1\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ndeg2rad(coordinate.latitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ncoordinate.latitude * Math.PI / 180\n```\n"]

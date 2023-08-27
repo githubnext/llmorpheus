@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.pow(2, zoom)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n2 ** zoom\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n1 << zoom\n```\n"]

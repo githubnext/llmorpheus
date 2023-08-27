@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ndeg2rad(coordinate.latitude)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrad2deg(coordinate.latitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nMath.deg2rad(coordinate.latitude)\n```\n"]

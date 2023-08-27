@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ncos(φ1)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.cos(φ1)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ncos(deg2rad(point1.latitude))\n```\n\n"]

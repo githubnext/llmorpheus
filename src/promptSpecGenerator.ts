@@ -14,7 +14,7 @@ export class PromptSpecGenerator {
   private promptSpecs = new Array<PromptSpec>();
   private prompts = new Array<Prompt>();
   private promptTemplate: string = fs.readFileSync(this.promptTemplateFileName, "utf8");
-  constructor(private readonly files: string[], private readonly promptTemplateFileName: string) {
+  constructor(private readonly files: string[], private readonly promptTemplateFileName: string, private readonly packagePath: string) {
     this.createPromptSpecs();
     this.createPrompts(); 
   }
@@ -48,6 +48,7 @@ export class PromptSpecGenerator {
     const code = fs.readFileSync(file, 'utf8'); 
     const ast = parser.parse(code, { sourceType: "module", plugins: ["typescript"]});
     const outerThis = this; // TODO: is there a better way to do this?
+    
     traverse(ast, {
       enter(nodePath) {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
@@ -74,6 +75,10 @@ export class PromptSpecGenerator {
     }); 
     return promptSpecs;
   }
+
+  // private stripPackagePathFromFileName(fileName: string) : string {
+  //   return fileName.replace(this.packagePath, '');
+  // }
 
   private createPromptSpecForIf(file: string, nodePath: any) : PromptSpec {
     const test = nodePath.node.test;
@@ -166,8 +171,14 @@ export class PromptSpecGenerator {
    * @param outputDir the name of directory to write the files to
    */
   public writePromptFiles(outputDir: string){
+
+    const promptSpecsWithRelativePaths = this.promptSpecs.map((promptSpec) => {
+      const relativePath = path.relative(this.packagePath, promptSpec.file);
+      return new PromptSpec(relativePath, promptSpec.feature, promptSpec.component, promptSpec.location, promptSpec.orig, promptSpec.parentLocation);
+    });
+
     // write promptSpecs to JSON file
-    const json = JSON.stringify(this.promptSpecs, null, 2);
+    const json = JSON.stringify(promptSpecsWithRelativePaths, null, 2);
     fs.writeFileSync(path.join(outputDir, 'promptSpecs.json'), json);
 
     // write prompts to directory "prompts"
@@ -192,7 +203,7 @@ export class PromptSpecGenerator {
  *   orig: the original contents of the placeholder
  */
 export class PromptSpec {
-  constructor(public readonly file: string, public readonly feature: string, public readonly component: string, 
+  constructor(public file: string, public readonly feature: string, public readonly component: string, 
               public readonly location: SourceLocation, public readonly orig: string,
               public readonly parentLocation? : SourceLocation){}
 

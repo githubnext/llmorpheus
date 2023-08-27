@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n{}\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n{ include: /node_modules/ }\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n{ exclude: /node_modules/ }\n```\n"]

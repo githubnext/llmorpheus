@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ngeoJson.coordinates[1].should.equals(p1.latitude)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ngeoJson.coordinates[1].should.equal(p1.latitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nexpect(geoJson.coordinates[1]).to.equal(p1.latitude)\n```\n\n"]

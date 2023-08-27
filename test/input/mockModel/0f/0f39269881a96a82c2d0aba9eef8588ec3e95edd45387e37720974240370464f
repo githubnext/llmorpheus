@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n/(ax|test)is$/i\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n/ax$|test$/i\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n/ax$|testis$/i\n```\n"]

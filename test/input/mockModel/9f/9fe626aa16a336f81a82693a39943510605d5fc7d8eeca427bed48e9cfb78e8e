@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nexpect(distance)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.round(distance)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nparseInt(distance)\n```\n"]

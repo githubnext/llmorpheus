@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.pow(2, zoom) * (coordinate.longitude + 180) / 360\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.pow(2, zoom) * (coordinate.longitude + 180)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n(coordinate.longitude + 180) / 360\n```\n"]

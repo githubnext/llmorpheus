@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nisObject(point)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\npoint.type === 'Point'\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint.coordinates.length === 2\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\npoint1.adjustPrecision(3)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\npoint1.round(3)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint1.toPrecision(3)\n```\n"]

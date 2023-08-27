@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\narchiver.create(format, archiverOptions || {})\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\narchiver(format, archiverOptions || {})\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nnew archiver.Archiver(format, archiverOptions || {})\n```\n"]

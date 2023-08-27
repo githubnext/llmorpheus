@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('index'), 'indices')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('Index'), 'Indices')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('INDEX'), 'INDICES')\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nfs.constants.F_OK | fs.constants.R_OK\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nfs.constants.F_OK | fs.constants.R_OK | fs.constants.W_OK\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nfs.constants.F_OK\n```\n"]

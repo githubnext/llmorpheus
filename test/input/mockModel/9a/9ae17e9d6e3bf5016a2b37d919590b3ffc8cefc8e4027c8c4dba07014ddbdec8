@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nisObject(object)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ntypeof object === 'object' && object !== null\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.prototype.toString.call(object) === '[object Object]'\n```\n\n"]

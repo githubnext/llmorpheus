@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nexpect(distance).to.equal(11142);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ndistance.should.equal(11142);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ndistance.should.be.equal(11142);\n```\n\n"]

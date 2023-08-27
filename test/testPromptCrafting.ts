@@ -1,9 +1,10 @@
 import fs from "fs";
 import { mockModelDir, outputDir, promptTemplateFileName, sourceFileName, testProjectPath } from "./testUtils";
 import { MockModel } from "../src/model"; 
-import { PromptSpecGenerator } from "../src/promptSpecGenerator";
+import { PromptSpec, PromptSpecGenerator } from "../src/promptSpecGenerator";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { expect } from "chai";
+import { Prompt } from "../src/Prompt";
 
 let sourceFile = "";
 
@@ -15,7 +16,7 @@ describe("test prompt crafting", () => {
 
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
     const files = [sourceFileName];
-    const promptSpecGenerator = new PromptSpecGenerator(files, promptTemplateFileName);
+    const promptSpecGenerator = new PromptSpecGenerator(files, promptTemplateFileName, './test/input/');
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
     expect(actualPromptSpecs.length).to.equal(71);
     promptSpecGenerator.writePromptFiles("./test/actual");
@@ -26,7 +27,7 @@ describe("test prompt crafting", () => {
 
   it("should generate the expected prompts for a given source file and prompt template", async () => {
     const files = [sourceFileName];
-    const promptSpecGenerator = new PromptSpecGenerator(files, promptTemplateFileName);
+    const promptSpecGenerator = new PromptSpecGenerator(files, promptTemplateFileName, './test/input/');
     promptSpecGenerator.writePromptFiles("./test/actual");
     // check that actual and expected directories contain the same files
     const actualPrompts = fs.readdirSync("./test/actual/prompts");
@@ -63,7 +64,15 @@ describe("test prompt crafting", () => {
     expect(actualSourceFilesJson).to.equal(expectedSourceFiles);
   });
 
-
+  // it("should generate the expected completion for a prompt", async () => {
+  //   const model = new MockModel('text-davinci-003', mockModelDir);
+  //   const mutantGenerator = new MutantGenerator(model, promptTemplateFileName, outputDir, testProjectPath);
+  //   const fileName = "./test/input/prompts/prompt1.txt";
+  //   const promptText = fs.readFileSync(fileName, "utf8");
+  //   const promptSpec = new PromptSpec(fileName, promptText);
+  //   // const completions = await mutantGenerator.getCompletionsForPrompt({
+  //   //   new Prompt(promptText, new PromptSpec());
+  //     });
 
   
 

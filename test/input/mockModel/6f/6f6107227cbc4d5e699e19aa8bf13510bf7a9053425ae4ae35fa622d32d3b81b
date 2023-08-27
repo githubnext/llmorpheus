@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nObject.assign(prev, { [id]: buildCountry(data, id) })\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nObject.assign(prev, { [id]: getCountry(id, options) })\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.assign(prev, { [id]: countries[id] })\n```\n"]

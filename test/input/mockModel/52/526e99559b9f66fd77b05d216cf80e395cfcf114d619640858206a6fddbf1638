@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ndata.countries\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ncountries\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.keys(data.countries)\n```\n"]

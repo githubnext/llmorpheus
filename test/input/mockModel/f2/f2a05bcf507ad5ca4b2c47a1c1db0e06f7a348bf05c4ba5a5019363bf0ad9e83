@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\no.latitude.should.equals(51.5);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\no.latitude.should.equal(51.5);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\no.latitude.should.eql(51.5);\n```\n"]

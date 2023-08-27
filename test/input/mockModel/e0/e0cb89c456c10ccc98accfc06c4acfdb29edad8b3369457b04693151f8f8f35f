@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.round(input * Math.pow(10, precision)) / Math.pow(10, precision)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nNumber(input.toFixed(precision))\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nparseFloat(input.toFixed(precision))\n```\n"]

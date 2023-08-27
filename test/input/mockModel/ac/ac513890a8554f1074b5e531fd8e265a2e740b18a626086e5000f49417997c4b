@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n'criterion', 'criteria'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n/[^aeiouy]o$/i, function(w) { return w + 'es' }\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n/[^aeiouy]y$|quy$/i, function(w) { return w.substr(0, w.length - 1) + 'ies' }\n```\n"]

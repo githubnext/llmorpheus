@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n/a$/i\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n/[aeiou]a$/i\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n/[^aeiou]a$/i\n```\n"]

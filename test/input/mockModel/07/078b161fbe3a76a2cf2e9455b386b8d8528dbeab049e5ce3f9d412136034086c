@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nArray.isArray(point.coordinates)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\npoint.coordinates instanceof Array\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint.coordinates.length === 2\n```\n"]

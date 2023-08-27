@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nobj\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nObject(obj)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nobj.constructor\n```\n"]

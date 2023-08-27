@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.floor(offset / 60)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.round(offset / 60)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nparseInt(offset / 60)\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\np1.toString().should.equals\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nexpect(p1.toString()).to.equals\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\np1.toString().should.equal\n```\n"]

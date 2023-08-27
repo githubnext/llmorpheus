@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural(w), w + 's')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural(w + 's'), w + 's')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural(w.toLowerCase()), w + 's')\n```\n\n"]

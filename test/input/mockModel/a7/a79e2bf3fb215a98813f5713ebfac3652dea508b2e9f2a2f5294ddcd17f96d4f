@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\np1.toObject()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.fromObject\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nJSON.stringify\n```\n"]

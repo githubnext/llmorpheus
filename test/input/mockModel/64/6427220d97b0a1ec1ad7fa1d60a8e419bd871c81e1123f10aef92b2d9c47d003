@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\naddRule(/ics$/i, function(w) { return w })\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\naddRule(/ics$/i, w => w)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\naddRule(/ics$/i, w => { return w })\n```\n"]

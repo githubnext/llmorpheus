@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\naddRule('goose', 'geese')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrules.unshift(['goose', 'geese'])\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrules.push(['goose', 'geese'])\n```\n"]

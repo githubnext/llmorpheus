@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nw.replace(regex, 'man')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nw.replace(/a$/, 'e')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nw.replace(/[ae]$/, 'e')\n```\n"]

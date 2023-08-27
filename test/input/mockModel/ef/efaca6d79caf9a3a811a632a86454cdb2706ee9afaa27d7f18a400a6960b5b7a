@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nObject.keys(timezone).length\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ntimezone.length\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nmemoizedTimezones + 1\n```\n"]

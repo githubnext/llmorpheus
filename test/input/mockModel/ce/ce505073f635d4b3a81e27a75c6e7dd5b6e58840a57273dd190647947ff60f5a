@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nplural.unmonkeyPatch()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nString('test').plural()\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nplural('test')\n```\n"]

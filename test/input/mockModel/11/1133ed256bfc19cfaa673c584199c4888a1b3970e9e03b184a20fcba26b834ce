@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntype(rule[0]) === 'String'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrule[0] === word\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrule[0] === word.toLowerCase()\n```\n"]

@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nplural('omen')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural('Omen')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('omen'), 'omens')\n```\n"]

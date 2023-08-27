@@ -1,0 +1,1 @@
+["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ndeliverCountry(countries[id], options)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nObject.assign({}, countries[id], options)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.assign(countries[id], options)\n```\n"]
