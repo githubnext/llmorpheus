@@ -4,8 +4,8 @@ import { MockModel } from "../src/model";
 import { PromptSpec, PromptSpecGenerator } from "../src/promptSpecGenerator";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { expect } from "chai";
-import { Prompt } from "../src/Prompt";
 import { assert } from "console";
+import  path from "path";
 
 let sourceFile = "";
 
@@ -76,6 +76,23 @@ describe("test prompt crafting", () => {
     assert([...completions][0] === expectedCompletion);
   });
   
+  it("should generate the expected mutants for a project", async () => {
+    const model = new MockModel('text-davinci-003', mockModelDir);
+
+    // remove old mutants.json file if it exists
+    const mutantsJsonFileName = path.join(testProjectPath, "MUTATION_TESTING", "mutants.json");
+    if (fs.existsSync(mutantsJsonFileName)){
+      console.log(`removing old ${mutantsJsonFileName}`);
+      fs.unlinkSync(mutantsJsonFileName);
+    }
+
+    const mutantGenerator = new MutantGenerator(model, promptTemplateFileName, outputDir, testProjectPath);
+    await mutantGenerator.generateMutants(testProjectPath);
+    const actualMutantsJson = fs.readFileSync(path.join(testProjectPath, "MUTATION_TESTING", "mutants.json"), "utf8");
+    const expectedMutantsJson = fs.readFileSync("./test/expected/mutants.json", "utf8");
+    assert(actualMutantsJson === expectedMutantsJson);
+  });
+
 
   // it("should generate the expected prompts for a given source project", async () => {
   //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
