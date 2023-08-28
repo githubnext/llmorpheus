@@ -1,5 +1,4 @@
-import { PromptSpec } from './promptSpecGenerator';
-
+import { PromptSpec } from "./promptSpecGenerator";
 
 export class Prompt {
   private static idCounter = 1;

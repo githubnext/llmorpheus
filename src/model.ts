@@ -8,7 +8,7 @@ const defaultPostOptions = {
   max_tokens: 100, // maximum number of tokens to return
   temperature: 0, // sampling temperature; higher values increase diversity
   n: 5, // number of completions to return
-  stop: ['\n\n'],   // list of tokens to stop at
+  stop: ["\n\n"], // list of tokens to stop at
   top_p: 1, // no need to change this
 };
 export type PostOptions = Partial<typeof defaultPostOptions>;
@@ -51,10 +51,12 @@ export class TextDavinci003Model implements IModel {
    * @param requestPostOptions The options to use for the request.
    * @returns A promise that resolves to a set of completions.
    */
-  public async query(prompt: string, requestPostOptions: PostOptions = {}): Promise<Set<string>> {
-   
-    const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT"); 
-    const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS"); 
+  public async query(
+    prompt: string,
+    requestPostOptions: PostOptions = {}
+  ): Promise<Set<string>> {
+    const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT");
+    const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS");
 
     const headers = {
       "Content-Type": "application/json",
@@ -108,7 +110,7 @@ export class TextDavinci003Model implements IModel {
       );
     }
     return completions;
-  } 
+  }
 }
 
 /**
@@ -132,14 +134,16 @@ export class Gpt35TurboModel implements IModel {
    * @param requestPostOptions The options to use for the request.
    * @returns A promise that resolves to a set of completions.
    */
-  public async query(prompt: string, requestPostOptions: PostOptions = {}): Promise<Set<string>> {
-   
-    const apiEndpoint = getEnv("GPT35_API_ENDPOINT"); 
-    const apiKey = getEnv("GPT35_API_KEY"); 
+  public async query(
+    prompt: string,
+    requestPostOptions: PostOptions = {}
+  ): Promise<Set<string>> {
+    const apiEndpoint = getEnv("GPT35_API_ENDPOINT");
+    const apiKey = getEnv("GPT35_API_KEY");
 
     const headers = {
       "Content-Type": "application/json",
-      "api-key": apiKey
+      "api-key": apiKey,
     };
     const options = {
       ...defaultPostOptions,
@@ -189,7 +193,7 @@ export class Gpt35TurboModel implements IModel {
       );
     }
     return completions;
-  } 
+  }
 }
 
 const ROOT_CACHE_DIR = path.join(__dirname, "..", ".llm-cache");
@@ -210,20 +214,24 @@ export class CachingModel implements IModel {
     return `${this.modelName}>`;
   }
 
-  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
+  public async query(
+    prompt: string,
+    options: PostOptions = {}
+  ): Promise<Set<string>> {
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.model.getModelName(),
       prompt,
       options,
     });
-    const hash = crypto
-    .createHash("sha256")
-    .update(hashKey)
-    .digest("hex");
-  
+    const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
+
     // compute path to cache file
-    const cacheDir = path.join(ROOT_CACHE_DIR, this.model.getModelName(), hash.slice(0, 2));
+    const cacheDir = path.join(
+      ROOT_CACHE_DIR,
+      this.model.getModelName(),
+      hash.slice(0, 2)
+    );
     const cacheFile = path.join(cacheDir, hash);
     // if the cache file exists, return its contents
     if (fs.existsSync(cacheFile)) {
@@ -256,18 +264,18 @@ export class MockModel implements IModel {
     return this.modelName;
   }
 
-  public async query(prompt: string, options: PostOptions = {}): Promise<Set<string>> {
+  public async query(
+    prompt: string,
+    options: PostOptions = {}
+  ): Promise<Set<string>> {
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
-      modelName: this.modelName, 
+      modelName: this.modelName,
       prompt,
       options,
     });
-    const hash = crypto
-    .createHash("sha256")
-    .update(hashKey)
-    .digest("hex");
-  
+    const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
+
     // compute path to cache file
     const cacheDir = path.join(this.modelDir, hash.slice(0, 2));
     const cacheFile = path.join(cacheDir, hash);
@@ -284,11 +292,6 @@ export class MockModel implements IModel {
     }
   }
 }
-
-
-
-
-
 
 if (require.main === module) {
   (async () => {

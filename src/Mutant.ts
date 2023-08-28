@@ -1,6 +1,6 @@
-
 export class Mutant {
-  constructor(public file: string,
+  constructor(
+    public file: string,
     public startLine: number,
     public startColumn: number,
     public endLine: number,
@@ -9,6 +9,6 @@ export class Mutant {
     public replacement: string,
     public readonly promptId: number,
     public readonly completionId: number,
-    public readonly reason: string) {
-  }
+    public readonly reason: string
+  ) {}
 }

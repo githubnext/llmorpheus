@@ -1,4 +1,3 @@
-
 export class Completion {
   private static idCounter = 0;
   private id: number;

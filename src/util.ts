@@ -1,48 +1,65 @@
 import * as fs from "fs";
 import * as path from "path";
 
-export function getStartColumn(projectPath: string, fileName: string, lineNr: number, originalCode: string): number {
-  const lines = fs.readFileSync(path.join(projectPath, fileName)).toString().split("\n");
-  const line = lines[lineNr-1];
-  return line.indexOf(originalCode);    
+export function getStartColumn(
+  projectPath: string,
+  fileName: string,
+  lineNr: number,
+  originalCode: string
+): number {
+  const lines = fs
+    .readFileSync(path.join(projectPath, fileName))
+    .toString()
+    .split("\n");
+  const line = lines[lineNr - 1];
+  return line.indexOf(originalCode);
 }
 
-export function getEndColumn(projectPath: string, fileName: string, lineNr: number, originalCode: string): number {
-  const lines = fs.readFileSync(path.join(projectPath, fileName)).toString().split("\n");
-  const line = lines[lineNr-1];
+export function getEndColumn(
+  projectPath: string,
+  fileName: string,
+  lineNr: number,
+  originalCode: string
+): number {
+  const lines = fs
+    .readFileSync(path.join(projectPath, fileName))
+    .toString()
+    .split("\n");
+  const line = lines[lineNr - 1];
   return line.indexOf(originalCode) + originalCode.length;
 }
 
-export function isObjectLiteral(code: string) : boolean {
-  return code.startsWith('{') && code.endsWith('}');
+export function isObjectLiteral(code: string): boolean {
+  return code.startsWith("{") && code.endsWith("}");
 }
 
-export function hasUnbalancedParens(code: string) : boolean {
+export function hasUnbalancedParens(code: string): boolean {
   let nrOpen = 0;
   let nrClose = 0;
   for (const c of code) {
-    if (c === '(') {
+    if (c === "(") {
       nrOpen++;
-    } else if (c === ')') {
+    } else if (c === ")") {
       nrClose++;
     }
   }
   return nrOpen !== nrClose;
 }
 
-function insertCommentOnLineWithPlaceholder(code: string, comment: string){
-  const lines = code.split('\n');
-  const lineWithPlaceholder = lines.findIndex(line => line.includes('<PLACEHOLDER>'));
-  if (lineWithPlaceholder === -1){
+function insertCommentOnLineWithPlaceholder(code: string, comment: string) {
+  const lines = code.split("\n");
+  const lineWithPlaceholder = lines.findIndex((line) =>
+    line.includes("<PLACEHOLDER>")
+  );
+  if (lineWithPlaceholder === -1) {
     throw new Error("No line with placeholder found");
   } else {
-    const line = lines[lineWithPlaceholder];  
-    const lineWithComment = line + ' // ' + comment;
+    const line = lines[lineWithPlaceholder];
+    const lineWithComment = line + " // " + comment;
     lines[lineWithPlaceholder] = lineWithComment;
-    return lines.join('\n');
+    return lines.join("\n");
   }
 }
-
 
 /**
  * Convert [line,col] to index.
@@ -60,7 +77,7 @@ export function toIndex(code: string, line: number, column: number) {
       index = i;
       break;
     }
-    if (code[i] === '\n') {
+    if (code[i] === "\n") {
       lineCount++;
       columnCount = 0;
     } else {
@@ -79,10 +96,14 @@ export function toIndex(code: string, line: number, column: number) {
  * @param endColumn the end column
  * @returns the code fragment
  */
-export function getText(code: string, startLine: number, startColumn: number, endLine: number, endColumn: number) {
+export function getText(
+  code: string,
+  startLine: number,
+  startColumn: number,
+  endLine: number,
+  endColumn: number
+) {
   const startIndex = toIndex(code, startLine, startColumn);
   const endIndex = toIndex(code, endLine, endColumn);
   return code.substring(startIndex, endIndex);
 }
-
-
