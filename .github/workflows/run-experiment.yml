@@ -149,6 +149,8 @@ jobs:
       - name: Zip up results
         run: |
           zip -r results.zip $PACKAGE_PATH/MUTATION_TESTING
+          pwd
+          ls -al
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
