@@ -132,8 +132,8 @@ jobs:
 
       - name: Generate mutants
         env:
-          LLM_API_ENDPOINT: "https://api.openai.com/v1/engines/text-davinci-003/completions"
-          LLM_AUTH_HEADERS: '{ "api-key": "${{ secrets.DAVINCI_API_KEY }}" }'
+          TEXTDAVINCI003_API_ENDPOINT: "https://api.openai.com/v1/engines/text-davinci-003/completions"
+          TEXTDAVINCI003_AUTH_HEADERS=: '{ "api-key": "${{ secrets.DAVINCI_API_KEY }}" }'
           STARCODER_API_ENDPOINT: '${{ secrets.STARCODER_API_ENDPOINT3 }}'
         run: |
           cd llm-mutation-testing
