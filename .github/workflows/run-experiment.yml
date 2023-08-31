@@ -6,6 +6,31 @@ on:
       packages:
         description: "Packages to generate tests for"
         default: "+benchmarks.txt"
+      snippetsFrom:
+        description: "Code snippets source"
+        default: "doc"
+      numSnippets:
+        description: 'Maximum number of snippets to include in each prompt, or "all"'
+        default: "all"
+      snippetLength:
+        description: "Maximum length of each snippet in lines"
+        default: "20"
+      temperatures:
+        description: "Sampling temperatures to try when obtaining completions (whitespace-separated)"
+        default: "0.0"
+      numCompletions:
+        description: "Number of completions to generate for each prompt"
+        default: "5"
+      model:
+        description: "Which LLM API to use"
+        type: "choice"
+        options:
+          - "gpt"
+          - "starcoder"
+        default: "gpt"
+      compareTo:
+        description: "Run number of previous run to compare to (leave empty to skip comparison)"
+        default: ""
       skipSlowBenchmarks:
         description: "Skip slow benchmarks"
         type: boolean
@@ -14,19 +39,29 @@ on:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
         default: false
+  # Run every weekday at 2:00 AM UTC
+  # schedule:
+  #   - cron: '0 2 * * 1-5'
 
 jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
+      snippetsFrom: "${{ github.event.inputs.snippetsFrom || 'doc' }}"
+      snippetLength: "${{ github.event.inputs.snippetLength || '20' }}"
+      temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
+      numSnippets: "${{ github.event.inputs.numSnippets || 'all' }}"
+      numCompletions: "${{ github.event.inputs.numCompletions || '5' }}"
+      model: "${{ github.event.inputs.model || 'gpt' }}"
     steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
         with:
           node-version: 12
-    - id: parse_packages
+
+      - id: parse_packages
         run: |
           packages=$(node ${GITHUB_WORKSPACE}/.github/parse_packages.js \
             ${{ github.event.inputs.skipSlowBenchmarks == 'true' && '--skip-slow-benchmarks' || '' }} \
