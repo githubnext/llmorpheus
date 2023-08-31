@@ -73,7 +73,7 @@ jobs:
         with:
           node-version: 12
 
-      - name: Set up llm-mutation testing
+      - name: Set up llm-mutation-testing
         run: |
-          cd llm-mutation testing
+          cd llm-mutation-testing
           npm run build
