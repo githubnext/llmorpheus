@@ -48,12 +48,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
-      snippetsFrom: "${{ github.event.inputs.snippetsFrom || 'doc' }}"
-      snippetLength: "${{ github.event.inputs.snippetLength || '20' }}"
       temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
-      numSnippets: "${{ github.event.inputs.numSnippets || 'all' }}"
       numCompletions: "${{ github.event.inputs.numCompletions || '5' }}"
-      model: "${{ github.event.inputs.model || 'gpt' }}"
+      model: "${{ github.event.inputs.model || 'davinci' }}"
     steps:
       - uses: actions/checkout@v3
 
