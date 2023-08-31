@@ -1,0 +1,34 @@
+name: Run mutation testing experiment
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: "Packages to generate tests for"
+        default: "+benchmarks.txt"
+      skipSlowBenchmarks:
+        description: "Skip slow benchmarks"
+        type: boolean
+        default: false
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        default: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: "${{ steps.parse_packages.outputs.packages }}"
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+    - id: parse_packages
+        run: |
+          packages=$(node ${GITHUB_WORKSPACE}/.github/parse_packages.js \
+            ${{ github.event.inputs.skipSlowBenchmarks == 'true' && '--skip-slow-benchmarks' || '' }} \
+            "${{ github.event.inputs.packages || '+benchmarks.txt' }}")
+          echo "packages=$packages" >> $GITHUB_OUTPUT
