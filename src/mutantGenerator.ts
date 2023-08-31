@@ -211,13 +211,8 @@ export class MutantGenerator {
     );
 
     // write mutants to file
-    const mutantsFileName = path.join(
-      this.outputDir,
-      "mutants.json"
-    );
+    const mutantsFileName = path.join(this.outputDir, "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
-
-
 
     console.log(
       `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}`

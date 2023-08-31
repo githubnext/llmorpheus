@@ -139,7 +139,7 @@ describe("test mutant generation", () => {
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel("text-davinci-003", mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    
+
     const mutantGenerator = new MutantGenerator(
       model,
       promptTemplateFileName,
