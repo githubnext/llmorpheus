@@ -45,7 +45,8 @@ if (require.main === module) {
           type: "string",
           default: "./test/actual",
           demandOption: false,
-          description: "path to directory where generated files should be written",
+          description:
+            "path to directory where generated files should be written",
         },
       });
     const argv = await parser.argv;

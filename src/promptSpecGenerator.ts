@@ -23,7 +23,7 @@ export class PromptSpecGenerator {
     private readonly packagePath: string,
     private readonly outputDir: string
   ) {
-    Prompt.resetIdCounter()
+    Prompt.resetIdCounter();
     this.createPromptSpecs();
     this.createPrompts();
   }

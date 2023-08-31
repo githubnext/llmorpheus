@@ -11,7 +11,7 @@ const mockModelDir = "./test/input/mockModel";
 const testProjectPath = "./test/input/testProject/countries-and-timezones";
 const promptTemplateFileName = "./test/input/newTemplate.hb";
 const sourceFileName = "./test/input/countriesandtimezones_index.js";
- 
+
 describe("test mutant generation", () => {
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
     const files = [sourceFileName];
@@ -26,7 +26,7 @@ describe("test mutant generation", () => {
     expect(actualPromptSpecs.length).to.equal(71);
     promptSpecGenerator.writePromptFiles();
     const actualPromptSpecsAsJson = fs.readFileSync(
-      path.join(promptSpecGenerator.getOutputDir(),'promptSpecs.json'),
+      path.join(promptSpecGenerator.getOutputDir(), "promptSpecs.json"),
       "utf8"
     );
     const expectedPromptSpecsAsJson = fs.readFileSync(
@@ -69,7 +69,7 @@ describe("test mutant generation", () => {
     // check that actual prompts match expected prompts
     for (const promptFileName of actualPrompts) {
       const actualPrompt = fs.readFileSync(
-        path.join(outputDir, 'prompts', promptFileName),
+        path.join(outputDir, "prompts", promptFileName),
         "utf8"
       );
       const expectedPrompt = fs.readFileSync(
@@ -110,7 +110,10 @@ describe("test mutant generation", () => {
       null,
       2
     );
-    fs.writeFileSync(path.join(outputDir, "sourceFiles.txt"), actualSourceFilesJson);
+    fs.writeFileSync(
+      path.join(outputDir, "sourceFiles.txt"),
+      actualSourceFilesJson
+    );
     // compare actual source files to expected source files
     const expectedSourceFiles = fs.readFileSync(
       "./test/expected/sourceFiles.txt",
@@ -165,6 +168,4 @@ describe("test mutant generation", () => {
     assert(actualMutantsJson === expectedMutantsJson);
     fs.rmdirSync(outputDir, { recursive: true });
   });
-
-  
 });
