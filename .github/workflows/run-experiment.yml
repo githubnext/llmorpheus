@@ -156,7 +156,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: results-${{ steps.pkg-name.outputs.pkgName }}
-          path: "llm-mutation-testing/results.zip"
+          path: "results.zip"
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
