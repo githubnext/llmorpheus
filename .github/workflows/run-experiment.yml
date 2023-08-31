@@ -53,3 +53,27 @@ jobs:
             ${{ github.event.inputs.skipSlowBenchmarks == 'true' && '--skip-slow-benchmarks' || '' }} \
             "${{ github.event.inputs.packages || '+benchmarks.txt' }}")
           echo "packages=$packages" >> $GITHUB_OUTPUT
+
+  benchmark:
+    needs:
+      - setup
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.setup.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: llm-mutation-testing
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: Set up llm-mutation testing
+        run: |
+          cd llm-mutation testing
+          npm run build
