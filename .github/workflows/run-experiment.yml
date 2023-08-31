@@ -129,3 +129,21 @@ jobs:
           fi
           npm run build || npm run prepack || echo 'Error with npm run build and npm run prepack'
           npm i --no-save mocha
+
+      - name: Generate mutants
+        env:
+          LLM_API_ENDPOINT: "https://api.openai.com/v1/engines/text-davinci-003/completions"
+          LLM_AUTH_HEADERS: '{ "api-key": "${{ secrets.DAVINCI_API_KEY }}" }'
+          STARCODER_API_ENDPOINT: '${{ secrets.STARCODER_API_ENDPOINT3 }}'
+        run: |
+          cd llm-mutation-testing
+          outputdir="results/$PACKAGE_NAME"
+          mkdir -p $outputdir 
+          echo "Generating mutants for $PACKAGE_NAME"
+          node --max-old-space-size=6144 benchmark/createMutants.js \
+            --outputDir $outputdir \
+            --path "PACKAGE_PATH" \
+            --temperatures "${{ needs.setup.outputs.temperatures }}" \
+            --numCompletions ${{ needs.setup.outputs.numCompletions }} \
+            --model ${{ needs.setup.outputs.model }}
+            --promptTemplateFileName "test/input/newTemplate.hb"
