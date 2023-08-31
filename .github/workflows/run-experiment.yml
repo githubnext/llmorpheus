@@ -143,8 +143,8 @@ jobs:
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --outputDir $outputdir \
             --path "$PACKAGE_PATH" \
+            --caching false \
             --promptTemplateFileName "test/input/newTemplate.hb"
-            --caching false
           ls -al $outputdir 
         
       - name: Zip up results
