@@ -101,6 +101,7 @@ describe("test mutant generation", () => {
     const actualSourceFiles = await mutantGenerator.findSourceFilesToMutate(
       testProjectPath
     );
+    console.log(`actualSourceFiles: ${actualSourceFiles}`);
     // strip off the testProjectPath prefix from the actual source files
     const actualSourceFilesWithoutTestProjectPath = actualSourceFiles.map(
       (sourceFile) => sourceFile.replace(testProjectPath, "")
