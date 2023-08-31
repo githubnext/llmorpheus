@@ -147,9 +147,10 @@ jobs:
         
       - name: Zip up results
         run: |
+          cd llm-mutation-testing
           pwd
           ls -al
-          cd llm-mutation-testing
+          echo $outputdir
           zip -r results.zip $outputdir
 
       - name: Upload artifacts
