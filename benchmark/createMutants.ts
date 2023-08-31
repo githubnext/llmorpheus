@@ -87,12 +87,6 @@ if (require.main === module) {
       return value;
     }
 
-    const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT");
-    const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS");
-
-    console.log(`apiEndpoint: ${apiEndpoint}`);
-    console.log(`authHeaders: ${authHeaders}`);
-
     const mutantGenerator = new MutantGenerator(
       model,
       argv.promptTemplateFileName,

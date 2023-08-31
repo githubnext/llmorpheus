@@ -87,6 +87,7 @@ export class MutantGenerator {
     let nrSkip = 0;
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
+      console.log(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}`);
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
         // console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
