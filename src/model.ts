@@ -57,13 +57,7 @@ export class TextDavinci003Model implements IModel {
   ): Promise<Set<string>> {
     const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT");
     const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS");
-    console.log(`*** authHeaders.startsWith("="): ${authHeaders.startsWith("=")}`);
-    console.log(`*** AH: ${"" + authHeaders.split('')}`);
-
-    console.log(`apiEndpoint: ${apiEndpoint}`);
-    console.log(`authHeaders: ${authHeaders}`);
-
-
+    
     const headers = {
       "Content-Type": "application/json",
       ...JSON.parse(authHeaders),
