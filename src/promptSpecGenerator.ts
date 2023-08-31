@@ -20,8 +20,10 @@ export class PromptSpecGenerator {
   constructor(
     private readonly files: string[],
     private readonly promptTemplateFileName: string,
-    private readonly packagePath: string
+    private readonly packagePath: string,
+    private readonly outputDir: string
   ) {
+    Prompt.resetIdCounter()
     this.createPromptSpecs();
     this.createPrompts();
   }
@@ -32,6 +34,10 @@ export class PromptSpecGenerator {
 
   public getPrompts(): Prompt[] {
     return this.prompts;
+  }
+
+  public getOutputDir(): string {
+    return this.outputDir;
   }
 
   private createPrompts() {
@@ -358,7 +364,7 @@ export class PromptSpecGenerator {
    * Write the promptSpecs to promptSpecs.JSON and the prompts to files "prompts/prompt<NUM>.txt".
    * @param outputDir the name of directory to write the files to
    */
-  public writePromptFiles(outputDir: string) {
+  public writePromptFiles() {
     const promptSpecsWithRelativePaths = this.promptSpecs.map((promptSpec) => {
       const relativePath = path.relative(this.packagePath, promptSpec.file);
       return new PromptSpec(
@@ -373,16 +379,16 @@ export class PromptSpecGenerator {
 
     // write promptSpecs to JSON file
     const json = JSON.stringify(promptSpecsWithRelativePaths, null, 2);
-    fs.writeFileSync(path.join(outputDir, "promptSpecs.json"), json);
+    fs.writeFileSync(path.join(this.outputDir, "promptSpecs.json"), json);
 
     // write prompts to directory "prompts"
-    const dir = path.join(outputDir, "prompts");
+    const dir = path.join(this.outputDir, "prompts");
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
     for (const prompt of this.prompts) {
       const fileName = path.join(
-        outputDir,
+        this.outputDir,
         "prompts",
         `prompt${prompt.getId()}.txt`
       );

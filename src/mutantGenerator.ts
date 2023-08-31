@@ -76,9 +76,10 @@ export class MutantGenerator {
     const generator = new PromptSpecGenerator(
       files,
       this.promptTemplateFileName,
-      packagePath
+      packagePath,
+      this.outputDir
     );
-    generator.writePromptFiles(this.outputDir);
+    generator.writePromptFiles();
 
     let nrSyntacticallyValid = 0;
     let nrSyntacticallyInvalid = 0;
@@ -86,9 +87,6 @@ export class MutantGenerator {
     let nrSkip = 0;
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
-      console.log(
-        `processing prompt# ${prompt.getId()}/${generator.getPrompts().length}`
-      );
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
         // console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);

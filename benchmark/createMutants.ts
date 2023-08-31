@@ -41,6 +41,12 @@ if (require.main === module) {
           description:
             "whether to cache the results of queries to the model (default: true)",
         },
+        outputDir: {
+          type: "string",
+          default: "./test/actual",
+          demandOption: false,
+          description: "path to directory where generated files should be written",
+        },
       });
     const argv = await parser.argv;
 

@@ -1,37 +1,32 @@
 import fs from "fs";
-import {
-  mockModelDir,
-  outputDir,
-  promptTemplateFileName,
-  sourceFileName,
-  testProjectPath,
-} from "./testUtils";
+
 import { MockModel } from "../src/model";
-import { PromptSpec, PromptSpecGenerator } from "../src/promptSpecGenerator";
+import { PromptSpecGenerator } from "../src/promptSpecGenerator";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { expect } from "chai";
 import { assert } from "console";
 import path from "path";
 
-let sourceFile = "";
-
-before(() => {
-  sourceFile = fs.readFileSync(sourceFileName, "utf8");
-});
-
-describe("test prompt crafting", () => {
+const mockModelDir = "./test/input/mockModel";
+const testProjectPath = "./test/input/testProject/countries-and-timezones";
+const promptTemplateFileName = "./test/input/newTemplate.hb";
+const sourceFileName = "./test/input/countriesandtimezones_index.js";
+ 
+describe("test mutant generation", () => {
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
     const files = [sourceFileName];
+    const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
-      "./test/input/"
+      "./test/input/",
+      outputDir
     );
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
     expect(actualPromptSpecs.length).to.equal(71);
-    promptSpecGenerator.writePromptFiles("./test/actual");
+    promptSpecGenerator.writePromptFiles();
     const actualPromptSpecsAsJson = fs.readFileSync(
-      "./test/actual/promptSpecs.json",
+      path.join(promptSpecGenerator.getOutputDir(),'promptSpecs.json'),
       "utf8"
     );
     const expectedPromptSpecsAsJson = fs.readFileSync(
@@ -39,18 +34,21 @@ describe("test prompt crafting", () => {
       "utf8"
     );
     expect(actualPromptSpecsAsJson).to.equal(expectedPromptSpecsAsJson);
+    fs.rmdirSync(outputDir, { recursive: true });
   });
 
   it("should generate the expected prompts for a given source file and prompt template", async () => {
     const files = [sourceFileName];
+    const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
-      "./test/input/"
+      "./test/input/",
+      outputDir
     );
-    promptSpecGenerator.writePromptFiles("./test/actual");
+    promptSpecGenerator.writePromptFiles();
     // check that actual and expected directories contain the same files
-    const actualPrompts = fs.readdirSync("./test/actual/prompts");
+    const actualPrompts = fs.readdirSync(path.join(outputDir, "prompts"));
     const expectedPrompts = fs.readdirSync("./test/expected/prompts");
     expect(actualPrompts.length).to.equal(expectedPrompts.length);
     const inActualButNotInExpected = actualPrompts.filter(
@@ -71,7 +69,7 @@ describe("test prompt crafting", () => {
     // check that actual prompts match expected prompts
     for (const promptFileName of actualPrompts) {
       const actualPrompt = fs.readFileSync(
-        `./test/actual/prompts/${promptFileName}`,
+        path.join(outputDir, 'prompts', promptFileName),
         "utf8"
       );
       const expectedPrompt = fs.readFileSync(
@@ -88,10 +86,12 @@ describe("test prompt crafting", () => {
         );
       }
     }
+    fs.rmdirSync(outputDir, { recursive: true });
   });
 
   it("should find the source files to be mutated in a given source project", async () => {
     const model = new MockModel("text-davinci-003", mockModelDir);
+    const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const mutantGenerator = new MutantGenerator(
       model,
       promptTemplateFileName,
@@ -110,13 +110,14 @@ describe("test prompt crafting", () => {
       null,
       2
     );
-    fs.writeFileSync("./test/actual/sourceFiles.txt", actualSourceFilesJson);
+    fs.writeFileSync(path.join(outputDir, "sourceFiles.txt"), actualSourceFilesJson);
     // compare actual source files to expected source files
     const expectedSourceFiles = fs.readFileSync(
       "./test/expected/sourceFiles.txt",
       "utf8"
     );
     expect(actualSourceFilesJson).to.equal(expectedSourceFiles);
+    fs.rmdirSync(outputDir, { recursive: true });
   });
 
   it("mock model should generate the expected completion for a prompt", async () => {
@@ -134,7 +135,7 @@ describe("test prompt crafting", () => {
 
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel("text-davinci-003", mockModelDir);
-
+    const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     // remove old mutants.json file if it exists
     const mutantsJsonFileName = path.join(
       testProjectPath,
@@ -162,37 +163,8 @@ describe("test prompt crafting", () => {
       "utf8"
     );
     assert(actualMutantsJson === expectedMutantsJson);
+    fs.rmdirSync(outputDir, { recursive: true });
   });
 
-  // it("should generate the expected prompts for a given source project", async () => {
-  //   const ruleFilter : IRuleFilter = (value: string) : boolean => true;
-  //   const model = new MockModel('text-davinci-003', mockModelDir);
-  //   const generator = new MutantGenerator(model, promptTemplateFileName, rulesFileName, ruleFilter, outputDir, testProjectPath);
-  //   const promptGenerator = new PromptGenerator(promptTemplateFileName);
-  //   const sourceFileNames = await generator.findSourceFilesToMutate(testProjectPath);
-  //   const actualPrompts = new Set<Prompt>();
-  //   let promptCnt = 0;
-  //   for (const sourceFileName of sourceFileNames){
-  //     const sourceCode = fs.readFileSync(sourceFileName, "utf8");
-  //     const chunks = generator.createChunks(sourceCode);
-  //     for (let chunkNr=0; chunkNr < chunks.length; chunkNr++ ){
-  //       const chunk = chunks[chunkNr];
-  //       let ruleCnt = rules.length;
-  //       for (let ruleNr=0; ruleNr < ruleCnt; ruleNr++){
-  //         const rule = rules[ruleNr];
-  //         if (generator.chunkContainsTerminals(chunk, rule.getLHSterminals())){
-  //           const prompt = promptGenerator.createPrompt(promptCnt++, sourceFileName, chunkNr, chunk, rule);
-  //           actualPrompts.add(prompt);
-  //           fs.writeFileSync(`./test/temp_output/prompts/prompt_${prompt.getId()}.json`, JSON.stringify(prompt));
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   // check that actual prompts match expected prompts
-  //   const expectedPrompts = findExpectedPrompts(expectedPromptsDir);
-  //   expect(actualPrompts.size).to.equal(expectedPrompts.size);
-  //   const diff = [...actualPrompts].filter((prompt) => !setContainsPrompt(expectedPrompts, prompt));
-  //   expect(diff, `expected ${diff.join(',')} to be empty`).to.be.empty;
-  // });
+  
 });

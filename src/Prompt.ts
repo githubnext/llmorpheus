@@ -15,4 +15,7 @@ export class Prompt {
   public getOrig(): string {
     return this.spec.orig;
   }
+  public static resetIdCounter(): void {
+    Prompt.idCounter = 1;
+  }
 }
