@@ -6,15 +6,6 @@ on:
       packages:
         description: "Packages to generate tests for"
         default: "+benchmarks.txt"
-      snippetsFrom:
-        description: "Code snippets source"
-        default: "doc"
-      numSnippets:
-        description: 'Maximum number of snippets to include in each prompt, or "all"'
-        default: "all"
-      snippetLength:
-        description: "Maximum length of each snippet in lines"
-        default: "20"
       temperatures:
         description: "Sampling temperatures to try when obtaining completions (whitespace-separated)"
         default: "0.0"
@@ -27,10 +18,8 @@ on:
         options:
           - "gpt"
           - "starcoder"
-        default: "gpt"
-      compareTo:
-        description: "Run number of previous run to compare to (leave empty to skip comparison)"
-        default: ""
+          - "davinci"
+        default: "davinci"
       skipSlowBenchmarks:
         description: "Skip slow benchmarks"
         type: boolean
