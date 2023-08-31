@@ -77,3 +77,55 @@ jobs:
         run: |
           cd llm-mutation-testing
           npm run build
+
+      - name: Checkout github package repo
+        if: ${{ matrix.package.host == 'github.com' }}
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
+          ref: ${{ matrix.package.sha }}
+          path: "source"
+      
+      - name: Checkout gitlab package repo
+        if: ${{ matrix.package.host == 'gitlab.com' }}
+        run: |
+          git clone ${{ format('https://gitlab.com/{0}/{1}', matrix.package.owner, matrix.package.repo) }} source
+          cd source
+          git checkout ${{ matrix.package.sha }}
+
+      - name: Determine package name
+        id: pkg-name
+        run: |
+          # name of the package
+          PACKAGE_NAME=$(cat source/${{ matrix.package.path }}/package.json | jq -r .name )
+
+          # some packages have a / in their names (looking at you, gitlab-js!)
+          if [[ "$PACKAGE_NAME" == *"/"* ]]; then
+            PACKAGE_NAME=${PACKAGE_NAME##*/}
+          fi
+
+          # path to the package within the repo checkout
+          PACKAGE_PATH="$GITHUB_WORKSPACE/$PACKAGE_NAME/${{ matrix.package.path }}"
+          # make sure there isn't already a directory with the same name
+          if [ -d "$PACKAGE_PATH" ]; then
+            echo "ERROR: $PACKAGE_PATH already exists"
+            exit 1
+          fi
+          # rename checkout, since some packages examine its name (looking at you, bluebird!)
+          mv source $PACKAGE_NAME
+          echo "Package name: $PACKAGE_NAME, path: $PACKAGE_PATH"
+          # export environment variables
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+          echo "PACKAGE_PATH=$PACKAGE_PATH" >> $GITHUB_ENV
+          echo "pkgName=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Install package, its dependencies, and test packages
+        run: |
+          cd $PACKAGE_PATH
+          npm i || npm i --legacy-peer-deps
+          # if matrix.package.dependencies is not empty, install them
+          if ! [ -z "${{ matrix.package.dependencies }}" ]; then
+            npm i ${{ matrix.package.dependencies }}
+          fi
+          npm run build || npm run prepack || echo 'Error with npm run build and npm run prepack'
+          npm i --no-save mocha
