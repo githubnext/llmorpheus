@@ -142,5 +142,5 @@ jobs:
           echo "Generating mutants for $PACKAGE_NAME"
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --outputDir $outputdir \
-            --path "PACKAGE_PATH" \
+            --path "$PACKAGE_PATH" \
             --promptTemplateFileName "test/input/newTemplate.hb"
