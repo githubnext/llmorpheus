@@ -143,7 +143,4 @@ jobs:
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --outputDir $outputdir \
             --path "PACKAGE_PATH" \
-            --temperatures "${{ needs.setup.outputs.temperatures }}" \
-            --numCompletions ${{ needs.setup.outputs.numCompletions }} \
-            --model ${{ needs.setup.outputs.model }}
             --promptTemplateFileName "test/input/newTemplate.hb"
