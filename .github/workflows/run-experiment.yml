@@ -144,10 +144,13 @@ jobs:
             --outputDir $outputdir \
             --path "$PACKAGE_PATH" \
             --promptTemplateFileName "test/input/newTemplate.hb"
+            --caching false
+          ls -al $outputdir 
         
       - name: Zip up results
         run: |
-          cd llm-mutation-testing
+          pwd
+          ls -al
           zip -r results.zip results
 
       - name: Upload artifacts
