@@ -145,14 +145,10 @@ jobs:
             --path "$PACKAGE_PATH" \
             --caching false \
             --promptTemplateFileName "test/input/newTemplate.hb"
-          ls -al $PACKAGE_PATH
-          ls -al $PACKAGE_PATH/MUTATION_TESTING
         
       - name: Zip up results
         run: |
-          pwd
-          ls -al
-          zip -r results.zip results
+          zip -r results.zip $PACKAGE_PATH/MUTATION_TESTING
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
