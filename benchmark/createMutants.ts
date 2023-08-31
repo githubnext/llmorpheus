@@ -78,6 +78,21 @@ if (require.main === module) {
       model = baseModel;
     }
 
+    function getEnv(name: string): string {
+      const value = process.env[name];
+      if (!value) {
+        console.error(`Please set the ${name} environment variable.`);
+        process.exit(1);
+      }
+      return value;
+    }
+
+    const apiEndpoint = getEnv("TEXTDAVINCI003_API_ENDPOINT");
+    const authHeaders = getEnv("TEXTDAVINCI003_AUTH_HEADERS");
+
+    console.log(`apiEndpoint: ${apiEndpoint}`);
+    console.log(`authHeaders: ${authHeaders}`);
+
     const mutantGenerator = new MutantGenerator(
       model,
       argv.promptTemplateFileName,
