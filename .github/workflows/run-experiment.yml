@@ -145,7 +145,8 @@ jobs:
             --path "$PACKAGE_PATH" \
             --caching false \
             --promptTemplateFileName "test/input/newTemplate.hb"
-          ls -al $outputdir 
+          ls -al $PACKAGE_PATH
+          ls -al $PACKAGE_PATH/MUTATION_TESTING
         
       - name: Zip up results
         run: |
