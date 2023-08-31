@@ -139,17 +139,7 @@ describe("test mutant generation", () => {
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel("text-davinci-003", mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    // remove old mutants.json file if it exists
-    const mutantsJsonFileName = path.join(
-      testProjectPath,
-      "MUTATION_TESTING",
-      "mutants.json"
-    );
-    if (fs.existsSync(mutantsJsonFileName)) {
-      console.log(`removing old ${mutantsJsonFileName}`);
-      fs.unlinkSync(mutantsJsonFileName);
-    }
-
+    
     const mutantGenerator = new MutantGenerator(
       model,
       promptTemplateFileName,
@@ -158,7 +148,7 @@ describe("test mutant generation", () => {
     );
     await mutantGenerator.generateMutants(testProjectPath);
     const actualMutantsJson = fs.readFileSync(
-      path.join(testProjectPath, "MUTATION_TESTING", "mutants.json"),
+      path.join(outputDir, "mutants.json"),
       "utf8"
     );
     const expectedMutantsJson = fs.readFileSync(
