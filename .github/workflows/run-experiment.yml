@@ -187,7 +187,7 @@ jobs:
           cd ..
           echo "***RESULTS***"
           du results
-          zip -r results.zip results
+          zip -r results.zip results/home/runner/work/llm-mutation-testing/llm-mutation-testing
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
