@@ -184,8 +184,8 @@ jobs:
           do
             unzip -oq $zip
           done
-          mv results/home/runner/work/llm-mutation-testing/llm-mutation-testing/* results
-          rmdir results/home/runner/work/llm-mutation-testing/llm-mutation-testing
+          mv home/runner/work/llm-mutation-testing/llm-mutation-testing/* .
+          rmdir home/runner/work/llm-mutation-testing/llm-mutation-testing
           cd ..
           echo "***RESULTS***"
           du results
