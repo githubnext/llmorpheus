@@ -187,10 +187,7 @@ jobs:
           mv home/runner/work/llm-mutation-testing/llm-mutation-testing/* .
           rm -rf home
           cd ..
-          echo "*** RESULTS:"
-          du results
-          echo "*** FILES:"
-          ls -al
+          rm results-*
           zip -r results.zip results
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
