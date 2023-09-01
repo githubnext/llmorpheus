@@ -85,11 +85,11 @@ export class MutantGenerator {
     let nrSyntacticallyInvalid = 0;
     let nrIdentical = 0;
     let nrSkip = 0;
-    let cnt = 0;
+    // let cnt = 0; // to reduce running time when debugging GH Actions
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
-      if (cnt > 2) break;
-      cnt++;
+      // if (cnt > 2) break; // to reduce running time when debugging GH Actions
+      // cnt++; // to reduce running time when debugging GH Actions
       console.log(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}`);
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
