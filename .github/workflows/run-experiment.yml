@@ -179,10 +179,12 @@ jobs:
       - name: Combine output zips
         run: |
           mkdir results
-          for zip in results-*/results.zip
+          cd results
+          for zip in ../results-*/results.zip
           do
             unzip -oq $zip
           done
+          cd ..
           echo "***RESULTS***"
           du results
           zip -r results.zip results
