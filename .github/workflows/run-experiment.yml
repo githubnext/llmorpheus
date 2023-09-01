@@ -149,14 +149,6 @@ jobs:
       - name: Zip up results
         run: |
           zip -r results.zip $PACKAGE_PATH/MUTATION_TESTING
-          pwd
-          ls -al
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: results-${{ steps.pkg-name.outputs.pkgName }}
-          path: "results.zip"
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
