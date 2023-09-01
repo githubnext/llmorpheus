@@ -189,6 +189,8 @@ jobs:
           cd ..
           rm -rf results-*
           zip -r results.zip results
+          echo "FILES:"
+          ls -al
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
