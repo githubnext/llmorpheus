@@ -184,10 +184,12 @@ jobs:
           do
             unzip -oq $zip
           done
+          mv results/home/runner/work/llm-mutation-testing/llm-mutation-testing/* results
+          rmdir results/home/runner/work/llm-mutation-testing/llm-mutation-testing
           cd ..
           echo "***RESULTS***"
           du results
-          zip -r results.zip results/home/runner/work/llm-mutation-testing/llm-mutation-testing
+          zip -r results.zip results
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
