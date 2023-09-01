@@ -183,6 +183,8 @@ jobs:
           do
             unzip -oq $zip
           done
+          echo "***RESULTS***"
+          du results
           zip -r results.zip results
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
