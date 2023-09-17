@@ -84,7 +84,6 @@ export class MutantGenerator {
     let nrSyntacticallyValid = 0;
     let nrSyntacticallyInvalid = 0;
     let nrIdentical = 0;
-    let nrSkip = 0;
     // let cnt = 0; // to reduce running time when debugging GH Actions
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
@@ -101,33 +100,32 @@ export class MutantGenerator {
           completion.text
         );
 
-        const regExp = /```\n(.*)\n```\n/g;
+        const regExp = /```\n((?:.(?!```))*)\n```/gs;
         let match;
+        const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+
         while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
-          if (
-            substitution !== prompt.getOrig() &&
-            !prompt.getOrig().includes("Object.")
+          console.log(`*** substitution: ${substitution}\n`);
+          if (substitution === prompt.getOrig()) {
+            nrIdentical++;
+          } else if (prompt.getOrig().includes("Object.")) {
+            nrSyntacticallyInvalid++;
+          } else if (
+            hasUnbalancedParens(substitution) ||
+            (substitution.includes(";") &&
+              prompt.spec.component === "allArgs") ||
+            (!isDeclaration(substitution) &&
+              prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader")) 
           ) {
-            // console.log(`substitution: ${substitution}`);
+            nrSyntacticallyInvalid++;
+          } else {
             const candidateMutant = prompt.spec
               .getCodeWithPlaceholder()
               .replace("<PLACEHOLDER>", substitution);
             // console.log(`candidate mutant:\n${candidateMutant}\n`);
             try {
-
-              const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
-
-              if (
-                hasUnbalancedParens(substitution) ||
-                (substitution.includes(";") &&
-                  prompt.spec.component === "allArgs") ||
-                (!isDeclaration(substitution) &&
-                  prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader")) 
-              ) {
-                //console.log(`*** invalid substitution ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrSyntacticallyInvalid++;
-              } else if (prompt.spec.isExpressionPlaceholder()) {
+              if (prompt.spec.isExpressionPlaceholder()) {
                 parser.parseExpression(substitution);
                 // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyValid++;
@@ -151,8 +149,6 @@ export class MutantGenerator {
                   prompt.getOrig(),
                   substitution
                 );
-                // console.log(`*** VALID mutant: ${expandedSubstitution} replacing ${expandedOrig}\n`);
-
                 const mutant = new Mutant(
                   prompt.spec.file,
                   prompt.spec.parentLocation!.startLine,
@@ -166,13 +162,11 @@ export class MutantGenerator {
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
                 mutants.push(mutant);
-              } else {
-                //if (this.isObjectLiteral(substitution) && !this.isObjectLiteral(prompt.getOrig())) {
+              } else { // statement placeholder
                 parser.parse(candidateMutant, {
                   sourceType: "module",
                   plugins: ["typescript", "jsx"],
                 });
-                // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyValid++;
                 const mutant = new Mutant(
                   prompt.spec.file,
@@ -189,18 +183,16 @@ export class MutantGenerator {
                 mutants.push(mutant);
               }
             } catch (e) {
+              console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
               nrSyntacticallyInvalid++;
             }
-          } else {
-            // console.log(`substitution equal to original code: ${prompt.getOrig()}`);
-            nrIdentical++;
           }
         }
       }
     }
 
     const nrCandidates =
-      nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical + nrSkip;
+      nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
     const locations = new Array<string>();
