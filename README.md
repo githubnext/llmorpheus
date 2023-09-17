@@ -14,6 +14,6 @@ node benchmark/createMutants.js --path ~/tmp/TestStryker/countries-and-timezones
 
 - Open terminal window 
 - cd to directory for benchmark in which the custom version of Stryker has been installed (e.g., /Users/franktip/tmp/TestStryker/countries-and-timezones)
-- export MUTANTS_FILE=/MUTATION_TESTING/mutants.json
+- export MUTANTS_FILE=./MUTATION_TESTING/mutants.json
 - npx stryker run
 - in terminal: open reports/mutation/mutation.html

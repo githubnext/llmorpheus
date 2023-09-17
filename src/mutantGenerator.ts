@@ -115,10 +115,15 @@ export class MutantGenerator {
               .replace("<PLACEHOLDER>", substitution);
             // console.log(`candidate mutant:\n${candidateMutant}\n`);
             try {
+
+              const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+
               if (
                 hasUnbalancedParens(substitution) ||
                 (substitution.includes(";") &&
-                  prompt.spec.component === "allArgs")
+                  prompt.spec.component === "allArgs") ||
+                (!isDeclaration(substitution) &&
+                  prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader")) 
               ) {
                 //console.log(`*** invalid substitution ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
