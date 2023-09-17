@@ -69,8 +69,8 @@ export class MutantGenerator {
     );
     const files = await this.findSourceFilesToMutate(packagePath);
 
-    console.log(
-      `generating mutants for the following files: ${files.join(", ")}`
+    this.printAndLog(
+      `generating mutants for the following files: ${files.join(", ")}\n`
     );
 
     const generator = new PromptSpecGenerator(
@@ -90,7 +90,7 @@ export class MutantGenerator {
     for (const prompt of generator.getPrompts()) {
       // if (cnt > 2) break; // to reduce running time when debugging GH Actions
       // cnt++; // to reduce running time when debugging GH Actions
-      console.log(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}`);
+      this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
         // console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
@@ -201,7 +201,7 @@ export class MutantGenerator {
 
     const nrCandidates =
       nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical + nrSkip;
-    console.log(`found ${nrCandidates} mutant candidates`);
+    this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
     const locations = new Array<string>();
     for (const mutant of mutants) {
@@ -212,19 +212,19 @@ export class MutantGenerator {
     }
     const nrLocations = locations.length;
 
-    console.log(
-      `discarding ${nrSyntacticallyInvalid} syntactically invalid mutants`
+    this.printAndLog(
+      `discarding ${nrSyntacticallyInvalid} syntactically invalid mutants\n`
     );
-    console.log(
-      `discarding ${nrIdentical} mutant candidates that are identical to the original code`
+    this.printAndLog(
+      `discarding ${nrIdentical} mutant candidates that are identical to the original code\n`
     );
 
     // write mutants to file
     const mutantsFileName = path.join(this.outputDir, "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
-    console.log(
-      `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}`
+    this.printAndLog(
+      `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}\n`
     );
   }
 
