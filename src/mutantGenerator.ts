@@ -63,6 +63,22 @@ export class MutantGenerator {
     return files;
   }
 
+  private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {
+    const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+    return (
+      hasUnbalancedParens(substitution) ||
+      (substitution.includes(";") &&
+        prompt.spec.component === "allArgs") ||
+      (!isDeclaration(substitution) &&
+        prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader"))
+    );
+  }
+
+  private createCandidateMutant(prompt: Prompt, substitution: string): string {
+    return prompt.spec.getCodeWithPlaceholder()
+                      .replace("<PLACEHOLDER>", substitution);
+  }
+
   public async generateMutants(packagePath: string): Promise<void> {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
@@ -102,7 +118,7 @@ export class MutantGenerator {
 
         const regExp = /```\n((?:.(?!```))*)\n```/gs;
         let match;
-        const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+        
 
         while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
@@ -111,23 +127,14 @@ export class MutantGenerator {
             nrIdentical++;
           } else if (prompt.getOrig().includes("Object.")) {
             nrSyntacticallyInvalid++;
-          } else if (
-            hasUnbalancedParens(substitution) ||
-            (substitution.includes(";") &&
-              prompt.spec.component === "allArgs") ||
-            (!isDeclaration(substitution) &&
-              prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader")) 
-          ) {
+          } else if (this.isInvalidSubstitution(prompt, substitution)) {
             nrSyntacticallyInvalid++;
           } else {
-            const candidateMutant = prompt.spec
-              .getCodeWithPlaceholder()
-              .replace("<PLACEHOLDER>", substitution);
-            // console.log(`candidate mutant:\n${candidateMutant}\n`);
-            try {
-              if (prompt.spec.isExpressionPlaceholder()) {
+            const candidateMutant = this.createCandidateMutant(prompt, substitution);
+            // try {
+            if (prompt.spec.isExpressionPlaceholder()) {
+              try {
                 parser.parseExpression(substitution);
-                // console.log(`*** valid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyValid++;
                 const mutant = new Mutant(
                   prompt.spec.file,
@@ -142,13 +149,22 @@ export class MutantGenerator {
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
                 mutants.push(mutant);
-              } else if (prompt.spec.isArgListPlaceHolder()) {
-                nrSyntacticallyValid++;
+              } catch (e) {
+                  console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                  nrSyntacticallyInvalid++;
+              }
+            } else if (prompt.spec.isArgListPlaceHolder()) {
+              try {
                 const expandedOrig = prompt.spec.parentLocation!.getText();
                 const expandedSubstitution = expandedOrig.replace(
                   prompt.getOrig(),
                   substitution
                 );
+                parser.parse(expandedSubstitution, {
+                  sourceType: "module",
+                  plugins: ["typescript", "jsx"],
+                });
+                nrSyntacticallyValid++;
                 const mutant = new Mutant(
                   prompt.spec.file,
                   prompt.spec.parentLocation!.startLine,
@@ -162,7 +178,12 @@ export class MutantGenerator {
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
                 mutants.push(mutant);
-              } else { // statement placeholder
+              } catch (e) {
+                console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                nrSyntacticallyInvalid++;
+              }
+            } else { // statement placeholder
+              try {
                 parser.parse(candidateMutant, {
                   sourceType: "module",
                   plugins: ["typescript", "jsx"],
@@ -181,10 +202,10 @@ export class MutantGenerator {
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
                 mutants.push(mutant);
+              } catch (e) {
+                console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                nrSyntacticallyInvalid++;
               }
-            } catch (e) {
-              console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-              nrSyntacticallyInvalid++;
             }
           }
         }
