@@ -91,7 +91,12 @@ export class MutantGenerator {
 
     const isDuplicate = (mutant: Mutant, mutants: Mutant[]): boolean => {
       for (const m of mutants) {
-        if (m.promptId === mutant.promptId && m.completionId === mutant.completionId && m.replacement === mutant.replacement) {
+        if (m.startLine === mutant.startLine && 
+            m.startColumn === mutant.startColumn && 
+            m.endLine === mutant.endLine && 
+            m.endColumn === mutant.endColumn && 
+            m.file === mutant.file && 
+            m.replacement === mutant.replacement) {
           return true;
         }
       }
