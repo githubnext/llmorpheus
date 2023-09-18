@@ -89,6 +89,15 @@ export class MutantGenerator {
       `generating mutants for the following files: ${files.join(", ")}\n`
     );
 
+    const isDuplicate = (mutant: Mutant, mutants: Mutant[]): boolean => {
+      for (const m of mutants) {
+        if (m.promptId === mutant.promptId && m.completionId === mutant.completionId && m.replacement === mutant.replacement) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     const generator = new PromptSpecGenerator(
       files,
       this.promptTemplateFileName,
@@ -100,6 +109,7 @@ export class MutantGenerator {
     let nrSyntacticallyValid = 0;
     let nrSyntacticallyInvalid = 0;
     let nrIdentical = 0;
+    let nrDuplicate = 0;
     // let cnt = 0; // to reduce running time when debugging GH Actions
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
@@ -122,7 +132,7 @@ export class MutantGenerator {
 
         while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
-          console.log(`*** substitution: ${substitution}\n`);
+          // console.log(`*** substitution: ${substitution}\n`);
           if (substitution === prompt.getOrig()) {
             nrIdentical++;
           } else if (prompt.getOrig().includes("Object.")) {
@@ -135,7 +145,7 @@ export class MutantGenerator {
             if (prompt.spec.isExpressionPlaceholder()) {
               try {
                 parser.parseExpression(substitution);
-                nrSyntacticallyValid++;
+                
                 const mutant = new Mutant(
                   prompt.spec.file,
                   prompt.spec.location.startLine,
@@ -148,9 +158,14 @@ export class MutantGenerator {
                   completion.getId(),
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
-                mutants.push(mutant);
+                if (!isDuplicate(mutant, mutants)) {
+                  mutants.push(mutant);
+                  nrSyntacticallyValid++;
+                } else {
+                  nrDuplicate++;
+                }
               } catch (e) {
-                  console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                   nrSyntacticallyInvalid++;
               }
             } else if (prompt.spec.isArgListPlaceHolder()) {
@@ -164,7 +179,7 @@ export class MutantGenerator {
                   sourceType: "module",
                   plugins: ["typescript", "jsx"],
                 });
-                nrSyntacticallyValid++;
+                
                 const mutant = new Mutant(
                   prompt.spec.file,
                   prompt.spec.parentLocation!.startLine,
@@ -177,7 +192,12 @@ export class MutantGenerator {
                   completion.getId(),
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
-                mutants.push(mutant);
+                if (!isDuplicate(mutant, mutants)) {
+                  mutants.push(mutant);
+                  nrSyntacticallyValid++;
+                } else {
+                  nrDuplicate++;
+                }
               } catch (e) {
                 console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
@@ -188,7 +208,7 @@ export class MutantGenerator {
                   sourceType: "module",
                   plugins: ["typescript", "jsx"],
                 });
-                nrSyntacticallyValid++;
+                
                 const mutant = new Mutant(
                   prompt.spec.file,
                   prompt.spec.location.startLine,
@@ -201,7 +221,12 @@ export class MutantGenerator {
                   completion.getId(),
                   prompt.spec.feature + "/" + prompt.spec.component
                 );
-                mutants.push(mutant);
+                if (!isDuplicate(mutant, mutants)) {
+                  mutants.push(mutant);
+                  nrSyntacticallyValid++;
+                } else {
+                  nrDuplicate++;
+                }
               } catch (e) {
                 console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
@@ -215,6 +240,8 @@ export class MutantGenerator {
     const nrCandidates =
       nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
+
+   
 
     const locations = new Array<string>();
     for (const mutant of mutants) {
@@ -231,7 +258,11 @@ export class MutantGenerator {
     this.printAndLog(
       `discarding ${nrIdentical} mutant candidates that are identical to the original code\n`
     );
+    this.printAndLog(
+      `discarding ${nrDuplicate} duplicate mutants\n`
+    );
 
+     
     // write mutants to file
     const mutantsFileName = path.join(this.outputDir, "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
