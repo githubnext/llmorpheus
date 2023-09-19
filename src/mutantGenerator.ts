@@ -58,8 +58,8 @@ export class MutantGenerator {
   public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
     const pattern = `${path}/**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
     const files = await fg([pattern], {
-      ignore: [`${path}/**/node_modules`, 
-               `${path}/**/dist`, 
+      ignore: ['**/node_modules', 
+               '**/dist', 
                `${path}/**/test/**`, 
                `${path}/**/*.test.*`, 
                '**/*.min.js', 
