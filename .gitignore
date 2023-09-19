@@ -9,3 +9,4 @@ benchmark/*.js
 benchmark/*.js.map
 .DS_Store
 test/actual
+test-*
