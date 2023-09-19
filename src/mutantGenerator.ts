@@ -60,8 +60,8 @@ export class MutantGenerator {
     const files = await fg([pattern], {
       ignore: ['**/node_modules', 
                '**/dist', 
-               `${path}/**/test/**`, 
-               `${path}/**/*.test.*`, 
+               `${path}/test/**`, 
+               '**/*.test.*', 
                '**/*.min.js', 
                '**/*.d.ts', 
                '**/rollup.config.js', 

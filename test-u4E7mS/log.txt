@@ -1,0 +1,4 @@
+Starting generation of mutants on: Tue, 19 Sep 2023 16:25:39 GMT
+
+generating mutants for the following files: ./test/input/testProject/countries-and-timezones/dist/index.js, ./test/input/testProject/countries-and-timezones/src/build-country.js, ./test/input/testProject/countries-and-timezones/src/build-timezone.js, ./test/input/testProject/countries-and-timezones/src/index.js
+processing prompt 1/405
