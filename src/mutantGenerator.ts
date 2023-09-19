@@ -74,7 +74,7 @@ export class MutantGenerator {
                'benchmark', 
                'benchmarks',
                "**/*.spec.*", 
-               `${path}/**/build`] 
+               'build'] 
     });
     return files;
   }
@@ -220,7 +220,7 @@ export class MutantGenerator {
                   nrDuplicate++;
                 }
               } catch (e) {
-                console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
               }
             } else { // statement placeholder
@@ -249,7 +249,7 @@ export class MutantGenerator {
                   nrDuplicate++;
                 }
               } catch (e) {
-                console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                 nrSyntacticallyInvalid++;
               }
             }
