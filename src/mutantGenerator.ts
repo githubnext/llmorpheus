@@ -58,7 +58,23 @@ export class MutantGenerator {
   public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
     const pattern = `${path}/**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
     const files = await fg([pattern], {
-      ignore: ["**/node_modules", "**/dist", "**/d.ts", "**/test/**", "**/*.test.*", "**/*.min.js", "**/*.d.ts", "**/rollup.config.js", "**/esm/index.js", "**/coverage", "**/lcov-report", "**/*test*.js", "**/examples","**/example", "**/benchmark", "**/benchmarks","**/*.spec.*", "**/build"],
+      ignore: [`${path}/**/node_modules`, 
+               `${path}/**/dist`, 
+               `${path}/**/test/**`, 
+               `${path}/**/*.test.*`, 
+               '**/*.min.js', 
+               '**/*.d.ts', 
+               '**/rollup.config.js', 
+               "**/esm/index.js", 
+               `${path}/**/coverage`, 
+               `${path}/**/lcov-report`, 
+               `${path}/**/*test*.js`, 
+               `${path}/**/examples`,
+               `**/example`, 
+               `${path}/**/benchmark`, 
+               `${path}/**/benchmarks`,
+               "**/*.spec.*", 
+               `${path}/**/build`] 
     });
     return files;
   }
