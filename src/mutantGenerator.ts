@@ -70,7 +70,7 @@ export class MutantGenerator {
                'lcov-report', 
                `${path}/**/*test*.js`, 
                'examples',
-               'example', 
+               '**/example', 
                '**/benchmark', 
                '**/benchmarks',
                "**/*.spec.*", 
