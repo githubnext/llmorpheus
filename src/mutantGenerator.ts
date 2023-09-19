@@ -71,10 +71,10 @@ export class MutantGenerator {
                `${path}/**/*test*.js`, 
                'examples',
                'example', 
-               'benchmark', 
-               'benchmarks',
+               '**/benchmark', 
+               '**/benchmarks',
                "**/*.spec.*", 
-               'build'] 
+               '**/build'] 
     });
     return files;
   }
