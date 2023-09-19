@@ -194,3 +194,5 @@ jobs:
         with:
           name: results-all
           path: results.zip
+      - name: Generate Summary
+        run: echo '### Summary to be printed here.. 🚀' >> $GITHUB_STEP_SUMMARY
