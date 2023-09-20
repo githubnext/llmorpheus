@@ -79,13 +79,17 @@ export class MutantGenerator {
     return files;
   }
 
+  private isDeclaration(compl: string){
+    return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+  }
+
   private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {
-    const isDeclaration = (compl: string) => compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+    
     return (
       hasUnbalancedParens(substitution) ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
-      (!isDeclaration(substitution) &&
+      (!this.isDeclaration(substitution) &&
         prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader"))
     );
   }
@@ -131,15 +135,11 @@ export class MutantGenerator {
     let nrSyntacticallyInvalid = 0;
     let nrIdentical = 0;
     let nrDuplicate = 0;
-    // let cnt = 0; // to reduce running time when debugging GH Actions
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
-      // if (cnt > 2) break; // to reduce running time when debugging GH Actions
-      // cnt++; // to reduce running time when debugging GH Actions
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
-        // console.log(`prompt:\n${prompt.getText()}\ncompletion:\n${completion}\n`);
         fs.writeFileSync(
           `${
             this.outputDir
@@ -153,12 +153,13 @@ export class MutantGenerator {
 
         while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
-          // console.log(`*** substitution: ${substitution}\n`);
           if (substitution === prompt.getOrig()) {
             nrIdentical++;
           } else if (prompt.getOrig().includes("Object.")) {
             nrSyntacticallyInvalid++;
           } else if (this.isInvalidSubstitution(prompt, substitution)) {
+            nrSyntacticallyInvalid++; 
+          } else if (this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
             nrSyntacticallyInvalid++;
           } else {
             const candidateMutant = this.createCandidateMutant(prompt, substitution);

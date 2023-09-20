@@ -293,69 +293,71 @@ export class PromptSpecGenerator {
       callee.loc!.end.line,
       callee.loc!.end.column
     );
-    prompts.push(
-      new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
-    );
-    for (let argNr = 0; argNr < args.length; argNr++) {
-      const arg = args[argNr];
-      const argLoc = new SourceLocation(
-        file,
-        arg.loc!.start.line,
-        arg.loc!.start.column,
-        arg.loc!.end.line,
-        arg.loc!.end.column
-      );
+    if (calleeLoc.getText() !== "require"){ // don't mutate calls to require
       prompts.push(
-        new PromptSpec(file, "call", "arg" + argNr, argLoc, argLoc.getText())
+        new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
       );
-    }
-    if (args.length === 0) {
-      // find location between parentheses
-      const loc = nodePath.node.loc!;
-      const allArgsLoc = new SourceLocation(
-        file,
-        callee.loc!.end.line,
-        callee.loc!.end.column + 1,
-        loc.end.line,
-        loc.end.column - 1
-      );
-      prompts.push(
-        new PromptSpec(
+      for (let argNr = 0; argNr < args.length; argNr++) {
+        const arg = args[argNr];
+        const argLoc = new SourceLocation(
           file,
-          "call",
-          "allArgs",
-          allArgsLoc,
-          allArgsLoc.getText()
-        )
-      );
-    } else if (args.length !== 1) {
-      // skip if there is only one argument because then the same placeholder is already created for the first argument
-      const firstArg = args[0];
-      const lastArg = args[args.length - 1];
-      const allArgsLoc = new SourceLocation(
-        file,
-        firstArg.loc!.start.line,
-        firstArg.loc!.start.column,
-        lastArg.loc!.end.line,
-        lastArg.loc!.end.column
-      );
-      const parentLoc = new SourceLocation(
-        file,
-        nodePath.node.loc!.start.line,
-        nodePath.node.loc!.start.column,
-        nodePath.node.loc!.end.line,
-        nodePath.node.loc!.end.column
-      );
-      prompts.push(
-        new PromptSpec(
+          arg.loc!.start.line,
+          arg.loc!.start.column,
+          arg.loc!.end.line,
+          arg.loc!.end.column
+        );
+        prompts.push(
+          new PromptSpec(file, "call", "arg" + argNr, argLoc, argLoc.getText())
+        );
+      }
+      if (args.length === 0) {
+        // find location between parentheses
+        const loc = nodePath.node.loc!;
+        const allArgsLoc = new SourceLocation(
           file,
-          "call",
-          "allArgs",
-          allArgsLoc,
-          allArgsLoc.getText(),
-          parentLoc
-        )
-      );
+          callee.loc!.end.line,
+          callee.loc!.end.column + 1,
+          loc.end.line,
+          loc.end.column - 1
+        );
+        prompts.push(
+          new PromptSpec(
+            file,
+            "call",
+            "allArgs",
+            allArgsLoc,
+            allArgsLoc.getText()
+          )
+        );
+      } else if (args.length !== 1) {
+        // skip if there is only one argument because then the same placeholder is already created for the first argument
+        const firstArg = args[0];
+        const lastArg = args[args.length - 1];
+        const allArgsLoc = new SourceLocation(
+          file,
+          firstArg.loc!.start.line,
+          firstArg.loc!.start.column,
+          lastArg.loc!.end.line,
+          lastArg.loc!.end.column
+        );
+        const parentLoc = new SourceLocation(
+          file,
+          nodePath.node.loc!.start.line,
+          nodePath.node.loc!.start.column,
+          nodePath.node.loc!.end.line,
+          nodePath.node.loc!.end.column
+        );
+        prompts.push(
+          new PromptSpec(
+            file,
+            "call",
+            "allArgs",
+            allArgsLoc,
+            allArgsLoc.getText(),
+            parentLoc
+          )
+        );
+      }
     }
     return prompts;
   }
