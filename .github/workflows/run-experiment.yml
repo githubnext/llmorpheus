@@ -196,5 +196,30 @@ jobs:
         uses:  geekyeggo/delete-artifact@v2
         with:
           name: results-*
-      - name: Generate Summary
-        run: echo '### Summary to be printed here.. 🚀' >> $GITHUB_STEP_SUMMARY
+  generate_report:
+    needs:
+      - setup
+      - benchmark
+      - combine_output
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12  
+    
+      - name: Download artifacts for this run
+        uses: actions/download-artifact@v3
+        with:
+          name: all-results
+          path: results
+      
+      - name: Generate Report
+        run: |
+          cd results
+          unzip all-results.zip
+          cd ..
+          ls -al results    
+          echo '### Summary to be printed here.. 🚀' >> $GITHUB_STEP_SUMMARY
