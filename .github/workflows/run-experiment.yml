@@ -190,7 +190,7 @@ jobs:
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
-          name: results-all
+          name: all-results
           path: all-results.zip
       - name: remove intermediate artifacts
         uses:  geekyeggo/delete-artifact@v2
