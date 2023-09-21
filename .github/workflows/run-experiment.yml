@@ -187,12 +187,14 @@ jobs:
           cd ..
           rm -rf results-*
           zip -r results.zip results
-          echo "FILES:"
-          ls -al
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
           name: results-all
           path: results.zip
+      - name: remove intermediate artifacts
+        uses:  geekyeggo/delete-artifact@v2
+        with:
+          name: results-*
       - name: Generate Summary
         run: echo '### Summary to be printed here.. 🚀' >> $GITHUB_STEP_SUMMARY
