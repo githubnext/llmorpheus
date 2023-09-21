@@ -263,8 +263,6 @@ export class MutantGenerator {
       nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
-   
-
     const locations = new Array<string>();
     for (const mutant of mutants) {
       const location = `${mutant.file}:<${mutant.startLine},${mutant.startColumn}>-${mutant.endLine},${mutant.endColumn}`;
@@ -288,6 +286,24 @@ export class MutantGenerator {
     // write mutants to file
     const mutantsFileName = path.join(this.outputDir, "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
+
+    // write summary of results to "results.json"
+    const resultsFileName = path.join(this.outputDir, "results.json");
+    fs.writeFileSync(
+      resultsFileName,
+      JSON.stringify(
+        {
+          nrCandidates,
+          nrSyntacticallyValid,
+          nrSyntacticallyInvalid,
+          nrIdentical,
+          nrDuplicate,
+          nrLocations,
+        },  
+        null,
+        2
+      )
+    );
 
     this.printAndLog(
       `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}\n`
