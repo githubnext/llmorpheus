@@ -209,6 +209,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 12  
+
+      - name: Set up Mutation Tester
+        run: |
+          npm run build    
     
       - name: Download artifacts for this run
         uses: actions/download-artifact@v3
@@ -220,6 +224,4 @@ jobs:
         run: |
           cd results
           unzip all-results.zip
-          cd ..
-          ls -al results    
-          echo '### Summary to be printed here.. 🚀' >> $GITHUB_STEP_SUMMARY
+          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js >> $GITHUB_STEP_SUMMARY
