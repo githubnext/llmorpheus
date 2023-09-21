@@ -1,0 +1,8 @@
+{
+  "nrCandidates": 354,
+  "nrSyntacticallyValid": 241,
+  "nrSyntacticallyInvalid": 46,
+  "nrIdentical": 67,
+  "nrDuplicate": 30,
+  "nrLocations": 89
+}
