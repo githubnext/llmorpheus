@@ -186,7 +186,7 @@ jobs:
           rm -rf home
           cd ..
           rm -rf results-*
-          zip -r results.zip results
+          zip -r all-results.zip results
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
