@@ -160,7 +160,7 @@ describe("test mutant generation", () => {
     fs.rmdirSync(outputDir, { recursive: true });
   });
 
-  it("should produce a file results.json containing a summary of the results", async () => {
+  it("should produce a file summary.json containing a summary of the results", async () => {
     const model = new MockModel("text-davinci-003", mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const mutantGenerator = new MutantGenerator(
@@ -171,11 +171,11 @@ describe("test mutant generation", () => {
     );
     await mutantGenerator.generateMutants(testProjectPath);
     const actualResultsJson = fs.readFileSync(
-      path.join(outputDir, "results.json"),
+      path.join(outputDir, "summary.json"),
       "utf8"
     );
     const expectedResultsJson = fs.readFileSync(
-      "./test/expected/results.json",
+      "./test/expected/summary.json",
       "utf8"
     );
     assert(actualResultsJson === expectedResultsJson);

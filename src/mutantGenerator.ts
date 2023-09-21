@@ -288,7 +288,7 @@ export class MutantGenerator {
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
     // write summary of results to "results.json"
-    const resultsFileName = path.join(this.outputDir, "results.json");
+    const resultsFileName = path.join(this.outputDir, "summary.json");
     fs.writeFileSync(
       resultsFileName,
       JSON.stringify(
