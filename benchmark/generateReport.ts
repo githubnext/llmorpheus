@@ -12,8 +12,11 @@ Project | # NrCandidates | # NrSyntacticallyInvalid | # NrIdentical | # NrDuplic
 const results = fs.readdirSync(dirName);
 for (const benchmarkName of results){
   if (benchmarkName.startsWith(".")) continue;
+  console.log(`benchmarkName: ${benchmarkName}, type: ${typeof benchmarkName}`);
   // read summary.json file in benchmarkName/MUTATION_TESTING
-  const summary = JSON.parse(fs.readFileSync(`${dirName}/${benchmarkName}/MUTATION_TESTING/summary.json`, "utf8"));
+  const file = fs.readFileSync(`${dirName}/${benchmarkName}/MUTATION_TESTING/summary.json`, "utf8");
+  console.log(`file: ${file}, type: ${typeof file}`);
+  const summary = JSON.parse(file);
   const nrCandidates = summary.nrCandidates;
   const nrSyntacticallyInvalid = summary.nrSyntacticallyInvalid;
   const nrSyntacticallyValid = summary.nrSyntacticallyValid;
