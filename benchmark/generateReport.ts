@@ -9,6 +9,7 @@ let report = `
 Project | # NrCandidates | # NrSyntacticallyInvalid | # NrIdentical | # NrDuplicate |  # NrSyntacticallyValid | # NrLocations 
 --- |  --: | --: | --: | --: | --: |`;
 
+console.log(`dirName: ${dirName}, type: ${typeof dirName}`);
 const results = fs.readdirSync(dirName);
 for (const benchmarkName of results){
   if (benchmarkName.startsWith(".")) continue;
