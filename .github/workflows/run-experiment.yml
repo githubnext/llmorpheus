@@ -224,4 +224,4 @@ jobs:
         run: |
           cd results
           unzip all-results.zip
-          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js >> $GITHUB_STEP_SUMMARY
+          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js . >> $GITHUB_STEP_SUMMARY
