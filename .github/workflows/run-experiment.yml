@@ -233,4 +233,4 @@ jobs:
           echo "LS3"
           pwd
           ls -al
-          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js . >> $GITHUB_STEP_SUMMARY
+          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js results >> $GITHUB_STEP_SUMMARY
