@@ -222,6 +222,15 @@ jobs:
       
       - name: Generate Report
         run: |
+          echo "LS1"
+          pwd
+          ls -al
           cd results
+          echo "LS2"
+          pwd
+          ls -al
           unzip all-results.zip
+          echo "LS3"
+          pwd
+          ls -al
           node ${GITHUB_WORKSPACE}/benchmark/generateReport.js . >> $GITHUB_STEP_SUMMARY
