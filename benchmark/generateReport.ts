@@ -31,4 +31,5 @@ function printReport(
   }
 
 const dirName = process.argv[2]; // read dirName from command line
+const modelName = process.argv[3]; // read modelName from command line
 printReport("Mutant Generation Report");
