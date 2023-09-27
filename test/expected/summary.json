@@ -4,5 +4,6 @@
   "nrSyntacticallyInvalid": 46,
   "nrIdentical": 67,
   "nrDuplicate": 30,
-  "nrLocations": 89
+  "nrLocations": 89,
+  "model": "text-davinci-003"
 }

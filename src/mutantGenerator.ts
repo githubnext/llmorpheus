@@ -303,6 +303,7 @@ export class MutantGenerator {
           nrIdentical,
           nrDuplicate,
           nrLocations,
+          model: this.model.getModelName(),
         },  
         null,
         2
