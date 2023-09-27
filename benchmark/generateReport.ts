@@ -7,8 +7,8 @@ function printReport(
 ) {
     console.log(`
 # ${title}
-Project | # NrCandidates | # NrSyntacticallyInvalid | # NrIdentical | # NrDuplicate |  # NrSyntacticallyValid | # NrLocations 
---- |  --: | --: | --: | --: | --:`);
+| Project | # NrCandidates | # NrMutants | # NrLocations |
+| :------ |  ------------: | ----------: | ------------: |`);
 
     // console.log(`dirName: ${dirName}, type: ${typeof dirName}`);
     const results = fs.readdirSync(dirName);
@@ -26,7 +26,7 @@ Project | # NrCandidates | # NrSyntacticallyInvalid | # NrIdentical | # NrDuplic
       const nrDuplicate = summary.nrDuplicate;
       const nrLocations = summary.nrLocations;
       console.log(
-        `${benchmarkName} | ${nrCandidates} | ${nrSyntacticallyInvalid} | ${nrIdentical} | ${nrDuplicate} | ${nrSyntacticallyValid} | ${nrLocations}`);
+        `${benchmarkName} | ${nrCandidates} | ${nrSyntacticallyValid} | ${nrLocations}`);
     }
   }
 
