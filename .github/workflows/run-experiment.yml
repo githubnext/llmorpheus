@@ -11,7 +11,7 @@ on:
         default: "0.0"
       numCompletions:
         description: "Number of completions to generate for each prompt"
-        default: "5"
+        default: "1"
       model:
         description: "Which LLM API to use"
         type: "choice"
