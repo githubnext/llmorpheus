@@ -26,7 +26,7 @@ if (require.main === module) {
         },
         numCompletions: {
           type: "number",
-          default: 5,
+          default: 1,
           description:
             "number of completions to generate for each prompt (default: 5)",
         },
