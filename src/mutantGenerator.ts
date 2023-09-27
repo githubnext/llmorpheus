@@ -138,125 +138,129 @@ export class MutantGenerator {
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
-      const completions = await this.getCompletionsForPrompt(prompt);
-      for (const completion of completions) {
-        fs.writeFileSync(
-          `${
-            this.outputDir
-          }/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
-          completion.text
-        );
+      try {
+        const completions = await this.getCompletionsForPrompt(prompt);
+        for (const completion of completions) {
+          fs.writeFileSync(
+            `${
+              this.outputDir
+            }/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
+            completion.text
+          );
 
-        const regExp = /```\n((?:.(?!```))*)\n```/gs;
-        let match;
-        
+          const regExp = /```\n((?:.(?!```))*)\n```/gs;
+          let match;
+          
 
-        while ((match = regExp.exec(completion.text)) !== null) {
-          const substitution = match[1];
-          if (substitution === prompt.getOrig()) {
-            nrIdentical++;
-          } else if (prompt.getOrig().includes("Object.")) {
-            nrSyntacticallyInvalid++;
-          } else if (this.isInvalidSubstitution(prompt, substitution)) {
-            nrSyntacticallyInvalid++; 
-          } else if (this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
-            nrSyntacticallyInvalid++;
-          } else {
-            const candidateMutant = this.createCandidateMutant(prompt, substitution);
-            // try {
-            if (prompt.spec.isExpressionPlaceholder()) {
-              try {
-                parser.parseExpression(substitution);
-                
-                const mutant = new Mutant(
-                  prompt.spec.file,
-                  prompt.spec.location.startLine,
-                  prompt.spec.location.startColumn,
-                  prompt.spec.location.endLine,
-                  prompt.spec.location.endColumn,
-                  prompt.getOrig(),
-                  substitution,
-                  prompt.getId(),
-                  completion.getId(),
-                  prompt.spec.feature + "/" + prompt.spec.component
-                );
-                if (!isDuplicate(mutant, mutants)) {
-                  mutants.push(mutant);
-                  nrSyntacticallyValid++;
-                } else {
-                  nrDuplicate++;
+          while ((match = regExp.exec(completion.text)) !== null) {
+            const substitution = match[1];
+            if (substitution === prompt.getOrig()) {
+              nrIdentical++;
+            } else if (prompt.getOrig().includes("Object.")) {
+              nrSyntacticallyInvalid++;
+            } else if (this.isInvalidSubstitution(prompt, substitution)) {
+              nrSyntacticallyInvalid++; 
+            } else if (this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
+              nrSyntacticallyInvalid++;
+            } else {
+              const candidateMutant = this.createCandidateMutant(prompt, substitution);
+              // try {
+              if (prompt.spec.isExpressionPlaceholder()) {
+                try {
+                  parser.parseExpression(substitution);
+                  
+                  const mutant = new Mutant(
+                    prompt.spec.file,
+                    prompt.spec.location.startLine,
+                    prompt.spec.location.startColumn,
+                    prompt.spec.location.endLine,
+                    prompt.spec.location.endColumn,
+                    prompt.getOrig(),
+                    substitution,
+                    prompt.getId(),
+                    completion.getId(),
+                    prompt.spec.feature + "/" + prompt.spec.component
+                  );
+                  if (!isDuplicate(mutant, mutants)) {
+                    mutants.push(mutant);
+                    nrSyntacticallyValid++;
+                  } else {
+                    nrDuplicate++;
+                  }
+                } catch (e) {
+                    // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                    nrSyntacticallyInvalid++;
                 }
-              } catch (e) {
+              } else if (prompt.spec.isArgListPlaceHolder()) {
+                try {
+                  const expandedOrig = prompt.spec.parentLocation!.getText();
+                  const expandedSubstitution = expandedOrig.replace(
+                    prompt.getOrig(),
+                    substitution
+                  );
+                  parser.parse(expandedSubstitution, {
+                    sourceType: "module",
+                    plugins: ["typescript", "jsx"],
+                  });
+                  
+                  const mutant = new Mutant(
+                    prompt.spec.file,
+                    prompt.spec.parentLocation!.startLine,
+                    prompt.spec.parentLocation!.startColumn,
+                    prompt.spec.parentLocation!.endLine,
+                    prompt.spec.parentLocation!.endColumn,
+                    expandedOrig, // prompt.getOrig(),
+                    expandedSubstitution, // substitution,
+                    prompt.getId(),
+                    completion.getId(),
+                    prompt.spec.feature + "/" + prompt.spec.component
+                  );
+                  if (!isDuplicate(mutant, mutants)) {
+                    mutants.push(mutant);
+                    nrSyntacticallyValid++;
+                  } else {
+                    nrDuplicate++;
+                  }
+                } catch (e) {
                   // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                   nrSyntacticallyInvalid++;
-              }
-            } else if (prompt.spec.isArgListPlaceHolder()) {
-              try {
-                const expandedOrig = prompt.spec.parentLocation!.getText();
-                const expandedSubstitution = expandedOrig.replace(
-                  prompt.getOrig(),
-                  substitution
-                );
-                parser.parse(expandedSubstitution, {
-                  sourceType: "module",
-                  plugins: ["typescript", "jsx"],
-                });
-                
-                const mutant = new Mutant(
-                  prompt.spec.file,
-                  prompt.spec.parentLocation!.startLine,
-                  prompt.spec.parentLocation!.startColumn,
-                  prompt.spec.parentLocation!.endLine,
-                  prompt.spec.parentLocation!.endColumn,
-                  expandedOrig, // prompt.getOrig(),
-                  expandedSubstitution, // substitution,
-                  prompt.getId(),
-                  completion.getId(),
-                  prompt.spec.feature + "/" + prompt.spec.component
-                );
-                if (!isDuplicate(mutant, mutants)) {
-                  mutants.push(mutant);
-                  nrSyntacticallyValid++;
-                } else {
-                  nrDuplicate++;
                 }
-              } catch (e) {
-                // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrSyntacticallyInvalid++;
-              }
-            } else { // statement placeholder
-              try {
-                parser.parse(candidateMutant, {
-                  sourceType: "module",
-                  plugins: ["typescript", "jsx"],
-                });
-                
-                const mutant = new Mutant(
-                  prompt.spec.file,
-                  prompt.spec.location.startLine,
-                  prompt.spec.location.startColumn,
-                  prompt.spec.location.endLine,
-                  prompt.spec.location.endColumn,
-                  prompt.getOrig(),
-                  substitution,
-                  prompt.getId(),
-                  completion.getId(),
-                  prompt.spec.feature + "/" + prompt.spec.component
-                );
-                if (!isDuplicate(mutant, mutants)) {
-                  mutants.push(mutant);
-                  nrSyntacticallyValid++;
-                } else {
-                  nrDuplicate++;
+              } else { // statement placeholder
+                try {
+                  parser.parse(candidateMutant, {
+                    sourceType: "module",
+                    plugins: ["typescript", "jsx"],
+                  });
+                  
+                  const mutant = new Mutant(
+                    prompt.spec.file,
+                    prompt.spec.location.startLine,
+                    prompt.spec.location.startColumn,
+                    prompt.spec.location.endLine,
+                    prompt.spec.location.endColumn,
+                    prompt.getOrig(),
+                    substitution,
+                    prompt.getId(),
+                    completion.getId(),
+                    prompt.spec.feature + "/" + prompt.spec.component
+                  );
+                  if (!isDuplicate(mutant, mutants)) {
+                    mutants.push(mutant);
+                    nrSyntacticallyValid++;
+                  } else {
+                    nrDuplicate++;
+                  }
+                } catch (e) {
+                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                  nrSyntacticallyInvalid++;
                 }
-              } catch (e) {
-                // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                nrSyntacticallyInvalid++;
               }
             }
           }
         }
-      }
+      } catch (e) {
+        console.log(`Error while processing prompt ${prompt.getId()}: ${e}`);
+      } 
     }
 
     const nrCandidates =
