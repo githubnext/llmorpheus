@@ -3,10 +3,12 @@ import * as fs from "fs";
 
 
 function printReport(
-  title: string
+  title: string,
+  modelName: string
 ) {
     console.log(`
 # ${title}
+## ${modelName}
 | Project | # NrCandidates | # NrMutants | # NrLocations |
 | :------ |  ------------: | ----------: | ------------: |`);
 
@@ -32,4 +34,4 @@ function printReport(
 
 const dirName = process.argv[2]; // read dirName from command line
 const modelName = process.argv[3]; // read modelName from command line
-printReport("Mutant Generation Report");
+printReport("Mutant Generation Report", modelName);
