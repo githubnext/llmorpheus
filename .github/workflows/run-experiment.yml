@@ -16,14 +16,10 @@ on:
         description: "Which LLM API to use"
         type: "choice"
         options:
-          - "gpt"
-          - "starcoder"
+          - "gpt3.5-turbo"
+          - "gpt4"
           - "davinci"
         default: "davinci"
-      skipSlowBenchmarks:
-        description: "Skip slow benchmarks"
-        type: boolean
-        default: false
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
@@ -38,7 +34,7 @@ jobs:
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
       temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
-      numCompletions: "${{ github.event.inputs.numCompletions || '5' }}"
+      numCompletions: "${{ github.event.inputs.numCompletions || '1' }}"
       model: "${{ github.event.inputs.model || 'davinci' }}"
     steps:
       - uses: actions/checkout@v3
@@ -134,6 +130,8 @@ jobs:
         env:
           TEXTDAVINCI003_API_ENDPOINT: "https://api.openai.com/v1/engines/text-davinci-003/completions"
           TEXTDAVINCI003_AUTH_HEADERS: '${{ secrets.DAVINCI_AUTH_HEADERS }}'
+          GPT35TURBO_API_ENDPOINT: '${{ secrets.GPT35TURBO_API_ENDPOINT }}'
+          GPT35TURBO_API_KEY: '${{ secrets.GPT35TURBO_API_KEY }}'
           STARCODER_API_ENDPOINT: '${{ secrets.STARCODER_API_ENDPOINT3 }}'
         run: |
           cd llm-mutation-testing

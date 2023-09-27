@@ -8,7 +8,7 @@ npm run build
 ## how to run:
 
 
-node benchmark/createMutants.js --path ~/tmp/TestStryker/countries-and-timezones/  --promptTemplateFileName test/input/newTemplate.hb
+node benchmark/createMutants.js --path ~/sabbatical/mt-projects/countries-and-timezones/  --promptTemplateFileName test/input/newTemplate.hb
 
 ## running strykerJS and viewing the report
 
