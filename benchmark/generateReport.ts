@@ -15,7 +15,7 @@ function printReport(
     const numCompletions = firstSummary.metaInfo.n;
     console.log(`
 # ${title}
-## (model: ${modelName}, temperature: ${temperature}, maxTokens: ${maxTokens}, numCompletions: ${numCompletions})
+(model: ${modelName}, temperature: ${temperature}, maxTokens: ${maxTokens}, numCompletions: ${numCompletions})
 | Project | # NrCandidates | # NrMutants | # NrLocations |
 | :------ |  ------------: | ----------: | ------------: |`);
 
