@@ -65,6 +65,7 @@ if (require.main === module) {
         n: argv.numCompletions,
       });
     } else {
+      console.log("*** Using GPT3.5 Turbo model");
       baseModel = new Gpt35TurboModel({
         max_tokens: 500,
         stop: ["DONE"],
