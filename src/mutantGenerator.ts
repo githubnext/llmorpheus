@@ -303,7 +303,12 @@ export class MutantGenerator {
           nrIdentical,
           nrDuplicate,
           nrLocations,
-          model: this.model.getModelName(),
+          metaInfo: {
+            modelName: this.model.getModelName(),
+            temperature: this.model.getTemperature(),
+            maxTokens: this.model.getMaxTokens(),
+            n: this.model.getN()
+          }
         },  
         null,
         2

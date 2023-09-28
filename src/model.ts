@@ -28,6 +28,9 @@ function getEnv(name: string): string {
 export interface IModel {
   query(prompt: string, requestPostOptions?: PostOptions): Promise<Set<string>>;
   getModelName(): string;
+  getTemperature(): number;
+  getMaxTokens(): number;
+  getN(): number;
 }
 
 /**
@@ -42,6 +45,26 @@ export class TextDavinci003Model implements IModel {
 
   public getModelName(): string {
     return "text-davinci-003";
+  }
+  public getTemperature(): number {
+    if (this.instanceOptions.temperature === undefined) {
+      return defaultPostOptions.temperature;
+    }
+    return this.instanceOptions.temperature;
+  }
+
+  public getMaxTokens(): number {
+    if (this.instanceOptions.max_tokens === undefined) {
+      return defaultPostOptions.max_tokens;
+    }
+    return this.instanceOptions.max_tokens;
+  }
+
+  public getN(): number {
+    if (this.instanceOptions.n === undefined) {
+      return defaultPostOptions.n;
+    }
+    return this.instanceOptions.n;
   }
 
   /**
@@ -126,6 +149,29 @@ export class Gpt35TurboModel implements IModel {
   public getModelName(): string {
     return "gpt3.5-turbo";
   }
+
+  public getTemperature(): number {
+    if (this.instanceOptions.temperature === undefined) {
+      return defaultPostOptions.temperature;
+    }
+    return this.instanceOptions.temperature;
+  }
+
+  public getMaxTokens(): number {
+    if (this.instanceOptions.max_tokens === undefined) {
+      return defaultPostOptions.max_tokens;
+    }
+    return this.instanceOptions.max_tokens;
+  }
+
+  public getN(): number {
+    if (this.instanceOptions.n === undefined) {
+      return defaultPostOptions.n;
+    }
+    return this.instanceOptions.n;
+  }
+
+
 
   /**
    * Query Model for completions with a given prompt.
@@ -213,6 +259,16 @@ export class CachingModel implements IModel {
   getModelName(): string {
     return `${this.modelName}>`;
   }
+  getTemperature(): number {
+    return this.model.getTemperature();
+  }
+  getMaxTokens(): number {
+    return this.model.getMaxTokens();
+  }
+
+  getN(): number {
+    return this.model.getN();
+  }
 
   public async query(
     prompt: string,
@@ -262,6 +318,15 @@ export class MockModel implements IModel {
 
   getModelName(): string {
     return this.modelName;
+  }
+  getTemperature(): number {
+    return defaultPostOptions.temperature;
+  }
+  getMaxTokens(): number {
+    return defaultPostOptions.max_tokens;
+  }
+  getN(): number {
+    return defaultPostOptions.n;
   }
 
   public async query(
