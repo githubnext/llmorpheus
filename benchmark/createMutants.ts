@@ -56,6 +56,9 @@ if (require.main === module) {
       process.exit(1);
     }
 
+    console.log("*** Using model: " + argv.model);
+
+
     let baseModel, model;
     if (argv.model === "text-davinci003") {
       baseModel = new TextDavinci003Model({
