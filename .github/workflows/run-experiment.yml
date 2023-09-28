@@ -231,4 +231,4 @@ jobs:
           echo "LS3"
           pwd
           ls -al
-          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js results "MODELNAME" >> $GITHUB_STEP_SUMMARY
+          node ${GITHUB_WORKSPACE}/benchmark/generateReport.js results github.event.inputs.model >> $GITHUB_STEP_SUMMARY
