@@ -130,8 +130,8 @@ jobs:
         env:
           TEXTDAVINCI003_API_ENDPOINT: "https://api.openai.com/v1/engines/text-davinci-003/completions"
           TEXTDAVINCI003_AUTH_HEADERS: '${{ secrets.DAVINCI_AUTH_HEADERS }}'
-          GPT35TURBO_API_ENDPOINT: '${{ secrets.GPT35TURBO_API_ENDPOINT }}'
-          GPT35TURBO_API_KEY: '${{ secrets.GPT35TURBO_API_KEY }}'
+          GPT35_API_ENDPOINT: '${{ secrets.GPT35_API_ENDPOINT }}'
+          GPT35_API_KEY: '${{ secrets.GPT35_API_KEY }}'
           STARCODER_API_ENDPOINT: '${{ secrets.STARCODER_API_ENDPOINT3 }}'
         run: |
           cd llm-mutation-testing
