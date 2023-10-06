@@ -18,8 +18,8 @@ on:
         options:
           - "gpt3.5-turbo"
           - "gpt4"
-          - "davinci"
-        default: "davinci"
+          - "text-davinci003"
+        default: "text-davinci003"
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
