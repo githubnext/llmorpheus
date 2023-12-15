@@ -137,9 +137,9 @@ export class TextDavinci003Model implements IModel {
 }
 
 /**
- * Abstraction for the gpt3.5-turbo model.
+ * Abstraction for the gpt4 model.
  */
-export class Gpt35TurboModel implements IModel {
+export class Gpt4Model implements IModel {
   private instanceOptions: PostOptions;
 
   constructor(instanceOptions: PostOptions = {}) {
@@ -147,7 +147,7 @@ export class Gpt35TurboModel implements IModel {
   }
 
   public getModelName(): string {
-    return "gpt3.5-turbo";
+    return "gpt4";
   }
 
   public getTemperature(): number {
@@ -184,8 +184,8 @@ export class Gpt35TurboModel implements IModel {
     prompt: string,
     requestPostOptions: PostOptions = {}
   ): Promise<Set<string>> {
-    const apiEndpoint = getEnv("GPT35_API_ENDPOINT");
-    const apiKey = getEnv("GPT35_API_KEY");
+    const apiEndpoint = getEnv("GPT4_API_ENDPOINT");
+    const apiKey = getEnv("GPT4_API_KEY");
 
     const headers = {
       "Content-Type": "application/json",

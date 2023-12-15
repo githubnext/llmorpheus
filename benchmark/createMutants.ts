@@ -2,7 +2,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import {
   CachingModel,
-  Gpt35TurboModel,
+  Gpt4Model,
   TextDavinci003Model,
 } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
@@ -32,7 +32,7 @@ if (require.main === module) {
         },
         model: {
           type: "string",
-          default: "text-davinci003",
+          default: "gpt4",
           description: 'name of the model to use (default: "text-davinci003")',
         },
         caching: {
@@ -51,13 +51,10 @@ if (require.main === module) {
       });
     const argv = await parser.argv;
 
-    if (argv.model !== "text-davinci003" && argv.model !== "gpt3.5-turbo") {
+    if (argv.model !== "text-davinci003" && argv.model !== "gpt4") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
-
-    console.log("*** Using model: " + argv.model);
-
 
     let baseModel, model;
     if (argv.model === "text-davinci003") {
@@ -68,8 +65,8 @@ if (require.main === module) {
         n: argv.numCompletions,
       });
     } else {
-      console.log("*** Using GPT3.5 Turbo model");
-      baseModel = new Gpt35TurboModel({
+      console.log("*** Using GPT4 model");
+      baseModel = new Gpt4Model({
         max_tokens: 500,
         stop: ["DONE"],
         temperature: 0.0,
