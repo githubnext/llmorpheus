@@ -208,8 +208,8 @@ export class Gpt4Model implements IModel {
         { headers }
       );
     } catch (e) {
-      if (res?.status === 419) {
-        console.error(`*** 419 error: ${e}`);
+      if (res?.status === 429) {
+        console.error(`*** 429 error: ${e}`);
       }
       throw e;
     }
