@@ -200,11 +200,20 @@ export class Gpt4Model implements IModel {
     };
 
     performance.mark("codex-query-start");
-    const res = await axios.post(
-      apiEndpoint,
-      { prompt, ...options },
-      { headers }
-    );
+    let res;
+    try {
+      res = await axios.post(
+        apiEndpoint,
+        { prompt, ...options },
+        { headers }
+      );
+    } catch (e) {
+      if (res?.status === 419) {
+        console.error(`*** 419 error: ${e}`);
+      }
+      throw e;
+    }
+
     performance.measure(
       `codex-query:${JSON.stringify({
         ...options,
