@@ -171,8 +171,6 @@ export class Gpt4Model implements IModel {
     return this.instanceOptions.n;
   }
 
-
-
   /**
    * Query Model for completions with a given prompt.
    *
@@ -247,6 +245,214 @@ export class Gpt4Model implements IModel {
         `${numContentFiltered} completions were truncated due to content filtering.`
       );
     }
+    return completions;
+  }
+}
+
+/**
+ * Abstraction for the CodeLlama7b model.
+ */
+export class CodeLlama7bModel implements IModel {
+  private instanceOptions: PostOptions;
+
+  constructor(instanceOptions: PostOptions = {}) {
+    this.instanceOptions = instanceOptions;
+  }
+
+  public getModelName(): string {
+    return "codellama";
+  }
+
+  public getTemperature(): number {
+    if (this.instanceOptions.temperature === undefined) {
+      return defaultPostOptions.temperature;
+    }
+    return this.instanceOptions.temperature;
+  }
+
+  public getMaxTokens(): number {
+    if (this.instanceOptions.max_tokens === undefined) {
+      return defaultPostOptions.max_tokens;
+    }
+    return this.instanceOptions.max_tokens;
+  }
+
+  public getN(): number {
+    if (this.instanceOptions.n === undefined) {
+      return defaultPostOptions.n;
+    }
+    return this.instanceOptions.n;
+  }
+
+  /**
+   * Query Model for completions with a given prompt.
+   *
+   * @param prompt The prompt to use for the completion.
+   * @param requestPostOptions The options to use for the request.
+   * @returns A promise that resolves to a set of completions.
+   */
+  public async query(
+    prompt: string,
+    requestPostOptions: PostOptions = {}
+  ): Promise<Set<string>> {
+    const apiEndpoint = getEnv("CODELLAMA_API_ENDPOINT");
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+    const options = {
+      ...defaultPostOptions,
+      // options provided to constructor override default options
+      ...this.instanceOptions,
+      // options provided to this function override default and instance options
+      ...requestPostOptions,
+    };
+
+    performance.mark("codex-query-start");
+    let res;
+    try {
+      res = await axios.post(
+        apiEndpoint,
+        { model: 'codellama',
+          prompt, 
+          stream: false,
+          ...options 
+        },
+        { headers }
+      );
+      console.log(`*** completion is: ${res.data.response}`);
+    } catch (e) {
+      if (res?.status === 429) {
+        console.error(`*** 429 error: ${e}`);
+      }
+      throw e;
+    }
+
+    performance.measure(
+      `codex-query:${JSON.stringify({
+        ...options,
+        promptLength: prompt.length,
+      })}`,
+      "codex-query-start"
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        `Request failed with status ${res.status} and message ${res.statusText}`
+      );
+    }
+    if (!res.data) {
+      throw new Error("Response data is empty");
+    }
+    const json = res.data;
+    if (json.error) {
+      throw new Error(json.error);
+    }
+    const completions = new Set<string>();
+    completions.add(json.response);
+    return completions;
+  }
+}
+
+/**
+ * Abstraction for the CodeLlama7b model.
+ */
+export class CodeLlama13bModel implements IModel {
+  private instanceOptions: PostOptions;
+
+  constructor(instanceOptions: PostOptions = {}) {
+    this.instanceOptions = instanceOptions;
+  }
+
+  public getModelName(): string {
+    return "codellama:13b";
+  }
+
+  public getTemperature(): number {
+    if (this.instanceOptions.temperature === undefined) {
+      return defaultPostOptions.temperature;
+    }
+    return this.instanceOptions.temperature;
+  }
+
+  public getMaxTokens(): number {
+    if (this.instanceOptions.max_tokens === undefined) {
+      return defaultPostOptions.max_tokens;
+    }
+    return this.instanceOptions.max_tokens;
+  }
+
+  public getN(): number {
+    if (this.instanceOptions.n === undefined) {
+      return defaultPostOptions.n;
+    }
+    return this.instanceOptions.n;
+  }
+
+  /**
+   * Query Model for completions with a given prompt.
+   *
+   * @param prompt The prompt to use for the completion.
+   * @param requestPostOptions The options to use for the request.
+   * @returns A promise that resolves to a set of completions.
+   */
+  public async query(
+    prompt: string,
+    requestPostOptions: PostOptions = {}
+  ): Promise<Set<string>> {
+    const apiEndpoint = getEnv("CODELLAMA_API_ENDPOINT");
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+    const options = {
+      ...defaultPostOptions,
+      // options provided to constructor override default options
+      ...this.instanceOptions,
+      // options provided to this function override default and instance options
+      ...requestPostOptions,
+    };
+
+    performance.mark("codex-query-start");
+    let res;
+    try {
+      res = await axios.post(
+        apiEndpoint,
+        { model: 'codellama:13b',
+          prompt, 
+          stream: false,
+          ...options 
+        },
+        { headers }
+      );
+      console.log(`*** completion is: ${res.data.response}`);
+    } catch (e) {
+      if (res?.status === 429) {
+        console.error(`*** 429 error: ${e}`);
+      }
+      throw e;
+    }
+
+    performance.measure(
+      `codex-query:${JSON.stringify({
+        ...options,
+        promptLength: prompt.length,
+      })}`,
+      "codex-query-start"
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        `Request failed with status ${res.status} and message ${res.statusText}`
+      );
+    }
+    if (!res.data) {
+      throw new Error("Response data is empty");
+    }
+    const json = res.data;
+    if (json.error) {
+      throw new Error(json.error);
+    }
+    const completions = new Set<string>();
+    completions.add(json.response);
     return completions;
   }
 }

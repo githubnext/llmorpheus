@@ -2,6 +2,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import {
   CachingModel,
+  CodeLlama13bModel,
+  CodeLlama7bModel,
   Gpt4Model,
   TextDavinci003Model,
 } from "../src/model";
@@ -51,7 +53,7 @@ if (require.main === module) {
       });
     const argv = await parser.argv;
 
-    if (argv.model !== "text-davinci003" && argv.model !== "gpt4") {
+    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && argv.model !== "codellama:13b" && argv.model !== "codellam:34b") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
@@ -64,7 +66,7 @@ if (require.main === module) {
         temperature: 0.0,
         n: argv.numCompletions,
       });
-    } else {
+    } else if (argv.model === "gpt4"){
       console.log("*** Using GPT4 model");
       baseModel = new Gpt4Model({
         max_tokens: 500,
@@ -72,6 +74,24 @@ if (require.main === module) {
         temperature: 0.0,
         n: argv.numCompletions,
       });
+    } else if (argv.model === "codellama"){
+      console.log("*** Using codellama:7b model");
+      baseModel = new CodeLlama7bModel({
+        max_tokens: 500,
+        stop: ["DONE"],
+        temperature: 0.0,
+        n: argv.numCompletions,
+      });
+    } else if (argv.model === "codellama:13b"){
+      console.log("*** Using codellama:13b model");
+      baseModel = new CodeLlama13bModel({
+        max_tokens: 500,
+        stop: ["DONE"],
+        temperature: 0.0,
+        n: argv.numCompletions,
+      });
+    } else {
+      throw new Error(`Invalid model name: ${argv.model}`);
     }
     if (argv.caching) {
       model = new CachingModel(baseModel);
