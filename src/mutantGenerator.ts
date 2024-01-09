@@ -147,7 +147,6 @@ export class MutantGenerator {
             }/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
             completion.text
           );
-
           const regExp = /```\n((?:.(?!```))*)\n```/gs;
           let match;
           
@@ -321,8 +320,8 @@ export class MutantGenerator {
   }
 
   public async getCompletionsForPrompt(prompt: Prompt): Promise<Completion[]> {
-    return [...(await this.model.query(prompt.getText()))].map(
-      (completionText) => new Completion(completionText, prompt.getId())
-    );
+    const query = this.model.query(prompt.getText());
+    const completions = [...(await query)];
+    return completions.map((completionText) => new Completion(completionText, prompt.getId()));
   }
 }

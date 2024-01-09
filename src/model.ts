@@ -354,7 +354,7 @@ export class CodeLlama7bModel implements IModel {
 }
 
 /**
- * Abstraction for the CodeLlama7b model.
+ * Abstraction for the CodeLlama13b model.
  */
 export class CodeLlama13bModel implements IModel {
   private instanceOptions: PostOptions;
@@ -457,6 +457,113 @@ export class CodeLlama13bModel implements IModel {
   }
 }
 
+/**
+ * Abstraction for the CodeLlama13b model.
+ */
+export class CodeLlama34bInstructModel implements IModel {
+  private instanceOptions: PostOptions;
+
+  constructor(instanceOptions: PostOptions = {}) {
+    this.instanceOptions = instanceOptions;
+  }
+
+  public getModelName(): string {
+    return "codellama-34b-instruct";
+  }
+
+  public getTemperature(): number {
+    if (this.instanceOptions.temperature === undefined) {
+      return defaultPostOptions.temperature;
+    }
+    return this.instanceOptions.temperature;
+  }
+
+  public getMaxTokens(): number {
+    if (this.instanceOptions.max_tokens === undefined) {
+      return defaultPostOptions.max_tokens;
+    }
+    return this.instanceOptions.max_tokens;
+  }
+
+  public getN(): number {
+    if (this.instanceOptions.n === undefined) {
+      return defaultPostOptions.n;
+    }
+    return this.instanceOptions.n;
+  }
+
+  /**
+   * Query Model for completions with a given prompt.
+   *
+   * @param prompt The prompt to use for the completion.
+   * @param requestPostOptions The options to use for the request.
+   * @returns A promise that resolves to a set of completions.
+   */
+  public async query(
+    prompt: string,
+    requestPostOptions: PostOptions = {}
+  ): Promise<Set<string>> {
+    const apiEndpoint = getEnv("PERPLEXITY_AI_API_ENDPOINT");
+
+    const header = {
+      'accept': 'application/json',
+      'authorization': getEnv("PERPLEXITY_AI_AUTH_HEADERS"),
+      'content-type': 'application/json'
+    };
+    
+    const options = {
+      ...defaultPostOptions,
+      // options provided to constructor override default options
+      ...this.instanceOptions,
+      // options provided to this function override default and instance options
+      ...requestPostOptions,
+    };
+
+    const body = {
+      model: 'codellama-34b-instruct',
+      messages: [
+        {role: 'system', content: 'You are a programming assistant. You are expected to be concise and precise and avoid any unnecessary examples, tests, and verbosity.'},
+        {role: 'user', content: prompt}
+      ]//,
+      // ...options
+    };
+    performance.mark("codex-query-start");
+    let res;
+    try {
+      res = await axios.post(
+        apiEndpoint,
+        body,
+        { headers: header }
+      );
+      // console.log(`*** completion is: ${res.data.response}`);
+    } catch (e) {
+      if (res?.status === 429) {
+        console.error(`*** 429 error: ${e}`);
+      }
+      throw e;
+    }
+
+    performance.measure(
+      `codex-query:${JSON.stringify({
+        ...options,
+        promptLength: prompt.length,
+      })}`,
+      "codex-query-start"
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        `Request failed with status ${res.status} and message ${res.statusText}`
+      );
+    }
+    if (!res.data) {
+      throw new Error("Response data is empty");
+    }
+    const completions = new Set<string>();
+    completions.add(res.data.choices[0].message.content);
+    return completions;
+  }
+}
+
 const ROOT_CACHE_DIR = path.join(__dirname, "..", ".llm-cache");
 console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
 
@@ -489,12 +596,14 @@ export class CachingModel implements IModel {
     prompt: string,
     options: PostOptions = {}
   ): Promise<Set<string>> {
+
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.model.getModelName(),
       prompt,
       options,
     });
+
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
 
     // compute path to cache file
@@ -504,6 +613,7 @@ export class CachingModel implements IModel {
       hash.slice(0, 2)
     );
     const cacheFile = path.join(cacheDir, hash);
+
     // if the cache file exists, return its contents
     if (fs.existsSync(cacheFile)) {
       const completionsJSON = JSON.parse(fs.readFileSync(cacheFile, "utf-8"));

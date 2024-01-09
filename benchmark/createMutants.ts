@@ -6,6 +6,7 @@ import {
   CodeLlama7bModel,
   Gpt4Model,
   TextDavinci003Model,
+  CodeLlama34bInstructModel
 } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
 import path from "path";
@@ -34,7 +35,7 @@ if (require.main === module) {
         },
         model: {
           type: "string",
-          default: "gpt4",
+          default: "text-davinci003",
           description: 'name of the model to use (default: "text-davinci003")',
         },
         caching: {
@@ -53,7 +54,7 @@ if (require.main === module) {
       });
     const argv = await parser.argv;
 
-    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && argv.model !== "codellama:13b" && argv.model !== "codellam:34b") {
+    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && argv.model !== "codellama:13b" && argv.model !== "codellam:34b" && argv.model !== "codellama-34b-instruct") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
@@ -89,6 +90,14 @@ if (require.main === module) {
         stop: ["DONE"],
         temperature: 0.0,
         n: argv.numCompletions,
+      });
+    } else if (argv.model === "codellama-34b-instruct"){
+      console.log("*** Using codellama-34b-instruct model");
+      baseModel = new CodeLlama34bInstructModel({
+        // max_tokens: 500,
+        // stop: ["DONE"],
+        // temperature: 0.0,
+        // n: argv.numCompletions,
       });
     } else {
       throw new Error(`Invalid model name: ${argv.model}`);
