@@ -6,7 +6,8 @@ import {
   CodeLlama7bModel,
   Gpt4Model,
   TextDavinci003Model,
-  CodeLlama34bInstructModel
+  CodeLlama34bInstructModel,
+  Llama2_70bModel
 } from "../src/model";
 import { MutantGenerator } from "../src/mutantGenerator";
 import path from "path";
@@ -54,7 +55,9 @@ if (require.main === module) {
       });
     const argv = await parser.argv;
 
-    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && argv.model !== "codellama:13b" && argv.model !== "codellam:34b" && argv.model !== "codellama-34b-instruct") {
+    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && 
+        argv.model !== "codellama:13b" && argv.model !== "codellam:34b" && argv.model !== "codellama-34b-instruct" &&
+        argv.model !== "llama-2-70b-chat") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
@@ -99,6 +102,14 @@ if (require.main === module) {
         // temperature: 0.0,
         // n: argv.numCompletions,
       });
+    } else if (argv.model === "llama-2-70b-chat"){
+      console.log("*** Using llama-2-70b-chat model");
+      baseModel = new Llama2_70bModel({
+        // max_tokens: 500,
+        // stop: ["DONE"],
+        // temperature: 0.0,
+        // n: argv.numCompletions,
+      })
     } else {
       throw new Error(`Invalid model name: ${argv.model}`);
     }

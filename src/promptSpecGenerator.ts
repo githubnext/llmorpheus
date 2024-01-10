@@ -422,7 +422,7 @@ export class PromptSpec {
     const lines = code.split("\n");
     const lastLine = lines.length;
     const endColumnOfLastLine = lines[lastLine - 1].length;
-    return (
+    const codeWithPlaceHolder = (
       getText(code, 1, 0, this.location.startLine, this.location.startColumn) +
       "<PLACEHOLDER>" +
       getText(
@@ -433,7 +433,18 @@ export class PromptSpec {
         endColumnOfLastLine
       )
     );
+    return this.addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(codeWithPlaceHolder);
   }
+
+  public addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(codeWithPlaceHolder: string) : string {
+    const lines = codeWithPlaceHolder.split("\n");
+    const lineNr = this.location.startLine - 1;
+    const line = lines[lineNr];
+    const newLine = line + " // original code was: " + this.orig;
+    lines[lineNr] = newLine;
+    return lines.join("\n");
+  }
+
 
   public isExpressionPlaceholder(): boolean {
     return (

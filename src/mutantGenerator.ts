@@ -135,6 +135,7 @@ export class MutantGenerator {
     let nrSyntacticallyInvalid = 0;
     let nrIdentical = 0;
     let nrDuplicate = 0;
+
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
