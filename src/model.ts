@@ -3,6 +3,7 @@ import fs from "fs";
 import { performance } from "perf_hooks";
 import path from "path";
 import crypto from "crypto";
+import RateLimiter from "./RateLimiter";
 
 const defaultPostOptions = {
   max_tokens: 100, // maximum number of tokens to return
@@ -462,9 +463,11 @@ export class CodeLlama13bModel implements IModel {
  */
 export class CodeLlama34bInstructModel implements IModel {
   private instanceOptions: PostOptions;
+  private rateLimiter: RateLimiter;
 
   constructor(instanceOptions: PostOptions = {}) {
     this.instanceOptions = instanceOptions;
+    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
   }
 
   public getModelName(): string {
@@ -530,11 +533,11 @@ export class CodeLlama34bInstructModel implements IModel {
     performance.mark("codex-query-start");
     let res;
     try {
-      res = await axios.post(
+      res = await this.rateLimiter.next(() => axios.post(
         apiEndpoint,
         body,
         { headers: header }
-      );
+      ));
       // console.log(`*** completion is: ${res.data.response}`);
     } catch (e) {
       if (res?.status === 429) {
@@ -565,13 +568,15 @@ export class CodeLlama34bInstructModel implements IModel {
 }
 
 /**
- * Abstraction for the codellama-34b-instruct model.
+ * Abstraction for the llama2-70b-chat model.
  */
 export class Llama2_70bModel implements IModel {
   private instanceOptions: PostOptions;
+  private rateLimiter: RateLimiter;
 
   constructor(instanceOptions: PostOptions = {}) {
     this.instanceOptions = instanceOptions;
+    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
   }
 
   public getModelName(): string {
@@ -637,11 +642,11 @@ export class Llama2_70bModel implements IModel {
     performance.mark("codex-query-start");
     let res;
     try {
-      res = await axios.post(
+      res = await this.rateLimiter.next(() => axios.post(
         apiEndpoint,
         body,
         { headers: header }
-      );
+      ));
       // console.log(`*** completion is: ${res.data.response}`);
     } catch (e) {
       if (res?.status === 429) {
