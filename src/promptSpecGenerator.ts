@@ -5,7 +5,7 @@ import traverse from "@babel/traverse";
 import * as handlebars from "handlebars";
 import { Prompt } from "./Prompt";
 import { SourceLocation } from "./SourceLocation";
-import { getText } from "./util";
+import { PromptSpec } from "./PromptSpec";
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
@@ -44,7 +44,9 @@ export class PromptSpecGenerator {
     for (const promptSpec of this.promptSpecs) {
       const codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
       const compiledTemplate = handlebars.compile(this.promptTemplate); // promote to field?
-      const prompt = compiledTemplate({ code: codeWithPlaceholder });
+      const references = Array.from(promptSpec.references).join(", ");
+      const orig = promptSpec.orig;
+      const prompt = compiledTemplate({ code: codeWithPlaceholder, references, orig });
       this.prompts.push(new Prompt(prompt, promptSpec));
     }
   }
@@ -63,49 +65,50 @@ export class PromptSpecGenerator {
       sourceType: "module",
       plugins: ["typescript"],
     });
-    const outerThis = this; // TODO: is there a better way to do this?
-
+    const outerThis = this; // needed to access this in the callback function
     traverse(ast, {
-      enter(nodePath) {
+      enter(path) {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
         // const loc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
 
-        if (nodePath.isIfStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForIf(file, nodePath));
+        if (path.isIfStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForIf(file, path));
         }
-        if (nodePath.isSwitchStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForSwitch(file, nodePath));
-        } else if (nodePath.isWhileStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForWhile(file, nodePath));
-        } else if (nodePath.isDoWhileStatement()) {
+        if (path.isSwitchStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForSwitch(file, path));
+        } else if (path.isWhileStatement()) {
+          promptSpecs.push(outerThis.createPromptSpecForWhile(file, path));
+        } else if (path.isDoWhileStatement()) {
           promptSpecs.push(
-            outerThis.createPromptSpecForDoWhile(file, nodePath)
+            outerThis.createPromptSpecForDoWhile(file, path)
           );
-        } else if (nodePath.isForStatement()) {
+        } else if (path.isForStatement()) {
           promptSpecs.push(
-            ...outerThis.createPromptSpecsForFor(file, nodePath)
+            ...outerThis.createPromptSpecsForFor(file, path)
           );
-        } else if (nodePath.isForInStatement()) {
+        } else if (path.isForInStatement()) {
           promptSpecs.push(
-            ...outerThis.createPromptSpecsForForIn(file, nodePath)
+            ...outerThis.createPromptSpecsForForIn(file, path)
           );
-        } else if (nodePath.isForOfStatement()) {
+        } else if (path.isForOfStatement()) {
           promptSpecs.push(
-            ...outerThis.createPromptSpecsForForOf(file, nodePath)
+            ...outerThis.createPromptSpecsForForOf(file, path)
           );
         } else if (
-          nodePath.isCallExpression() &&
-          nodePath.node.loc!.start.line === nodePath.node.loc!.end.line
+          path.isCallExpression() &&
+          path.node.loc!.start.line === path.node.loc!.end.line
         ) {
           // for now, restrict to calls on a single line
           promptSpecs.push(
-            ...outerThis.createPromptSpecsForCall(file, nodePath)
+            ...outerThis.createPromptSpecsForCall(file, path)
           );
         }
       },
     });
     return promptSpecs;
   }
+
+
 
   // private stripPackagePathFromFileName(fileName: string) : string {
   //   return fileName.replace(this.packagePath, '');
@@ -369,14 +372,19 @@ export class PromptSpecGenerator {
   public writePromptFiles() {
     const promptSpecsWithRelativePaths = this.promptSpecs.map((promptSpec) => {
       const relativePath = path.relative(this.packagePath, promptSpec.file);
-      return new PromptSpec(
+      const feature = promptSpec.feature;
+      const component = promptSpec.component;
+      const location = promptSpec.location;
+      const orig = promptSpec.orig;
+      const parentLocation = promptSpec.parentLocation;
+      return { 
         relativePath,
-        promptSpec.feature,
-        promptSpec.component,
-        promptSpec.location,
-        promptSpec.orig,
-        promptSpec.parentLocation
-      );
+        feature,
+        component,
+        location,
+        orig,
+        parentLocation
+      }
     });
 
     // write promptSpecs to JSON file
@@ -396,71 +404,5 @@ export class PromptSpecGenerator {
       );
       fs.writeFileSync(fileName, prompt.getText());
     }
-  }
-}
-
-/**
- * Specifies all information needed to create a prompt.
- *   file: the file name
- *   feature: the type of the language construct (if/switch/while/do-while/for/for-in/for-of/call)
- *   component: the part of the language construct that is to be changed (test/discriminant/update)
- *   location: the location of the component in the source code
- *   orig: the original contents of the placeholder
- */
-export class PromptSpec {
-  constructor(
-    public file: string,
-    public readonly feature: string,
-    public readonly component: string,
-    public readonly location: SourceLocation,
-    public readonly orig: string,
-    public readonly parentLocation?: SourceLocation
-  ) {}
-
-  public getCodeWithPlaceholder() {
-    const code = fs.readFileSync(this.file, "utf8");
-    const lines = code.split("\n");
-    const lastLine = lines.length;
-    const endColumnOfLastLine = lines[lastLine - 1].length;
-    const codeWithPlaceHolder = (
-      getText(code, 1, 0, this.location.startLine, this.location.startColumn) +
-      "<PLACEHOLDER>" +
-      getText(
-        code,
-        this.location.endLine,
-        this.location.endColumn,
-        lastLine,
-        endColumnOfLastLine
-      )
-    );
-    return this.addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(codeWithPlaceHolder);
-  }
-
-  public addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(codeWithPlaceHolder: string) : string {
-    const lines = codeWithPlaceHolder.split("\n");
-    const lineNr = this.location.startLine - 1;
-    const line = lines[lineNr];
-    const newLine = line + " // original code was: " + this.orig;
-    lines[lineNr] = newLine;
-    return lines.join("\n");
-  }
-
-
-  public isExpressionPlaceholder(): boolean {
-    return (
-      (this.feature === "if" && this.component === "test") ||
-      (this.feature === "switch" && this.component === "discriminant") ||
-      (this.feature === "while" && this.component === "test") ||
-      (this.feature === "do-while" && this.component === "test") ||
-      (this.feature === "for" && this.component === "test") ||
-      (this.feature === "for-in" && this.component === "right") ||
-      (this.feature === "for-of" && this.component === "right") ||
-      (this.feature === "call" && this.component.startsWith("arg")) ||
-      (this.feature === "call" && this.component === "callee")
-    );
-  }
-
-  public isArgListPlaceHolder(): boolean {
-    return this.feature === "call" && this.component === "allArgs";
   }
 }
