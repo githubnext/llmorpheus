@@ -5,5 +5,10 @@
   "nrIdentical": 67,
   "nrDuplicate": 30,
   "nrLocations": 89,
-  "model": "text-davinci-003"
+  "metaInfo": {
+    "modelName": "text-davinci-003",
+    "temperature": 0,
+    "maxTokens": 100,
+    "n": 5
+  }
 }
