@@ -9,7 +9,7 @@ import {
   CodeLlama34bInstructModel,
   Llama2_70bModel
 } from "../src/Model";
-import { MutantGenerator } from "../src/mutantGenerator";
+import { MutantGenerator } from "../src/MutantGenerator";
 import path from "path";
 
 if (require.main === module) {
