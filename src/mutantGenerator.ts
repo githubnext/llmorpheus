@@ -1,6 +1,6 @@
 import fs from "fs";
 import fg from "fast-glob";
-import { IModel } from "./model";
+import { IModel } from "./Model";
 
 import { PromptSpecGenerator } from "./promptSpecGenerator";
 import { Mutant } from "./Mutant";

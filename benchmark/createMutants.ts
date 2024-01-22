@@ -8,7 +8,7 @@ import {
   TextDavinci003Model,
   CodeLlama34bInstructModel,
   Llama2_70bModel
-} from "../src/model";
+} from "../src/Model";
 import { MutantGenerator } from "../src/mutantGenerator";
 import path from "path";
 
