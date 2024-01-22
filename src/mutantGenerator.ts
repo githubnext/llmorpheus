@@ -136,15 +136,9 @@ export class MutantGenerator {
     let nrIdentical = 0;
     let nrDuplicate = 0;
 
-    let nrPromptsProcessed = 0;
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
-      // process just 10 prompts for now
-      nrPromptsProcessed++
-      if (nrPromptsProcessed > 150) {
-        break;
-      }
       try {
         const completions = await this.getCompletionsForPrompt(prompt);
         for (const completion of completions) {

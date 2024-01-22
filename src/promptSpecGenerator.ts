@@ -378,7 +378,7 @@ export class PromptSpecGenerator {
       const orig = promptSpec.orig;
       const parentLocation = promptSpec.parentLocation;
       return { 
-        relativePath,
+        file: relativePath,
         feature,
         component,
         location,

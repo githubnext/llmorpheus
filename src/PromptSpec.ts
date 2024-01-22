@@ -25,7 +25,7 @@ export class PromptSpec {
     public readonly parentLocation?: SourceLocation
   ) {  
       this.findReferences();
-      console.log(`${this.location.getText()} ==> \{ ${Array.from(this.references).join(", ")} \}`);
+      // console.log(`${this.location.getText()} ==> \{ ${Array.from(this.references).join(", ")} \}`);
   }
 
   /**

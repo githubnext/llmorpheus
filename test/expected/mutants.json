@@ -7,7 +7,7 @@
     "endColumn": 11,
     "originalCode": "!name",
     "replacement": "name === undefined",
-    "promptId": 143,
+    "promptId": 1,
     "completionId": 0,
     "reason": "if/test"
   },
@@ -19,7 +19,7 @@
     "endColumn": 11,
     "originalCode": "!name",
     "replacement": "name == null",
-    "promptId": 143,
+    "promptId": 1,
     "completionId": 0,
     "reason": "if/test"
   },
@@ -31,7 +31,7 @@
     "endColumn": 31,
     "originalCode": "getTimezonesMap",
     "replacement": "getTimezonesMap(data)",
-    "promptId": 144,
+    "promptId": 2,
     "completionId": 1,
     "reason": "call/callee"
   },
@@ -43,7 +43,7 @@
     "endColumn": 31,
     "originalCode": "getTimezonesMap",
     "replacement": "buildTimezonesMap(data)",
-    "promptId": 144,
+    "promptId": 2,
     "completionId": 1,
     "reason": "call/callee"
   },
@@ -55,7 +55,7 @@
     "endColumn": 31,
     "originalCode": "getTimezonesMap",
     "replacement": "timezonesMap",
-    "promptId": 144,
+    "promptId": 2,
     "completionId": 1,
     "reason": "call/callee"
   },
@@ -67,7 +67,7 @@
     "endColumn": 36,
     "originalCode": "data",
     "replacement": "timezonesMap",
-    "promptId": 145,
+    "promptId": 3,
     "completionId": 2,
     "reason": "call/arg0"
   },
@@ -79,7 +79,7 @@
     "endColumn": 36,
     "originalCode": "data",
     "replacement": "tzMap",
-    "promptId": 145,
+    "promptId": 3,
     "completionId": 2,
     "reason": "call/arg0"
   },
@@ -91,7 +91,7 @@
     "endColumn": 19,
     "originalCode": "!timezonesMap",
     "replacement": "timezonesMap === undefined",
-    "promptId": 146,
+    "promptId": 4,
     "completionId": 3,
     "reason": "if/test"
   },
@@ -103,32 +103,8 @@
     "endColumn": 19,
     "originalCode": "!timezonesMap",
     "replacement": "timezonesMap === null",
-    "promptId": 146,
+    "promptId": 4,
     "completionId": 3,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 18,
-    "startColumn": 6,
-    "endLine": 18,
-    "endColumn": 19,
-    "originalCode": "!timezonesMap",
-    "replacement": "timezonesMap === undefined",
-    "promptId": 146,
-    "completionId": 4,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 18,
-    "startColumn": 6,
-    "endLine": 18,
-    "endColumn": 19,
-    "originalCode": "!timezonesMap",
-    "replacement": "timezonesMap === null",
-    "promptId": 146,
-    "completionId": 4,
     "reason": "if/test"
   },
   {
@@ -139,7 +115,7 @@
     "endColumn": 53,
     "originalCode": "buildTimezonesMap",
     "replacement": "buildTimezonesMap(data)",
-    "promptId": 147,
+    "promptId": 5,
     "completionId": 5,
     "reason": "call/callee"
   },
@@ -151,7 +127,7 @@
     "endColumn": 53,
     "originalCode": "buildTimezonesMap",
     "replacement": "{}",
-    "promptId": 147,
+    "promptId": 5,
     "completionId": 5,
     "reason": "call/callee"
   },
@@ -163,7 +139,7 @@
     "endColumn": 53,
     "originalCode": "buildTimezonesMap",
     "replacement": "timezonesMap",
-    "promptId": 147,
+    "promptId": 5,
     "completionId": 5,
     "reason": "call/callee"
   },
@@ -174,32 +150,8 @@
     "endLine": 18,
     "endColumn": 53,
     "originalCode": "buildTimezonesMap",
-    "replacement": "buildTimezonesMap(data)",
-    "promptId": 147,
-    "completionId": 6,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 18,
-    "startColumn": 36,
-    "endLine": 18,
-    "endColumn": 53,
-    "originalCode": "buildTimezonesMap",
-    "replacement": "{}",
-    "promptId": 147,
-    "completionId": 6,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 18,
-    "startColumn": 36,
-    "endLine": 18,
-    "endColumn": 53,
-    "originalCode": "buildTimezonesMap",
     "replacement": "timezonesMap || {}",
-    "promptId": 147,
+    "promptId": 5,
     "completionId": 6,
     "reason": "call/callee"
   },
@@ -211,7 +163,7 @@
     "endColumn": 58,
     "originalCode": "data",
     "replacement": "data.timezones",
-    "promptId": 148,
+    "promptId": 6,
     "completionId": 7,
     "reason": "call/arg0"
   },
@@ -223,7 +175,7 @@
     "endColumn": 58,
     "originalCode": "data",
     "replacement": "data.countries",
-    "promptId": 148,
+    "promptId": 6,
     "completionId": 7,
     "reason": "call/arg0"
   },
@@ -235,7 +187,7 @@
     "endColumn": 35,
     "originalCode": "data.timezones",
     "replacement": "Object.keys(data.timezones)",
-    "promptId": 150,
+    "promptId": 8,
     "completionId": 9,
     "reason": "call/arg0"
   },
@@ -247,7 +199,7 @@
     "endColumn": 35,
     "originalCode": "data.timezones",
     "replacement": "Object.keys(data.countries)",
-    "promptId": 150,
+    "promptId": 8,
     "completionId": 9,
     "reason": "call/arg0"
   },
@@ -259,7 +211,7 @@
     "endColumn": 18,
     "originalCode": "!countries",
     "replacement": "!c && !aliasTz.c",
-    "promptId": 151,
+    "promptId": 9,
     "completionId": 10,
     "reason": "if/test"
   },
@@ -271,7 +223,7 @@
     "endColumn": 18,
     "originalCode": "!countries",
     "replacement": "!tz.c && !aliasTz.c",
-    "promptId": 151,
+    "promptId": 9,
     "completionId": 10,
     "reason": "if/test"
   },
@@ -283,7 +235,7 @@
     "endColumn": 18,
     "originalCode": "!countries",
     "replacement": "tz.r !== undefined",
-    "promptId": 151,
+    "promptId": 9,
     "completionId": 11,
     "reason": "if/test"
   },
@@ -295,7 +247,7 @@
     "endColumn": 18,
     "originalCode": "!countries",
     "replacement": "c && a",
-    "promptId": 151,
+    "promptId": 9,
     "completionId": 11,
     "reason": "if/test"
   },
@@ -307,7 +259,7 @@
     "endColumn": 18,
     "originalCode": "!countries",
     "replacement": "countries && countries.length",
-    "promptId": 151,
+    "promptId": 9,
     "completionId": 11,
     "reason": "if/test"
   },
@@ -319,7 +271,7 @@
     "endColumn": 26,
     "originalCode": "!result[country]",
     "replacement": "!result[country].current",
-    "promptId": 152,
+    "promptId": 10,
     "completionId": 12,
     "reason": "if/test"
   },
@@ -331,7 +283,7 @@
     "endColumn": 26,
     "originalCode": "!result[country]",
     "replacement": "!result[country].all",
-    "promptId": 152,
+    "promptId": 10,
     "completionId": 12,
     "reason": "if/test"
   },
@@ -343,7 +295,7 @@
     "endColumn": 48,
     "originalCode": "result",
     "replacement": "result[country]",
-    "promptId": 154,
+    "promptId": 12,
     "completionId": 14,
     "reason": "call/arg0"
   },
@@ -355,44 +307,8 @@
     "endColumn": 48,
     "originalCode": "result",
     "replacement": "{}",
-    "promptId": 154,
+    "promptId": 12,
     "completionId": 14,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 32,
-    "startColumn": 42,
-    "endLine": 32,
-    "endColumn": 48,
-    "originalCode": "result",
-    "replacement": "result[country]",
-    "promptId": 154,
-    "completionId": 15,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 32,
-    "startColumn": 42,
-    "endLine": 32,
-    "endColumn": 48,
-    "originalCode": "result",
-    "replacement": "{}",
-    "promptId": 154,
-    "completionId": 15,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 32,
-    "startColumn": 42,
-    "endLine": 32,
-    "endColumn": 48,
-    "originalCode": "result",
-    "replacement": "{}",
-    "promptId": 154,
-    "completionId": 16,
     "reason": "call/arg0"
   },
   {
@@ -403,7 +319,7 @@
     "endColumn": 48,
     "originalCode": "result",
     "replacement": "Object.create(null)",
-    "promptId": 154,
+    "promptId": 12,
     "completionId": 16,
     "reason": "call/arg0"
   },
@@ -415,7 +331,7 @@
     "endColumn": 89,
     "originalCode": "{ [country]: { current: [], all: [] } }",
     "replacement": "{ [country]: { current: [id], all: [id] } }",
-    "promptId": 155,
+    "promptId": 13,
     "completionId": 17,
     "reason": "call/arg1"
   },
@@ -427,7 +343,7 @@
     "endColumn": 89,
     "originalCode": "{ [country]: { current: [], all: [] } }",
     "replacement": "{ [country]: { current: tz.c || [], all: tz.c || [] } }",
-    "promptId": 155,
+    "promptId": 13,
     "completionId": 17,
     "reason": "call/arg1"
   },
@@ -439,7 +355,7 @@
     "endColumn": 90,
     "originalCode": "Object.assign(result, { [country]: { current: [], all: [] } })",
     "replacement": "Object.assign({ current: [], all: [] })",
-    "promptId": 156,
+    "promptId": 14,
     "completionId": 18,
     "reason": "call/allArgs"
   },
@@ -451,7 +367,7 @@
     "endColumn": 90,
     "originalCode": "Object.assign(result, { [country]: { current: [], all: [] } })",
     "replacement": "Object.assign(result[country] = { current: [], all: [] })",
-    "promptId": 156,
+    "promptId": 14,
     "completionId": 18,
     "reason": "call/allArgs"
   },
@@ -463,7 +379,7 @@
     "endColumn": 90,
     "originalCode": "Object.assign(result, { [country]: { current: [], all: [] } })",
     "replacement": "Object.assign(result[country] = Object.assign({ current: [], all: [] }))",
-    "promptId": 156,
+    "promptId": 14,
     "completionId": 18,
     "reason": "call/allArgs"
   },
@@ -475,7 +391,7 @@
     "endColumn": 28,
     "originalCode": "tz.r === undefined",
     "replacement": "!aliasTz.c",
-    "promptId": 157,
+    "promptId": 15,
     "completionId": 19,
     "reason": "if/test"
   },
@@ -487,7 +403,7 @@
     "endColumn": 28,
     "originalCode": "tz.r === undefined",
     "replacement": "tz.c",
-    "promptId": 157,
+    "promptId": 15,
     "completionId": 19,
     "reason": "if/test"
   },
@@ -499,7 +415,7 @@
     "endColumn": 28,
     "originalCode": "tz.r === undefined",
     "replacement": "aliasTz.c",
-    "promptId": 157,
+    "promptId": 15,
     "completionId": 19,
     "reason": "if/test"
   },
@@ -511,7 +427,7 @@
     "endColumn": 61,
     "originalCode": "id",
     "replacement": "tz.id",
-    "promptId": 159,
+    "promptId": 17,
     "completionId": 21,
     "reason": "call/arg0"
   },
@@ -523,7 +439,7 @@
     "endColumn": 61,
     "originalCode": "id",
     "replacement": "tz.name",
-    "promptId": 159,
+    "promptId": 17,
     "completionId": 21,
     "reason": "call/arg0"
   },
@@ -534,20 +450,8 @@
     "endLine": 33,
     "endColumn": 61,
     "originalCode": "id",
-    "replacement": "tz.id",
-    "promptId": 159,
-    "completionId": 22,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-country.js",
-    "startLine": 33,
-    "startColumn": 59,
-    "endLine": 33,
-    "endColumn": 61,
-    "originalCode": "id",
     "replacement": "a",
-    "promptId": 159,
+    "promptId": 17,
     "completionId": 22,
     "reason": "call/arg0"
   },
@@ -559,7 +463,7 @@
     "endColumn": 33,
     "originalCode": "id",
     "replacement": "tz.id",
-    "promptId": 161,
+    "promptId": 19,
     "completionId": 24,
     "reason": "call/arg0"
   },
@@ -571,7 +475,7 @@
     "endColumn": 33,
     "originalCode": "id",
     "replacement": "a",
-    "promptId": 161,
+    "promptId": 19,
     "completionId": 24,
     "reason": "call/arg0"
   },
@@ -583,7 +487,7 @@
     "endColumn": 15,
     "originalCode": "!timezone",
     "replacement": "!data.timezones[name]",
-    "promptId": 162,
+    "promptId": 20,
     "completionId": 25,
     "reason": "if/test"
   },
@@ -595,7 +499,7 @@
     "endColumn": 15,
     "originalCode": "!timezone",
     "replacement": "!name",
-    "promptId": 162,
+    "promptId": 20,
     "completionId": 25,
     "reason": "if/test"
   },
@@ -607,7 +511,7 @@
     "endColumn": 36,
     "originalCode": "Number.isInteger",
     "replacement": "tz.d || utcOffset",
-    "promptId": 163,
+    "promptId": 21,
     "completionId": 26,
     "reason": "call/callee"
   },
@@ -619,7 +523,7 @@
     "endColumn": 36,
     "originalCode": "Number.isInteger",
     "replacement": "(tz.d !== undefined) ? tz.d : utcOffset",
-    "promptId": 163,
+    "promptId": 21,
     "completionId": 26,
     "reason": "call/callee"
   },
@@ -631,7 +535,7 @@
     "endColumn": 36,
     "originalCode": "Number.isInteger",
     "replacement": "tz.d !== undefined ? tz.d : utcOffset",
-    "promptId": 163,
+    "promptId": 21,
     "completionId": 26,
     "reason": "call/callee"
   },
@@ -643,7 +547,7 @@
     "endColumn": 41,
     "originalCode": "tz.d",
     "replacement": "Number(tz.d)",
-    "promptId": 164,
+    "promptId": 22,
     "completionId": 27,
     "reason": "call/arg0"
   },
@@ -655,7 +559,7 @@
     "endColumn": 41,
     "originalCode": "tz.d",
     "replacement": "parseInt(tz.d)",
-    "promptId": 164,
+    "promptId": 22,
     "completionId": 27,
     "reason": "call/arg0"
   },
@@ -667,7 +571,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "getOffsetStr(utcOffset)",
-    "promptId": 165,
+    "promptId": 23,
     "completionId": 28,
     "reason": "call/callee"
   },
@@ -679,7 +583,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "`${utcOffset > 0 ? '+' : '-'}${getNumStr(Math.abs(utcOffset) / 60)}:${getNumStr(Math.abs(utcOffset) % 60)}`",
-    "promptId": 165,
+    "promptId": 23,
     "completionId": 28,
     "reason": "call/callee"
   },
@@ -691,7 +595,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "`UTC${utcOffset > 0 ? '+' : '-'}${getNumStr(Math.abs(utcOffset) / 60)}:${getNumStr(Math.abs(utcOffset) % 60)}`",
-    "promptId": 165,
+    "promptId": 23,
     "completionId": 28,
     "reason": "call/callee"
   },
@@ -702,20 +606,8 @@
     "endLine": 20,
     "endColumn": 30,
     "originalCode": "getOffsetStr",
-    "replacement": "getOffsetStr(utcOffset)",
-    "promptId": 165,
-    "completionId": 29,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 20,
-    "startColumn": 18,
-    "endLine": 20,
-    "endColumn": 30,
-    "originalCode": "getOffsetStr",
     "replacement": "getNumStr(utcOffset)",
-    "promptId": 165,
+    "promptId": 23,
     "completionId": 29,
     "reason": "call/callee"
   },
@@ -727,7 +619,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "`${utcOffset}`",
-    "promptId": 165,
+    "promptId": 23,
     "completionId": 29,
     "reason": "call/callee"
   },
@@ -739,7 +631,7 @@
     "endColumn": 40,
     "originalCode": "utcOffset",
     "replacement": "tz.u",
-    "promptId": 166,
+    "promptId": 24,
     "completionId": 30,
     "reason": "call/arg0"
   },
@@ -751,7 +643,7 @@
     "endColumn": 40,
     "originalCode": "utcOffset",
     "replacement": "timezone.u",
-    "promptId": 166,
+    "promptId": 24,
     "completionId": 30,
     "reason": "call/arg0"
   },
@@ -763,7 +655,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "getOffsetStr(dstOffset)",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 31,
     "reason": "call/callee"
   },
@@ -775,7 +667,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "tz.d ? getOffsetStr(tz.d) : getOffsetStr(utcOffset)",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 31,
     "reason": "call/callee"
   },
@@ -787,7 +679,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "Number.isInteger(tz.d) ? getOffsetStr(tz.d) : getOffsetStr(utcOffset)",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 31,
     "reason": "call/callee"
   },
@@ -798,20 +690,8 @@
     "endLine": 22,
     "endColumn": 30,
     "originalCode": "getOffsetStr",
-    "replacement": "getOffsetStr(dstOffset)",
-    "promptId": 167,
-    "completionId": 32,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 22,
-    "startColumn": 18,
-    "endLine": 22,
-    "endColumn": 30,
-    "originalCode": "getOffsetStr",
     "replacement": "tz.dstOffsetStr",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 32,
     "reason": "call/callee"
   },
@@ -823,32 +703,8 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "getNumStr(dstOffset)",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 32,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 22,
-    "startColumn": 18,
-    "endLine": 22,
-    "endColumn": 30,
-    "originalCode": "getOffsetStr",
-    "replacement": "getOffsetStr(dstOffset)",
-    "promptId": 167,
-    "completionId": 33,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 22,
-    "startColumn": 18,
-    "endLine": 22,
-    "endColumn": 30,
-    "originalCode": "getOffsetStr",
-    "replacement": "getNumStr(dstOffset)",
-    "promptId": 167,
-    "completionId": 33,
     "reason": "call/callee"
   },
   {
@@ -859,7 +715,7 @@
     "endColumn": 30,
     "originalCode": "getOffsetStr",
     "replacement": "getOffsetStr(tz.d)",
-    "promptId": 167,
+    "promptId": 25,
     "completionId": 33,
     "reason": "call/callee"
   },
@@ -871,7 +727,7 @@
     "endColumn": 40,
     "originalCode": "dstOffset",
     "replacement": "tz.d",
-    "promptId": 168,
+    "promptId": 26,
     "completionId": 34,
     "reason": "call/arg0"
   },
@@ -883,7 +739,7 @@
     "endColumn": 40,
     "originalCode": "dstOffset",
     "replacement": "getOffsetStr(dstOffset)",
-    "promptId": 168,
+    "promptId": 26,
     "completionId": 34,
     "reason": "call/arg0"
   },
@@ -894,20 +750,8 @@
     "endLine": 22,
     "endColumn": 40,
     "originalCode": "dstOffset",
-    "replacement": "tz.d",
-    "promptId": 168,
-    "completionId": 35,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 22,
-    "startColumn": 31,
-    "endLine": 22,
-    "endColumn": 40,
-    "originalCode": "dstOffset",
     "replacement": "utcOffset",
-    "promptId": 168,
+    "promptId": 26,
     "completionId": 35,
     "reason": "call/arg0"
   },
@@ -919,7 +763,7 @@
     "endColumn": 16,
     "originalCode": "timezone.r",
     "replacement": "tz.d === null",
-    "promptId": 169,
+    "promptId": 27,
     "completionId": 36,
     "reason": "if/test"
   },
@@ -931,7 +775,7 @@
     "endColumn": 16,
     "originalCode": "timezone.r",
     "replacement": "tz.d === undefined",
-    "promptId": 169,
+    "promptId": 27,
     "completionId": 36,
     "reason": "if/test"
   },
@@ -943,7 +787,7 @@
     "endColumn": 16,
     "originalCode": "timezone.r",
     "replacement": "!Number.isInteger(tz.d)",
-    "promptId": 169,
+    "promptId": 27,
     "completionId": 36,
     "reason": "if/test"
   },
@@ -954,32 +798,8 @@
     "endLine": 25,
     "endColumn": 16,
     "originalCode": "timezone.r",
-    "replacement": "tz.d === null",
-    "promptId": 169,
-    "completionId": 37,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 25,
-    "startColumn": 6,
-    "endLine": 25,
-    "endColumn": 16,
-    "originalCode": "timezone.r",
-    "replacement": "tz.d === undefined",
-    "promptId": 169,
-    "completionId": 37,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/build-timezone.js",
-    "startLine": 25,
-    "startColumn": 6,
-    "endLine": 25,
-    "endColumn": 16,
-    "originalCode": "timezone.r",
     "replacement": "tz.d === NaN",
-    "promptId": 169,
+    "promptId": 27,
     "completionId": 37,
     "reason": "if/test"
   },
@@ -991,7 +811,7 @@
     "endColumn": 26,
     "originalCode": "Math.floor",
     "replacement": "Math.floor(offset / 60)",
-    "promptId": 170,
+    "promptId": 28,
     "completionId": 38,
     "reason": "call/callee"
   },
@@ -1003,7 +823,7 @@
     "endColumn": 26,
     "originalCode": "Math.floor",
     "replacement": "Math.round(offset / 60)",
-    "promptId": 170,
+    "promptId": 28,
     "completionId": 38,
     "reason": "call/callee"
   },
@@ -1015,7 +835,7 @@
     "endColumn": 26,
     "originalCode": "Math.floor",
     "replacement": "parseInt(offset / 60)",
-    "promptId": 170,
+    "promptId": 28,
     "completionId": 38,
     "reason": "call/callee"
   },
@@ -1027,7 +847,7 @@
     "endColumn": 38,
     "originalCode": "offset / 60",
     "replacement": "Math.abs(offset / 60)",
-    "promptId": 171,
+    "promptId": 29,
     "completionId": 39,
     "reason": "call/arg0"
   },
@@ -1039,7 +859,7 @@
     "endColumn": 38,
     "originalCode": "offset / 60",
     "replacement": "Math.abs(offset) / 60",
-    "promptId": 171,
+    "promptId": 29,
     "completionId": 39,
     "reason": "call/arg0"
   },
@@ -1051,7 +871,7 @@
     "endColumn": 28,
     "originalCode": "getNumStr",
     "replacement": "Math.abs(hours)",
-    "promptId": 172,
+    "promptId": 30,
     "completionId": 40,
     "reason": "call/callee"
   },
@@ -1063,7 +883,7 @@
     "endColumn": 28,
     "originalCode": "getNumStr",
     "replacement": "String(Math.abs(hours))",
-    "promptId": 172,
+    "promptId": 30,
     "completionId": 40,
     "reason": "call/callee"
   },
@@ -1075,7 +895,7 @@
     "endColumn": 28,
     "originalCode": "getNumStr",
     "replacement": "String(hours)",
-    "promptId": 172,
+    "promptId": 30,
     "completionId": 40,
     "reason": "call/callee"
   },
@@ -1087,7 +907,7 @@
     "endColumn": 34,
     "originalCode": "hours",
     "replacement": "num",
-    "promptId": 173,
+    "promptId": 31,
     "completionId": 41,
     "reason": "call/arg0"
   },
@@ -1099,7 +919,7 @@
     "endColumn": 34,
     "originalCode": "hours",
     "replacement": "Math.abs(hours)",
-    "promptId": 173,
+    "promptId": 31,
     "completionId": 41,
     "reason": "call/arg0"
   },
@@ -1111,7 +931,7 @@
     "endColumn": 48,
     "originalCode": "getNumStr",
     "replacement": "getNumStr(min)",
-    "promptId": 174,
+    "promptId": 32,
     "completionId": 42,
     "reason": "call/callee"
   },
@@ -1123,7 +943,7 @@
     "endColumn": 48,
     "originalCode": "getNumStr",
     "replacement": "Math.abs(min)",
-    "promptId": 174,
+    "promptId": 32,
     "completionId": 42,
     "reason": "call/callee"
   },
@@ -1135,7 +955,7 @@
     "endColumn": 48,
     "originalCode": "getNumStr",
     "replacement": "Math.abs(min).toString()",
-    "promptId": 174,
+    "promptId": 32,
     "completionId": 42,
     "reason": "call/callee"
   },
@@ -1147,7 +967,7 @@
     "endColumn": 52,
     "originalCode": "min",
     "replacement": "getNumStr(min)",
-    "promptId": 175,
+    "promptId": 33,
     "completionId": 43,
     "reason": "call/arg0"
   },
@@ -1159,7 +979,7 @@
     "endColumn": 52,
     "originalCode": "min",
     "replacement": "Math.abs(min)",
-    "promptId": 175,
+    "promptId": 33,
     "completionId": 43,
     "reason": "call/arg0"
   },
@@ -1171,7 +991,7 @@
     "endColumn": 22,
     "originalCode": "Math.abs",
     "replacement": "Math.abs(input)",
-    "promptId": 176,
+    "promptId": 34,
     "completionId": 44,
     "reason": "call/callee"
   },
@@ -1183,7 +1003,7 @@
     "endColumn": 22,
     "originalCode": "Math.abs",
     "replacement": "Math.abs(Number(input))",
-    "promptId": 176,
+    "promptId": 34,
     "completionId": 44,
     "reason": "call/callee"
   },
@@ -1195,7 +1015,7 @@
     "endColumn": 22,
     "originalCode": "Math.abs",
     "replacement": "Number(input).toString()",
-    "promptId": 176,
+    "promptId": 34,
     "completionId": 44,
     "reason": "call/callee"
   },
@@ -1207,7 +1027,7 @@
     "endColumn": 28,
     "originalCode": "input",
     "replacement": "Number(input)",
-    "promptId": 177,
+    "promptId": 35,
     "completionId": 45,
     "reason": "call/arg0"
   },
@@ -1219,7 +1039,7 @@
     "endColumn": 28,
     "originalCode": "input",
     "replacement": "parseInt(input)",
-    "promptId": 177,
+    "promptId": 35,
     "completionId": 45,
     "reason": "call/arg0"
   },
@@ -1231,7 +1051,7 @@
     "endColumn": 49,
     "originalCode": "data.timezones",
     "replacement": "timezones",
-    "promptId": 179,
+    "promptId": 37,
     "completionId": 47,
     "reason": "call/arg0"
   },
@@ -1243,7 +1063,7 @@
     "endColumn": 49,
     "originalCode": "data.timezones",
     "replacement": "data.countries",
-    "promptId": 179,
+    "promptId": 37,
     "completionId": 47,
     "reason": "call/arg0"
   },
@@ -1254,20 +1074,8 @@
     "endLine": 5,
     "endColumn": 49,
     "originalCode": "data.timezones",
-    "replacement": "timezones",
-    "promptId": 179,
-    "completionId": 48,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 5,
-    "startColumn": 35,
-    "endLine": 5,
-    "endColumn": 49,
-    "originalCode": "data.timezones",
     "replacement": "Object.keys(timezones)",
-    "promptId": 179,
+    "promptId": 37,
     "completionId": 48,
     "reason": "call/arg0"
   },
@@ -1279,7 +1087,7 @@
     "endColumn": 35,
     "originalCode": "data.countries",
     "replacement": "countries",
-    "promptId": 181,
+    "promptId": 39,
     "completionId": 50,
     "reason": "call/arg0"
   },
@@ -1291,7 +1099,7 @@
     "endColumn": 35,
     "originalCode": "data.countries",
     "replacement": "Object.keys(data.countries)",
-    "promptId": 181,
+    "promptId": 39,
     "completionId": 50,
     "reason": "call/arg0"
   },
@@ -1303,7 +1111,7 @@
     "endColumn": 29,
     "originalCode": "prev",
     "replacement": "{...prev}",
-    "promptId": 183,
+    "promptId": 41,
     "completionId": 52,
     "reason": "call/arg0"
   },
@@ -1315,7 +1123,7 @@
     "endColumn": 29,
     "originalCode": "prev",
     "replacement": "Object.assign({}, prev)",
-    "promptId": 183,
+    "promptId": 41,
     "completionId": 52,
     "reason": "call/arg0"
   },
@@ -1327,7 +1135,7 @@
     "endColumn": 64,
     "originalCode": "{ [id]: getCountry(id, options) }",
     "replacement": "{ [id]: buildCountry(data, id) }",
-    "promptId": 184,
+    "promptId": 42,
     "completionId": 53,
     "reason": "call/arg1"
   },
@@ -1339,7 +1147,7 @@
     "endColumn": 64,
     "originalCode": "{ [id]: getCountry(id, options) }",
     "replacement": "prev[id] = buildCountry(data, id)",
-    "promptId": 184,
+    "promptId": 42,
     "completionId": 53,
     "reason": "call/arg1"
   },
@@ -1351,7 +1159,7 @@
     "endColumn": 64,
     "originalCode": "{ [id]: getCountry(id, options) }",
     "replacement": "{ ...prev, [id]: buildCountry(data, id) }",
-    "promptId": 184,
+    "promptId": 42,
     "completionId": 53,
     "reason": "call/arg1"
   },
@@ -1363,7 +1171,7 @@
     "endColumn": 65,
     "originalCode": "Object.assign(prev, { [id]: getCountry(id, options) })",
     "replacement": "Object.assign(prev, { [id]: countries[id] })",
-    "promptId": 185,
+    "promptId": 43,
     "completionId": 54,
     "reason": "call/allArgs"
   },
@@ -1375,7 +1183,7 @@
     "endColumn": 65,
     "originalCode": "Object.assign(prev, { [id]: getCountry(id, options) })",
     "replacement": "Object.assign(Object.assign({}, prev, { [id]: countries[id] }))",
-    "promptId": 185,
+    "promptId": 43,
     "completionId": 54,
     "reason": "call/allArgs"
   },
@@ -1387,7 +1195,7 @@
     "endColumn": 65,
     "originalCode": "Object.assign(prev, { [id]: getCountry(id, options) })",
     "replacement": "Object.assign(Object.assign(prev, { [id]: countries[id] }))",
-    "promptId": 185,
+    "promptId": 43,
     "completionId": 54,
     "reason": "call/allArgs"
   },
@@ -1399,7 +1207,7 @@
     "endColumn": 49,
     "originalCode": "getCountry",
     "replacement": "buildCountry(id, options)",
-    "promptId": 186,
+    "promptId": 44,
     "completionId": 55,
     "reason": "call/callee"
   },
@@ -1411,7 +1219,7 @@
     "endColumn": 49,
     "originalCode": "getCountry",
     "replacement": "getCountry(id, options)",
-    "promptId": 186,
+    "promptId": 44,
     "completionId": 55,
     "reason": "call/callee"
   },
@@ -1423,7 +1231,7 @@
     "endColumn": 49,
     "originalCode": "getCountry",
     "replacement": "countries[id]",
-    "promptId": 186,
+    "promptId": 44,
     "completionId": 55,
     "reason": "call/callee"
   },
@@ -1435,7 +1243,7 @@
     "endColumn": 52,
     "originalCode": "id",
     "replacement": "country.id",
-    "promptId": 187,
+    "promptId": 45,
     "completionId": 56,
     "reason": "call/arg0"
   },
@@ -1447,7 +1255,7 @@
     "endColumn": 52,
     "originalCode": "id",
     "replacement": "data.countries[id]",
-    "promptId": 187,
+    "promptId": 45,
     "completionId": 56,
     "reason": "call/arg0"
   },
@@ -1459,7 +1267,7 @@
     "endColumn": 61,
     "originalCode": "options",
     "replacement": "{}",
-    "promptId": 188,
+    "promptId": 46,
     "completionId": 57,
     "reason": "call/arg1"
   },
@@ -1471,7 +1279,7 @@
     "endColumn": 61,
     "originalCode": "options",
     "replacement": "options || {}",
-    "promptId": 188,
+    "promptId": 46,
     "completionId": 57,
     "reason": "call/arg1"
   },
@@ -1483,7 +1291,7 @@
     "endColumn": 62,
     "originalCode": "getCountry(id, options)",
     "replacement": "getCountry(id)",
-    "promptId": 189,
+    "promptId": 47,
     "completionId": 58,
     "reason": "call/allArgs"
   },
@@ -1495,7 +1303,7 @@
     "endColumn": 62,
     "originalCode": "getCountry(id, options)",
     "replacement": "getCountry(options)",
-    "promptId": 189,
+    "promptId": 47,
     "completionId": 58,
     "reason": "call/allArgs"
   },
@@ -1507,7 +1315,7 @@
     "endColumn": 62,
     "originalCode": "getCountry(id, options)",
     "replacement": "getCountry(country.id)",
-    "promptId": 189,
+    "promptId": 47,
     "completionId": 58,
     "reason": "call/allArgs"
   },
@@ -1519,7 +1327,7 @@
     "endColumn": 42,
     "originalCode": "totalTimezones !== memoizedTimezones",
     "replacement": "memoizedTimezones < totalTimezones",
-    "promptId": 190,
+    "promptId": 48,
     "completionId": 59,
     "reason": "if/test"
   },
@@ -1531,7 +1339,7 @@
     "endColumn": 42,
     "originalCode": "totalTimezones !== memoizedTimezones",
     "replacement": "memoizedTimezones === 0",
-    "promptId": 190,
+    "promptId": 48,
     "completionId": 59,
     "reason": "if/test"
   },
@@ -1543,7 +1351,7 @@
     "endColumn": 42,
     "originalCode": "totalTimezones !== memoizedTimezones",
     "replacement": "Object.keys(timezones).length === 0",
-    "promptId": 190,
+    "promptId": 48,
     "completionId": 59,
     "reason": "if/test"
   },
@@ -1555,7 +1363,7 @@
     "endColumn": 91,
     "originalCode": "getTimezone",
     "replacement": "id => memoizeTimezone(buildTimezone(data, id))",
-    "promptId": 192,
+    "promptId": 50,
     "completionId": 61,
     "reason": "call/arg0"
   },
@@ -1567,7 +1375,7 @@
     "endColumn": 91,
     "originalCode": "getTimezone",
     "replacement": "name => memoizeTimezone(buildTimezone(data, name))",
-    "promptId": 192,
+    "promptId": 50,
     "completionId": 61,
     "reason": "call/arg0"
   },
@@ -1579,7 +1387,7 @@
     "endColumn": 91,
     "originalCode": "getTimezone",
     "replacement": "name => timezones[name] = buildTimezone(data, name)",
-    "promptId": 192,
+    "promptId": 50,
     "completionId": 61,
     "reason": "call/arg0"
   },
@@ -1591,7 +1399,7 @@
     "endColumn": 70,
     "originalCode": "data.timezones",
     "replacement": "timezones",
-    "promptId": 194,
+    "promptId": 52,
     "completionId": 63,
     "reason": "call/arg0"
   },
@@ -1603,7 +1411,7 @@
     "endColumn": 70,
     "originalCode": "data.timezones",
     "replacement": "Object.keys(data.timezones)",
-    "promptId": 194,
+    "promptId": 52,
     "completionId": 63,
     "reason": "call/arg0"
   },
@@ -1615,7 +1423,7 @@
     "endColumn": 25,
     "originalCode": "deliverTimezones",
     "replacement": "deliverTimezones(timezones, options)",
-    "promptId": 195,
+    "promptId": 53,
     "completionId": 64,
     "reason": "call/callee"
   },
@@ -1627,7 +1435,7 @@
     "endColumn": 25,
     "originalCode": "deliverTimezones",
     "replacement": "Object.values(timezones)",
-    "promptId": 195,
+    "promptId": 53,
     "completionId": 64,
     "reason": "call/callee"
   },
@@ -1639,7 +1447,7 @@
     "endColumn": 25,
     "originalCode": "deliverTimezones",
     "replacement": "Object.keys(timezones).map(key => timezones[key])",
-    "promptId": 195,
+    "promptId": 53,
     "completionId": 64,
     "reason": "call/callee"
   },
@@ -1651,7 +1459,7 @@
     "endColumn": 35,
     "originalCode": "timezones",
     "replacement": "Object.values(timezones)",
-    "promptId": 196,
+    "promptId": 54,
     "completionId": 65,
     "reason": "call/arg0"
   },
@@ -1663,7 +1471,7 @@
     "endColumn": 35,
     "originalCode": "timezones",
     "replacement": "Object.keys(timezones).map(name => timezones[name])",
-    "promptId": 196,
+    "promptId": 54,
     "completionId": 65,
     "reason": "call/arg0"
   },
@@ -1674,20 +1482,8 @@
     "endLine": 18,
     "endColumn": 35,
     "originalCode": "timezones",
-    "replacement": "Object.values(timezones)",
-    "promptId": 196,
-    "completionId": 66,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 18,
-    "startColumn": 26,
-    "endLine": 18,
-    "endColumn": 35,
-    "originalCode": "timezones",
     "replacement": "Object.keys(timezones).map(key => timezones[key])",
-    "promptId": 196,
+    "promptId": 54,
     "completionId": 66,
     "reason": "call/arg0"
   },
@@ -1699,7 +1495,7 @@
     "endColumn": 44,
     "originalCode": "options",
     "replacement": "{}",
-    "promptId": 197,
+    "promptId": 55,
     "completionId": 67,
     "reason": "call/arg1"
   },
@@ -1711,7 +1507,7 @@
     "endColumn": 44,
     "originalCode": "options",
     "replacement": "deprecated",
-    "promptId": 197,
+    "promptId": 55,
     "completionId": 67,
     "reason": "call/arg1"
   },
@@ -1723,7 +1519,7 @@
     "endColumn": 45,
     "originalCode": "deliverTimezones(timezones, options)",
     "replacement": "deliverTimezones(timezones)",
-    "promptId": 198,
+    "promptId": 56,
     "completionId": 68,
     "reason": "call/allArgs"
   },
@@ -1735,7 +1531,7 @@
     "endColumn": 45,
     "originalCode": "deliverTimezones(timezones, options)",
     "replacement": "deliverTimezones(Object.values(timezones))",
-    "promptId": 198,
+    "promptId": 56,
     "completionId": 68,
     "reason": "call/allArgs"
   },
@@ -1747,7 +1543,7 @@
     "endColumn": 45,
     "originalCode": "deliverTimezones(timezones, options)",
     "replacement": "deliverTimezones(Object.keys(timezones).map(key => timezones[key]))",
-    "promptId": 198,
+    "promptId": 56,
     "completionId": 68,
     "reason": "call/allArgs"
   },
@@ -1759,7 +1555,7 @@
     "endColumn": 20,
     "originalCode": "!countries[id]",
     "replacement": "!timezones[name]",
-    "promptId": 199,
+    "promptId": 57,
     "completionId": 69,
     "reason": "if/test"
   },
@@ -1771,7 +1567,7 @@
     "endColumn": 20,
     "originalCode": "!countries[id]",
     "replacement": "!timezone",
-    "promptId": 199,
+    "promptId": 57,
     "completionId": 69,
     "reason": "if/test"
   },
@@ -1782,20 +1578,8 @@
     "endLine": 22,
     "endColumn": 20,
     "originalCode": "!countries[id]",
-    "replacement": "!timezones[name]",
-    "promptId": 199,
-    "completionId": 70,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 22,
-    "startColumn": 6,
-    "endLine": 22,
-    "endColumn": 20,
-    "originalCode": "!countries[id]",
     "replacement": "!timezone.name",
-    "promptId": 199,
+    "promptId": 57,
     "completionId": 70,
     "reason": "if/test"
   },
@@ -1807,7 +1591,7 @@
     "endColumn": 59,
     "originalCode": "buildCountry(data, id)",
     "replacement": "countries[id]",
-    "promptId": 201,
+    "promptId": 59,
     "completionId": 72,
     "reason": "call/arg0"
   },
@@ -1819,7 +1603,7 @@
     "endColumn": 59,
     "originalCode": "buildCountry(data, id)",
     "replacement": "data.countries[id]",
-    "promptId": 201,
+    "promptId": 59,
     "completionId": 72,
     "reason": "call/arg0"
   },
@@ -1831,7 +1615,7 @@
     "endColumn": 49,
     "originalCode": "buildCountry",
     "replacement": "buildCountry(data, id)",
-    "promptId": 202,
+    "promptId": 60,
     "completionId": 73,
     "reason": "call/callee"
   },
@@ -1843,7 +1627,7 @@
     "endColumn": 49,
     "originalCode": "buildCountry",
     "replacement": "data.countries[id]",
-    "promptId": 202,
+    "promptId": 60,
     "completionId": 73,
     "reason": "call/callee"
   },
@@ -1855,7 +1639,7 @@
     "endColumn": 49,
     "originalCode": "buildCountry",
     "replacement": "country",
-    "promptId": 202,
+    "promptId": 60,
     "completionId": 73,
     "reason": "call/callee"
   },
@@ -1867,7 +1651,7 @@
     "endColumn": 54,
     "originalCode": "data",
     "replacement": "data.countries",
-    "promptId": 203,
+    "promptId": 61,
     "completionId": 74,
     "reason": "call/arg0"
   },
@@ -1879,7 +1663,7 @@
     "endColumn": 54,
     "originalCode": "data",
     "replacement": "data.timezones",
-    "promptId": 203,
+    "promptId": 61,
     "completionId": 74,
     "reason": "call/arg0"
   },
@@ -1891,7 +1675,7 @@
     "endColumn": 58,
     "originalCode": "id",
     "replacement": "data",
-    "promptId": 204,
+    "promptId": 62,
     "completionId": 75,
     "reason": "call/arg1"
   },
@@ -1903,7 +1687,7 @@
     "endColumn": 58,
     "originalCode": "id",
     "replacement": "country.id",
-    "promptId": 204,
+    "promptId": 62,
     "completionId": 75,
     "reason": "call/arg1"
   },
@@ -1914,20 +1698,8 @@
     "endLine": 22,
     "endColumn": 58,
     "originalCode": "id",
-    "replacement": "data",
-    "promptId": 204,
-    "completionId": 76,
-    "reason": "call/arg1"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 22,
-    "startColumn": 56,
-    "endLine": 22,
-    "endColumn": 58,
-    "originalCode": "id",
     "replacement": "country",
-    "promptId": 204,
+    "promptId": 62,
     "completionId": 76,
     "reason": "call/arg1"
   },
@@ -1939,7 +1711,7 @@
     "endColumn": 59,
     "originalCode": "buildCountry(data, id)",
     "replacement": "buildCountry(id)",
-    "promptId": 205,
+    "promptId": 63,
     "completionId": 77,
     "reason": "call/allArgs"
   },
@@ -1951,7 +1723,7 @@
     "endColumn": 59,
     "originalCode": "buildCountry(data, id)",
     "replacement": "buildCountry(data.countries[id])",
-    "promptId": 205,
+    "promptId": 63,
     "completionId": 77,
     "reason": "call/allArgs"
   },
@@ -1963,7 +1735,7 @@
     "endColumn": 59,
     "originalCode": "buildCountry(data, id)",
     "replacement": "buildCountry(countries[id])",
-    "promptId": 205,
+    "promptId": 63,
     "completionId": 77,
     "reason": "call/allArgs"
   },
@@ -1975,7 +1747,7 @@
     "endColumn": 23,
     "originalCode": "deliverCountry",
     "replacement": "deliverCountry(countries[id], options)",
-    "promptId": 206,
+    "promptId": 64,
     "completionId": 78,
     "reason": "call/callee"
   },
@@ -1987,7 +1759,7 @@
     "endColumn": 23,
     "originalCode": "deliverCountry",
     "replacement": "Object.assign({}, countries[id], options)",
-    "promptId": 206,
+    "promptId": 64,
     "completionId": 78,
     "reason": "call/callee"
   },
@@ -1999,7 +1771,7 @@
     "endColumn": 23,
     "originalCode": "deliverCountry",
     "replacement": "Object.assign(countries[id], options)",
-    "promptId": 206,
+    "promptId": 64,
     "completionId": 78,
     "reason": "call/callee"
   },
@@ -2011,7 +1783,7 @@
     "endColumn": 37,
     "originalCode": "countries[id]",
     "replacement": "country",
-    "promptId": 207,
+    "promptId": 65,
     "completionId": 79,
     "reason": "call/arg0"
   },
@@ -2023,7 +1795,7 @@
     "endColumn": 37,
     "originalCode": "countries[id]",
     "replacement": "countries[country.id]",
-    "promptId": 207,
+    "promptId": 65,
     "completionId": 79,
     "reason": "call/arg0"
   },
@@ -2035,7 +1807,7 @@
     "endColumn": 46,
     "originalCode": "options",
     "replacement": "{}",
-    "promptId": 208,
+    "promptId": 66,
     "completionId": 80,
     "reason": "call/arg1"
   },
@@ -2047,7 +1819,7 @@
     "endColumn": 46,
     "originalCode": "options",
     "replacement": "options || {}",
-    "promptId": 208,
+    "promptId": 66,
     "completionId": 80,
     "reason": "call/arg1"
   },
@@ -2059,7 +1831,7 @@
     "endColumn": 47,
     "originalCode": "deliverCountry(countries[id], options)",
     "replacement": "deliverCountry(countries[id])",
-    "promptId": 209,
+    "promptId": 67,
     "completionId": 81,
     "reason": "call/allArgs"
   },
@@ -2071,7 +1843,7 @@
     "endColumn": 47,
     "originalCode": "deliverCountry(countries[id], options)",
     "replacement": "deliverCountry(countries[country.id])",
-    "promptId": 209,
+    "promptId": 67,
     "completionId": 81,
     "reason": "call/allArgs"
   },
@@ -2083,44 +1855,8 @@
     "endColumn": 47,
     "originalCode": "deliverCountry(countries[id], options)",
     "replacement": "deliverCountry(country)",
-    "promptId": 209,
+    "promptId": 67,
     "completionId": 81,
-    "reason": "call/allArgs"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 23,
-    "startColumn": 9,
-    "endLine": 23,
-    "endColumn": 47,
-    "originalCode": "deliverCountry(countries[id], options)",
-    "replacement": "deliverCountry(countries[id])",
-    "promptId": 209,
-    "completionId": 82,
-    "reason": "call/allArgs"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 23,
-    "startColumn": 9,
-    "endLine": 23,
-    "endColumn": 47,
-    "originalCode": "deliverCountry(countries[id], options)",
-    "replacement": "deliverCountry(country)",
-    "promptId": 209,
-    "completionId": 82,
-    "reason": "call/allArgs"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 23,
-    "startColumn": 9,
-    "endLine": 23,
-    "endColumn": 47,
-    "originalCode": "deliverCountry(countries[id], options)",
-    "replacement": "deliverCountry(countries[country.id])",
-    "promptId": 209,
-    "completionId": 82,
     "reason": "call/allArgs"
   },
   {
@@ -2131,7 +1867,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "country.id",
-    "promptId": 210,
+    "promptId": 68,
     "completionId": 83,
     "reason": "if/test"
   },
@@ -2143,7 +1879,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "timezone.name",
-    "promptId": 210,
+    "promptId": 68,
     "completionId": 83,
     "reason": "if/test"
   },
@@ -2155,32 +1891,8 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "countries[country.id]",
-    "promptId": 210,
+    "promptId": 68,
     "completionId": 83,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 27,
-    "startColumn": 6,
-    "endLine": 27,
-    "endColumn": 14,
-    "originalCode": "!country",
-    "replacement": "country.id",
-    "promptId": 210,
-    "completionId": 84,
-    "reason": "if/test"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 27,
-    "startColumn": 6,
-    "endLine": 27,
-    "endColumn": 14,
-    "originalCode": "!country",
-    "replacement": "countries[country.id]",
-    "promptId": 210,
-    "completionId": 84,
     "reason": "if/test"
   },
   {
@@ -2191,7 +1903,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "countries[id]",
-    "promptId": 210,
+    "promptId": 68,
     "completionId": 84,
     "reason": "if/test"
   },
@@ -2203,7 +1915,7 @@
     "endColumn": 22,
     "originalCode": "!timezones[name]",
     "replacement": "timezones[name] === undefined",
-    "promptId": 211,
+    "promptId": 69,
     "completionId": 85,
     "reason": "if/test"
   },
@@ -2215,7 +1927,7 @@
     "endColumn": 22,
     "originalCode": "!timezones[name]",
     "replacement": "!Object.keys(timezones).includes(name)",
-    "promptId": 211,
+    "promptId": 69,
     "completionId": 85,
     "reason": "if/test"
   },
@@ -2227,7 +1939,7 @@
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
     "replacement": "timezones[name] = buildTimezone(data, name)",
-    "promptId": 213,
+    "promptId": 71,
     "completionId": 88,
     "reason": "call/arg0"
   },
@@ -2239,7 +1951,7 @@
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
     "replacement": "timezones[name] = buildTimezone(data, name, options)",
-    "promptId": 213,
+    "promptId": 71,
     "completionId": 88,
     "reason": "call/arg0"
   },
@@ -2250,20 +1962,8 @@
     "endLine": 32,
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
-    "replacement": "timezones[name] = buildTimezone(data, name)",
-    "promptId": 213,
-    "completionId": 89,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 32,
-    "startColumn": 40,
-    "endLine": 32,
-    "endColumn": 65,
-    "originalCode": "buildTimezone(data, name)",
     "replacement": "Object.assign(timezones, buildTimezone(data, name))",
-    "promptId": 213,
+    "promptId": 71,
     "completionId": 89,
     "reason": "call/arg0"
   },
@@ -2275,7 +1975,7 @@
     "endColumn": 53,
     "originalCode": "buildTimezone",
     "replacement": "createTimezone",
-    "promptId": 214,
+    "promptId": 72,
     "completionId": 90,
     "reason": "call/callee"
   },
@@ -2287,7 +1987,7 @@
     "endColumn": 53,
     "originalCode": "buildTimezone",
     "replacement": "constructTimezone",
-    "promptId": 214,
+    "promptId": 72,
     "completionId": 90,
     "reason": "call/callee"
   },
@@ -2299,7 +1999,7 @@
     "endColumn": 58,
     "originalCode": "data",
     "replacement": "data.timezones",
-    "promptId": 215,
+    "promptId": 73,
     "completionId": 91,
     "reason": "call/arg0"
   },
@@ -2311,7 +2011,7 @@
     "endColumn": 58,
     "originalCode": "data",
     "replacement": "data.countries",
-    "promptId": 215,
+    "promptId": 73,
     "completionId": 91,
     "reason": "call/arg0"
   },
@@ -2323,7 +2023,7 @@
     "endColumn": 64,
     "originalCode": "name",
     "replacement": "data.timezones[name]",
-    "promptId": 216,
+    "promptId": 74,
     "completionId": 92,
     "reason": "call/arg1"
   },
@@ -2335,7 +2035,7 @@
     "endColumn": 64,
     "originalCode": "name",
     "replacement": "timezone.name",
-    "promptId": 216,
+    "promptId": 74,
     "completionId": 92,
     "reason": "call/arg1"
   },
@@ -2347,7 +2047,7 @@
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
     "replacement": "buildTimezone(data.timezones[name])",
-    "promptId": 217,
+    "promptId": 75,
     "completionId": 93,
     "reason": "call/allArgs"
   },
@@ -2359,7 +2059,7 @@
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
     "replacement": "buildTimezone(name)",
-    "promptId": 217,
+    "promptId": 75,
     "completionId": 93,
     "reason": "call/allArgs"
   },
@@ -2371,7 +2071,7 @@
     "endColumn": 65,
     "originalCode": "buildTimezone(data, name)",
     "replacement": "buildTimezone(timezone.name)",
-    "promptId": 217,
+    "promptId": 75,
     "completionId": 93,
     "reason": "call/allArgs"
   },
@@ -2383,7 +2083,7 @@
     "endColumn": 15,
     "originalCode": "!timezone",
     "replacement": "timezone === null",
-    "promptId": 218,
+    "promptId": 76,
     "completionId": 94,
     "reason": "if/test"
   },
@@ -2395,7 +2095,7 @@
     "endColumn": 15,
     "originalCode": "!timezone",
     "replacement": "timezone === undefined",
-    "promptId": 218,
+    "promptId": 76,
     "completionId": 94,
     "reason": "if/test"
   },
@@ -2407,7 +2107,7 @@
     "endColumn": 42,
     "originalCode": "timezone",
     "replacement": "timezones",
-    "promptId": 220,
+    "promptId": 78,
     "completionId": 96,
     "reason": "call/arg0"
   },
@@ -2419,7 +2119,7 @@
     "endColumn": 42,
     "originalCode": "timezone",
     "replacement": "tzs",
-    "promptId": 220,
+    "promptId": 78,
     "completionId": 96,
     "reason": "call/arg0"
   },
@@ -2431,7 +2131,7 @@
     "endColumn": 30,
     "originalCode": "getTimezone",
     "replacement": "getTimezone(tzName)",
-    "promptId": 221,
+    "promptId": 79,
     "completionId": 97,
     "reason": "call/callee"
   },
@@ -2443,7 +2143,7 @@
     "endColumn": 30,
     "originalCode": "getTimezone",
     "replacement": "timezones[tzName]",
-    "promptId": 221,
+    "promptId": 79,
     "completionId": 97,
     "reason": "call/callee"
   },
@@ -2455,7 +2155,7 @@
     "endColumn": 30,
     "originalCode": "getTimezone",
     "replacement": "data.timezones[tzName]",
-    "promptId": 221,
+    "promptId": 79,
     "completionId": 97,
     "reason": "call/callee"
   },
@@ -2467,7 +2167,7 @@
     "endColumn": 37,
     "originalCode": "tzName",
     "replacement": "name",
-    "promptId": 222,
+    "promptId": 80,
     "completionId": 98,
     "reason": "call/arg0"
   },
@@ -2479,7 +2179,7 @@
     "endColumn": 37,
     "originalCode": "tzName",
     "replacement": "countryId",
-    "promptId": 222,
+    "promptId": 80,
     "completionId": 98,
     "reason": "call/arg0"
   },
@@ -2491,7 +2191,7 @@
     "endColumn": 19,
     "originalCode": "values.map",
     "replacement": "values.map(c => getCountry(c, options))",
-    "promptId": 223,
+    "promptId": 81,
     "completionId": 99,
     "reason": "call/callee"
   },
@@ -2503,7 +2203,7 @@
     "endColumn": 49,
     "originalCode": "(c) => getCountry(c, options)",
     "replacement": "getCountry(id, options)",
-    "promptId": 224,
+    "promptId": 82,
     "completionId": 100,
     "reason": "call/arg0"
   },
@@ -2515,7 +2215,7 @@
     "endColumn": 49,
     "originalCode": "(c) => getCountry(c, options)",
     "replacement": "id",
-    "promptId": 224,
+    "promptId": 82,
     "completionId": 100,
     "reason": "call/arg0"
   },
@@ -2527,7 +2227,7 @@
     "endColumn": 49,
     "originalCode": "(c) => getCountry(c, options)",
     "replacement": "deliverCountry(id, options)",
-    "promptId": 224,
+    "promptId": 82,
     "completionId": 100,
     "reason": "call/arg0"
   },
@@ -2538,32 +2238,8 @@
     "endLine": 45,
     "endColumn": 49,
     "originalCode": "(c) => getCountry(c, options)",
-    "replacement": "getCountry(id, options)",
-    "promptId": 224,
-    "completionId": 101,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 45,
-    "startColumn": 20,
-    "endLine": 45,
-    "endColumn": 49,
-    "originalCode": "(c) => getCountry(c, options)",
-    "replacement": "id",
-    "promptId": 224,
-    "completionId": 101,
-    "reason": "call/arg0"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 45,
-    "startColumn": 20,
-    "endLine": 45,
-    "endColumn": 49,
-    "originalCode": "(c) => getCountry(c, options)",
     "replacement": "deliverCountry(countries[id], options)",
-    "promptId": 224,
+    "promptId": 82,
     "completionId": 101,
     "reason": "call/arg0"
   },
@@ -2575,7 +2251,7 @@
     "endColumn": 37,
     "originalCode": "getCountry",
     "replacement": "getCountry(c, options)",
-    "promptId": 225,
+    "promptId": 83,
     "completionId": 102,
     "reason": "call/callee"
   },
@@ -2587,7 +2263,7 @@
     "endColumn": 37,
     "originalCode": "getCountry",
     "replacement": "countries[c]",
-    "promptId": 225,
+    "promptId": 83,
     "completionId": 102,
     "reason": "call/callee"
   },
@@ -2599,7 +2275,7 @@
     "endColumn": 37,
     "originalCode": "getCountry",
     "replacement": "getCountry(countryId, options)",
-    "promptId": 225,
+    "promptId": 83,
     "completionId": 102,
     "reason": "call/callee"
   },
@@ -2611,7 +2287,7 @@
     "endColumn": 39,
     "originalCode": "c",
     "replacement": "country.id",
-    "promptId": 226,
+    "promptId": 84,
     "completionId": 103,
     "reason": "call/arg0"
   },
@@ -2623,7 +2299,7 @@
     "endColumn": 39,
     "originalCode": "c",
     "replacement": "countryId",
-    "promptId": 226,
+    "promptId": 84,
     "completionId": 103,
     "reason": "call/arg0"
   },
@@ -2635,7 +2311,7 @@
     "endColumn": 48,
     "originalCode": "options",
     "replacement": "{ ...options }",
-    "promptId": 227,
+    "promptId": 85,
     "completionId": 104,
     "reason": "call/arg1"
   },
@@ -2647,7 +2323,7 @@
     "endColumn": 48,
     "originalCode": "options",
     "replacement": "Object.assign({}, options)",
-    "promptId": 227,
+    "promptId": 85,
     "completionId": 104,
     "reason": "call/arg1"
   },
@@ -2659,7 +2335,7 @@
     "endColumn": 49,
     "originalCode": "getCountry(c, options)",
     "replacement": "getCountry(c)",
-    "promptId": 228,
+    "promptId": 86,
     "completionId": 105,
     "reason": "call/allArgs"
   },
@@ -2671,7 +2347,7 @@
     "endColumn": 49,
     "originalCode": "getCountry(c, options)",
     "replacement": "getCountry(countryId)",
-    "promptId": 228,
+    "promptId": 86,
     "completionId": 105,
     "reason": "call/allArgs"
   },
@@ -2683,7 +2359,7 @@
     "endColumn": 49,
     "originalCode": "getCountry(c, options)",
     "replacement": "getCountry(id)",
-    "promptId": 228,
+    "promptId": 86,
     "completionId": 105,
     "reason": "call/allArgs"
   },
@@ -2695,7 +2371,7 @@
     "endColumn": 40,
     "originalCode": "getCountriesForTimezone",
     "replacement": "getCountriesForTimezone(tzName, options)",
-    "promptId": 229,
+    "promptId": 87,
     "completionId": 106,
     "reason": "call/callee"
   },
@@ -2707,7 +2383,7 @@
     "endColumn": 40,
     "originalCode": "getCountriesForTimezone",
     "replacement": "getTimezonesForCountry(tzName, options)",
-    "promptId": 229,
+    "promptId": 87,
     "completionId": 106,
     "reason": "call/callee"
   },
@@ -2719,7 +2395,7 @@
     "endColumn": 40,
     "originalCode": "getCountriesForTimezone",
     "replacement": "Object.values(getCountriesForTimezone(tzName, options))",
-    "promptId": 229,
+    "promptId": 87,
     "completionId": 106,
     "reason": "call/callee"
   },
@@ -2731,31 +2407,7 @@
     "endColumn": 40,
     "originalCode": "getCountriesForTimezone",
     "replacement": "getCountriesForTimezone(tzName)",
-    "promptId": 229,
-    "completionId": 107,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 49,
-    "startColumn": 17,
-    "endLine": 49,
-    "endColumn": 40,
-    "originalCode": "getCountriesForTimezone",
-    "replacement": "getCountriesForTimezone(tzName, options)",
-    "promptId": 229,
-    "completionId": 107,
-    "reason": "call/callee"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 49,
-    "startColumn": 17,
-    "endLine": 49,
-    "endColumn": 40,
-    "originalCode": "getCountriesForTimezone",
-    "replacement": "Object.values(getCountriesForTimezone(tzName, options))",
-    "promptId": 229,
+    "promptId": 87,
     "completionId": 107,
     "reason": "call/callee"
   },
@@ -2767,7 +2419,7 @@
     "endColumn": 47,
     "originalCode": "tzName",
     "replacement": "name",
-    "promptId": 230,
+    "promptId": 88,
     "completionId": 108,
     "reason": "call/arg0"
   },
@@ -2779,7 +2431,7 @@
     "endColumn": 47,
     "originalCode": "tzName",
     "replacement": "countryId",
-    "promptId": 230,
+    "promptId": 88,
     "completionId": 108,
     "reason": "call/arg0"
   },
@@ -2791,7 +2443,7 @@
     "endColumn": 56,
     "originalCode": "options",
     "replacement": "{ deprecated }",
-    "promptId": 231,
+    "promptId": 89,
     "completionId": 109,
     "reason": "call/arg1"
   },
@@ -2803,7 +2455,7 @@
     "endColumn": 56,
     "originalCode": "options",
     "replacement": "options || {}",
-    "promptId": 231,
+    "promptId": 89,
     "completionId": 109,
     "reason": "call/arg1"
   },
@@ -2815,7 +2467,7 @@
     "endColumn": 57,
     "originalCode": "getCountriesForTimezone(tzName, options)",
     "replacement": "getCountriesForTimezone(tzName)",
-    "promptId": 232,
+    "promptId": 90,
     "completionId": 110,
     "reason": "call/allArgs"
   },
@@ -2827,7 +2479,7 @@
     "endColumn": 57,
     "originalCode": "getCountriesForTimezone(tzName, options)",
     "replacement": "getCountriesForTimezone(countryId)",
-    "promptId": 232,
+    "promptId": 90,
     "completionId": 110,
     "reason": "call/allArgs"
   },
@@ -2839,7 +2491,7 @@
     "endColumn": 57,
     "originalCode": "getCountriesForTimezone(tzName, options)",
     "replacement": "getCountriesForTimezone(name)",
-    "promptId": 232,
+    "promptId": 90,
     "completionId": 110,
     "reason": "call/allArgs"
   },
@@ -2851,7 +2503,7 @@
     "endColumn": 28,
     "originalCode": "getCountry",
     "replacement": "getCountry(countryId)",
-    "promptId": 233,
+    "promptId": 91,
     "completionId": 111,
     "reason": "call/callee"
   },
@@ -2863,7 +2515,7 @@
     "endColumn": 28,
     "originalCode": "getCountry",
     "replacement": "countries[countryId]",
-    "promptId": 233,
+    "promptId": 91,
     "completionId": 111,
     "reason": "call/callee"
   },
@@ -2875,7 +2527,7 @@
     "endColumn": 28,
     "originalCode": "getCountry",
     "replacement": "data.countries[countryId]",
-    "promptId": 233,
+    "promptId": 91,
     "completionId": 111,
     "reason": "call/callee"
   },
@@ -2887,7 +2539,7 @@
     "endColumn": 38,
     "originalCode": "countryId",
     "replacement": "id",
-    "promptId": 234,
+    "promptId": 92,
     "completionId": 112,
     "reason": "call/arg0"
   },
@@ -2899,7 +2551,7 @@
     "endColumn": 38,
     "originalCode": "countryId",
     "replacement": "country.id",
-    "promptId": 234,
+    "promptId": 92,
     "completionId": 112,
     "reason": "call/arg0"
   },
@@ -2911,7 +2563,7 @@
     "endColumn": 47,
     "originalCode": "options",
     "replacement": "{}",
-    "promptId": 235,
+    "promptId": 93,
     "completionId": 113,
     "reason": "call/arg1"
   },
@@ -2923,7 +2575,7 @@
     "endColumn": 47,
     "originalCode": "options",
     "replacement": "deprecated",
-    "promptId": 235,
+    "promptId": 93,
     "completionId": 113,
     "reason": "call/arg1"
   },
@@ -2935,7 +2587,7 @@
     "endColumn": 48,
     "originalCode": "getCountry(countryId, options)",
     "replacement": "getCountry(countryId)",
-    "promptId": 236,
+    "promptId": 94,
     "completionId": 114,
     "reason": "call/allArgs"
   },
@@ -2947,7 +2599,7 @@
     "endColumn": 48,
     "originalCode": "getCountry(countryId, options)",
     "replacement": "getCountry(id)",
-    "promptId": 236,
+    "promptId": 94,
     "completionId": 114,
     "reason": "call/allArgs"
   },
@@ -2959,7 +2611,7 @@
     "endColumn": 48,
     "originalCode": "getCountry(countryId, options)",
     "replacement": "getCountry(country.id)",
-    "promptId": 236,
+    "promptId": 94,
     "completionId": 114,
     "reason": "call/allArgs"
   },
@@ -2971,7 +2623,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "country === null",
-    "promptId": 237,
+    "promptId": 95,
     "completionId": 115,
     "reason": "if/test"
   },
@@ -2983,7 +2635,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "country == null",
-    "promptId": 237,
+    "promptId": 95,
     "completionId": 115,
     "reason": "if/test"
   },
@@ -2995,7 +2647,7 @@
     "endColumn": 19,
     "originalCode": "values.map",
     "replacement": "values.map(name => getTimezone(name))",
-    "promptId": 238,
+    "promptId": 96,
     "completionId": 116,
     "reason": "call/callee"
   },
@@ -3007,7 +2659,7 @@
     "endColumn": 19,
     "originalCode": "values.map",
     "replacement": "values.map(name => timezones[name])",
-    "promptId": 238,
+    "promptId": 96,
     "completionId": 116,
     "reason": "call/callee"
   },
@@ -3019,7 +2671,7 @@
     "endColumn": 19,
     "originalCode": "values.map",
     "replacement": "Object.keys(timezones).filter(name => values.includes(name))",
-    "promptId": 238,
+    "promptId": 96,
     "completionId": 116,
     "reason": "call/callee"
   },
@@ -3031,7 +2683,7 @@
     "endColumn": 31,
     "originalCode": "getTimezone",
     "replacement": "name",
-    "promptId": 239,
+    "promptId": 97,
     "completionId": 117,
     "reason": "call/arg0"
   },
@@ -3043,7 +2695,7 @@
     "endColumn": 31,
     "originalCode": "getTimezone",
     "replacement": "tzs[name]",
-    "promptId": 239,
+    "promptId": 97,
     "completionId": 117,
     "reason": "call/arg0"
   },
@@ -3055,7 +2707,7 @@
     "endColumn": 25,
     "originalCode": "deprecated === true",
     "replacement": "deprecated",
-    "promptId": 240,
+    "promptId": 98,
     "completionId": 118,
     "reason": "if/test"
   },
@@ -3067,7 +2719,7 @@
     "endColumn": 25,
     "originalCode": "deprecated === true",
     "replacement": "!deprecated",
-    "promptId": 240,
+    "promptId": 98,
     "completionId": 118,
     "reason": "if/test"
   },
@@ -3079,7 +2731,7 @@
     "endColumn": 25,
     "originalCode": "deprecated === true",
     "replacement": "!!deprecated",
-    "promptId": 240,
+    "promptId": 98,
     "completionId": 118,
     "reason": "if/test"
   },
@@ -3091,7 +2743,7 @@
     "endColumn": 24,
     "originalCode": "tzs",
     "replacement": "timezones",
-    "promptId": 242,
+    "promptId": 100,
     "completionId": 120,
     "reason": "call/arg0"
   },
@@ -3103,7 +2755,7 @@
     "endColumn": 24,
     "originalCode": "tzs",
     "replacement": "Object.values(timezones)",
-    "promptId": 242,
+    "promptId": 100,
     "completionId": 120,
     "reason": "call/arg0"
   },
@@ -3115,7 +2767,7 @@
     "endColumn": 24,
     "originalCode": "tzs",
     "replacement": "Object.keys(timezones)",
-    "promptId": 242,
+    "promptId": 100,
     "completionId": 120,
     "reason": "call/arg0"
   },
@@ -3127,7 +2779,7 @@
     "endColumn": 28,
     "originalCode": "!tzs[key].deprecated",
     "replacement": "!deprecated",
-    "promptId": 243,
+    "promptId": 101,
     "completionId": 121,
     "reason": "if/test"
   },
@@ -3139,7 +2791,7 @@
     "endColumn": 28,
     "originalCode": "!tzs[key].deprecated",
     "replacement": "!tzs[key].deprecated || !deprecated",
-    "promptId": 243,
+    "promptId": 101,
     "completionId": 121,
     "reason": "if/test"
   },
@@ -3151,7 +2803,7 @@
     "endColumn": 69,
     "originalCode": "{ [key]: tzs[key] }",
     "replacement": "{ ...tzs[key] }",
-    "promptId": 246,
+    "promptId": 104,
     "completionId": 124,
     "reason": "call/arg1"
   },
@@ -3163,7 +2815,7 @@
     "endColumn": 69,
     "originalCode": "{ [key]: tzs[key] }",
     "replacement": "{ [key]: { ...tzs[key] } }",
-    "promptId": 246,
+    "promptId": 104,
     "completionId": 124,
     "reason": "call/arg1"
   },
@@ -3174,20 +2826,8 @@
     "endLine": 64,
     "endColumn": 69,
     "originalCode": "{ [key]: tzs[key] }",
-    "replacement": "{ ...tzs[key] }",
-    "promptId": 246,
-    "completionId": 125,
-    "reason": "call/arg1"
-  },
-  {
-    "file": "./test/input/testProject/countries-and-timezones/src/index.js",
-    "startLine": 64,
-    "startColumn": 50,
-    "endLine": 64,
-    "endColumn": 69,
-    "originalCode": "{ [key]: tzs[key] }",
     "replacement": "{ ...prev, [key]: tzs[key] }",
-    "promptId": 246,
+    "promptId": 104,
     "completionId": 125,
     "reason": "call/arg1"
   },
@@ -3199,7 +2839,7 @@
     "endColumn": 70,
     "originalCode": "Object.assign(prev, { [key]: tzs[key] })",
     "replacement": "Object.assign(prev[key] = tzs[key])",
-    "promptId": 247,
+    "promptId": 105,
     "completionId": 126,
     "reason": "call/allArgs"
   },
@@ -3211,7 +2851,7 @@
     "endColumn": 70,
     "originalCode": "Object.assign(prev, { [key]: tzs[key] })",
     "replacement": "Object.assign(prev[key] = { ...tzs[key] })",
-    "promptId": 247,
+    "promptId": 105,
     "completionId": 126,
     "reason": "call/allArgs"
   },
@@ -3223,7 +2863,7 @@
     "endColumn": 70,
     "originalCode": "Object.assign(prev, { [key]: tzs[key] })",
     "replacement": "Object.assign(Object.assign(prev, { [key]: tzs[key] }))",
-    "promptId": 247,
+    "promptId": 105,
     "completionId": 126,
     "reason": "call/allArgs"
   },
@@ -3235,7 +2875,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "deprecated === false",
-    "promptId": 248,
+    "promptId": 106,
     "completionId": 127,
     "reason": "if/test"
   },
@@ -3247,7 +2887,7 @@
     "endColumn": 14,
     "originalCode": "!country",
     "replacement": "!countries[id]",
-    "promptId": 248,
+    "promptId": 106,
     "completionId": 127,
     "reason": "if/test"
   }
