@@ -4,6 +4,7 @@ import { performance } from "perf_hooks";
 import path from "path";
 import crypto from "crypto";
 import RateLimiter from "./RateLimiter";
+import { retry } from './PromiseRetry';
 
 const defaultPostOptions = {
   max_tokens: 250, // maximum number of tokens to return
@@ -266,7 +267,7 @@ export abstract class PerplexityAIModel implements IModel {
 
   constructor(instanceOptions: PostOptions = {}) {
     this.instanceOptions = instanceOptions;
-    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
+    this.rateLimiter = new RateLimiter(2000); // at most one request every 10 seconds
   }
 
   public getTemperature(): number {
@@ -324,11 +325,11 @@ export abstract class PerplexityAIModel implements IModel {
     performance.mark("codex-query-start");
     let res;
     try {
-      res = await this.rateLimiter.next(() => axios.post(
+      res = await retry(() => this.rateLimiter.next(() => axios.post(
         this.apiEndpoint,
         body,
         { headers: this.header }
-      ));
+      )), 3);
       // console.log(`*** completion is: ${res.data.response}`);
     } catch (e) {
       if (res?.status === 429) {
