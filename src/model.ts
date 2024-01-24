@@ -6,7 +6,7 @@ import crypto from "crypto";
 import RateLimiter from "./RateLimiter";
 
 const defaultPostOptions = {
-  max_tokens: 100, // maximum number of tokens to return
+  max_tokens: 250, // maximum number of tokens to return
   temperature: 0, // sampling temperature; higher values increase diversity
   n: 5, // number of completions to return
   stop: ["\n\n"], // list of tokens to stop at
@@ -250,18 +250,23 @@ export class Gpt4Model implements IModel {
   }
 }
 
-/**
- * Abstraction for the CodeLlama7b model.
- */
-export class CodeLlama7bModel implements IModel {
-  private instanceOptions: PostOptions;
+export abstract class PerplexityAIModel implements IModel {
+  protected readonly apiEndpoint = getEnv("PERPLEXITY_AI_API_ENDPOINT");
+
+  protected readonly header = {
+    'accept': 'application/json',
+    'authorization': getEnv("PERPLEXITY_AI_AUTH_HEADERS"),
+    'content-type': 'application/json'
+  };
+
+  public abstract getModelName(): string;
+
+  protected instanceOptions: PostOptions;
+  protected rateLimiter: RateLimiter;
 
   constructor(instanceOptions: PostOptions = {}) {
     this.instanceOptions = instanceOptions;
-  }
-
-  public getModelName(): string {
-    return "codellama";
+    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
   }
 
   public getTemperature(): number {
@@ -279,49 +284,52 @@ export class CodeLlama7bModel implements IModel {
   }
 
   public getN(): number {
-    if (this.instanceOptions.n === undefined) {
-      return defaultPostOptions.n;
-    }
-    return this.instanceOptions.n;
+    return 1; // perplexity.ai models only return one completion
   }
 
-  /**
+   /**
    * Query Model for completions with a given prompt.
    *
    * @param prompt The prompt to use for the completion.
    * @param requestPostOptions The options to use for the request.
    * @returns A promise that resolves to a set of completions.
    */
-  public async query(
+   public async query(
     prompt: string,
     requestPostOptions: PostOptions = {}
   ): Promise<Set<string>> {
-    const apiEndpoint = getEnv("CODELLAMA_API_ENDPOINT");
-
-    const headers = {
-      "Content-Type": "application/json"
-    };
-    const options = {
+    
+    const options: PostOptions = {
       ...defaultPostOptions,
       // options provided to constructor override default options
       ...this.instanceOptions,
       // options provided to this function override default and instance options
       ...requestPostOptions,
     };
+     // remove stop, n property from options
+     delete options.stop;
+     delete options.n;
+
+    const body = {
+      model: this.getModelName(),
+      messages: [
+        {role: 'system', content: 'You are a programming assistant. You are expected to be concise and precise and avoid any unnecessary examples, tests, and verbosity.'},
+        {role: 'user', content: prompt}
+      ],
+      ...options
+    };
+
+    // console.log(`*** body = ${JSON.stringify(body)}`);
 
     performance.mark("codex-query-start");
     let res;
     try {
-      res = await axios.post(
-        apiEndpoint,
-        { model: 'codellama',
-          prompt, 
-          stream: false,
-          ...options 
-        },
-        { headers }
-      );
-      console.log(`*** completion is: ${res.data.response}`);
+      res = await this.rateLimiter.next(() => axios.post(
+        this.apiEndpoint,
+        body,
+        { headers: this.header }
+      ));
+      // console.log(`*** completion is: ${res.data.response}`);
     } catch (e) {
       if (res?.status === 429) {
         console.error(`*** 429 error: ${e}`);
@@ -344,116 +352,8 @@ export class CodeLlama7bModel implements IModel {
     if (!res.data) {
       throw new Error("Response data is empty");
     }
-    const json = res.data;
-    if (json.error) {
-      throw new Error(json.error);
-    }
     const completions = new Set<string>();
-    completions.add(json.response);
-    return completions;
-  }
-}
-
-/**
- * Abstraction for the CodeLlama13b model.
- */
-export class CodeLlama13bModel implements IModel {
-  private instanceOptions: PostOptions;
-
-  constructor(instanceOptions: PostOptions = {}) {
-    this.instanceOptions = instanceOptions;
-  }
-
-  public getModelName(): string {
-    return "codellama:13b";
-  }
-
-  public getTemperature(): number {
-    if (this.instanceOptions.temperature === undefined) {
-      return defaultPostOptions.temperature;
-    }
-    return this.instanceOptions.temperature;
-  }
-
-  public getMaxTokens(): number {
-    if (this.instanceOptions.max_tokens === undefined) {
-      return defaultPostOptions.max_tokens;
-    }
-    return this.instanceOptions.max_tokens;
-  }
-
-  public getN(): number {
-    if (this.instanceOptions.n === undefined) {
-      return defaultPostOptions.n;
-    }
-    return this.instanceOptions.n;
-  }
-
-  /**
-   * Query Model for completions with a given prompt.
-   *
-   * @param prompt The prompt to use for the completion.
-   * @param requestPostOptions The options to use for the request.
-   * @returns A promise that resolves to a set of completions.
-   */
-  public async query(
-    prompt: string,
-    requestPostOptions: PostOptions = {}
-  ): Promise<Set<string>> {
-    const apiEndpoint = getEnv("CODELLAMA_API_ENDPOINT");
-
-    const headers = {
-      "Content-Type": "application/json"
-    };
-    const options = {
-      ...defaultPostOptions,
-      // options provided to constructor override default options
-      ...this.instanceOptions,
-      // options provided to this function override default and instance options
-      ...requestPostOptions,
-    };
-
-    performance.mark("codex-query-start");
-    let res;
-    try {
-      res = await axios.post(
-        apiEndpoint,
-        { model: 'codellama:13b',
-          prompt, 
-          stream: false,
-          ...options 
-        },
-        { headers }
-      );
-      console.log(`*** completion is: ${res.data.response}`);
-    } catch (e) {
-      if (res?.status === 429) {
-        console.error(`*** 429 error: ${e}`);
-      }
-      throw e;
-    }
-
-    performance.measure(
-      `codex-query:${JSON.stringify({
-        ...options,
-        promptLength: prompt.length,
-      })}`,
-      "codex-query-start"
-    );
-    if (res.status !== 200) {
-      throw new Error(
-        `Request failed with status ${res.status} and message ${res.statusText}`
-      );
-    }
-    if (!res.data) {
-      throw new Error("Response data is empty");
-    }
-    const json = res.data;
-    if (json.error) {
-      throw new Error(json.error);
-    }
-    const completions = new Set<string>();
-    completions.add(json.response);
+    completions.add(res.data.choices[0].message.content);
     return completions;
   }
 }
@@ -461,218 +361,28 @@ export class CodeLlama13bModel implements IModel {
 /**
  * Abstraction for the codellama-34b-instruct model.
  */
-export class CodeLlama34bInstructModel implements IModel {
-  private instanceOptions: PostOptions;
-  private rateLimiter: RateLimiter;
-
+export class CodeLlama34bInstructModel extends PerplexityAIModel {
+  
   constructor(instanceOptions: PostOptions = {}) {
-    this.instanceOptions = instanceOptions;
-    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
+    super(instanceOptions);
   }
 
   public getModelName(): string {
     return "codellama-34b-instruct";
-  }
-
-  public getTemperature(): number {
-    if (this.instanceOptions.temperature === undefined) {
-      return defaultPostOptions.temperature;
-    }
-    return this.instanceOptions.temperature;
-  }
-
-  public getMaxTokens(): number {
-    if (this.instanceOptions.max_tokens === undefined) {
-      return defaultPostOptions.max_tokens;
-    }
-    return this.instanceOptions.max_tokens;
-  }
-
-  public getN(): number {
-    if (this.instanceOptions.n === undefined) {
-      return defaultPostOptions.n;
-    }
-    return this.instanceOptions.n;
-  }
-
-  /**
-   * Query Model for completions with a given prompt.
-   *
-   * @param prompt The prompt to use for the completion.
-   * @param requestPostOptions The options to use for the request.
-   * @returns A promise that resolves to a set of completions.
-   */
-  public async query(
-    prompt: string,
-    requestPostOptions: PostOptions = {}
-  ): Promise<Set<string>> {
-    const apiEndpoint = getEnv("PERPLEXITY_AI_API_ENDPOINT");
-
-    const header = {
-      'accept': 'application/json',
-      'authorization': getEnv("PERPLEXITY_AI_AUTH_HEADERS"),
-      'content-type': 'application/json'
-    };
-    
-    const options = {
-      ...defaultPostOptions,
-      // options provided to constructor override default options
-      ...this.instanceOptions,
-      // options provided to this function override default and instance options
-      ...requestPostOptions,
-    };
-
-    const body = {
-      model: 'codellama-34b-instruct',
-      messages: [
-        {role: 'system', content: 'You are a programming assistant. You are expected to be concise and precise and avoid any unnecessary examples, tests, and verbosity.'},
-        {role: 'user', content: prompt}
-      ]//,
-      // ...options
-    };
-    performance.mark("codex-query-start");
-    let res;
-    try {
-      res = await this.rateLimiter.next(() => axios.post(
-        apiEndpoint,
-        body,
-        { headers: header }
-      ));
-      // console.log(`*** completion is: ${res.data.response}`);
-    } catch (e) {
-      if (res?.status === 429) {
-        console.error(`*** 429 error: ${e}`);
-      }
-      throw e;
-    }
-
-    performance.measure(
-      `codex-query:${JSON.stringify({
-        ...options,
-        promptLength: prompt.length,
-      })}`,
-      "codex-query-start"
-    );
-    if (res.status !== 200) {
-      throw new Error(
-        `Request failed with status ${res.status} and message ${res.statusText}`
-      );
-    }
-    if (!res.data) {
-      throw new Error("Response data is empty");
-    }
-    const completions = new Set<string>();
-    completions.add(res.data.choices[0].message.content);
-    return completions;
   }
 }
 
 /**
  * Abstraction for the llama2-70b-chat model.
  */
-export class Llama2_70bModel implements IModel {
-  private instanceOptions: PostOptions;
-  private rateLimiter: RateLimiter;
+export class Llama2_70bModel extends PerplexityAIModel {
 
   constructor(instanceOptions: PostOptions = {}) {
-    this.instanceOptions = instanceOptions;
-    this.rateLimiter = new RateLimiter(10000); // at most one request every 10 seconds
+    super(instanceOptions);
   }
 
   public getModelName(): string {
     return "llama-2-70b-chat";
-  }
-
-  public getTemperature(): number {
-    if (this.instanceOptions.temperature === undefined) {
-      return defaultPostOptions.temperature;
-    }
-    return this.instanceOptions.temperature;
-  }
-
-  public getMaxTokens(): number {
-    if (this.instanceOptions.max_tokens === undefined) {
-      return defaultPostOptions.max_tokens;
-    }
-    return this.instanceOptions.max_tokens;
-  }
-
-  public getN(): number {
-    if (this.instanceOptions.n === undefined) {
-      return defaultPostOptions.n;
-    }
-    return this.instanceOptions.n;
-  }
-
-  /**
-   * Query Model for completions with a given prompt.
-   *
-   * @param prompt The prompt to use for the completion.
-   * @param requestPostOptions The options to use for the request.
-   * @returns A promise that resolves to a set of completions.
-   */
-  public async query(
-    prompt: string,
-    requestPostOptions: PostOptions = {}
-  ): Promise<Set<string>> {
-    const apiEndpoint = getEnv("PERPLEXITY_AI_API_ENDPOINT");
-
-    const header = {
-      'accept': 'application/json',
-      'authorization': getEnv("PERPLEXITY_AI_AUTH_HEADERS"),
-      'content-type': 'application/json'
-    };
-    
-    const options = {
-      ...defaultPostOptions,
-      // options provided to constructor override default options
-      ...this.instanceOptions,
-      // options provided to this function override default and instance options
-      ...requestPostOptions,
-    };
-
-    const body = {
-      model: 'llama-2-70b-chat',
-      messages: [
-        {role: 'system', content: 'You are a programming assistant. You are expected to be concise and precise and avoid any unnecessary examples, tests, and verbosity.'},
-        {role: 'user', content: prompt}
-      ]//,
-      // ...options
-    };
-    performance.mark("codex-query-start");
-    let res;
-    try {
-      res = await this.rateLimiter.next(() => axios.post(
-        apiEndpoint,
-        body,
-        { headers: header }
-      ));
-      // console.log(`*** completion is: ${res.data.response}`);
-    } catch (e) {
-      if (res?.status === 429) {
-        console.error(`*** 429 error: ${e}`);
-      }
-      throw e;
-    }
-
-    performance.measure(
-      `codex-query:${JSON.stringify({
-        ...options,
-        promptLength: prompt.length,
-      })}`,
-      "codex-query-start"
-    );
-    if (res.status !== 200) {
-      throw new Error(
-        `Request failed with status ${res.status} and message ${res.statusText}`
-      );
-    }
-    if (!res.data) {
-      throw new Error("Response data is empty");
-    }
-    const completions = new Set<string>();
-    completions.add(res.data.choices[0].message.content);
-    return completions;
   }
 }
 
@@ -683,12 +393,10 @@ console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
  * A model that wraps another model and caches its results.
  */
 export class CachingModel implements IModel {
-  private model: IModel;
   private modelName: string;
 
-  constructor(model: IModel) {
+  constructor(private model: IModel, private instanceOptions: PostOptions = {}) {
     this.modelName = `Caching<${model.getModelName()}>`;
-    this.model = model;
   }
   getModelName(): string {
     return `${this.modelName}>`;
@@ -706,14 +414,23 @@ export class CachingModel implements IModel {
 
   public async query(
     prompt: string,
-    options: PostOptions = {}
+    requestPostOptions: PostOptions = {}
   ): Promise<Set<string>> {
 
+
+    const options: PostOptions = {
+      ...defaultPostOptions,
+      // options provided to constructor override default options
+      ...this.instanceOptions,
+      // options provided to this function override default and instance options
+      ...requestPostOptions,
+    };
+ 
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.model.getModelName(),
       prompt,
-      options,
+      options
     });
 
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
@@ -736,7 +453,7 @@ export class CachingModel implements IModel {
       return completions;
     } else {
       // otherwise, call the wrapped model and cache the result
-      const completions = await this.model.query(prompt, options);
+      const completions = await this.model.query(prompt, requestPostOptions);
       fs.mkdirSync(cacheDir, { recursive: true });
       fs.writeFileSync(cacheFile, JSON.stringify([...completions]));
       return completions;

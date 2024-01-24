@@ -2,7 +2,7 @@ import fs from "fs";
 import fg from "fast-glob";
 import { IModel } from "./Model";
 
-import { PromptSpecGenerator } from "./promptSpecGenerator";
+import { PromptSpecGenerator } from "./PromptSpecGenerator";
 import { Mutant } from "./Mutant";
 import { Completion } from "./Completion";
 import { Prompt } from "./Prompt";

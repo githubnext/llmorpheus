@@ -8,7 +8,7 @@ npm run build
 ## how to run:
 
 
-node benchmark/createMutants.js --path ~/sabbatical/mt-projects/countries-and-timezones/  --promptTemplateFileName test/input/newTemplate.hb
+node benchmark/createMutants.js --path ~/sabbatical/mt-projects/countries-and-timezones/ --model codellama-34b-instruct --promptTemplateFileName templates/template1.hb --caching true --temperature 0.0
 
 ## running strykerJS and viewing the report
 

@@ -2,8 +2,6 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import {
   CachingModel,
-  CodeLlama13bModel,
-  CodeLlama7bModel,
   Gpt4Model,
   TextDavinci003Model,
   CodeLlama34bInstructModel,
@@ -45,6 +43,12 @@ if (require.main === module) {
           description:
             "whether to cache the results of queries to the model (default: true)",
         },
+        temperature: {
+          type: "number",
+          default: 0.0,
+          description:
+            "temperature to use when generating completions (default: 0.0)"
+        },
         outputDir: {
           type: "string",
           default: "./test/actual",
@@ -78,37 +82,19 @@ if (require.main === module) {
         temperature: 0.0,
         n: argv.numCompletions,
       });
-    } else if (argv.model === "codellama"){
-      console.log("*** Using codellama:7b model");
-      baseModel = new CodeLlama7bModel({
-        max_tokens: 500,
-        stop: ["DONE"],
-        temperature: 0.0,
-        n: argv.numCompletions,
-      });
-    } else if (argv.model === "codellama:13b"){
-      console.log("*** Using codellama:13b model");
-      baseModel = new CodeLlama13bModel({
-        max_tokens: 500,
-        stop: ["DONE"],
-        temperature: 0.0,
-        n: argv.numCompletions,
-      });
-    } else if (argv.model === "codellama-34b-instruct"){
+    } if (argv.model === "codellama-34b-instruct"){
       console.log("*** Using codellama-34b-instruct model");
       baseModel = new CodeLlama34bInstructModel({
         // max_tokens: 500,
         // stop: ["DONE"],
-        // temperature: 0.0,
-        // n: argv.numCompletions,
+        temperature: argv.temperature 
       });
     } else if (argv.model === "llama-2-70b-chat"){
       console.log("*** Using llama-2-70b-chat model");
       baseModel = new Llama2_70bModel({
         // max_tokens: 500,
         // stop: ["DONE"],
-        // temperature: 0.0,
-        // n: argv.numCompletions,
+        temperature: argv.temperature 
       })
     } else {
       throw new Error(`Invalid model name: ${argv.model}`);
