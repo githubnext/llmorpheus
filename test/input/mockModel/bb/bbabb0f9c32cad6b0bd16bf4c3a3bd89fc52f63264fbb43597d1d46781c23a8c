@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ncos(a)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.cos(a)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nMath.cos(deg2rad(a))\n```\n"]

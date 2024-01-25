@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\no.longitude.should.equals(-0.15);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nexpect(o.longitude).to.equals(-0.15);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\no.longitude.should.equal(-0.15);\n```\n\n"]

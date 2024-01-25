@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nObject.assign(result, { [country]: { current: [], all: [] } });\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nresult[country] = { current: [], all: [] };\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nresult = { ...result, [country]: { current: [], all: [] } };\n```\n"]

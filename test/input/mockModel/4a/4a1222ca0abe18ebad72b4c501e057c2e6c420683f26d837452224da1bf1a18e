@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\no.compression === COMPRESSION_LEVEL.uncompressed\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\no.compression !== COMPRESSION_LEVEL.uncompressed\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n!o.compression\n```\n"]

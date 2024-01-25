@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n'dies'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nfunction(w) { return w + 's' }\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nfunction(w) { return w.substr(0, w.length - 2) + 'ies' }\n```\n"]

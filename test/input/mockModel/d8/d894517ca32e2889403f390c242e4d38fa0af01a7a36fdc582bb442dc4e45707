@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nMath.round(d1.latitude).should.equals(51);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nd1.latitude.should.equals(51);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nexpect(d1.latitude).to.equals(51);\n```\n"]

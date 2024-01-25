@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateDistance(p1, p2)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.distanceBetween(p1, p2)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\np1.distanceTo(p2)\n```\n"]

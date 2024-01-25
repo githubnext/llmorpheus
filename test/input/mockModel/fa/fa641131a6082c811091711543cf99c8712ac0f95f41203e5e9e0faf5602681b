@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nrequire\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrequire('assert')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrequire('assert').strict\n```\n"]

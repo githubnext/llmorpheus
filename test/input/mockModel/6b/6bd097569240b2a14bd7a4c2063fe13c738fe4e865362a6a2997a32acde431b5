@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\naddRule('cello', 'cellos')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\naddRule('cello', 'celli')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\naddRule(/cello$/i, 'cellos')\n```\n"]

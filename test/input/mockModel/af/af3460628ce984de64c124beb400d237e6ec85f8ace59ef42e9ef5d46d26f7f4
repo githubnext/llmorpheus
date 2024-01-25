@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntypeof String.prototype.plural === 'function'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nString.prototype.plural !== null\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nString.prototype.plural !== undefined\n```\n"]

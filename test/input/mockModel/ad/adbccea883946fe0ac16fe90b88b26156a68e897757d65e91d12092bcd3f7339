@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nsin(θ)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.sin(θ)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nMath.sin(deg2rad(θ))\n```\n\n"]

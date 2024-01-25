@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ndeg2rad(point2.latitude)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrad2deg(point2.latitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint2.latitude\n```\n"]

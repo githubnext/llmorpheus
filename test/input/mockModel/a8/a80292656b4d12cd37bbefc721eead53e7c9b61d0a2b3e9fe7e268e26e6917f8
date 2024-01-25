@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nname\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ndata.timezones[name]\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ntimezone.name\n```\n"]

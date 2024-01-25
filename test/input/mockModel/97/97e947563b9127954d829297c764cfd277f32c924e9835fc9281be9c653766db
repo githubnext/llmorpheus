@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('sheep'), 'sheep')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('Sheep'), 'Sheep')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('SHEEP'), 'SHEEP')\n```\n"]

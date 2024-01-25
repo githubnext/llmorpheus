@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntimezones\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nObject.values(timezones)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.keys(timezones).map(key => timezones[key])\n```\n"]

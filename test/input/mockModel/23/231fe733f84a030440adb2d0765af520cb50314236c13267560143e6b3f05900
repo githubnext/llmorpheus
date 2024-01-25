@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntile.y.should.equals(87152);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nexpect(tile.y).to.equals(87152);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ntile.y.should.equal(87152);\n```\n"]

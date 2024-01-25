@@ -397,10 +397,10 @@ export class CachingModel implements IModel {
   private modelName: string;
 
   constructor(private model: IModel, private instanceOptions: PostOptions = {}) {
-    this.modelName = `Caching<${model.getModelName()}>`;
+    this.modelName = `${model.getModelName()}`;
   }
   getModelName(): string {
-    return `${this.modelName}>`;
+    return `${this.modelName}`;
   }
   getTemperature(): number {
     return this.model.getTemperature();
@@ -467,6 +467,7 @@ export class CachingModel implements IModel {
  */
 export class MockModel implements IModel {
   private modelName: string;
+  private mockOptions = {"max_tokens":250,"temperature":0,"n":5,"stop":["\n\n"],"top_p":1}
   constructor(modelName: string, private modelDir: string) {
     this.modelName = `${modelName}`;
   }
@@ -484,16 +485,14 @@ export class MockModel implements IModel {
     return defaultPostOptions.n;
   }
 
-  public async query(
-    prompt: string,
-    options: PostOptions = {}
-  ): Promise<Set<string>> {
+  public async query(prompt: string): Promise<Set<string>> {
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.modelName,
       prompt,
-      options,
+      options: this.mockOptions
     });
+     
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
 
     // compute path to cache file

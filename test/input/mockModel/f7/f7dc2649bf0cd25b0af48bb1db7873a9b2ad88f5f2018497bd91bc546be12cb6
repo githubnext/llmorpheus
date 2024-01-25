@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nplural('TesT').toLowerCase()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural('TesT').toUpperCase()\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nplural('TesT')\n```\n"]

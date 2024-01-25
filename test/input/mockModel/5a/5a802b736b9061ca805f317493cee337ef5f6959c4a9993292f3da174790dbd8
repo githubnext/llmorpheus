@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nrule[0].test(word)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nword.match(rule[0])\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrule[0].exec(word)\n```\n"]

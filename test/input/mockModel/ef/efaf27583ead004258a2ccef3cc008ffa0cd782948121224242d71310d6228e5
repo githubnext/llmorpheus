@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ngetCountry(countryId)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ncountries[countryId]\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ndata.countries[countryId]\n```\n"]

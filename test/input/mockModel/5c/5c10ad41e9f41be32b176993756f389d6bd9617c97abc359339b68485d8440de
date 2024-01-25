@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nw.substr(0, w.length - 2) + 'es'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nw.slice(0, w.length - 2) + 'es'\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nw.substring(0, w.length - 2) + 'es'\n```\n"]

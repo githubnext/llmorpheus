@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n{ [country]: { current: [], all: [] } }\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n{ [country]: { current: [id], all: [id] } }\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n{ [country]: { current: tz.c || [], all: tz.c || [] } }\n```\n"]

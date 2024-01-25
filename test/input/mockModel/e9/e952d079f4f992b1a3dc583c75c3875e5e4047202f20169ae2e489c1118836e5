@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nreject\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nerr => reject(err)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nerr => {\n    reject(err);\n}\n```\n"]

@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\np1\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.fromObject({latitude: 51.5, longitude: -0.15})\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n{latitude: 51.5, longitude: -0.15}\n```\n"]

@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n!object.hasOwnProperty('latitude') || !object.hasOwnProperty('longitude')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n!object.latitude || !object.longitude\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n!('latitude' in object) || !('longitude' in object)\n```\n"]

@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n!isObject(object)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ntypeof object !== 'object'\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nobject === null\n```\n\n"]

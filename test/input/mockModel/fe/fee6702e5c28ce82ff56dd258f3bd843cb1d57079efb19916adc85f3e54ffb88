@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ninput.toFixed(precision)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ninput.toPrecision(precision)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ninput.toString().substring(0, precision)\n```\n"]

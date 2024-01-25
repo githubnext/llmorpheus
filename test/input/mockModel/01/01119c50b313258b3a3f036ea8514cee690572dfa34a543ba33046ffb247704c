@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nnew GeoPoint(point.coordinates[1], point.coordinates[0])\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.fromLatLngArray(point.coordinates)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.fromLngLatArray(point.coordinates)\n```\n"]

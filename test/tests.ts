@@ -9,24 +9,28 @@ import path from "path";
 
 const mockModelDir = "./test/input/mockModel";
 const testProjectPath = "./test/input/testProject/countries-and-timezones";
-const promptTemplateFileName = "./test/input/newTemplate.hb";
+const promptTemplateFileName = "./templates/template1.hb";
 const sourceFileName = "./test/input/countriesandtimezones_index.js";
+const modelName = "codellama-34b-instruct";
+const subDirName = "template1_codellama-34b-instruct_0";
 
 describe("test mutant generation", () => {
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
     const files = [sourceFileName];
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
+    fs.mkdirSync(path.join(outputDir, subDirName));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
       "./test/input/",
-      outputDir
+      outputDir,
+      subDirName,
     );
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
     expect(actualPromptSpecs.length).to.equal(71);
     promptSpecGenerator.writePromptFiles();
     const actualPromptSpecsAsJson = fs.readFileSync(
-      path.join(promptSpecGenerator.getOutputDir(), "promptSpecs.json"),
+      path.join(promptSpecGenerator.getOutputDir(), subDirName, "promptSpecs.json"),
       "utf8"
     );
     const expectedPromptSpecsAsJson = fs.readFileSync(
@@ -40,15 +44,17 @@ describe("test mutant generation", () => {
   it("should generate the expected prompts for a given source file and prompt template", async () => {
     const files = [sourceFileName];
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
+    fs.mkdirSync(path.join(outputDir, subDirName));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
       "./test/input/",
-      outputDir
+      outputDir,
+      subDirName
     );
     promptSpecGenerator.writePromptFiles();
     // check that actual and expected directories contain the same files
-    const actualPrompts = fs.readdirSync(path.join(outputDir, "prompts"));
+    const actualPrompts = fs.readdirSync(path.join(outputDir, subDirName, "prompts"));
     const expectedPrompts = fs.readdirSync("./test/expected/prompts");
     expect(actualPrompts.length).to.equal(expectedPrompts.length);
     const inActualButNotInExpected = actualPrompts.filter(
@@ -69,7 +75,7 @@ describe("test mutant generation", () => {
     // check that actual prompts match expected prompts
     for (const promptFileName of actualPrompts) {
       const actualPrompt = fs.readFileSync(
-        path.join(outputDir, "prompts", promptFileName),
+        path.join(outputDir, subDirName, "prompts", promptFileName),
         "utf8"
       );
       const expectedPrompt = fs.readFileSync(
@@ -90,12 +96,12 @@ describe("test mutant generation", () => {
   });
 
   it("should find the source files to be mutated in a given source project", async () => {
-    const model = new MockModel("text-davinci-003", mockModelDir);
+    const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const mutantGenerator = new MutantGenerator(
       model,
       promptTemplateFileName,
-      outputDir,
+      path.join(outputDir, subDirName),
       testProjectPath
     );
     const actualSourceFiles = await mutantGenerator.findSourceFilesToMutate(
@@ -112,7 +118,7 @@ describe("test mutant generation", () => {
       2
     );
     fs.writeFileSync(
-      path.join(outputDir, "sourceFiles.txt"),
+      path.join(outputDir, subDirName, "sourceFiles.txt"),
       actualSourceFilesJson
     );
     // compare actual source files to expected source files
@@ -127,7 +133,9 @@ describe("test mutant generation", () => {
   it("mock model should generate the expected completion for a prompt", async () => {
     const prompt1 = fs.readFileSync("test/input/prompts/prompt1.txt", "utf8");
     // console.log(`prompt1:\n${prompt1}\n`);
-    const model = new MockModel("text-davinci-003", mockModelDir);
+    const model = new MockModel(modelName, mockModelDir);
+
+    // use the same options that were used to generate the MockModel
     const completions = await model.query(prompt1);
     assert(completions.size === 1);
     const expectedCompletion = fs.readFileSync(
@@ -138,7 +146,7 @@ describe("test mutant generation", () => {
   });
 
   it("should generate the expected mutants for a project", async () => {
-    const model = new MockModel("text-davinci-003", mockModelDir);
+    const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
 
     const mutantGenerator = new MutantGenerator(
@@ -149,7 +157,7 @@ describe("test mutant generation", () => {
     );
     await mutantGenerator.generateMutants(testProjectPath);
     const actualMutantsJson = fs.readFileSync(
-      path.join(outputDir, "mutants.json"),
+      path.join(outputDir, subDirName, "mutants.json"),
       "utf8"
     );
     const expectedMutantsJson = fs.readFileSync(
@@ -161,7 +169,7 @@ describe("test mutant generation", () => {
   });
 
   it("should produce a file summary.json containing a summary of the results", async () => {
-    const model = new MockModel("text-davinci-003", mockModelDir);
+    const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const mutantGenerator = new MutantGenerator(
       model,
@@ -171,7 +179,7 @@ describe("test mutant generation", () => {
     );
     await mutantGenerator.generateMutants(testProjectPath);
     const actualResultsJson = fs.readFileSync(
-      path.join(outputDir, "summary.json"),
+      path.join(outputDir, subDirName, "summary.json"),
       "utf8"
     );
     const expectedResultsJson = fs.readFileSync(

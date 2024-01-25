@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ndeg2rad(point2.longitude - point1.longitude)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n(point2.longitude - point1.longitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nMath.abs(point2.longitude - point1.longitude)\n```\n"]

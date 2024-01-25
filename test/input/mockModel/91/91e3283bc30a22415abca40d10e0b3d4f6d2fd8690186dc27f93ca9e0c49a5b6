@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nmemoizedTimezones < totalTimezones\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nmemoizedTimezones === 0\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.keys(timezones).length === 0\n```\n"]

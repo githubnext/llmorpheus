@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('thesis'), 'theses')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('these'), 'theses')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('thises'), 'theses')\n```\n"]

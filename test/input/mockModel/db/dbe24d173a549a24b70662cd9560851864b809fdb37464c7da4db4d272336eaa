@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nexpect(geoJson.type).to.equal\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ngeoJson.type.should.equal\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ngeoJson.type.should.be.equal\n```\n"]

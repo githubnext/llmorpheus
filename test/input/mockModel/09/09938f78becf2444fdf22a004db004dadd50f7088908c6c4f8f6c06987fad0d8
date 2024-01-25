@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nexpect(gp1.toLatLngArray()).to.deep.equals\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ngp1.toLatLngArray().should.deep.equals\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ngp1.toLatLngArray().should.eql\n```\n"]

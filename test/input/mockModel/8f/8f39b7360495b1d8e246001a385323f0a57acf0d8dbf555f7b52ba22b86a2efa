@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.notEqual(plural('human'), 'omen')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.notStrictEqual(plural('human'), 'omen')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.notDeepEqual(plural('human'), 'omen')\n```\n"]

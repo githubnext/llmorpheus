@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nObject.keys(data.countries).map(id =>\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nObject.keys(data.countries).forEach(id =>\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.keys(data.countries).reduce((prev, id) =>\n```\n"]

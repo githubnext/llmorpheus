@@ -20,21 +20,36 @@ export class MutantGenerator {
     private outputDir: string,
     private projectPath: string
   ) {
-    // remove output files from previous run, if they exist
+
+    const subDirName = this.getSubDirName();
+    console.log(`getSubDirName(): ${subDirName}`);
+
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir);
     }
-    if (fs.existsSync(this.outputDir + "/mutants.json")) {
-      fs.unlinkSync(this.outputDir + "/mutants.json");
+
+    // remove output files from previous run, if they exist
+    if (!fs.existsSync(path.join(this.outputDir, this.getSubDirName()))) {
+      fs.mkdirSync(path.join(this.outputDir, this.getSubDirName()));
     }
-    if (fs.existsSync(this.outputDir + "/log.txt")) {
-      fs.unlinkSync(this.outputDir + "/log.txt");
+    if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(), "/mutants.json"))) {
+      fs.unlinkSync(path.join(this.outputDir, this.getSubDirName(), "/mutants.json"));
     }
-    if (fs.existsSync(this.outputDir + "/prompts")) {
-      fs.rmdirSync(this.outputDir + "/prompts", { recursive: true });
+    if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"))) {
+      fs.unlinkSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"));
     }
-    fs.writeFileSync(this.outputDir + "/log.txt", "");
-    fs.mkdirSync(this.outputDir + "/prompts");
+    if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(),"/prompts"))) {
+      fs.rmdirSync(path.join(this.outputDir, this.getSubDirName(),"/prompts"), { recursive: true });
+    }
+    fs.writeFileSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"), "");
+    fs.mkdirSync(path.join(this.outputDir, this.getSubDirName(), "prompts"));
+  }
+
+  public getSubDirName(): string {
+    const shortFileName = this.promptTemplateFileName.substring(this.promptTemplateFileName.lastIndexOf("/") + 1);
+    const shortTemplateFileName = shortFileName.substring(0, shortFileName.lastIndexOf("."));
+    const subDirName = shortTemplateFileName + "_" + this.model.getModelName() + "_" + this.model.getTemperature();
+    return subDirName;
   }
 
   public getProjectPath(): string {
@@ -42,7 +57,7 @@ export class MutantGenerator {
   }
 
   private log(msg: string): void {
-    fs.appendFileSync(this.outputDir + "/log.txt", msg);
+    fs.appendFileSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"), msg);
   }
 
   private printAndLog(msg: string): void {
@@ -127,7 +142,8 @@ export class MutantGenerator {
       files,
       this.promptTemplateFileName,
       packagePath,
-      this.outputDir
+      this.outputDir,
+      this.getSubDirName()
     );
     generator.writePromptFiles();
 
@@ -144,7 +160,7 @@ export class MutantGenerator {
         for (const completion of completions) {
           fs.writeFileSync(
             `${
-              this.outputDir
+              path.join(this.outputDir, this.getSubDirName())
             }/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
             completion.text
           );
@@ -288,11 +304,11 @@ export class MutantGenerator {
 
      
     // write mutants to file
-    const mutantsFileName = path.join(this.outputDir, "mutants.json");
+    const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
     // write summary of results to "results.json"
-    const resultsFileName = path.join(this.outputDir, "summary.json");
+    const resultsFileName = path.join(this.outputDir, this.getSubDirName(), "summary.json");
     fs.writeFileSync(
       resultsFileName,
       JSON.stringify(

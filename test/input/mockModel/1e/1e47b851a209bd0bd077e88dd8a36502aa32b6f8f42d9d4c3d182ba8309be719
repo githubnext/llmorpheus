@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nvalues.map(name => getTimezone(name))\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nvalues.map(name => timezones[name])\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.keys(timezones).filter(name => values.includes(name))\n```\n"]

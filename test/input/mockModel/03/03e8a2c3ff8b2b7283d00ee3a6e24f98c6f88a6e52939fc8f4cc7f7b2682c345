@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateBearing(point1, point2)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateBearing(this, point)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateBearing(coordinate, point)\n```\n\n"]

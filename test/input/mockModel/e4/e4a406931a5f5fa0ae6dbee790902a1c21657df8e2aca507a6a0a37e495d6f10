@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\npoint.type !== 'Point'\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\npoint.type !== 'point'\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\npoint.type !== 'POINT'\n```\n"]

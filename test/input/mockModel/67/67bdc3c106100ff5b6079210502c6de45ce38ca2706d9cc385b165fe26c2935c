@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nplural === plural.addRule\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural.addRule === plural\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nplural.addRule() === plural\n```\n\n"]

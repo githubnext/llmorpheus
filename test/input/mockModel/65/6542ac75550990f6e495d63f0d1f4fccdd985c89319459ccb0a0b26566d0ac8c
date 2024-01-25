@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntype(rule[0]) === 'RegExp' && rule[0].test(word)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ntype(rule[0]) === 'Function' && rule[0](word)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ntype(rule[0]) === 'String' && rule[0] === word\n```\n"]

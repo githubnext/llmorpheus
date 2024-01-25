@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nnew RegExp('\\\\b(?:' + tools.join('|') + ')s$', 'i')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nnew RegExp('\\\\b(?:' + clothes.join('|') + ')s$', 'i')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nnew RegExp('\\\\b(?:' + games.join('|') + ')s$', 'i')\n```\n"]

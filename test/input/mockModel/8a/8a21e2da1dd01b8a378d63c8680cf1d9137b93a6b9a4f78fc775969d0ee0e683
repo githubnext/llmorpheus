@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nadjust(this.latitude)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nparseFloat(this.latitude.toFixed(precision))\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nNumber(this.latitude.toFixed(precision))\n```\n\n"]

@@ -21,7 +21,8 @@ export class PromptSpecGenerator {
     private readonly files: string[],
     private readonly promptTemplateFileName: string,
     private readonly packagePath: string,
-    private readonly outputDir: string
+    private readonly outputDir: string,
+    private readonly subDir: string
   ) {
     Prompt.resetIdCounter();
     this.createPromptSpecs();
@@ -38,6 +39,10 @@ export class PromptSpecGenerator {
 
   public getOutputDir(): string {
     return this.outputDir;
+  }
+
+  public getSubDir(): string {
+    return this.subDir;
   }
 
   private createPrompts() {
@@ -389,16 +394,18 @@ export class PromptSpecGenerator {
 
     // write promptSpecs to JSON file
     const json = JSON.stringify(promptSpecsWithRelativePaths, null, 2);
-    fs.writeFileSync(path.join(this.outputDir, "promptSpecs.json"), json);
+    const fileName = path.join(this.outputDir, this.subDir, "promptSpecs.json");
+    fs.writeFileSync(path.join(this.outputDir, this.subDir, "promptSpecs.json"), json);
 
     // write prompts to directory "prompts"
-    const dir = path.join(this.outputDir, "prompts");
+    const dir = path.join(this.outputDir, this.subDir, "prompts");
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
     for (const prompt of this.prompts) {
       const fileName = path.join(
         this.outputDir,
+        this.subDir,
         "prompts",
         `prompt${prompt.getId()}.txt`
       );

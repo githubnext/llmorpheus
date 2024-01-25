@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ntype(rule[1])\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ntypeof rule[1]\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nObject.prototype.toString.call(rule[1]).slice(8, -1)\n```\n"]

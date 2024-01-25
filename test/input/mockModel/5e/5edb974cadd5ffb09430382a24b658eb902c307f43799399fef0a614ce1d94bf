@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\np1.toObject()\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\np1.toPlainObject()\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\np1.toJSON()\n```\n"]

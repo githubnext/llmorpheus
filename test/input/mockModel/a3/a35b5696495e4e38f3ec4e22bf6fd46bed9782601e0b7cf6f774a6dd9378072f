@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nzipArchive.glob(globPart);\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nzipArchive.add(globPart);\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nzipArchive.append(globPart);\n```\n"]

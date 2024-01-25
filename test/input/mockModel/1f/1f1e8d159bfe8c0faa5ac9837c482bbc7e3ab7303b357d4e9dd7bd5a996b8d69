@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nrequire('./package.json').version\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nrequire('./package').version\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nrequire('package.json').version\n```\n"]

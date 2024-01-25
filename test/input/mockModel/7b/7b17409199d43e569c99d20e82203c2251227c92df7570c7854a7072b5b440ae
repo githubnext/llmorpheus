@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nd1.latitude\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.round(d1.latitude)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nd1.latitude.toFixed(3)\n```\n"]

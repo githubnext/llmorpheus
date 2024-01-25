@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\n[match, result]\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n{match: match, result: result}\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nfunction(w) { return result(w, match) }\n```\n"]

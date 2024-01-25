@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nplural(this, num)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural.call(this, num)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nplural.apply(this, [num])\n```\n"]

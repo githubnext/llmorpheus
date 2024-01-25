@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\npoint.coordinates\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\n[point.coordinates[1], point.coordinates[0]]\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\n[point.longitude, point.latitude]\n```\n"]

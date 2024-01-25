@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\ngetCountry(c, options)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\ncountries[c]\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\ngetCountry(countryId, options)\n```\n"]

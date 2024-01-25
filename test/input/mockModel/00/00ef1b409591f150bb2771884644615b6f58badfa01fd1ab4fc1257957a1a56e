@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nsin(point1Rad)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nMath.sin(point1Rad)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nMath.sin(φ1)\n```\n"]

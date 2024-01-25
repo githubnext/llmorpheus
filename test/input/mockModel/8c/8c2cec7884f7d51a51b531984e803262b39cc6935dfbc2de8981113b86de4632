@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural(w), w)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nplural(w)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nw\n```\n"]

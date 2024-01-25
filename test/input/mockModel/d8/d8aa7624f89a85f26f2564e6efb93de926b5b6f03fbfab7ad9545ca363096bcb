@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('focus'), 'foci')\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('focuss'), 'foci')\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nassert.equal(plural('focuses'), 'foci')\n```\n"]

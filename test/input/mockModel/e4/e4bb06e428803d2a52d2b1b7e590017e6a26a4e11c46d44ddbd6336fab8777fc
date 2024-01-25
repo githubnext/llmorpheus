@@ -1,1 +1,0 @@
-["\n\nOption 1: The PLACEHOLDER should be replaced with:\n```\npoint.destination(10000, 360)\n```\nOption 2: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.destination(point, 10000, 360)\n```\nOption 3: The PLACEHOLDER should be replaced with:\n```\nGeoPoint.calculateDestination(point, 10000, 360)\n```\n"]
