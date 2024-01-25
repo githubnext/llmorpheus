@@ -18,11 +18,8 @@ export class MutantGenerator {
     private model: IModel,
     private promptTemplateFileName: string,
     private outputDir: string,
-    private projectPath: string
+    private projectPath: string 
   ) {
-
-    const subDirName = this.getSubDirName();
-    console.log(`getSubDirName(): ${subDirName}`);
 
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir);
@@ -322,8 +319,7 @@ export class MutantGenerator {
           metaInfo: {
             modelName: this.model.getModelName(),
             temperature: this.model.getTemperature(),
-            maxTokens: this.model.getMaxTokens(),
-            n: this.model.getN()
+            maxTokens: this.model.getMaxTokens() 
           }
         },  
         null,

@@ -3,7 +3,6 @@ import { hideBin } from "yargs/helpers";
 import {
   CachingModel,
   Gpt4Model,
-  TextDavinci003Model,
   CodeLlama34bInstructModel,
   Llama2_70bModel
 } from "../src/Model";
@@ -56,6 +55,24 @@ if (require.main === module) {
           description:
             "path to directory where generated files should be written",
         },
+        nrAttempts: {
+          type: "number",
+          default: 1,
+          demandOption: false,
+          description: "number of attempts to generate a completion",
+        },
+        rateLimit: {
+          type: "number",
+          default: 0,
+          demandOption: false,
+          description: "number of milliseconds between requests to the model (0 is no rate limit)",
+        },
+        maxTokens: {
+          type: "number",
+          default: 250,
+          demandOption: false,
+          description: "maximum number of tokens in a completion",
+        }
       });
     const argv = await parser.argv;
 
@@ -67,14 +84,7 @@ if (require.main === module) {
     }
 
     let baseModel, model;
-    if (argv.model === "text-davinci003") {
-      baseModel = new TextDavinci003Model({
-        max_tokens: 500,
-        stop: ["DONE"],
-        temperature: 0.0,
-        n: argv.numCompletions,
-      });
-    } else if (argv.model === "gpt4"){
+    if (argv.model === "gpt4"){
       console.log("*** Using GPT4 model");
       baseModel = new Gpt4Model({
         max_tokens: 500,
@@ -83,19 +93,20 @@ if (require.main === module) {
         n: argv.numCompletions,
       });
     } if (argv.model === "codellama-34b-instruct"){
-      console.log("*** Using codellama-34b-instruct model");
       baseModel = new CodeLlama34bInstructModel({
-        // max_tokens: 500,
-        // stop: ["DONE"],
-        temperature: argv.temperature 
-      });
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens 
+      },
+      argv.rateLimit,
+      argv.nrAttempts
+      );
     } else if (argv.model === "llama-2-70b-chat"){
-      console.log("*** Using llama-2-70b-chat model");
       baseModel = new Llama2_70bModel({
-        // max_tokens: 500,
-        // stop: ["DONE"],
-        temperature: argv.temperature 
-      })
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens
+      },
+      argv.rateLimit,
+      argv.nrAttempts)
     } else {
       throw new Error(`Invalid model name: ${argv.model}`);
     }
@@ -118,7 +129,7 @@ if (require.main === module) {
       model,
       argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
-      argv.path
+      argv.path 
     );
     mutantGenerator.generateMutants(argv.path);
   })();

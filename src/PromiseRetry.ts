@@ -9,11 +9,14 @@ export async function retry<T>(f: () => Promise<T>, howManyTimes: number): Promi
   let promise: Promise<T> = f(); // create the promise, but don't wait for its fulfillment yet..
   while (i <= howManyTimes) {
     try {
+      if (i > 1){
+        console.log(`  retry ${i}/${howManyTimes}`);
+      }
       let val: T = await promise; // throws an exception if the promise is rejected
       return val; // if the promise was fulfilled, return another promise that is fulfilled with the same value
     } catch (e) {
       i++;
-      console.log(`Promise rejected with ${e}; Retry ${i}/${howManyTimes}.`);
+      console.log(`Promise rejected with ${e}.`);
       promise = f(); // next attempt: create the promise, but don't wait for its fulfillment yet..
     }
   };
