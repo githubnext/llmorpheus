@@ -81,7 +81,7 @@ export class MutantGenerator {
                'coverage', 
                'lcov-report', 
                `${path}/**/*test*.js`, 
-               'examples',
+               '**/examples',
                '**/example', 
                '**/benchmark', 
                '**/benchmarks',
@@ -95,6 +95,7 @@ export class MutantGenerator {
     return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
   }
 
+  /** Determine situations where a candidate mutant is invalid */
   private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {
     
     return (
@@ -111,6 +112,9 @@ export class MutantGenerator {
                       .replace("<PLACEHOLDER>", substitution);
   }
 
+  /**
+   * Generate mutants.
+   */
   public async generateMutants(packagePath: string): Promise<void> {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
@@ -205,6 +209,44 @@ export class MutantGenerator {
                     nrSyntacticallyInvalid++;
                 }
               } else if (prompt.spec.isArgListPlaceHolder()) {
+                try {
+                  const expandedOrig = prompt.spec.parentLocation!.getText();
+                  const expandedSubstitution = expandedOrig.replace(
+                    prompt.getOrig(),
+                    substitution
+                  );
+                  parser.parse(expandedSubstitution, {
+                    sourceType: "module",
+                    plugins: ["typescript", "jsx"],
+                  });
+                  
+                  const mutant = new Mutant(
+                    prompt.spec.file,
+                    prompt.spec.parentLocation!.startLine,
+                    prompt.spec.parentLocation!.startColumn,
+                    prompt.spec.parentLocation!.endLine,
+                    prompt.spec.parentLocation!.endColumn,
+                    expandedOrig, // prompt.getOrig(),
+                    expandedSubstitution, // substitution,
+                    prompt.getId(),
+                    completion.getId(),
+                    prompt.spec.feature + "/" + prompt.spec.component
+                  );
+                  if (!isDuplicate(mutant, mutants)) {
+                    mutants.push(mutant);
+                    nrSyntacticallyValid++;
+                  } else {
+                    nrDuplicate++;
+                  }
+                } catch (e) {
+                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                  nrSyntacticallyInvalid++;
+                }
+              // for mutants that involve replacing the left side of a for-of, we need
+              // to expand the original/substitution to the parent node, to ensure
+              // syntactic completeness of the code fragment; otherwise Stryker's parser
+              // will throw an error  
+              } else if (prompt.spec.isForOfInitializerPlaceHolder()) {
                 try {
                   const expandedOrig = prompt.spec.parentLocation!.getText();
                   const expandedSubstitution = expandedOrig.replace(

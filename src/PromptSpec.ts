@@ -5,10 +5,10 @@ import { SourceLocation } from "./SourceLocation";
 import { getText } from "./util";
 
 /**
- * Specifies all information needed to create a prompt.
+ * A PromptSpec specifies all information associated with code fragments that are included in prompts.
  *   file: the file name
  *   feature: the type of the language construct (if/switch/while/do-while/for/for-in/for-of/call)
- *   component: the part of the language construct that is to be changed (test/discriminant/update)
+ *   component: the part of the language construct that is to be changed (e.g., test/discriminant/update/left/right)
  *   location: the location of the component in the source code
  *   orig: the original contents of the placeholder
  *   references: the set of identifiers referenced in the expression that is to be changed
@@ -106,4 +106,9 @@ export class PromptSpec {
   public isArgListPlaceHolder(): boolean {
     return this.feature === "call" && this.component === "allArgs";
   }
+
+  public isForOfInitializerPlaceHolder(): boolean {
+    return (this.feature === "for-of" && this.component === "left");
+  }
+           
 }
