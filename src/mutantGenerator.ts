@@ -280,6 +280,41 @@ export class MutantGenerator {
                   // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
                   nrSyntacticallyInvalid++;
                 }
+              } else if (prompt.spec.isForOfLoopHeaderPlaceHolder()) {
+                try {
+                  const expandedOrig = prompt.spec.parentLocation!.getText();
+                  const expandedSubstitution = expandedOrig.replace(
+                    prompt.getOrig(),
+                    substitution
+                  );
+                  console.log(`*** expandedSubstitution = ${expandedSubstitution}`);
+                  parser.parse(expandedSubstitution, {
+                    sourceType: "module",
+                    plugins: ["typescript", "jsx"],
+                  });
+                  
+                  const mutant = new Mutant(
+                    prompt.spec.file,
+                    prompt.spec.parentLocation!.startLine,
+                    prompt.spec.parentLocation!.startColumn,
+                    prompt.spec.parentLocation!.endLine,
+                    prompt.spec.parentLocation!.endColumn,
+                    expandedOrig, // prompt.getOrig(),
+                    expandedSubstitution, // substitution,
+                    prompt.getId(),
+                    completion.getId(),
+                    prompt.spec.feature + "/" + prompt.spec.component
+                  );
+                  if (!isDuplicate(mutant, mutants)) {
+                    mutants.push(mutant);
+                    nrSyntacticallyValid++;
+                  } else {
+                    nrDuplicate++;
+                  }
+                } catch (e) {
+                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+                  nrSyntacticallyInvalid++;
+                }
               } else { // statement placeholder
                 try {
                   parser.parse(candidateMutant, {

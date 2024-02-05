@@ -110,5 +110,9 @@ export class PromptSpec {
   public isForOfInitializerPlaceHolder(): boolean {
     return (this.feature === "for-of" && this.component === "left");
   }
+
+  public isForOfLoopHeaderPlaceHolder(): boolean {
+    return (this.feature === "for-of" && this.component === "loopHeader");
+  }
            
 }

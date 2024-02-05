@@ -274,7 +274,7 @@ export class PromptSpecGenerator {
       right!.loc!.end.line,
       right!.loc!.end.column
     );
-    const leftParentLoc = new SourceLocation(
+    const parentLoc = new SourceLocation(
       file,
       nodePath.node.loc!.start.line,
       nodePath.node.loc!.start.column,
@@ -282,14 +282,15 @@ export class PromptSpecGenerator {
       nodePath.node.loc!.end.column
     );
     return [
-      new PromptSpec(file, "for-of", "left", leftLoc, leftLoc.getText(), leftParentLoc),
+      new PromptSpec(file, "for-of", "left", leftLoc, leftLoc.getText(), parentLoc),
       new PromptSpec(file, "for-of", "right", rightLoc, rightLoc.getText()),
       new PromptSpec(
         file,
         "for-of",
         "loopHeader",
         loopHeaderLoc,
-        loopHeaderLoc.getText()
+        loopHeaderLoc.getText(),
+        parentLoc
       ),
     ];
   }
