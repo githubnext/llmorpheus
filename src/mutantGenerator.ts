@@ -168,182 +168,22 @@ export class MutantGenerator {
           const regExp = /```\n((?:.(?!```))*)\n```/gs;
           let match;
           
-
           while ((match = regExp.exec(completion.text)) !== null) {
             const substitution = match[1];
             if (substitution === prompt.getOrig()) {
               nrIdentical++;
-            } else if (prompt.getOrig().includes("Object.")) {
-              nrSyntacticallyInvalid++;
-            } else if (this.isInvalidSubstitution(prompt, substitution)) {
-              nrSyntacticallyInvalid++; 
-            } else if (this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
+            } else if (prompt.getOrig().includes("Object.") || 
+                       this.isInvalidSubstitution(prompt, substitution) ||
+                       this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
               nrSyntacticallyInvalid++;
             } else {
               const candidateMutant = this.createCandidateMutant(prompt, substitution);
-              // try {
               if (prompt.spec.isExpressionPlaceholder()) {
-                try {
-                  parser.parseExpression(substitution);
-                  
-                  const mutant = new Mutant(
-                    prompt.spec.file,
-                    prompt.spec.location.startLine,
-                    prompt.spec.location.startColumn,
-                    prompt.spec.location.endLine,
-                    prompt.spec.location.endColumn,
-                    prompt.getOrig(),
-                    substitution,
-                    prompt.getId(),
-                    completion.getId(),
-                    prompt.spec.feature + "/" + prompt.spec.component
-                  );
-                  if (!isDuplicate(mutant, mutants)) {
-                    mutants.push(mutant);
-                    nrSyntacticallyValid++;
-                  } else {
-                    nrDuplicate++;
-                  }
-                } catch (e) {
-                    // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                    nrSyntacticallyInvalid++;
-                }
-              } else if (prompt.spec.isArgListPlaceHolder()) {
-                try {
-                  const expandedOrig = prompt.spec.parentLocation!.getText();
-                  const expandedSubstitution = expandedOrig.replace(
-                    prompt.getOrig(),
-                    substitution
-                  );
-                  parser.parse(expandedSubstitution, {
-                    sourceType: "module",
-                    plugins: ["typescript", "jsx"],
-                  });
-                  
-                  const mutant = new Mutant(
-                    prompt.spec.file,
-                    prompt.spec.parentLocation!.startLine,
-                    prompt.spec.parentLocation!.startColumn,
-                    prompt.spec.parentLocation!.endLine,
-                    prompt.spec.parentLocation!.endColumn,
-                    expandedOrig, // prompt.getOrig(),
-                    expandedSubstitution, // substitution,
-                    prompt.getId(),
-                    completion.getId(),
-                    prompt.spec.feature + "/" + prompt.spec.component
-                  );
-                  if (!isDuplicate(mutant, mutants)) {
-                    mutants.push(mutant);
-                    nrSyntacticallyValid++;
-                  } else {
-                    nrDuplicate++;
-                  }
-                } catch (e) {
-                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                  nrSyntacticallyInvalid++;
-                }
-              // for mutants that involve replacing the left side of a for-of, we need
-              // to expand the original/substitution to the parent node, to ensure
-              // syntactic completeness of the code fragment; otherwise Stryker's parser
-              // will throw an error  
-              } else if (prompt.spec.isForOfInitializerPlaceHolder()) {
-                try {
-                  const expandedOrig = prompt.spec.parentLocation!.getText();
-                  const expandedSubstitution = expandedOrig.replace(
-                    prompt.getOrig(),
-                    substitution
-                  );
-                  parser.parse(expandedSubstitution, {
-                    sourceType: "module",
-                    plugins: ["typescript", "jsx"],
-                  });
-                  
-                  const mutant = new Mutant(
-                    prompt.spec.file,
-                    prompt.spec.parentLocation!.startLine,
-                    prompt.spec.parentLocation!.startColumn,
-                    prompt.spec.parentLocation!.endLine,
-                    prompt.spec.parentLocation!.endColumn,
-                    expandedOrig, // prompt.getOrig(),
-                    expandedSubstitution, // substitution,
-                    prompt.getId(),
-                    completion.getId(),
-                    prompt.spec.feature + "/" + prompt.spec.component
-                  );
-                  if (!isDuplicate(mutant, mutants)) {
-                    mutants.push(mutant);
-                    nrSyntacticallyValid++;
-                  } else {
-                    nrDuplicate++;
-                  }
-                } catch (e) {
-                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                  nrSyntacticallyInvalid++;
-                }
-              } else if (prompt.spec.isForOfLoopHeaderPlaceHolder()) {
-                try {
-                  const expandedOrig = prompt.spec.parentLocation!.getText();
-                  const expandedSubstitution = expandedOrig.replace(
-                    prompt.getOrig(),
-                    substitution
-                  );
-                  console.log(`*** expandedSubstitution = ${expandedSubstitution}`);
-                  parser.parse(expandedSubstitution, {
-                    sourceType: "module",
-                    plugins: ["typescript", "jsx"],
-                  });
-                  
-                  const mutant = new Mutant(
-                    prompt.spec.file,
-                    prompt.spec.parentLocation!.startLine,
-                    prompt.spec.parentLocation!.startColumn,
-                    prompt.spec.parentLocation!.endLine,
-                    prompt.spec.parentLocation!.endColumn,
-                    expandedOrig, // prompt.getOrig(),
-                    expandedSubstitution, // substitution,
-                    prompt.getId(),
-                    completion.getId(),
-                    prompt.spec.feature + "/" + prompt.spec.component
-                  );
-                  if (!isDuplicate(mutant, mutants)) {
-                    mutants.push(mutant);
-                    nrSyntacticallyValid++;
-                  } else {
-                    nrDuplicate++;
-                  }
-                } catch (e) {
-                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                  nrSyntacticallyInvalid++;
-                }
+                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleExpression(substitution, prompt, completion, isDuplicate, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid)); 
+              } else if (prompt.spec.isArgListPlaceHolder() || prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder()) {
+                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleIncompleteFragment(prompt, substitution, completion, isDuplicate, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
               } else { // statement placeholder
-                try {
-                  parser.parse(candidateMutant, {
-                    sourceType: "module",
-                    plugins: ["typescript", "jsx"],
-                  });
-                  
-                  const mutant = new Mutant(
-                    prompt.spec.file,
-                    prompt.spec.location.startLine,
-                    prompt.spec.location.startColumn,
-                    prompt.spec.location.endLine,
-                    prompt.spec.location.endColumn,
-                    prompt.getOrig(),
-                    substitution,
-                    prompt.getId(),
-                    completion.getId(),
-                    prompt.spec.feature + "/" + prompt.spec.component
-                  );
-                  if (!isDuplicate(mutant, mutants)) {
-                    mutants.push(mutant);
-                    nrSyntacticallyValid++;
-                  } else {
-                    nrDuplicate++;
-                  }
-                } catch (e) {
-                  // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-                  nrSyntacticallyInvalid++;
-                }
+                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleStatement(candidateMutant, prompt, substitution, completion, isDuplicate, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
               }
             }
           }
@@ -376,7 +216,6 @@ export class MutantGenerator {
       `discarding ${nrDuplicate} duplicate mutants\n`
     );
 
-     
     // write mutants to file
     const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
@@ -407,6 +246,117 @@ export class MutantGenerator {
     this.printAndLog(
       `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}\n`
     );
+  }
+
+  /**
+   * Handle the case where the mutated code fragment is an expression. 
+   */
+  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, isDuplicate: (mutant: Mutant, mutants: Mutant[]) => boolean, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+    try {
+      parser.parseExpression(substitution);
+
+      const mutant = new Mutant(
+        prompt.spec.file,
+        prompt.spec.location.startLine,
+        prompt.spec.location.startColumn,
+        prompt.spec.location.endLine,
+        prompt.spec.location.endColumn,
+        prompt.getOrig(),
+        substitution,
+        prompt.getId(),
+        completion.getId(),
+        prompt.spec.feature + "/" + prompt.spec.component
+      );
+      if (!isDuplicate(mutant, mutants)) {
+        mutants.push(mutant);
+        nrSyntacticallyValid++;
+      } else {
+        nrDuplicate++;
+      }
+    } catch (e) {
+      // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+      nrSyntacticallyInvalid++;
+    }
+    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
+  }
+
+   /** 
+   * Handle the case where the mutated code fragment is incomplete and does not correspond
+   * to a complete statement or expression. In such cases, we need to expand the original
+   * code fragment and the substitution to the parent node, to ensure syntactic completeness
+   * of the code fragment. This is the case for replacing a list of call arguments or the
+   * header or left side (var declaration) of a for-of loop.
+   */
+   private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, isDuplicate: (mutant: Mutant, mutants: Mutant[]) => boolean, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+    try {
+      const expandedOrig = prompt.spec.parentLocation!.getText();
+      const expandedSubstitution = expandedOrig.replace(
+        prompt.getOrig(),
+        substitution
+      );
+      parser.parse(expandedSubstitution, {
+        sourceType: "module",
+        plugins: ["typescript", "jsx"],
+      });
+
+      const mutant = new Mutant(
+        prompt.spec.file,
+        prompt.spec.parentLocation!.startLine,
+        prompt.spec.parentLocation!.startColumn,
+        prompt.spec.parentLocation!.endLine,
+        prompt.spec.parentLocation!.endColumn,
+        expandedOrig,
+        expandedSubstitution,
+        prompt.getId(),
+        completion.getId(),
+        prompt.spec.feature + "/" + prompt.spec.component
+      );
+      if (!isDuplicate(mutant, mutants)) {
+        mutants.push(mutant);
+        nrSyntacticallyValid++;
+      } else {
+        nrDuplicate++;
+      }
+    } catch (e) {
+      // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+      nrSyntacticallyInvalid++;
+    }
+    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
+  }
+  
+  /** 
+   * Handle the case where the mutated code fragment is a statement. 
+   */
+  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, isDuplicate: (mutant: Mutant, mutants: Mutant[]) => boolean, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+    try {
+      parser.parse(candidateMutant, {
+        sourceType: "module",
+        plugins: ["typescript", "jsx"],
+      });
+
+      const mutant = new Mutant(
+        prompt.spec.file,
+        prompt.spec.location.startLine,
+        prompt.spec.location.startColumn,
+        prompt.spec.location.endLine,
+        prompt.spec.location.endColumn,
+        prompt.getOrig(),
+        substitution,
+        prompt.getId(),
+        completion.getId(),
+        prompt.spec.feature + "/" + prompt.spec.component
+      );
+      if (!isDuplicate(mutant, mutants)) {
+        mutants.push(mutant);
+        nrSyntacticallyValid++;
+      } else {
+        nrDuplicate++;
+      }
+    } catch (e) {
+      // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
+      nrSyntacticallyInvalid++;
+    }
+    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
 
   public async getCompletionsForPrompt(prompt: Prompt): Promise<Completion[]> {
