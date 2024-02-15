@@ -11,4 +11,8 @@ export class Mutant {
     public readonly completionId: number,
     public readonly reason: string
   ) {}
+
+  public toString(){
+    return JSON.stringify(this);
+  }
 }
