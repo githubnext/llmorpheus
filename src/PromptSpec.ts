@@ -107,12 +107,36 @@ export class PromptSpec {
     return this.feature === "call" && this.component === "allArgs";
   }
 
+  public isForInitializerPlaceHolder(): boolean {
+    return (this.feature === "for" && this.component === "init");
+  }
+
+  public isForLoopHeaderPlaceHolder(): boolean {
+    return (this.feature === "for" && this.component === "header");
+  }
+
+  public isForInInitializerPlaceHolder(): boolean {
+    return (this.feature === "for-in" && this.component === "left");
+  }
+
+  public isForInLoopHeaderPlaceHolder(): boolean {
+    return (this.feature === "for-in" && this.component === "header");
+  }
+
+  public isForInRightPlaceHolder(): boolean {
+    return (this.feature === "for-in" && this.component === "right");
+  }
+
   public isForOfInitializerPlaceHolder(): boolean {
     return (this.feature === "for-of" && this.component === "left");
   }
 
   public isForOfLoopHeaderPlaceHolder(): boolean {
-    return (this.feature === "for-of" && this.component === "loopHeader");
+    return (this.feature === "for-of" && this.component === "header");
+  }
+
+  public isCalleePlaceHolder(): boolean {
+    return this.feature === "call" && this.component === "callee";
   }
            
 }

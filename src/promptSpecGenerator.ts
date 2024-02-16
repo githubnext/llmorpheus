@@ -76,39 +76,15 @@ export class PromptSpecGenerator {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
         // const loc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
 
-        if (path.isIfStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForIf(file, path));
-        }
-        if (path.isSwitchStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForSwitch(file, path));
-        } else if (path.isWhileStatement()) {
-          promptSpecs.push(outerThis.createPromptSpecForWhile(file, path));
-        } else if (path.isDoWhileStatement()) {
-          promptSpecs.push(
-            outerThis.createPromptSpecForDoWhile(file, path)
-          );
-        } else if (path.isForStatement()) {
-          promptSpecs.push(
-            ...outerThis.createPromptSpecsForFor(file, path)
-          );
-        } else if (path.isForInStatement()) {
-          promptSpecs.push(
-            ...outerThis.createPromptSpecsForForIn(file, path)
-          );
-        } else if (path.isForOfStatement()) {
-          promptSpecs.push(
-            ...outerThis.createPromptSpecsForForOf(file, path)
-          );
-        } else if (
-          path.isCallExpression() &&
-          path.node.loc!.start.line === path.node.loc!.end.line
-        ) {
-          // for now, restrict to calls on a single line
-          promptSpecs.push(
-            ...outerThis.createPromptSpecsForCall(file, path)
-          );
-        }
-      },
+        outerThis.createPromptSpecForIf(file, path);
+        outerThis.createPromptSpecForSwitch(file, path);
+        outerThis.createPromptSpecForWhile(file, path);
+        outerThis.createPromptSpecForDoWhile(file, path); 
+        outerThis.createPromptSpecsForFor(file, path);
+        outerThis.createPromptSpecsForForIn(file, path);
+        outerThis.createPromptSpecsForForOf(file, path);
+        outerThis.createPromptSpecsForCall(file, path);
+      }
     });
     return promptSpecs;
   }
@@ -119,263 +95,296 @@ export class PromptSpecGenerator {
   //   return fileName.replace(this.packagePath, '');
   // }
 
-  private createPromptSpecForIf(file: string, nodePath: any): PromptSpec {
-    const test = nodePath.node.test;
-    const loc = new SourceLocation(
-      file,
-      test.loc!.start.line,
-      test.loc!.start.column,
-      test.loc!.end.line,
-      test.loc!.end.column
-    );
-    return new PromptSpec(file, "if", "test", loc, loc.getText());
-  }
-
-  private createPromptSpecForSwitch(file: string, nodePath: any) {
-    const discriminant = nodePath.node.discriminant;
-    const loc = new SourceLocation(
-      file,
-      discriminant.loc!.start.line,
-      discriminant.loc!.start.column,
-      discriminant.loc!.end.line,
-      discriminant.loc!.end.column
-    );
-    return new PromptSpec(file, "switch", "discriminant", loc, loc.getText());
-  }
-
-  private createPromptSpecForWhile(file: string, nodePath: any) {
-    const test = nodePath.node.test;
-    const loc = new SourceLocation(
-      file,
-      test.loc!.start.line,
-      test.loc!.start.column,
-      test.loc!.end.line,
-      test.loc!.end.column
-    );
-    return new PromptSpec(file, "while", "test", loc, loc.getText());
-  }
-
-  private createPromptSpecForDoWhile(file: string, nodePath: any) {
-    const test = nodePath.node.test;
-    const loc = new SourceLocation(
-      file,
-      test.loc!.start.line,
-      test.loc!.start.column,
-      test.loc!.end.line,
-      test.loc!.end.column
-    );
-    return new PromptSpec(file, "do-while", "test", loc, loc.getText());
-  }
-
-  private createPromptSpecsForFor(file: string, nodePath: any) {
-    const init = nodePath.node.init;
-    const test = nodePath.node.test;
-    const update = nodePath.node.update;
-    const initLoc = new SourceLocation(
-      file,
-      init!.loc!.start.line,
-      init!.loc!.start.column,
-      init!.loc!.end.line,
-      init!.loc!.end.column
-    );
-    const testLoc = new SourceLocation(
-      file,
-      test!.loc!.start.line,
-      test!.loc!.start.column,
-      test!.loc!.end.line,
-      test!.loc!.end.column
-    );
-    const updateLoc = new SourceLocation(
-      file,
-      update!.loc!.start.line,
-      update!.loc!.start.column,
-      update!.loc!.end.line,
-      update!.loc!.end.column
-    );
-    const loopHeaderLoc = new SourceLocation(
-      file,
-      init!.loc!.start.line,
-      init!.loc!.start.column,
-      update!.loc!.end.line,
-      update!.loc!.end.column
-    );
-    return [
-      new PromptSpec(file, "for", "init", initLoc, initLoc.getText()),
-      new PromptSpec(file, "for", "test", testLoc, testLoc.getText()),
-      new PromptSpec(file, "for", "update", updateLoc, updateLoc.getText()),
-      new PromptSpec(
+  private createPromptSpecForIf(file: string, path: any): void {
+    if (path.isIfStatement()) {
+      const test = path.node.test;
+      const loc = new SourceLocation(
         file,
-        "for",
-        "header",
-        loopHeaderLoc,
-        loopHeaderLoc.getText()
-      ),
-    ];
-  }
-
-  private createPromptSpecsForForIn(file: string, nodePath: any) {
-    const left = nodePath.node.left;
-    const right = nodePath.node.right;
-    const leftLoc = new SourceLocation(
-      file,
-      left!.loc!.start.line,
-      left!.loc!.start.column,
-      left!.loc!.end.line,
-      left!.loc!.end.column
-    );
-    const rightLoc = new SourceLocation(
-      file,
-      right!.loc!.start.line,
-      right!.loc!.start.column,
-      right!.loc!.end.line,
-      right!.loc!.end.column
-    );
-    const loopHeaderLoc = new SourceLocation(
-      file,
-      left!.loc!.start.line,
-      left!.loc!.start.column,
-      right!.loc!.end.line,
-      right!.loc!.end.column
-    );
-    return [
-      new PromptSpec(file, "for-in", "left", leftLoc, leftLoc.getText()),
-      new PromptSpec(file, "for-in", "right", rightLoc, rightLoc.getText()),
-      new PromptSpec(
-        file,
-        "for-in",
-        "loopHeader",
-        loopHeaderLoc,
-        loopHeaderLoc.getText()
-      ),
-    ];
-  }
-
-  private createPromptSpecsForForOf(file: string, nodePath: any) {
-    const left = nodePath.node.left;
-    const right = nodePath.node.right;
-    const leftLoc = new SourceLocation(
-      file,
-      left!.loc!.start.line,
-      left!.loc!.start.column,
-      left!.loc!.end.line,
-      left!.loc!.end.column
-    );
-    const rightLoc = new SourceLocation(
-      file,
-      right!.loc!.start.line,
-      right!.loc!.start.column,
-      right!.loc!.end.line,
-      right!.loc!.end.column
-    );
-    const loopHeaderLoc = new SourceLocation(
-      file,
-      left!.loc!.start.line,
-      left!.loc!.start.column,
-      right!.loc!.end.line,
-      right!.loc!.end.column
-    );
-    const parentLoc = new SourceLocation(
-      file,
-      nodePath.node.loc!.start.line,
-      nodePath.node.loc!.start.column,
-      nodePath.node.loc!.end.line,
-      nodePath.node.loc!.end.column
-    );
-    return [
-      new PromptSpec(file, "for-of", "left", leftLoc, leftLoc.getText(), parentLoc),
-      new PromptSpec(file, "for-of", "right", rightLoc, rightLoc.getText()),
-      new PromptSpec(
-        file,
-        "for-of",
-        "loopHeader",
-        loopHeaderLoc,
-        loopHeaderLoc.getText(),
-        parentLoc
-      ),
-    ];
-  }
-
-  private createPromptSpecsForCall(
-    file: string,
-    nodePath: any
-  ): Array<PromptSpec> {
-    const callee = nodePath.node.callee;
-    const args = nodePath.node.arguments;
-    const prompts = new Array<PromptSpec>();
-    const calleeLoc = new SourceLocation(
-      file,
-      callee.loc!.start.line,
-      callee.loc!.start.column,
-      callee.loc!.end.line,
-      callee.loc!.end.column
-    );
-    if (calleeLoc.getText() !== "require"){ // don't mutate calls to require
-      prompts.push(
-        new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
+        test.loc!.start.line,
+        test.loc!.start.column,
+        test.loc!.end.line,
+        test.loc!.end.column
       );
-      for (let argNr = 0; argNr < args.length; argNr++) {
-        const arg = args[argNr];
-        const argLoc = new SourceLocation(
-          file,
-          arg.loc!.start.line,
-          arg.loc!.start.column,
-          arg.loc!.end.line,
-          arg.loc!.end.column
-        );
-        prompts.push(
-          new PromptSpec(file, "call", "arg" + argNr, argLoc, argLoc.getText())
-        );
-      }
-      if (args.length === 0) {
-        // find location between parentheses
-        const loc = nodePath.node.loc!;
-        const allArgsLoc = new SourceLocation(
-          file,
-          callee.loc!.end.line,
-          callee.loc!.end.column + 1,
-          loc.end.line,
-          loc.end.column - 1
-        );
-        prompts.push(
-          new PromptSpec(
-            file,
-            "call",
-            "allArgs",
-            allArgsLoc,
-            allArgsLoc.getText()
-          )
-        );
-      } else if (args.length !== 1) {
-        // skip if there is only one argument because then the same placeholder is already created for the first argument
-        const firstArg = args[0];
-        const lastArg = args[args.length - 1];
-        const allArgsLoc = new SourceLocation(
-          file,
-          firstArg.loc!.start.line,
-          firstArg.loc!.start.column,
-          lastArg.loc!.end.line,
-          lastArg.loc!.end.column
-        );
-        const parentLoc = new SourceLocation(
-          file,
-          nodePath.node.loc!.start.line,
-          nodePath.node.loc!.start.column,
-          nodePath.node.loc!.end.line,
-          nodePath.node.loc!.end.column
-        );
-        prompts.push(
-          new PromptSpec(
-            file,
-            "call",
-            "allArgs",
-            allArgsLoc,
-            allArgsLoc.getText(),
-            parentLoc
-          )
-        );
-      }
+      this.promptSpecs.push(new PromptSpec(file, "if", "test", loc, loc.getText()));
     }
-    return prompts;
+  }
+
+  private createPromptSpecForSwitch(file: string, path: any) : void {
+    if (path.isSwitchStatement()) {
+      const discriminant = path.node.discriminant;
+      const loc = new SourceLocation(
+        file,
+        discriminant.loc!.start.line,
+        discriminant.loc!.start.column,
+        discriminant.loc!.end.line,
+        discriminant.loc!.end.column
+      );
+      this.promptSpecs.push(new PromptSpec(file, "switch", "discriminant", loc, loc.getText()));
+    }
+  }
+
+  private createPromptSpecForWhile(file: string, path: any) {
+    if (path.isWhileStatement()) {
+      const test = path.node.test;
+      const loc = new SourceLocation(
+        file,
+        test.loc!.start.line,
+        test.loc!.start.column,
+        test.loc!.end.line,
+        test.loc!.end.column
+      );
+      this.promptSpecs.push(new PromptSpec(file, "while", "test", loc, loc.getText()));
+    }
+  }
+
+  private createPromptSpecForDoWhile(file: string, path: any) {
+    if (path.isDoWhileStatement()) {
+      const test = path.node.test;
+      const loc = new SourceLocation(
+        file,
+        test.loc!.start.line,
+        test.loc!.start.column,
+        test.loc!.end.line,
+        test.loc!.end.column
+      );
+      this.promptSpecs.push(new PromptSpec(file, "do-while", "test", loc, loc.getText()));
+    }
+  }
+
+  private createPromptSpecsForFor(file: string, path: any) {
+    if (path.isForStatement()) {
+      const init = path.node.init;
+      const test = path.node.test;
+      const update = path.node.update;
+      const initLoc = new SourceLocation(
+        file,
+        init!.loc!.start.line,
+        init!.loc!.start.column,
+        init!.loc!.end.line,
+        init!.loc!.end.column
+      );
+      const testLoc = new SourceLocation(
+        file,
+        test!.loc!.start.line,
+        test!.loc!.start.column,
+        test!.loc!.end.line,
+        test!.loc!.end.column
+      );
+      const updateLoc = new SourceLocation(
+        file,
+        update!.loc!.start.line,
+        update!.loc!.start.column,
+        update!.loc!.end.line,
+        update!.loc!.end.column
+      );
+      const loopHeaderLoc = new SourceLocation(
+        file,
+        init!.loc!.start.line,
+        init!.loc!.start.column,
+        update!.loc!.end.line,
+        update!.loc!.end.column
+      );
+      const parentLoc = new SourceLocation(
+        file,
+        path.node.loc!.start.line,
+        path.node.loc!.start.column,
+        path.node.loc!.end.line,
+        path.node.loc!.end.column
+      );
+      const newPromptSpecs = [
+        new PromptSpec(file, "for", "init", initLoc, initLoc.getText(), parentLoc),
+        new PromptSpec(file, "for", "test", testLoc, testLoc.getText(), parentLoc),
+        new PromptSpec(file, "for", "update", updateLoc, updateLoc.getText(), parentLoc),
+        new PromptSpec(
+          file,
+          "for",
+          "header",
+          loopHeaderLoc,
+          loopHeaderLoc.getText(),
+          parentLoc
+        ),
+      ];
+      this.promptSpecs.push(...newPromptSpecs);
+    } 
+  }
+
+  private createPromptSpecsForForIn(file: string, path: any) {
+    if (path.isForInStatement()) {
+      const left = path.node.left;
+      const right = path.node.right;
+      const leftLoc = new SourceLocation(
+        file,
+        left!.loc!.start.line,
+        left!.loc!.start.column,
+        left!.loc!.end.line,
+        left!.loc!.end.column
+      );
+      const rightLoc = new SourceLocation(
+        file,
+        right!.loc!.start.line,
+        right!.loc!.start.column,
+        right!.loc!.end.line,
+        right!.loc!.end.column
+      );
+      const loopHeaderLoc = new SourceLocation(
+        file,
+        left!.loc!.start.line,
+        left!.loc!.start.column,
+        right!.loc!.end.line,
+        right!.loc!.end.column
+      );
+      const parentLoc = new SourceLocation(
+        file,
+        path.node.loc!.start.line,
+        path.node.loc!.start.column,
+        path.node.loc!.end.line,
+        path.node.loc!.end.column
+      );
+      const newPromptSpecs = [
+        new PromptSpec(file, "for-in", "left", leftLoc, leftLoc.getText(), parentLoc),
+        new PromptSpec(file, "for-in", "right", rightLoc, rightLoc.getText(), parentLoc),
+        new PromptSpec(
+          file,
+          "for-in",
+          "header",
+          loopHeaderLoc,
+          loopHeaderLoc.getText(),
+          parentLoc
+        ),
+      ];
+      this.promptSpecs.push(...newPromptSpecs);
+    }
+  }
+
+  private createPromptSpecsForForOf(file: string, path: any) {
+    if (path.isForOfStatement()) {
+      const left = path.node.left;
+      const right = path.node.right;
+      const leftLoc = new SourceLocation(
+        file,
+        left!.loc!.start.line,
+        left!.loc!.start.column,
+        left!.loc!.end.line,
+        left!.loc!.end.column
+      );
+      const rightLoc = new SourceLocation(
+        file,
+        right!.loc!.start.line,
+        right!.loc!.start.column,
+        right!.loc!.end.line,
+        right!.loc!.end.column
+      );
+      const loopHeaderLoc = new SourceLocation(
+        file,
+        left!.loc!.start.line,
+        left!.loc!.start.column,
+        right!.loc!.end.line,
+        right!.loc!.end.column
+      );
+      const parentLoc = new SourceLocation(
+        file,
+        path.node.loc!.start.line,
+        path.node.loc!.start.column,
+        path.node.loc!.end.line,
+        path.node.loc!.end.column
+      );
+      const newPromptSpecs = [
+        new PromptSpec(file, "for-of", "left", leftLoc, leftLoc.getText(), parentLoc),
+        new PromptSpec(file, "for-of", "right", rightLoc, rightLoc.getText()),
+        new PromptSpec(
+          file,
+          "for-of",
+          "loopHeader",
+          loopHeaderLoc,
+          loopHeaderLoc.getText(),
+          parentLoc
+        ),
+      ];
+      this.promptSpecs.push(...newPromptSpecs);
+    } 
+  }
+
+  private createPromptSpecsForCall(file: string, path: any) {
+    if (path.isCallExpression() && path.node.loc!.start.line === path.node.loc!.end.line) {
+      // for now, restrict to calls on a single line
+      const callee = path.node.callee;
+      const args = path.node.arguments;
+      const newPromptSpecs = new Array<PromptSpec>();
+      const calleeLoc = new SourceLocation(
+        file,
+        callee.loc!.start.line,
+        callee.loc!.start.column,
+        callee.loc!.end.line,
+        callee.loc!.end.column
+      );
+      if (calleeLoc.getText() !== "require"){ // don't mutate calls to require
+        newPromptSpecs.push(
+          new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
+        );
+        for (let argNr = 0; argNr < args.length; argNr++) {
+          const arg = args[argNr];
+          const argLoc = new SourceLocation(
+            file,
+            arg.loc!.start.line,
+            arg.loc!.start.column,
+            arg.loc!.end.line,
+            arg.loc!.end.column
+          );
+          newPromptSpecs.push(
+            new PromptSpec(file, "call", "arg" + argNr, argLoc, argLoc.getText())
+          );
+        }
+        if (args.length === 0) {
+          // find location between parentheses
+          const loc = path.node.loc!;
+          const allArgsLoc = new SourceLocation(
+            file,
+            callee.loc!.end.line,
+            callee.loc!.end.column + 1,
+            loc.end.line,
+            loc.end.column - 1
+          );
+          newPromptSpecs.push(
+            new PromptSpec(
+              file,
+              "call",
+              "allArgs",
+              allArgsLoc,
+              allArgsLoc.getText()
+            )
+          );
+        } else if (args.length !== 1) {
+          // skip if there is only one argument because then the same placeholder is already created for the first argument
+          const firstArg = args[0];
+          const lastArg = args[args.length - 1];
+          const allArgsLoc = new SourceLocation(
+            file,
+            firstArg.loc!.start.line,
+            firstArg.loc!.start.column,
+            lastArg.loc!.end.line,
+            lastArg.loc!.end.column
+          );
+          const parentLoc = new SourceLocation(
+            file,
+            path.node.loc!.start.line,
+            path.node.loc!.start.column,
+            path.node.loc!.end.line,
+            path.node.loc!.end.column
+          );
+          newPromptSpecs.push(
+            new PromptSpec(
+              file,
+              "call",
+              "allArgs",
+              allArgsLoc,
+              allArgsLoc.getText(),
+              parentLoc
+            )
+          );
+        }
+      }
+      this.promptSpecs.push(...newPromptSpecs);
+    }
   }
 
   /**

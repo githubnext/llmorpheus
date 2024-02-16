@@ -195,7 +195,12 @@ export class MutantGenerator {
               const candidateMutant = this.createCandidateMutant(prompt, substitution);
               if (prompt.spec.isExpressionPlaceholder()) {
                 ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleExpression(substitution, prompt, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid)); 
-              } else if (prompt.spec.isArgListPlaceHolder() || prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder()) {
+              } else if (prompt.spec.isArgListPlaceHolder() || 
+                         prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() || 
+                         prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
+                         prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
+                         prompt.spec.isCalleePlaceHolder()) {
+                         // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
                 ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleIncompleteFragment(prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
               } else { // statement placeholder
                 ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
@@ -334,7 +339,6 @@ export class MutantGenerator {
         nrDuplicate++;
       }
     } catch (e) {
-      // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
       nrSyntacticallyInvalid++;
     }
     return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
