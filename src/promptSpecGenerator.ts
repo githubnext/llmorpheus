@@ -294,7 +294,7 @@ export class PromptSpecGenerator {
         new PromptSpec(
           file,
           "for-of",
-          "loopHeader",
+          "header",
           loopHeaderLoc,
           loopHeaderLoc.getText(),
           parentLoc

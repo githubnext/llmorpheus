@@ -103,7 +103,7 @@ export class MutantGenerator {
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
       (!this.isDeclaration(substitution) &&
-        prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "loopheader"))
+        prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "header"))
     );
   }
 
