@@ -86,7 +86,8 @@ export class MutantGenerator {
                '**/benchmark', 
                '**/benchmarks',
                "**/*.spec.*", 
-               '**/build'] 
+               '**/build',
+               '**/test.js'] 
     });
     return files;
   }
@@ -150,8 +151,9 @@ export class MutantGenerator {
     );
     const files = await this.findSourceFilesToMutate(packagePath);
 
+    const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
     this.printAndLog(
-      `generating mutants for the following files: ${files.join(", ")}\n`
+      `generating mutants for the following files: ${filesWithoutProjectPath.join(",")}\n`
     );
 
     const generator = new PromptSpecGenerator(
