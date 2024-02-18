@@ -6,6 +6,7 @@ import * as handlebars from "handlebars";
 import { Prompt } from "./Prompt";
 import { SourceLocation } from "./SourceLocation";
 import { PromptSpec } from "./PromptSpec";
+import { charAtPosition, nextPosition } from "./util";
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
@@ -89,12 +90,6 @@ export class PromptSpecGenerator {
     return promptSpecs;
   }
 
-
-
-  // private stripPackagePathFromFileName(fileName: string) : string {
-  //   return fileName.replace(this.packagePath, '');
-  // }
-
   private createPromptSpecForIf(file: string, path: any): void {
     if (path.isIfStatement()) {
       const test = path.node.test;
@@ -156,6 +151,7 @@ export class PromptSpecGenerator {
       const init = path.node.init;
       const test = path.node.test;
       const update = path.node.update;
+      
       const initLoc = new SourceLocation(
         file,
         init!.loc!.start.line,
@@ -170,20 +166,61 @@ export class PromptSpecGenerator {
         test!.loc!.end.line,
         test!.loc!.end.column
       );
-      const updateLoc = new SourceLocation(
-        file,
-        update!.loc!.start.line,
-        update!.loc!.start.column,
-        update!.loc!.end.line,
-        update!.loc!.end.column
-      );
-      const loopHeaderLoc = new SourceLocation(
-        file,
-        init!.loc!.start.line,
-        init!.loc!.start.column,
-        update!.loc!.end.line,
-        update!.loc!.end.column
-      );
+      
+      let updateLoc: SourceLocation;
+      let loopHeaderLoc: SourceLocation;
+      if (update) {
+        updateLoc = new SourceLocation(
+          file,
+          update!.loc!.start.line,
+          update!.loc!.start.column,
+          update!.loc!.end.line,
+          update!.loc!.end.column
+        );
+        loopHeaderLoc = new SourceLocation(
+          file,
+          init!.loc!.start.line,
+          init!.loc!.start.column,
+          update!.loc!.end.line,
+          update!.loc!.end.column
+        );
+      } else {
+        // if there is no update, then scan the source code until we find the semicolon
+        // following the test, and use that as the start of the updater; likewise, scan
+        // onwards until we see a close parenthesis, and use that as the end of the updater
+        const code = fs.readFileSync(file, "utf8");
+
+        let updateStartLine = test.loc!.end.line;
+        let updateStartColumn = test.loc!.end.column;
+        // the loop's updater starts at the position of the first non-newline character after the test
+        while (charAtPosition(code, updateStartLine, updateStartColumn) !== ";") {
+          const next = nextPosition(code, updateStartLine, updateStartColumn);
+          updateStartLine = next.line;
+          updateStartColumn = next.column;
+        }
+        // the loop's updater ends at the position before a close parenthesis (the end of the loop header)
+        let updateEndLine = updateStartLine;
+        let updateEndColumn = updateStartColumn;
+        while (charAtPosition(code, updateEndLine, updateEndColumn) !== ")") {
+          const next = nextPosition(code, updateEndLine, updateEndColumn);
+          updateEndLine = next.line;
+          updateEndColumn = next.column;
+        }
+        updateLoc = new SourceLocation(
+          file,
+          updateStartLine,
+          updateStartColumn,
+          updateEndLine,
+          updateEndColumn
+        );
+        loopHeaderLoc = new SourceLocation(
+          file,
+          init!.loc!.start.line,
+          init!.loc!.start.column,
+          updateEndLine,
+          updateEndColumn
+        );
+      }
       const parentLoc = new SourceLocation(
         file,
         path.node.loc!.start.line,

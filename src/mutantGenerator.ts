@@ -87,7 +87,11 @@ export class MutantGenerator {
                '**/benchmarks',
                "**/*.spec.*", 
                '**/build',
-               '**/test.js'] 
+               '**/test.js',
+               '**/Gruntfile.js',
+               '**/design/**',
+               '**/spec/**',
+               '**/scripts/**',] 
     });
     return files;
   }

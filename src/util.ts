@@ -1,6 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
 
+/** 
+ * Find the start column of a code fragmenton a given line in a file.
+ */
 export function getStartColumn(
   projectPath: string,
   fileName: string,
@@ -15,6 +18,9 @@ export function getStartColumn(
   return line.indexOf(originalCode);
 }
 
+/**
+ * Find the end column of a code fragment on a given line in a file.
+ */
 export function getEndColumn(
   projectPath: string,
   fileName: string,
@@ -46,7 +52,7 @@ export function hasUnbalancedParens(code: string): boolean {
   return nrOpen !== nrClose;
 }
 
-function insertCommentOnLineWithPlaceholder(code: string, comment: string) {
+export function insertCommentOnLineWithPlaceholder(code: string, comment: string) {
   const lines = code.split("\n");
   const lineWithPlaceholder = lines.findIndex((line) =>
     line.includes("<PLACEHOLDER>")
@@ -106,4 +112,18 @@ export function getText(
   const startIndex = toIndex(code, startLine, startColumn);
   const endIndex = toIndex(code, endLine, endColumn);
   return code.substring(startIndex, endIndex);
+}
+
+export function charAtPosition(code: string, line: number, column: number) {
+  const lines = code.split("\n");
+  return lines[line - 1].charAt(column - 1);
+}
+
+export function nextPosition(code: string, line: number, column: number) {
+  const lines = code.split("\n");
+  if (column < lines[line - 1].length) {
+    return { line, column: column + 1 };
+  } else {
+    return { line: line + 1, column: 1 };
+  }
 }
