@@ -69,8 +69,15 @@ if (require.main === module) {
           default: 250,
           demandOption: false,
           description: "maximum number of tokens in a completion",
-        }
+        },
+        cacheDir: {
+          type: "string",
+          default: path.join(__dirname, "..", ".llm-cache"),
+          demandOption: false,
+          description: "path to directory where cache files are located",
+        },
       });
+
     const argv = await parser.argv;
 
     if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && 
@@ -108,7 +115,7 @@ if (require.main === module) {
       throw new Error(`Invalid model name: ${argv.model}`);
     }
     if (argv.caching) {
-      model = new CachingModel(baseModel);
+      model = new CachingModel(baseModel, argv.cacheDir);
     } else {
       model = baseModel;
     }

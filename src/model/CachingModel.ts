@@ -4,16 +4,15 @@ import crypto from "crypto";
 import { IModel } from "./IModel";
 import { PostOptions, defaultPostOptions } from "./IModel";
 
-const ROOT_CACHE_DIR = path.join(__dirname, "..", "..", ".llm-cache");
 /**
  * A model that wraps another model and caches its results.
 */
 export class CachingModel implements IModel {
   private modelName: string;
   
-  constructor(private model: IModel, private instanceOptions: PostOptions = {}) {
+  constructor(private model: IModel, private cacheDir: string, private instanceOptions: PostOptions = {}) {
     this.modelName = `${model.getModelName()}`;
-    console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+    console.log(`Using cache dir: ${cacheDir}`);
   }
   getModelName(): string {
     return `${this.modelName}`;
@@ -50,7 +49,7 @@ export class CachingModel implements IModel {
 
     // compute path to cache file
     const cacheDir = path.join(
-      ROOT_CACHE_DIR,
+      this.cacheDir,
       this.model.getModelName(),
       hash.slice(0, 2)
     );

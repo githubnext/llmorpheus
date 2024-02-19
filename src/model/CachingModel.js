@@ -8,16 +8,16 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const crypto_1 = __importDefault(require("crypto"));
 const IModel_1 = require("./IModel");
-const ROOT_CACHE_DIR = path_1.default.join(__dirname, "..", "..", ".llm-cache");
 /**
  * A model that wraps another model and caches its results.
 */
 class CachingModel {
-    constructor(model, instanceOptions = {}) {
+    constructor(model, cacheDir, instanceOptions = {}) {
         this.model = model;
+        this.cacheDir = cacheDir;
         this.instanceOptions = instanceOptions;
         this.modelName = `${model.getModelName()}`;
-        console.log(`Using cache dir: ${ROOT_CACHE_DIR}`);
+        console.log(`Using cache dir: ${cacheDir}`);
     }
     getModelName() {
         return `${this.modelName}`;
@@ -44,7 +44,7 @@ class CachingModel {
         });
         const hash = crypto_1.default.createHash("sha256").update(hashKey).digest("hex");
         // compute path to cache file
-        const cacheDir = path_1.default.join(ROOT_CACHE_DIR, this.model.getModelName(), hash.slice(0, 2));
+        const cacheDir = path_1.default.join(this.cacheDir, this.model.getModelName(), hash.slice(0, 2));
         const cacheFile = path_1.default.join(cacheDir, hash);
         // if the cache file exists, return its contents
         if (fs_1.default.existsSync(cacheFile)) {
