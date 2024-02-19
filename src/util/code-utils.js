@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getEnv = exports.nextPosition = exports.charAtPosition = exports.getText = exports.toIndex = exports.insertCommentOnLineWithPlaceholder = exports.hasUnbalancedParens = exports.isObjectLiteral = exports.getEndColumn = exports.getStartColumn = void 0;
+exports.isDeclaration = exports.getEnv = exports.nextPosition = exports.charAtPosition = exports.getText = exports.toIndex = exports.insertCommentOnLineWithPlaceholder = exports.hasUnbalancedParens = exports.isObjectLiteral = exports.getEndColumn = exports.getStartColumn = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 /**
@@ -148,4 +148,8 @@ function getEnv(name) {
     return value;
 }
 exports.getEnv = getEnv;
+function isDeclaration(compl) {
+    return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+}
+exports.isDeclaration = isDeclaration;
 //# sourceMappingURL=code-utils.js.map

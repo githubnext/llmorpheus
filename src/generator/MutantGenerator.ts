@@ -8,7 +8,7 @@ import { PromptSpecGenerator } from "./PromptSpecGenerator";
 import { IModel } from "../model/IModel";
 import { Completion } from "../prompt/Completion";
 import { Prompt } from "../prompt/Prompt";
-import { hasUnbalancedParens } from "../util/code-utils";
+import { hasUnbalancedParens, isDeclaration } from "../util/code-utils";
 
 /**
  * Suggests mutations in given files using the specified rules
@@ -97,9 +97,7 @@ export class MutantGenerator {
     return files;
   }
 
-  private isDeclaration(compl: string) {
-    return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
-  }
+
 
   /** Determine situations where a candidate mutant is invalid */
   private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {
@@ -108,7 +106,7 @@ export class MutantGenerator {
       hasUnbalancedParens(substitution) ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
-      (!this.isDeclaration(substitution) &&
+      (!isDeclaration(substitution) &&
         prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "header"))
     );
   }
@@ -170,10 +168,12 @@ export class MutantGenerator {
     );
     generator.writePromptFiles();
 
-    let nrSyntacticallyValid = 0;
-    let nrSyntacticallyInvalid = 0;
-    let nrIdentical = 0;
-    let nrDuplicate = 0;
+    const mutationStats = { 
+      nrSyntacticallyValid: 0, 
+      nrSyntacticallyInvalid: 0,
+      nrIdentical: 0,
+      nrDuplicate : 0
+    };
 
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
@@ -191,24 +191,24 @@ export class MutantGenerator {
           while ((match = regExp.exec(completion.text)) !== null) {
             const substitution = match[1];
             if (substitution === prompt.getOrig()) {
-              nrIdentical++;
+              mutationStats.nrIdentical++;
             } else if (prompt.getOrig().includes("Object.") ||
               this.isInvalidSubstitution(prompt, substitution) ||
-              this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
-              nrSyntacticallyInvalid++;
+              isDeclaration(prompt.getOrig()) && !isDeclaration(substitution)) {
+                mutationStats.nrSyntacticallyInvalid++;
             } else {
               const candidateMutant = this.createCandidateMutant(prompt, substitution);
               if (prompt.spec.isExpressionPlaceholder()) {
-                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleExpression(substitution, prompt, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
+                this.handleExpression(substitution, prompt, completion, mutants, mutationStats);
               } else if (prompt.spec.isArgListPlaceHolder() ||
                 prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() ||
                 prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
                 prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
                 prompt.spec.isCalleePlaceHolder()) {
                 // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
-                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleIncompleteFragment(prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
+                this.handleIncompleteFragment(prompt, substitution, completion, mutants, mutationStats);
               } else { // statement placeholder
-                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
+                this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, mutationStats);
               }
             }
           }
@@ -218,7 +218,7 @@ export class MutantGenerator {
       }
     }
 
-    const nrCandidates = nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
+    const nrCandidates = mutationStats.nrSyntacticallyValid + mutationStats.nrSyntacticallyInvalid + mutationStats.nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
     const locations = new Array<string>();
@@ -231,13 +231,13 @@ export class MutantGenerator {
     const nrLocations = locations.length;
 
     this.printAndLog(
-      `discarding ${nrSyntacticallyInvalid} syntactically invalid mutants\n`
+      `discarding ${mutationStats.nrSyntacticallyInvalid} syntactically invalid mutants\n`
     );
     this.printAndLog(
-      `discarding ${nrIdentical} mutant candidates that are identical to the original code\n`
+      `discarding ${mutationStats.nrIdentical} mutant candidates that are identical to the original code\n`
     );
     this.printAndLog(
-      `discarding ${nrDuplicate} duplicate mutants\n`
+      `discarding ${mutationStats.nrDuplicate} duplicate mutants\n`
     );
 
     // write mutants to file
@@ -246,6 +246,10 @@ export class MutantGenerator {
 
     // write summary of results to "results.json"
     const resultsFileName = path.join(this.outputDir, this.getSubDirName(), "summary.json");
+    const nrSyntacticallyValid = mutationStats.nrSyntacticallyValid;
+    const nrSyntacticallyInvalid = mutationStats.nrSyntacticallyInvalid;
+    const nrIdentical = mutationStats.nrIdentical;
+    const nrDuplicate = mutationStats.nrDuplicate;
     fs.writeFileSync(
       resultsFileName,
       JSON.stringify(
@@ -275,7 +279,7 @@ export class MutantGenerator {
   /**
    * Handle the case where the mutated code fragment is an expression.
    */
-  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
     try {
       parser.parseExpression(substitution);
 
@@ -294,15 +298,14 @@ export class MutantGenerator {
 
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        nrSyntacticallyValid++;
+        mutationStats.nrSyntacticallyValid++;
       } else {
-        nrDuplicate++;
+        mutationStats.nrDuplicate++;
       }
     } catch (e) {
       // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-      nrSyntacticallyInvalid++;
+      mutationStats.nrSyntacticallyInvalid++;
     }
-    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
 
   /**
@@ -312,7 +315,7 @@ export class MutantGenerator {
   * of the code fragment. This is the case for replacing a list of call arguments or the
   * header or left side (var declaration) of a for-of loop.
   */
-  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
     try {
       const expandedOrig = prompt.spec.parentLocation!.getText();
       const expandedSubstitution = expandedOrig.replace(
@@ -338,20 +341,19 @@ export class MutantGenerator {
       );
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        nrSyntacticallyValid++;
+        mutationStats.nrSyntacticallyValid++;
       } else {
-        nrDuplicate++;
+        mutationStats.nrDuplicate++;
       }
     } catch (e) {
-      nrSyntacticallyInvalid++;
+      mutationStats.nrSyntacticallyInvalid++;
     }
-    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
 
   /**
    * Handle the case where the mutated code fragment is a statement.
    */
-  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
     try {
       parser.parse(candidateMutant, {
         sourceType: "module",
@@ -372,15 +374,14 @@ export class MutantGenerator {
       );
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        nrSyntacticallyValid++;
+        mutationStats.nrSyntacticallyValid++;
       } else {
-        nrDuplicate++;
+        mutationStats.nrDuplicate++;
       }
     } catch (e) {
       // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-      nrSyntacticallyInvalid++;
+      mutationStats.nrSyntacticallyInvalid++;
     }
-    return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
 
   public async getCompletionsForPrompt(prompt: Prompt): Promise<Completion[]> {

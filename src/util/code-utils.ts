@@ -135,3 +135,7 @@ export function getEnv(name: string): string {
   }
   return value;
 }
+
+export function isDeclaration(compl: string): boolean {
+  return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+}
