@@ -6,7 +6,7 @@ import * as handlebars from "handlebars";
 import { Prompt } from "./Prompt";
 import { SourceLocation } from "./SourceLocation";
 import { PromptSpec } from "./PromptSpec";
-import { charAtPosition, nextPosition } from "./util";
+import { charAtPosition, nextPosition } from "./util/code-utils";
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.

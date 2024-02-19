@@ -2,7 +2,7 @@ import axios from "axios";
 import { performance } from "perf_hooks";
 import { IModel } from "./IModel";
 import { OpenAIPostOptions, defaultPostOptions, defaultOpenAIPostoptions } from "./IModel";
-import { getEnv } from "../util";
+import { getEnv } from "../util/code-utils";
 
 /**
  * Interface for the OpenAI model.

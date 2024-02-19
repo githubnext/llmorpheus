@@ -1,11 +1,11 @@
 import fs from "fs";
+import path from "path";
 
-import { MockModel } from "../src/model";
+import { MockModel } from "../src/model/MockModel";
 import { PromptSpecGenerator } from "../src/promptSpecGenerator";
 import { MutantGenerator } from "../src/mutantGenerator";
 import { expect } from "chai";
 import { assert } from "console";
-import path from "path";
 
 const mockModelDir = "./test/input/mockModel";
 const testProjectPath = "./test/input/testProject/countries-and-timezones";

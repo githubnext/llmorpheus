@@ -1,10 +1,10 @@
 import axios from "axios";
 import { performance } from "perf_hooks";
-import RateLimiter from "../RateLimiter";
-import { retry } from '../PromiseRetry';
+import RateLimiter from "../util/promise-utils";
+import { retry } from "../util/promise-utils";
 import { IModel } from "./IModel";
 import { PostOptions, defaultPostOptions } from "./IModel";
-import { getEnv } from "../util";
+import { getEnv } from "../util/code-utils";
 
 
 export abstract class PerplexityAIModel implements IModel {

@@ -1,9 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 
-/** 
+/**
  * Find the start column of a code fragmenton a given line in a file.
  */
+
 export function getStartColumn(
   projectPath: string,
   fileName: string,
@@ -17,10 +18,10 @@ export function getStartColumn(
   const line = lines[lineNr - 1];
   return line.indexOf(originalCode);
 }
-
 /**
  * Find the end column of a code fragment on a given line in a file.
  */
+
 export function getEndColumn(
   projectPath: string,
   fileName: string,
@@ -54,8 +55,7 @@ export function hasUnbalancedParens(code: string): boolean {
 
 export function insertCommentOnLineWithPlaceholder(code: string, comment: string) {
   const lines = code.split("\n");
-  const lineWithPlaceholder = lines.findIndex((line) =>
-    line.includes("<PLACEHOLDER>")
+  const lineWithPlaceholder = lines.findIndex((line) => line.includes("<PLACEHOLDER>")
   );
   if (lineWithPlaceholder === -1) {
     throw new Error("No line with placeholder found");
@@ -66,7 +66,6 @@ export function insertCommentOnLineWithPlaceholder(code: string, comment: string
     return lines.join("\n");
   }
 }
-
 /**
  * Convert [line,col] to index.
  * @param code the code
@@ -74,6 +73,7 @@ export function insertCommentOnLineWithPlaceholder(code: string, comment: string
  * @param column the column
  * @returns the index
  */
+
 export function toIndex(code: string, line: number, column: number) {
   let index = 0;
   let lineCount = 1;
@@ -92,7 +92,6 @@ export function toIndex(code: string, line: number, column: number) {
   }
   return index;
 }
-
 /**
  * Retrieve the code fragment from [startLine, startColumn] to [endLine, endColumn].
  * @param code the code
@@ -102,6 +101,7 @@ export function toIndex(code: string, line: number, column: number) {
  * @param endColumn the end column
  * @returns the code fragment
  */
+
 export function getText(
   code: string,
   startLine: number,

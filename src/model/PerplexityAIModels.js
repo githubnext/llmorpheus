@@ -6,21 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Llama2_70bModel = exports.CodeLlama34bInstructModel = exports.PerplexityAIModel = void 0;
 const axios_1 = __importDefault(require("axios"));
 const perf_hooks_1 = require("perf_hooks");
-const RateLimiter_1 = __importDefault(require("../RateLimiter"));
-const PromiseRetry_1 = require("../PromiseRetry");
+const promise_utils_1 = __importDefault(require("../util/promise-utils"));
+const promise_utils_2 = require("../util/promise-utils");
 const IModel_1 = require("./IModel");
-const util_1 = require("../util");
+const code_utils_1 = require("../util/code-utils");
 class PerplexityAIModel {
     constructor(instanceOptions = {}, rateLimit, nrAttempts) {
         this.nrAttempts = nrAttempts;
-        this.apiEndpoint = (0, util_1.getEnv)("PERPLEXITY_AI_API_ENDPOINT");
+        this.apiEndpoint = (0, code_utils_1.getEnv)("PERPLEXITY_AI_API_ENDPOINT");
         this.header = {
             'accept': 'application/json',
-            'authorization': (0, util_1.getEnv)("PERPLEXITY_AI_AUTH_HEADERS"),
+            'authorization': (0, code_utils_1.getEnv)("PERPLEXITY_AI_AUTH_HEADERS"),
             'content-type': 'application/json'
         };
         this.instanceOptions = instanceOptions;
-        this.rateLimiter = new RateLimiter_1.default(rateLimit);
+        this.rateLimiter = new promise_utils_1.default(rateLimit);
         console.log(`*** Using ${this.getModelName()} with rate limit ${rateLimit} and ${nrAttempts} attempts`);
     }
     getTemperature() {
@@ -62,7 +62,7 @@ class PerplexityAIModel {
         perf_hooks_1.performance.mark("llm-query-start");
         let res;
         try {
-            res = await (0, PromiseRetry_1.retry)(() => this.rateLimiter.next(() => axios_1.default.post(this.apiEndpoint, body, { headers: this.header })), this.nrAttempts);
+            res = await (0, promise_utils_2.retry)(() => this.rateLimiter.next(() => axios_1.default.post(this.apiEndpoint, body, { headers: this.header })), this.nrAttempts);
             // console.log(`*** completion is: ${res.data.response}`);
         }
         catch (e) {

@@ -7,7 +7,7 @@ import { Completion } from "./Completion";
 import { Prompt } from "./Prompt";
 import * as parser from "@babel/parser";
 import path from "path";
-import { hasUnbalancedParens } from "./util";
+import { hasUnbalancedParens } from "./util/code-utils";
 import { PromptSpecGenerator } from "./promptSpecGenerator";
 
 /**

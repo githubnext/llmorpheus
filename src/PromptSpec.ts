@@ -2,7 +2,7 @@ import * as fs from "fs";
 import traverse, { NodePath } from "@babel/traverse";
 import * as parser from "@babel/parser";
 import { SourceLocation } from "./SourceLocation";
-import { getText } from "./util";
+import { getText } from "./util/code-utils";
 
 /**
  * A PromptSpec specifies all information associated with code fragments that are included in prompts.

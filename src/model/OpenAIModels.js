@@ -7,7 +7,7 @@ exports.Gpt4Model = void 0;
 const axios_1 = __importDefault(require("axios"));
 const perf_hooks_1 = require("perf_hooks");
 const IModel_1 = require("./IModel");
-const util_1 = require("../util");
+const code_utils_1 = require("../util/code-utils");
 /**
  * Abstraction for the gpt4 model.
  */
@@ -44,8 +44,8 @@ class Gpt4Model {
      * @returns A promise that resolves to a set of completions.
      */
     async query(prompt, requestPostOptions = {}) {
-        const apiEndpoint = (0, util_1.getEnv)("GPT4_API_ENDPOINT");
-        const apiKey = (0, util_1.getEnv)("GPT4_API_KEY");
+        const apiEndpoint = (0, code_utils_1.getEnv)("GPT4_API_ENDPOINT");
+        const apiKey = (0, code_utils_1.getEnv)("GPT4_API_KEY");
         const headers = {
             "Content-Type": "application/json",
             "api-key": apiKey,
