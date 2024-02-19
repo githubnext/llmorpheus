@@ -10,6 +10,13 @@ import { Completion } from "../prompt/Completion";
 import { Prompt } from "../prompt/Prompt";
 import { hasUnbalancedParens, isDeclaration } from "../util/code-utils";
 
+type MutationStats = { 
+  nrSyntacticallyValid: number, 
+  nrSyntacticallyInvalid: number,
+  nrIdentical: number,
+  nrDuplicate: number
+};
+
 /**
  * Suggests mutations in given files using the specified rules
  */
@@ -168,7 +175,7 @@ export class MutantGenerator {
     );
     generator.writePromptFiles();
 
-    const mutationStats = { 
+    const mutationStats: MutationStats = { 
       nrSyntacticallyValid: 0, 
       nrSyntacticallyInvalid: 0,
       nrIdentical: 0,
@@ -218,6 +225,14 @@ export class MutantGenerator {
       }
     }
 
+    this.reportAndWriteResults(mutants, mutationStats);
+  }
+
+  /**
+   * Report results and write results of the mutation generation to files in the output directory.
+   */
+  private reportAndWriteResults(mutants: Mutant[], mutationStats: MutationStats) {
+
     const nrCandidates = mutationStats.nrSyntacticallyValid + mutationStats.nrSyntacticallyInvalid + mutationStats.nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
@@ -240,14 +255,6 @@ export class MutantGenerator {
       `discarding ${mutationStats.nrDuplicate} duplicate mutants\n`
     );
 
-    // write mutants to file
-    this.writeResults(mutants, mutationStats, nrCandidates, nrLocations);
-  }
-
-  /**
-   * Write the results of the mutation generation to files in the output directory.
-   */
-  private writeResults(mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrSyntacticallyInvalid: number; nrIdentical: number; nrDuplicate: number; }, nrCandidates: number, nrLocations: number) {
     const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
@@ -286,7 +293,7 @@ export class MutantGenerator {
   /**
    * Handle the case where the mutated code fragment is an expression.
    */
-  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
+  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
     try {
       parser.parseExpression(substitution);
 
@@ -322,7 +329,7 @@ export class MutantGenerator {
   * of the code fragment. This is the case for replacing a list of call arguments or the
   * header or left side (var declaration) of a for-of loop.
   */
-  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
+  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
     try {
       const expandedOrig = prompt.spec.parentLocation!.getText();
       const expandedSubstitution = expandedOrig.replace(
@@ -360,7 +367,7 @@ export class MutantGenerator {
   /**
    * Handle the case where the mutated code fragment is a statement.
    */
-  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrDuplicate: number; nrSyntacticallyInvalid: number }) {
+  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
     try {
       parser.parse(candidateMutant, {
         sourceType: "module",
