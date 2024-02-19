@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import traverse, { NodePath } from "@babel/traverse";
 import * as parser from "@babel/parser";
-import { SourceLocation } from "./SourceLocation";
+import { SourceLocation } from "./util/SourceLocation";
 import { getText } from "./util/code-utils";
 
 /**

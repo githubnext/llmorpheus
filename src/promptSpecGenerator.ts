@@ -4,7 +4,7 @@ import * as parser from "@babel/parser";
 import traverse from "@babel/traverse";
 import * as handlebars from "handlebars";
 import { Prompt } from "./Prompt";
-import { SourceLocation } from "./SourceLocation";
+import { SourceLocation } from "./util/SourceLocation";
 import { PromptSpec } from "./PromptSpec";
 import { charAtPosition, nextPosition } from "./util/code-utils";
 

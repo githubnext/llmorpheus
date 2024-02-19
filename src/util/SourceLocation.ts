@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { toIndex } from "./util/code-utils";
+import { toIndex } from "./code-utils";
 
 export class SourceLocation {
   constructor(
