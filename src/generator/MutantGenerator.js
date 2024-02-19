@@ -225,6 +225,12 @@ class MutantGenerator {
         this.printAndLog(`discarding ${mutationStats.nrIdentical} mutant candidates that are identical to the original code\n`);
         this.printAndLog(`discarding ${mutationStats.nrDuplicate} duplicate mutants\n`);
         // write mutants to file
+        this.writeResults(mutants, mutationStats, nrCandidates, nrLocations);
+    }
+    /**
+     * Write the results of the mutation generation to files in the output directory.
+     */
+    writeResults(mutants, mutationStats, nrCandidates, nrLocations) {
         const mutantsFileName = path_1.default.join(this.outputDir, this.getSubDirName(), "mutants.json");
         fs_1.default.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
         // write summary of results to "results.json"

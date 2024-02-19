@@ -241,6 +241,13 @@ export class MutantGenerator {
     );
 
     // write mutants to file
+    this.writeResults(mutants, mutationStats, nrCandidates, nrLocations);
+  }
+
+  /**
+   * Write the results of the mutation generation to files in the output directory.
+   */
+  private writeResults(mutants: Mutant[], mutationStats: { nrSyntacticallyValid: number; nrSyntacticallyInvalid: number; nrIdentical: number; nrDuplicate: number; }, nrCandidates: number, nrLocations: number) {
     const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
