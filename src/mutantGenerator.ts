@@ -3,8 +3,8 @@ import fg from "fast-glob";
 import { IModel } from "./model/IModel";
 
 import { Mutant } from "./Mutant";
-import { Completion } from "./Completion";
-import { Prompt } from "./Prompt";
+import { Completion } from "./prompt/Completion";
+import { Prompt } from "./prompt/Prompt";
 import * as parser from "@babel/parser";
 import path from "path";
 import { hasUnbalancedParens } from "./util/code-utils";
