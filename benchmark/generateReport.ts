@@ -1,10 +1,9 @@
 import * as fs from "fs";
 
-
-
-function printReport(
-  title: string
-) {
+/**
+ * Print a report of the mutation testing results.
+ */
+function printReport(title: string) {
     const results = fs.readdirSync(dirName);
     const firstBenchmarkName = results[0];
     const firstBenchmarkFile = fs.readFileSync(`${dirName}/${firstBenchmarkName}/MUTATION_TESTING/summary.json`, "utf8");
