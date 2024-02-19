@@ -50,7 +50,7 @@ export class PromptSpecGenerator {
   private createPrompts() {
     for (const promptSpec of this.promptSpecs) {
       const codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
-      const compiledTemplate = handlebars.compile(this.promptTemplate); // promote to field?
+      const compiledTemplate = handlebars.compile(this.promptTemplate); 
       const references = Array.from(promptSpec.references).join(", ");
       const orig = promptSpec.orig;
       const prompt = compiledTemplate({ code: codeWithPlaceholder, references, orig });

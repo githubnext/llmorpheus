@@ -185,47 +185,54 @@ export class MutantGenerator {
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
-      try {
-        const completions = await this.getCompletionsForPrompt(prompt);
-        for (const completion of completions) {
-          fs.writeFileSync(
-            `${path.join(this.outputDir, this.getSubDirName())}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
-            completion.text
-          );
-          const regExp = /```\n((?:.(?!```))*)\n```/gs;
-          let match;
-
-          while ((match = regExp.exec(completion.text)) !== null) {
-            const substitution = match[1];
-            if (substitution === prompt.getOrig()) {
-              mutationStats.nrIdentical++;
-            } else if (prompt.getOrig().includes("Object.") ||
-              this.isInvalidSubstitution(prompt, substitution) ||
-              isDeclaration(prompt.getOrig()) && !isDeclaration(substitution)) {
-                mutationStats.nrSyntacticallyInvalid++;
-            } else {
-              const candidateMutant = this.createCandidateMutant(prompt, substitution);
-              if (prompt.spec.isExpressionPlaceholder()) {
-                this.handleExpression(substitution, prompt, completion, mutants, mutationStats);
-              } else if (prompt.spec.isArgListPlaceHolder() ||
-                prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() ||
-                prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
-                prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
-                prompt.spec.isCalleePlaceHolder()) {
-                // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
-                this.handleIncompleteFragment(prompt, substitution, completion, mutants, mutationStats);
-              } else { // statement placeholder
-                this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, mutationStats);
-              }
-            }
-          }
-        }
-      } catch (e) {
-        console.log(`Error while processing prompt ${prompt.getId()}: ${e}`);
-      }
+      await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
     }
 
     this.reportAndWriteResults(mutants, mutationStats);
+  }
+
+  /**
+   * Generate mutants from a specific prompt.
+   */
+  private async generateMutantsFromPrompt(prompt: Prompt, mutationStats: MutationStats, mutants: Mutant[]) {
+    try {
+      const completions = await this.getCompletionsForPrompt(prompt);
+      for (const completion of completions) {
+        fs.writeFileSync(
+          `${path.join(this.outputDir, this.getSubDirName())}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
+          completion.text
+        );
+        const regExp = /```\n((?:.(?!```))*)\n```/gs;
+        let match;
+
+        while ((match = regExp.exec(completion.text)) !== null) {
+          const substitution = match[1];
+          if (substitution === prompt.getOrig()) {
+            mutationStats.nrIdentical++;
+          } else if (prompt.getOrig().includes("Object.") ||
+            this.isInvalidSubstitution(prompt, substitution) ||
+            isDeclaration(prompt.getOrig()) && !isDeclaration(substitution)) {
+            mutationStats.nrSyntacticallyInvalid++;
+          } else {
+            const candidateMutant = this.createCandidateMutant(prompt, substitution);
+            if (prompt.spec.isExpressionPlaceholder()) {
+              this.handleExpression(substitution, prompt, completion, mutants, mutationStats);
+            } else if (prompt.spec.isArgListPlaceHolder() ||
+              prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() ||
+              prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
+              prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
+              prompt.spec.isCalleePlaceHolder()) {
+              // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
+              this.handleIncompleteFragment(prompt, substitution, completion, mutants, mutationStats);
+            } else { // statement placeholder
+              this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, mutationStats);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`Error while processing prompt ${prompt.getId()}: ${e}`);
+    }
   }
 
   /**
