@@ -1,16 +1,17 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as parser from "@babel/parser";
-import traverse from "@babel/traverse";
-import * as handlebars from "handlebars";
-import { Prompt } from "./prompt/Prompt";
-import { SourceLocation } from "./util/SourceLocation";
-import { PromptSpec } from "./prompt/PromptSpec";
-import { charAtPosition, nextPosition } from "./util/code-utils";
+import * as parser from "@babel/parser"; 
+import traverse from "@babel/traverse"; 
+import * as fs from "fs"; 
+import * as handlebars from "handlebars"; 
+import * as path from "path"; 
+import { Prompt } from "../prompt/Prompt"; 
+import { PromptSpec } from "../prompt/PromptSpec"; 
+import { SourceLocation } from "../util/SourceLocation"; 
+import { charAtPosition, nextPosition } from "../util/code-utils"; 
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
  */
+
 export class PromptSpecGenerator {
   private promptSpecs = new Array<PromptSpec>();
   private prompts = new Array<Prompt>();
@@ -76,11 +77,10 @@ export class PromptSpecGenerator {
       enter(path) {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
         // const loc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
-
         outerThis.createPromptSpecForIf(file, path);
         outerThis.createPromptSpecForSwitch(file, path);
         outerThis.createPromptSpecForWhile(file, path);
-        outerThis.createPromptSpecForDoWhile(file, path); 
+        outerThis.createPromptSpecForDoWhile(file, path);
         outerThis.createPromptSpecsForFor(file, path);
         outerThis.createPromptSpecsForForIn(file, path);
         outerThis.createPromptSpecsForForOf(file, path);
@@ -104,7 +104,7 @@ export class PromptSpecGenerator {
     }
   }
 
-  private createPromptSpecForSwitch(file: string, path: any) : void {
+  private createPromptSpecForSwitch(file: string, path: any): void {
     if (path.isSwitchStatement()) {
       const discriminant = path.node.discriminant;
       const loc = new SourceLocation(
@@ -151,7 +151,7 @@ export class PromptSpecGenerator {
       const init = path.node.init;
       const test = path.node.test;
       const update = path.node.update;
-      
+
       const initLoc = new SourceLocation(
         file,
         init!.loc!.start.line,
@@ -166,7 +166,7 @@ export class PromptSpecGenerator {
         test!.loc!.end.line,
         test!.loc!.end.column
       );
-      
+
       let updateLoc: SourceLocation;
       let loopHeaderLoc: SourceLocation;
       if (update) {
@@ -242,7 +242,7 @@ export class PromptSpecGenerator {
         ),
       ];
       this.promptSpecs.push(...newPromptSpecs);
-    } 
+    }
   }
 
   private createPromptSpecsForForIn(file: string, path: any) {
@@ -338,7 +338,7 @@ export class PromptSpecGenerator {
         ),
       ];
       this.promptSpecs.push(...newPromptSpecs);
-    } 
+    }
   }
 
   private createPromptSpecsForCall(file: string, path: any) {
@@ -354,7 +354,7 @@ export class PromptSpecGenerator {
         callee.loc!.end.line,
         callee.loc!.end.column
       );
-      if (calleeLoc.getText() !== "require"){ // don't mutate calls to require
+      if (calleeLoc.getText() !== "require") { // don't mutate calls to require
         newPromptSpecs.push(
           new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
         );
@@ -436,14 +436,14 @@ export class PromptSpecGenerator {
       const location = promptSpec.location;
       const orig = promptSpec.orig;
       const parentLocation = promptSpec.parentLocation;
-      return { 
+      return {
         file: relativePath,
         feature,
         component,
         location,
         orig,
         parentLocation
-      }
+      };
     });
 
     // write promptSpecs to JSON file

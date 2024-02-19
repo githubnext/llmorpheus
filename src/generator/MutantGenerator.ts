@@ -1,24 +1,25 @@
-import fs from "fs";
+import * as parser from "@babel/parser";
 import fg from "fast-glob";
-import { IModel } from "./model/IModel";
+import fs from "fs";
+import path from "path";
 
 import { Mutant } from "./Mutant";
-import { Completion } from "./prompt/Completion";
-import { Prompt } from "./prompt/Prompt";
-import * as parser from "@babel/parser";
-import path from "path";
-import { hasUnbalancedParens } from "./util/code-utils";
-import { PromptSpecGenerator } from "./promptSpecGenerator";
+import { PromptSpecGenerator } from "./PromptSpecGenerator";
+import { IModel } from "../model/IModel";
+import { Completion } from "../prompt/Completion";
+import { Prompt } from "../prompt/Prompt";
+import { hasUnbalancedParens } from "../util/code-utils";
 
 /**
  * Suggests mutations in given files using the specified rules
  */
+
 export class MutantGenerator {
   constructor(
     private model: IModel,
     private promptTemplateFileName: string,
     private outputDir: string,
-    private projectPath: string 
+    private projectPath: string
   ) {
 
     if (!fs.existsSync(this.outputDir)) {
@@ -35,8 +36,8 @@ export class MutantGenerator {
     if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"))) {
       fs.unlinkSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"));
     }
-    if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(),"/prompts"))) {
-      fs.rmdirSync(path.join(this.outputDir, this.getSubDirName(),"/prompts"), { recursive: true });
+    if (fs.existsSync(path.join(this.outputDir, this.getSubDirName(), "/prompts"))) {
+      fs.rmdirSync(path.join(this.outputDir, this.getSubDirName(), "/prompts"), { recursive: true });
     }
     fs.writeFileSync(path.join(this.outputDir, this.getSubDirName(), "/log.txt"), "");
     fs.mkdirSync(path.join(this.outputDir, this.getSubDirName(), "prompts"));
@@ -70,39 +71,39 @@ export class MutantGenerator {
   public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
     const pattern = `${path}/**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
     const files = await fg([pattern], {
-      ignore: ['**/node_modules', 
-               '**/dist', 
-               '**/test', 
-               '**/*.test.*', 
-               '**/*.min.js', 
-               '**/*.d.ts', 
-               '**/rollup.config.js', 
-               "**/esm/index.js", 
-               'coverage', 
-               'lcov-report', 
-               `${path}/**/*test*.js`, 
-               '**/examples',
-               '**/example', 
-               '**/benchmark', 
-               '**/benchmarks',
-               "**/*.spec.*", 
-               '**/build',
-               '**/test.js',
-               '**/Gruntfile.js',
-               '**/design/**',
-               '**/spec/**',
-               '**/scripts/**',] 
+      ignore: ['**/node_modules',
+        '**/dist',
+        '**/test',
+        '**/*.test.*',
+        '**/*.min.js',
+        '**/*.d.ts',
+        '**/rollup.config.js',
+        "**/esm/index.js",
+        'coverage',
+        'lcov-report',
+        `${path}/**/*test*.js`,
+        '**/examples',
+        '**/example',
+        '**/benchmark',
+        '**/benchmarks',
+        "**/*.spec.*",
+        '**/build',
+        '**/test.js',
+        '**/Gruntfile.js',
+        '**/design/**',
+        '**/spec/**',
+        '**/scripts/**',]
     });
     return files;
   }
 
-  private isDeclaration(compl: string){
+  private isDeclaration(compl: string) {
     return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
   }
 
   /** Determine situations where a candidate mutant is invalid */
   private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {
-    
+
     return (
       hasUnbalancedParens(substitution) ||
       (substitution.includes(";") &&
@@ -114,7 +115,7 @@ export class MutantGenerator {
 
   private createCandidateMutant(prompt: Prompt, substitution: string): string {
     return prompt.spec.getCodeWithPlaceholder()
-                      .replace("<PLACEHOLDER>", substitution);
+      .replace("<PLACEHOLDER>", substitution);
   }
 
   /**
@@ -124,22 +125,22 @@ export class MutantGenerator {
    */
   private isDuplicate(mutant: Mutant, mutants: Mutant[]): boolean {
     for (const m of mutants) {
-      if (m.startLine === mutant.startLine && 
-          m.startColumn === mutant.startColumn && 
-          m.endLine === mutant.endLine && 
-          m.endColumn === mutant.endColumn && 
-          m.file === mutant.file && 
-          m.replacement === mutant.replacement) {
+      if (m.startLine === mutant.startLine &&
+        m.startColumn === mutant.startColumn &&
+        m.endLine === mutant.endLine &&
+        m.endColumn === mutant.endColumn &&
+        m.file === mutant.file &&
+        m.replacement === mutant.replacement) {
         return true;
       }
 
       // check containment case
-      if (m.startLine <= mutant.startLine && 
-          m.endLine >= mutant.endLine && 
-          m.startColumn <= mutant.startColumn && 
-          m.endColumn >= mutant.endColumn && 
-          m.file === mutant.file && 
-          m.replacement.includes(mutant.replacement)) {
+      if (m.startLine <= mutant.startLine &&
+        m.endLine >= mutant.endLine &&
+        m.startColumn <= mutant.startColumn &&
+        m.endColumn >= mutant.endColumn &&
+        m.file === mutant.file &&
+        m.replacement.includes(mutant.replacement)) {
         return true;
       }
     }
@@ -181,32 +182,30 @@ export class MutantGenerator {
         const completions = await this.getCompletionsForPrompt(prompt);
         for (const completion of completions) {
           fs.writeFileSync(
-            `${
-              path.join(this.outputDir, this.getSubDirName())
-            }/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
+            `${path.join(this.outputDir, this.getSubDirName())}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
             completion.text
           );
           const regExp = /```\n((?:.(?!```))*)\n```/gs;
           let match;
-          
+
           while ((match = regExp.exec(completion.text)) !== null) {
             const substitution = match[1];
             if (substitution === prompt.getOrig()) {
               nrIdentical++;
-            } else if (prompt.getOrig().includes("Object.") || 
-                       this.isInvalidSubstitution(prompt, substitution) ||
-                       this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
+            } else if (prompt.getOrig().includes("Object.") ||
+              this.isInvalidSubstitution(prompt, substitution) ||
+              this.isDeclaration(prompt.getOrig()) && !this.isDeclaration(substitution)) {
               nrSyntacticallyInvalid++;
             } else {
               const candidateMutant = this.createCandidateMutant(prompt, substitution);
               if (prompt.spec.isExpressionPlaceholder()) {
-                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleExpression(substitution, prompt, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid)); 
-              } else if (prompt.spec.isArgListPlaceHolder() || 
-                         prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() || 
-                         prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
-                         prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
-                         prompt.spec.isCalleePlaceHolder()) {
-                         // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
+                ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleExpression(substitution, prompt, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
+              } else if (prompt.spec.isArgListPlaceHolder() ||
+                prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() ||
+                prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
+                prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
+                prompt.spec.isCalleePlaceHolder()) {
+                // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
                 ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleIncompleteFragment(prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
               } else { // statement placeholder
                 ({ nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid } = this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid));
@@ -216,11 +215,10 @@ export class MutantGenerator {
         }
       } catch (e) {
         console.log(`Error while processing prompt ${prompt.getId()}: ${e}`);
-      } 
+      }
     }
 
-    const nrCandidates =
-      nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
+    const nrCandidates = nrSyntacticallyValid + nrSyntacticallyInvalid + nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
     const locations = new Array<string>();
@@ -261,9 +259,9 @@ export class MutantGenerator {
           metaInfo: {
             modelName: this.model.getModelName(),
             temperature: this.model.getTemperature(),
-            maxTokens: this.model.getMaxTokens() 
+            maxTokens: this.model.getMaxTokens()
           }
-        },  
+        },
         null,
         2
       )
@@ -275,7 +273,7 @@ export class MutantGenerator {
   }
 
   /**
-   * Handle the case where the mutated code fragment is an expression. 
+   * Handle the case where the mutated code fragment is an expression.
    */
   private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
     try {
@@ -307,14 +305,14 @@ export class MutantGenerator {
     return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
 
-   /** 
-   * Handle the case where the mutated code fragment is incomplete and does not correspond
-   * to a complete statement or expression. In such cases, we need to expand the original
-   * code fragment and the substitution to the parent node, to ensure syntactic completeness
-   * of the code fragment. This is the case for replacing a list of call arguments or the
-   * header or left side (var declaration) of a for-of loop.
-   */
-   private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
+  /**
+  * Handle the case where the mutated code fragment is incomplete and does not correspond
+  * to a complete statement or expression. In such cases, we need to expand the original
+  * code fragment and the substitution to the parent node, to ensure syntactic completeness
+  * of the code fragment. This is the case for replacing a list of call arguments or the
+  * header or left side (var declaration) of a for-of loop.
+  */
+  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
     try {
       const expandedOrig = prompt.spec.parentLocation!.getText();
       const expandedSubstitution = expandedOrig.replace(
@@ -349,9 +347,9 @@ export class MutantGenerator {
     }
     return { nrSyntacticallyValid, nrDuplicate, nrSyntacticallyInvalid };
   }
-  
-  /** 
-   * Handle the case where the mutated code fragment is a statement. 
+
+  /**
+   * Handle the case where the mutated code fragment is a statement.
    */
   private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], nrSyntacticallyValid: number, nrDuplicate: number, nrSyntacticallyInvalid: number) {
     try {

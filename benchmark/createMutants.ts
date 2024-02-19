@@ -3,7 +3,7 @@ import { hideBin } from "yargs/helpers";
 import { CodeLlama34bInstructModel, Llama2_70bModel } from "../src/model/PerplexityAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
-import { MutantGenerator } from "../src/MutantGenerator";
+import { MutantGenerator } from "../src/generator/MutantGenerator";
 import path from "path";
 
 if (require.main === module) {

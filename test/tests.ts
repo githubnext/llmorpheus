@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 
 import { MockModel } from "../src/model/MockModel";
-import { PromptSpecGenerator } from "../src/promptSpecGenerator";
-import { MutantGenerator } from "../src/mutantGenerator";
+import { PromptSpecGenerator } from "../src/generator/PromptSpecGenerator";
+import { MutantGenerator } from "../src/generator/MutantGenerator";
 import { expect } from "chai";
 import { assert } from "console";
 
