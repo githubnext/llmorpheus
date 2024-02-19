@@ -1,11 +1,8 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import {
-  CachingModel,
-  Gpt4Model,
-  CodeLlama34bInstructModel,
-  Llama2_70bModel
-} from "../src/Model";
+import { CodeLlama34bInstructModel, Llama2_70bModel } from "../src/model/PerplexityAIModels";
+import { CachingModel } from "../src/model/CachingModel";
+import { Gpt4Model } from "../src/model/OpenAIModels";
 import { MutantGenerator } from "../src/MutantGenerator";
 import path from "path";
 

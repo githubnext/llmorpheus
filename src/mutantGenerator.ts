@@ -1,14 +1,14 @@
 import fs from "fs";
 import fg from "fast-glob";
-import { IModel } from "./Model";
+import { IModel } from "./model/IModel";
 
-import { PromptSpecGenerator } from "./PromptSpecGenerator";
 import { Mutant } from "./Mutant";
 import { Completion } from "./Completion";
 import { Prompt } from "./Prompt";
 import * as parser from "@babel/parser";
 import path from "path";
 import { hasUnbalancedParens } from "./util";
+import { PromptSpecGenerator } from "./promptSpecGenerator";
 
 /**
  * Suggests mutations in given files using the specified rules

@@ -127,3 +127,11 @@ export function nextPosition(code: string, line: number, column: number) {
     return { line: line + 1, column: 1 };
   }
 }
+export function getEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Please set the ${name} environment variable.`);
+    process.exit(1);
+  }
+  return value;
+}
