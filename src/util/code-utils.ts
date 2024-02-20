@@ -127,6 +127,16 @@ export function nextPosition(code: string, line: number, column: number) {
     return { line: line + 1, column: 1 };
   }
 }
+
+export function prevPosition(code: string, line: number, column: number) {
+  if (column > 1) {
+    return { line, column: column - 1 };
+  } else { // find the last position on the previous line
+    return { line: line - 1, column: code.split("\n")[line - 2].length };
+  }
+}
+
+
 export function getEnv(name: string): string {
   const value = process.env[name];
   if (!value) {

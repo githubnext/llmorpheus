@@ -6,7 +6,7 @@ import * as path from "path";
 import { Prompt } from "../prompt/Prompt"; 
 import { PromptSpec } from "../prompt/PromptSpec"; 
 import { SourceLocation } from "../util/SourceLocation"; 
-import { charAtPosition, nextPosition } from "../util/code-utils"; 
+import { charAtPosition, nextPosition, prevPosition } from "../util/code-utils"; 
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
@@ -49,7 +49,16 @@ export class PromptSpecGenerator {
 
   private createPrompts() {
     for (const promptSpec of this.promptSpecs) {
-      const codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
+      let codeWithPlaceholder = promptSpec.getCodeWithPlaceholder();
+
+      const nrLines = codeWithPlaceholder.split("\n").length;
+      if (nrLines > 200) {
+        const lineWherePlaceHolderIs = codeWithPlaceholder.split("\n").findIndex((line) => line.includes("<PLACEHOLDER>"));
+        const startLine = Math.max(0, lineWherePlaceHolderIs - 100);
+        const endLine = Math.min(nrLines, lineWherePlaceHolderIs + 100);
+        codeWithPlaceholder = codeWithPlaceholder.split("\n").slice(startLine, endLine).join("\n");
+      }
+
       const compiledTemplate = handlebars.compile(this.promptTemplate); 
       const references = Array.from(promptSpec.references).join(", ");
       const orig = promptSpec.orig;
@@ -77,6 +86,7 @@ export class PromptSpecGenerator {
       enter(path) {
         // const key = path.getPathLocation(); // representation of the path, e.g., program.body[18].declaration.properties[6].value
         // const loc = new SourceLocation(file, path.node.loc!.start.line, path.node.loc!.start.column, path.node.loc!.end.line, path.node.loc!.end.column);
+
         outerThis.createPromptSpecForIf(file, path);
         outerThis.createPromptSpecForSwitch(file, path);
         outerThis.createPromptSpecForWhile(file, path);
@@ -146,20 +156,57 @@ export class PromptSpecGenerator {
     }
   }
 
+  /**
+   * Create PromptSpecs for a for loop.
+   */
   private createPromptSpecsForFor(file: string, path: any) {
     if (path.isForStatement()) {
       const init = path.node.init;
       const test = path.node.test;
       const update = path.node.update;
 
-      const initLoc = new SourceLocation(
-        file,
-        init!.loc!.start.line,
-        init!.loc!.start.column,
-        init!.loc!.end.line,
-        init!.loc!.end.column
-      );
-      const testLoc = new SourceLocation(
+      let initLoc: SourceLocation;
+      let testLoc: SourceLocation;
+      let updateLoc: SourceLocation;
+      let loopHeaderLoc: SourceLocation;
+
+      if (init){
+        initLoc = new SourceLocation(
+          file,
+          init!.loc!.start.line,
+          init!.loc!.start.column,
+          init!.loc!.end.line,
+          init!.loc!.end.column
+        );
+      } else {
+        // if there is no initializer, find the start of the test and look for the position of the semicolon
+        // that precedes it. This is the start of the initializer.
+        const code = fs.readFileSync(file, "utf8");
+        let initEndLine = test.loc!.start.line;
+        let initEndColumn = test.loc!.start.column;
+        while (charAtPosition(code, initEndLine, initEndColumn) !== ";") {
+          const prev = prevPosition(code, initEndLine, initEndColumn);
+          initEndLine = prev.line;
+          initEndColumn = prev.column;
+        }
+        // now look backwards for the open parenthesis to find the start of the initializer
+        let initStartLine = initEndLine;
+        let initStartColumn = initEndColumn;
+        while (charAtPosition(code, initStartLine, initStartColumn) !== "(") {
+          const prev = prevPosition(code, initStartLine, initStartColumn);
+          initStartLine = prev.line;
+          initStartColumn = prev.column;
+        }
+        initLoc = new SourceLocation(
+          file,
+          initStartLine,
+          initStartColumn,
+          initEndLine,
+          initEndColumn
+        );
+      }
+
+      testLoc = new SourceLocation(
         file,
         test!.loc!.start.line,
         test!.loc!.start.column,
@@ -167,20 +214,11 @@ export class PromptSpecGenerator {
         test!.loc!.end.column
       );
 
-      let updateLoc: SourceLocation;
-      let loopHeaderLoc: SourceLocation;
       if (update) {
         updateLoc = new SourceLocation(
           file,
           update!.loc!.start.line,
           update!.loc!.start.column,
-          update!.loc!.end.line,
-          update!.loc!.end.column
-        );
-        loopHeaderLoc = new SourceLocation(
-          file,
-          init!.loc!.start.line,
-          init!.loc!.start.column,
           update!.loc!.end.line,
           update!.loc!.end.column
         );
@@ -213,14 +251,17 @@ export class PromptSpecGenerator {
           updateEndLine,
           updateEndColumn
         );
-        loopHeaderLoc = new SourceLocation(
-          file,
-          init!.loc!.start.line,
-          init!.loc!.start.column,
-          updateEndLine,
-          updateEndColumn
-        );
       }
+
+      // the loopHeader is the entire loop header, from the start of the initializer to the end of the updater
+      loopHeaderLoc = new SourceLocation(
+        file,
+        initLoc.startLine,
+        initLoc.startColumn,
+        updateLoc.endLine,
+        updateLoc.endColumn
+      );
+
       const parentLoc = new SourceLocation(
         file,
         path.node.loc!.start.line,
