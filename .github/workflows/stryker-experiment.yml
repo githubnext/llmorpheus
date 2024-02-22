@@ -1,0 +1,62 @@
+name: Stryker experiment
+
+on:
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: checkout StrykerJS from https://github.com/githubnext/stryker-js into directory stryker-js
+        uses: actions/checkout@v3
+        with:
+          repository: githubnext/stryker-js
+          path: stryker-js
+
+      - name: build StrykerJS
+        run: |
+          cd stryker-js
+          npm install
+          npm run build
+      
+      - name: Check out https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1 into directory PROJECT
+        uses: actions/checkout@v3
+        with:
+          repository: maugenst/zip-a-folder
+          ref: d2ea465b20dc33cf8c98c58a7acaf875c586c3e1
+          path: PROJECT
+
+      - name: go into project and install install-local
+        run: |
+          cd PROJECT
+          npm install install-local
+          
+
+      - name: go into PROJECT and install stryker-js locally
+        run: |
+          cd PROJECT
+          npx install-local ../stryker-js
+
+      - name: build project
+        run: |
+          cd PROJECT
+          npm install
+          npm run build
+
+      - name: run stryker
+        run: |
+          cd PROJECT
+          npx stryker run
+
+      # - name: Check formatting and run tests
+      #   run: |
+      #     npm run build
+      #     npm run autoformat:check
+      #     npm run test
