@@ -27,7 +27,7 @@ jobs:
           npm install
           npm run build
       
-      - name: Check out https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1 into directory PROJECT
+      - name: Check out https://github.com/manuelmhtr/countries-and-timezones/tree/241dd0f56dfc527bcd87779ae14ed67bd25c1c0e into directory PROJECT
         uses: actions/checkout@v3
         with:
           repository: manuelmhtr/countries-and-timezones
