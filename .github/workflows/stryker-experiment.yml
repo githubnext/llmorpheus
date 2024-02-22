@@ -54,6 +54,10 @@ jobs:
       - name: run stryker
         run: |
           cd PROJECT
+          echo "**********"
+          echo "in directory"
+          pwd
+          echo "**********"
           npx stryker --version
       #run --mutate **/ZipAFolder.ts
 
