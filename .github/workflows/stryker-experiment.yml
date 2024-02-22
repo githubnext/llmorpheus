@@ -54,11 +54,8 @@ jobs:
       - name: run stryker
         run: |
           cd PROJECT
-          echo "pwd"
-          pwd
-          echo "ls"
-          ls
-          npx stryker run --mutate **/ZipAFolder.ts
+          npx stryker --version
+      #run --mutate **/ZipAFolder.ts
 
       # - name: Check formatting and run tests
       #   run: |
