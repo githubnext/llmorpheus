@@ -54,7 +54,7 @@ jobs:
       - name: run stryker
         run: |
           cd PROJECT
-          npx stryker run
+          npx stryker run --mutate src/build-country.js,src/build-timezone.js,src/index.js
 
       # - name: Check formatting and run tests
       #   run: |
