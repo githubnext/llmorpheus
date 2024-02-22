@@ -30,8 +30,8 @@ jobs:
       - name: Check out https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1 into directory PROJECT
         uses: actions/checkout@v3
         with:
-          repository: maugenst/zip-a-folder
-          ref: d2ea465b20dc33cf8c98c58a7acaf875c586c3e1
+          repository: manuelmhtr/countries-and-timezones
+          ref: 241dd0f56dfc527bcd87779ae14ed67bd25c1c0e
           path: PROJECT
 
       - name: go into project and install install-local
