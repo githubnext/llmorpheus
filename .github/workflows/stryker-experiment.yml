@@ -14,10 +14,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
 
-      - name: checkout master branch of StrykerJS from https://github.com/githubnext/stryker-js into directory stryker-js
+      - name: checkout master branch of StrykerJS from https://github.com/franktip/stryker-js into directory stryker-js
         uses: actions/checkout@v3
         with:
-          repository: githubnext/stryker-js
+          repository: franktip/stryker-js
           ref: master
           path: stryker-js
 
