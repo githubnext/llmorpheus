@@ -43,7 +43,7 @@ jobs:
       - name: go into PROJECT and install stryker-js locally
         run: |
           cd PROJECT
-          npx install-local ../stryker-js
+          npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
 
       - name: build project
         run: |
