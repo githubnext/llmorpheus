@@ -1,0 +1,59 @@
+name: Stryker experiment
+
+on:
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  run-stryker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: checkout https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1 into directory PROJECT
+        uses: actions/checkout@v3
+        with:
+          repository: maugenst/zip-a-folder
+          ref: d2ea465b20dc33cf8c98c58a7acaf875c586c3e1
+          path: PROJECT
+
+      - name: build project
+        run: |
+          cd PROJECT
+          npm run install
+          npm run build
+
+      - name: Check out llm-mutation-testing
+        uses: actions/checkout@v3
+        with:
+          path: llm-mutation-testing
+  
+      - name: Set up llm-mutation-testing
+        run: |
+          cd llm-mutation-testing
+          npm run build
+
+      # - name: Generate mutants
+      #   env:
+      #     PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
+      #     PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
+      #   run: |
+      #     cd llm-mutation-testing
+      #     outputdir="../PROJECT"
+      #     mkdir -p $outputdir 
+      #     echo "Generating mutants for $PACKAGE_NAME"
+      #     node --max-old-space-size=6144 benchmark/createMutants.js \
+      #       --path $outputdir \
+      #       --caching false \
+      #       --promptTemplateFileName "test/input/newTemplate.hb" \
+      #       --model codellama-34b-instruct \    
+      #       --temperature 0.0
+      #       -- rateLimit 10000
+
