@@ -51,9 +51,8 @@ jobs:
           echo "Generating mutants for zip-a-folder" 
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --path $outputdir \
-            --caching false \
-            --promptTemplateFileName "test/input/newTemplate.hb" \
             --model codellama-34b-instruct \    
+            --promptTemplateFileName "test/input/newTemplate.hb" \
             --temperature 0.0 \
             --rateLimit 10000
 
