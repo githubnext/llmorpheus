@@ -46,13 +46,11 @@ jobs:
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
         run: |
           cd llm-mutation-testing
-          outputdir="../PROJECT"
           mkdir -p $outputdir 
           echo "Generating mutants for zip-a-folder" 
           node --max-old-space-size=6144 benchmark/createMutants.js \
-            --path $outputdir \
+            --path ../PROJECT \
             --model codellama-34b-instruct \    
             --promptTemplateFileName "test/input/newTemplate.hb" \
             --temperature 0.0 \
             --rateLimit 10000
-
