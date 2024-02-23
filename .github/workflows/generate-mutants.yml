@@ -47,9 +47,5 @@ jobs:
         run: |
           cd llm-mutation-testing
           echo "Generating mutants for zip-a-folder" 
-          node --max-old-space-size=6144 benchmark/createMutants.js \
-            --path ../PROJECT \
-            --model codellama-34b-instruct \    
-            --promptTemplateFileName "test/input/newTemplate.hb" \
-            --temperature 0.0 \
-            --rateLimit 10000
+          command="--max-old-space-size=6144 benchmark/createMutants.js --path ../PROJECT --model codellama-34b-instruct --promptTemplateFileName \"test/input/newTemplate.hb\" --temperature 0.0 --rateLimit 10000"
+          echo "Running command: $command"
