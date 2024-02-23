@@ -50,10 +50,10 @@ jobs:
           npm run build
           echo "check stryker version (2)"
           npx stryker --version
-      - name: run stryker (standard mutators)
-        run: |
-          cd PROJECT
-          npx stryker run --mutate **/ZipAFolder.ts
+      # - name: run stryker (standard mutators)
+      #   run: |
+      #     cd PROJECT
+      #     npx stryker run --mutate **/ZipAFolder.ts
       - name: run stryker (precomputed mutators)
         run: |
           cd PROJECT
