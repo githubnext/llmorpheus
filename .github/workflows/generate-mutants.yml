@@ -46,7 +46,6 @@ jobs:
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
         run: |
           cd llm-mutation-testing
-          mkdir -p $outputdir 
           echo "Generating mutants for zip-a-folder" 
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --path ../PROJECT \
