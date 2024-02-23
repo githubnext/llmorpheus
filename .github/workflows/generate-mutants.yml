@@ -27,7 +27,7 @@ jobs:
       - name: build project
         run: |
           cd PROJECT
-          npm run install
+          npm install
           npm run build
 
       - name: Check out llm-mutation-testing
