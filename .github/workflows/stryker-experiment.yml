@@ -53,11 +53,13 @@ jobs:
           echo "------"
           echo "check stryker version"
           npx stryker --version
-      # - name: build project
-      #   run: |
-      #     cd PROJECT
-      #     npm install
-      #     npm run build
+      - name: build project
+        run: |
+          cd PROJECT
+          npm install
+          npm run build
+          echo "check stryker version (2)"
+          npx stryker --version
 
       # - name: run stryker
       #   run: |
