@@ -53,14 +53,13 @@ jobs:
           echo "------"
           echo "check stryker version"
           npx stryker --version
-      - name: build project
+      - name: build project using TypeScript 5.1.3
         run: |
           cd PROJECT
-          npm install
-          npm run build
+          npm install typescript@5.1.3
+          npx tsc --build --clean && tsc
           echo "check stryker version (2)"
           npx stryker --version
-
       # - name: run stryker
       #   run: |
       #     cd PROJECT
