@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-stryker:
+  generate-mutants:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,20 +40,20 @@ jobs:
           cd llm-mutation-testing
           npm run build
 
-      # - name: Generate mutants
-      #   env:
-      #     PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
-      #     PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
-      #   run: |
-      #     cd llm-mutation-testing
-      #     outputdir="../PROJECT"
-      #     mkdir -p $outputdir 
-      #     echo "Generating mutants for $PACKAGE_NAME"
-      #     node --max-old-space-size=6144 benchmark/createMutants.js \
-      #       --path $outputdir \
-      #       --caching false \
-      #       --promptTemplateFileName "test/input/newTemplate.hb" \
-      #       --model codellama-34b-instruct \    
-      #       --temperature 0.0
-      #       -- rateLimit 10000
+      - name: Generate mutants
+        env:
+          PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
+          PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
+        run: |
+          cd llm-mutation-testing
+          outputdir="../PROJECT"
+          mkdir -p $outputdir 
+          echo "Generating mutants for $PACKAGE_NAME"
+          node --max-old-space-size=6144 benchmark/createMutants.js \
+            --path $outputdir \
+            --caching false \
+            --promptTemplateFileName "test/input/newTemplate.hb" \
+            --model codellama-34b-instruct \    
+            --temperature 0.0
+            -- rateLimit 10000
 
