@@ -1,4 +1,4 @@
-name: Stryker experiment
+name: Generate Mutants
 
 on:
   pull_request:
