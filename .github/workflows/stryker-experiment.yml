@@ -51,6 +51,8 @@ jobs:
           echo "------ Check stryker version:"
           npm ls | grep stryker
           echo "------"
+          echo "check stryker version"
+          npx stryker --version
       # - name: build project
       #   run: |
       #     cd PROJECT
