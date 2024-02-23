@@ -57,6 +57,8 @@ jobs:
           echo "**********"
           echo "in directory"
           pwd
+          echo "files:"
+          ls -la
           echo "**********"
           npx stryker --version
       #run --mutate **/ZipAFolder.ts
