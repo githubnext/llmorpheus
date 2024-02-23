@@ -48,23 +48,25 @@ jobs:
           ls -la ../stryker-js/
           echo "------"
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+          echo "------ Check stryker version:"
+          npm ls | grep stryker
+          echo "------"
+      # - name: build project
+      #   run: |
+      #     cd PROJECT
+      #     npm install
+      #     npm run build
 
-      - name: build project
-        run: |
-          cd PROJECT
-          npm install
-          npm run build
-
-      - name: run stryker
-        run: |
-          cd PROJECT
-          echo "**********"
-          echo "in directory"
-          pwd
-          echo "files:"
-          ls -la
-          echo "**********"
-          npx stryker --version
+      # - name: run stryker
+      #   run: |
+      #     cd PROJECT
+      #     echo "**********"
+      #     echo "in directory"
+      #     pwd
+      #     echo "files:"
+      #     ls -la
+      #     echo "**********"
+      #     npx stryker --version
       #run --mutate **/ZipAFolder.ts
 
       # - name: Check formatting and run tests
