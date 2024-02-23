@@ -48,12 +48,12 @@ jobs:
           cd llm-mutation-testing
           outputdir="../PROJECT"
           mkdir -p $outputdir 
-          echo "Generating mutants for $PACKAGE_NAME"
+          echo "Generating mutants for zip-a-folder" 
           node --max-old-space-size=6144 benchmark/createMutants.js \
             --path $outputdir \
             --caching false \
             --promptTemplateFileName "test/input/newTemplate.hb" \
             --model codellama-34b-instruct \    
-            --temperature 0.0
-            -- rateLimit 10000
+            --temperature 0.0 \
+            --rateLimit 10000
 
