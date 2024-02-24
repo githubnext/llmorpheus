@@ -42,6 +42,6 @@ console.log(`process.argv: ${process.argv}`);
 const jsonFileName = process.argv.slice(2);
 const json = JSON.parse(readFileSync(jsonFileName));
 for (const benchmark of json) {
-  console.log(JSON.
+  console.log(JSON.stringify(benchmark));
 }
 
