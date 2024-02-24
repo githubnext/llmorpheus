@@ -162,7 +162,7 @@ export class PromptSpecGenerator {
   private createPromptSpecsForFor(file: string, path: any) {
     console.log(`** file: ${file}`);
     const code = fs.readFileSync(file, "utf8");
-    console.log(`** code: ${code}`);
+    // console.log(`** code: ${code}`);
     console.log(`** path: ${path}`);
 
 
