@@ -26,7 +26,8 @@ export class MutantGenerator {
     private model: IModel,
     private promptTemplateFileName: string,
     private outputDir: string,
-    private projectPath: string
+    private projectPath: string,
+    private filesToMutate: string[]
   ) {
 
     if (!fs.existsSync(this.outputDir)) {
@@ -159,7 +160,9 @@ export class MutantGenerator {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
     );
-    const files = await this.findSourceFilesToMutate(packagePath);
+    const files = this.filesToMutate 
+     ? this.filesToMutate.map((file) => path.join(packagePath, file))
+     : await this.findSourceFilesToMutate(packagePath);
 
     const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
     this.printAndLog(

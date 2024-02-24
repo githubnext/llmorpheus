@@ -76,6 +76,12 @@ if (require.main === module) {
           demandOption: false,
           description: "path to directory where cache files are located",
         },
+        mutate: {
+          type: "array",
+          default: [] as string[],
+          demandOption: false,
+          description: "comma-separated list of files to mutate",
+        },
       });
 
     const argv = await parser.argv;
@@ -129,11 +135,13 @@ if (require.main === module) {
       return value;
     }
 
+    console.log(`*** Generating mutants for ${argv.mutate} in ${argv.path}`);
     const mutantGenerator = new MutantGenerator(
       model,
       argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
-      argv.path 
+      argv.path,
+      argv.mutate ? argv.mutate as string[] : []
     );
     mutantGenerator.generateMutants(argv.path);
   })();
