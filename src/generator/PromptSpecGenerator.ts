@@ -181,6 +181,7 @@ export class PromptSpecGenerator {
       } else {
         // if there is no initializer, find the start of the test and look for the position of the semicolon
         // that precedes it. This is the start of the initializer.
+        console.log(">No initializer found for for loop in file " + file);
         const code = fs.readFileSync(file, "utf8");
         let initEndLine = test.loc!.start.line;
         let initEndColumn = test.loc!.start.column;
