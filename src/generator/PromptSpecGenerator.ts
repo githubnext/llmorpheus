@@ -160,6 +160,12 @@ export class PromptSpecGenerator {
    * Create PromptSpecs for a for loop.
    */
   private createPromptSpecsForFor(file: string, path: any) {
+    console.log(`** file: ${file}`);
+    const code = fs.readFileSync(file, "utf8");
+    console.log(`** code: ${code}`);
+    console.log(`** path: ${path}`);
+
+
     if (path.isForStatement()) {
       const init = path.node.init;
       const test = path.node.test;
