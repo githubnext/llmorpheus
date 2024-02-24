@@ -28,6 +28,8 @@ jobs:
         run: |
           cd PROJECT
           npm install
+          # disable linting by replacing "tsc --build --clean && tsc && npm run lint" with "tsc --build --clean && tsc"
+          sed -i 's/tsc --build --clean && tsc && npm run lint/tsc --build --clean && tsc/' package.json
           npm run build
 
       - name: Check out llm-mutation-testing

@@ -91,7 +91,7 @@ export class PromptSpecGenerator {
         outerThis.createPromptSpecForSwitch(file, path);
         outerThis.createPromptSpecForWhile(file, path);
         outerThis.createPromptSpecForDoWhile(file, path);
-        // outerThis.createPromptSpecsForFor(file, path);
+        outerThis.createPromptSpecsForFor(file, path);
         outerThis.createPromptSpecsForForIn(file, path);
         outerThis.createPromptSpecsForForOf(file, path);
         outerThis.createPromptSpecsForCall(file, path);
