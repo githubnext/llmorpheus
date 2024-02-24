@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
       - id: parse_packages
         run: |
           packages=$(node ${GITHUB_WORKSPACE}/.github/find_benchmarks.js \
