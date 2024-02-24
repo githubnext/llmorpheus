@@ -1,4 +1,4 @@
-name: Generate Mutants
+name: Generate Mutants 2
 
 on:
   workflow_dispatch:
