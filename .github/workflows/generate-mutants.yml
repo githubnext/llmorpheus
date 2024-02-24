@@ -30,8 +30,11 @@ jobs:
           npm install
           # replace " && npm run lint" with "" in package.json
           sed -i -e 's/ && npm run lint//' package.json
-          
           npm run build
+          
+      - name: print package.json
+        run: |
+          cat PROJECT/package.json
 
       - name: Check out llm-mutation-testing
         uses: actions/checkout@v3
