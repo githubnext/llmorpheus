@@ -42,8 +42,8 @@ jobs:
           echo "current dir = " $(pwd)
           ls -al
           packages=$(node \
-                     ${GITHUB_WORKSPACE}/.github/find_benchmarks.js " \
-                     ${GITHUB_WORKSPACE/..}/{{ github.event.inputs.packages || 'benchmarks.json' }}")
+                     .github/find_benchmarks.js " \
+                     {{ github.event.inputs.packages || 'benchmarks.json' }}")
           echo "\n*** packages=$packages"
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
