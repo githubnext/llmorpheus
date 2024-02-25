@@ -38,11 +38,9 @@ const { join } = require("path");
 // }
 
 // const packages = [];
-console.log(`process.argv[0]: ${process.argv[0]}`);
-console.log(`process.argv[1]: ${process.argv[1]}`);
-console.log(`process.argv[2]: ${process.argv[2]}`);
 const jsonFileName = process.argv[2].trim();
 const json = JSON.parse(readFileSync(jsonFileName));
-for (const benchmark of json) {
-  console.log(JSON.stringify(benchmark));
-}
+// for (const benchmark of json) {
+//   console.log(JSON.stringify(benchmark));
+// }
+console.log(JSON.stringify(json));
