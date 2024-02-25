@@ -6,22 +6,67 @@ on:
       packages:
         description: "Packages to generate tests for"
         default: "+benchmarks.json"
+      temperatures:
+        description: "Sampling temperatures to try when obtaining completions (whitespace-separated)"
+        default: "0.0"
+      # model:
+      #   description: "Which LLM API to use"
+      #   type: "choice"
+      #   options:
+      #     - "gpt3.5-turbo"
+      #     - "gpt4"
+      #     - "text-davinci003"
+      #   default: "gpt4"
+      # debug_enabled:
+      #   type: boolean
+      #   description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+      #   default: false
 
 jobs:
-  generate-mutants:
+  setup:
     runs-on: ubuntu-latest
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
+      temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
     steps:
+      - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 12
 
       - id: parse_packages
         run: |
-          packages=$(node ${GITHUB_WORKSPACE}/.github/find_benchmarks.js \
-            "${{ github.event.inputs.packages || '+benchmarks.json' }}")
+          packages=$(node ${GITHUB_WORKSPACE}/.github/parse_packages.js \
+            ${{ '' }} \
+            "${{ github.event.inputs.packages || '+benchmarks.txt' }}")
           echo "packages=$packages" >> $GITHUB_OUTPUT
+
+
+# name: Generate Mutants 2
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       packages:
+#         description: "Packages to generate tests for"
+#         default: "+benchmarks.json"
+
+# jobs:
+#   generate-mutants:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       packages: "${{ steps.parse_packages.outputs.packages }}"
+#     steps:
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 12
+
+#       - id: parse_packages
+#         run: |
+#           packages=$(node ${GITHUB_WORKSPACE}/.github/find_benchmarks.js \
+#             "${{ github.event.inputs.packages || '+benchmarks.json' }}")
+#           echo "packages=$packages" >> $GITHUB_OUTPUT
 
       # - uses: actions/checkout@v3
 
