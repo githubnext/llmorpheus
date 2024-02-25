@@ -126,6 +126,8 @@ jobs:
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
           cd ${{ matrix.package.name }}
+          ls -al
+          find . -name "mutants.json"
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           npx stryker --version # 8.2.5
