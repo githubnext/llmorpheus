@@ -100,81 +100,35 @@ jobs:
           npm install
           npm run build 
 
-      - name: install stryker-js and run stryker (standard mutators)
+      - name: Set up llm-mutation-testing
+        run: |
+          cd llm-mutation-testing
+          npm run build
+
+      - name: Generate mutants
+        env:
+          PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
+          PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
+        run: |
+          cd llm-mutation-testing
+          echo "Generating mutants for ${{ matrix.package.name }}" 
+          command="node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --model codellama-34b-instruct --promptTemplateFileName test/input/newTemplate.hb --caching false --temperature 0.0 --rateLimit 10000 --mutate $${{ matrix.package.files }}"
+          echo "Running command: $command"
+          eval $command    
+
+      - name: install stryker-js and run stryker (precomputed mutators)
         run: |
           cd ${{ matrix.package.name }}
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           npx stryker --version # 8.2.5
-          npx stryker run --mutate ${{ matrix.package.files }}
+          npx stryker run --usePrecomputed --mutate ${{ matrix.package.files }}
+
+      # - name: install stryker-js and run stryker (standard mutators)
+      #   run: |
+      #     cd ${{ matrix.package.name }}
+      #     npm install install-local # install-local is needed to install our custom version of stryker-js  
+      #     npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+      #     npx stryker --version # 8.2.5
+      #     npx stryker run --mutate ${{ matrix.package.files }}    
        
-# name: Generate Mutants 2
-
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       packages:
-#         description: "Packages to generate tests for"
-#         default: "+benchmarks.json"
-
-# jobs:
-#   generate-mutants:
-#     runs-on: ubuntu-latest
-#     outputs:
-#       packages: "${{ steps.parse_packages.outputs.packages }}"
-#     steps:
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 12
-
-#       - id: parse_packages
-#         run: |
-#           packages=$(node ${GITHUB_WORKSPACE}/.github/find_benchmarks.js \
-#             "${{ github.event.inputs.packages || '+benchmarks.json' }}")
-#           echo "packages=$packages" >> $GITHUB_OUTPUT
-
-      # - uses: actions/checkout@v3
-
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 12
-
-      # - name: checkout https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1 into directory PROJECT
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: maugenst/zip-a-folder
-      #     ref: d2ea465b20dc33cf8c98c58a7acaf875c586c3e1
-      #     path: PROJECT
-
-      # - name: build project
-      #   run: |
-      #     cd PROJECT
-      #     npm install
-      #     # replace " && npm run lint" with "" in package.json
-      #     sed -i -e 's/ && npm run lint//' package.json
-      #     npm run build
-          
-      # - name: print package.json
-      #   run: |
-      #     cat PROJECT/package.json
-
-      # - name: Check out llm-mutation-testing
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: llm-mutation-testing
-  
-      # - name: Set up llm-mutation-testing
-      #   run: |
-      #     cd llm-mutation-testing
-      #     npm run build
-
-      # - name: Generate mutants
-      #   env:
-      #     PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
-      #     PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
-      #   run: |
-      #     cd llm-mutation-testing
-      #     echo "Generating mutants for zip-a-folder" 
-      #     command="node --max-old-space-size=6144 benchmark/createMutants.js --path ../PROJECT --model codellama-34b-instruct --promptTemplateFileName test/input/newTemplate.hb --caching false --temperature 0.0 --rateLimit 10000 --mutate lib/ZipAFolder.ts"
-      #     echo "Running command: $command"
-      #     eval $command
