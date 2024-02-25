@@ -38,7 +38,8 @@ jobs:
       - id: parse_packages
         run: |
           echo "\$GITHUB_WORKSPACE" = $GITHUB_WORKSPACE
-          ls -al $GITHUB_WORKSPACE/.github
+          # ls -al $GITHUB_WORKSPACE/.github
+          more  $GITHUB_WORKSPACE/.github/parse_packages.js
           packages=$(node ${GITHUB_WORKSPACE}/.github/parse_packages.js \
             ${{ '' }} \
             "${{ github.event.inputs.packages || '+benchmarks.txt' }}")
