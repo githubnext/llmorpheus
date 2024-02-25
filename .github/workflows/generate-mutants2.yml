@@ -40,6 +40,7 @@ jobs:
           packages=$(node \
                      .github/find_benchmarks.js " \
                      .github/${{ github.event.inputs.packages || 'benchmarks.json' }}")
+          echo packages
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
 
