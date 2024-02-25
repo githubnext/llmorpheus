@@ -43,7 +43,7 @@ jobs:
           ls -al
           packages=$(node \
                      .github/find_benchmarks.js " \
-                     {{ github.event.inputs.packages || 'benchmarks.json' }}")
+                     ${{ github.event.inputs.packages || 'benchmarks.json' }}")
           echo "\n*** packages=$packages"
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
