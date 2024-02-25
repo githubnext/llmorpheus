@@ -40,11 +40,9 @@ jobs:
           echo "\$GITHUB_WORKSPACE" = $GITHUB_WORKSPACE
           # ls -al $GITHUB_WORKSPACE/.github
           # more  $GITHUB_WORKSPACE/.github/hello.js
-          packages=$(node ${GITHUB_WORKSPACE}/.github/find_benchmarks.js " \
-                   ${{ github.event.inputs.packages || '+benchmarks.json' }}")
-          # packages=$(node ${GITHUB_WORKSPACE}/.github/parse_packages.js \
-          #   ${{ '' }} \
-          #   "${{ github.event.inputs.packages || '+benchmarks.txt' }}")
+          packages=$(node \
+                     ${GITHUB_WORKSPACE}/.github/find_benchmarks.js " \
+                     ${GITHUB_WORKSPACE}/${{ github.event.inputs.packages || 'benchmarks.json' }}")
           echo "\n*** packages=$packages"
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
