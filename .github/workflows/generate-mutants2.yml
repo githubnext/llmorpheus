@@ -61,14 +61,12 @@ jobs:
     steps:
       - name: print package
         run: |
+          echo "package.host=${{ matrix.package.host }}" 
           echo "package.name=${{ matrix.package.name }}"
           echo "package.owner=${{ matrix.package.owner }}"
           echo "package.repo=${{ matrix.package.repo }}"
           echo "package.sha=${{ matrix.package.sha }}"
           echo "package.edits=${{ matrix.package.edits }}"
-          echo "package.host=${{ matrix.package.host }}"
-          echo "package.path=${{ matrix.package.path }}"
-          echo "package.ref=${{ matrix.package.ref }}"
 
       - name: check out benchmark
         if: ${{ matrix.package.host == 'github.com' }}
