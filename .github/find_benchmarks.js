@@ -40,7 +40,7 @@ const { join } = require("path");
 // const packages = [];
 console.log(`process.argv: ${process.argv}`);
 const jsonFileName = process.argv.slice(2);
-const json = JSON.parse(readFileSync(jsonFileName));
+const json = jsonFileName; //JSON.parse(readFileSync(jsonFileName));
 for (const benchmark of json) {
   console.log(JSON.stringify(benchmark));
 }
