@@ -41,10 +41,10 @@ const { join } = require("path");
 console.log(`process.argv[0]: ${process.argv[0]}`);
 console.log(`process.argv[1]: ${process.argv[1]}`);
 console.log(`process.argv[2]: ${process.argv[2]}`);
-const jsonFileName = process.argv[2];
-const json = JSON.parse(readFileSync(jsonFileName));
-// console.log(`json: ${JSON.stringify(json)}`);
-for (const benchmark of json) {
-  console.log(JSON.stringify(benchmark));
-}
+// const jsonFileName = process.argv[2];
+// const json = JSON.parse(readFileSync(jsonFileName));
+// // console.log(`json: ${JSON.stringify(json)}`);
+// for (const benchmark of json) {
+//   console.log(JSON.stringify(benchmark));
+// }
 
