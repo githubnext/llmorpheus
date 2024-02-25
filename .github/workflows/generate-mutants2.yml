@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: parse_packages
+      - id: parse_packages
         run: |
           packages=$(node \
                      .github/find_benchmarks.js " \
