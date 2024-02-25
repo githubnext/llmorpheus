@@ -103,7 +103,12 @@ jobs:
         run: |
           cd ${{ matrix.package.name }}
           npm install install-local   
-    
+      - name: go into PROJECT and install stryker-js locally
+        run: |
+          cd ${{ matrix.package.name }}
+          npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+          echo "check stryker version"
+          npx stryker --version  # prints 8.2.5
 # name: Generate Mutants 2
 
 # on:
