@@ -59,19 +59,6 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.setup.outputs.packages) }}
     steps:
-    
-    - name: checkout master branch of StrykerJS from https://github.com/franktip/stryker-js into directory stryker-js
-      uses: actions/checkout@v3
-      with:
-        repository: franktip/stryker-js
-        ref: master
-        path: stryker-js
-
-    - name: build StrykerJS
-      run: |
-        cd stryker-js
-        npm install
-        npm run build
       - name: print package
         run: |
           echo "package.host=${{ matrix.package.host }}" 
