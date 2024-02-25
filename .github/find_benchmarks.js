@@ -42,7 +42,7 @@ const packages = [];
 const jsonFileName = process.argv[2].trim();
 const json = JSON.parse(readFileSync(jsonFileName));
 for (const benchmark of json) {
-  const parsedPackage = parsePackage(benchmark.package);
+  const parsedPackage = parsePackage(benchmark.url);
   parsedPackage.name = benchmark.name;
   parsedPackage.files = benchmark.files;
   parsedPackage.edits = benchmark.edits;
