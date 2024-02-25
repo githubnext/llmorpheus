@@ -294,6 +294,7 @@ export class MutantGenerator {
         2
       )
     );
+    console.log(`summary written to  ${resultsFileName}\n`);
 
     this.printAndLog(
       `wrote ${nrSyntacticallyValid} mutants in ${nrLocations} locations to ${mutantsFileName}\n`
