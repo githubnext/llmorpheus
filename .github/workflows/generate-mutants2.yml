@@ -35,9 +35,8 @@ jobs:
         with:
           node-version: 12
 
-      - id: parse_packages
+      - name: parse_packages
         run: |
-          echo "\$GITHUB_WORKSPACE" = $GITHUB_WORKSPACE
           echo "packages: " ${{ github.event.inputs.packages || 'benchmarks.json' }}
           # ls -al $GITHUB_WORKSPACE/.github
           # more  $GITHUB_WORKSPACE/.github/hello.js
