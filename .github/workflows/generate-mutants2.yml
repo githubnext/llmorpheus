@@ -96,16 +96,18 @@ jobs:
             edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
             eval $edits
           fi
-          npm install install-local # install-local is needed to install our custom version of stryker-js  
-          npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
-          echo "check stryker version"
-          npx stryker --version  # prints 8.2.5
+          # npm install install-local # install-local is needed to install our custom version of stryker-js  
+          # npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+          # echo "check stryker version"
+          # npx stryker --version  # prints 8.2.5
 
       - name: build project
         run: |
           cd ${{ matrix.package.name }}
           npm install
           npm run build 
+          npm install install-local # install-local is needed to install our custom version of stryker-js  
+          npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           npx stryker --version
       - name: run stryker (standard mutators)
         run: |
