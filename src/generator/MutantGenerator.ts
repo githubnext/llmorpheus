@@ -29,6 +29,7 @@ export class MutantGenerator {
     private projectPath: string,
     private filesToMutate: string[]
   ) {
+    console.log(`outputDir: ${outputDir}`);
 
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir);
