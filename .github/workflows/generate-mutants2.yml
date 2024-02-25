@@ -39,11 +39,10 @@ jobs:
         run: |
           echo "packages: " ${{ github.event.inputs.packages || 'benchmarks.json' }}
           echo "\$GITHUB_WORKSPACE: " $GITHUB_WORKSPACE
-          BASE_PATH=${GITHUB_WORKSPACE}/../.github
-          echo "BASE_PATH: " $BASE_PATH
+          echo "\${GITHUB_WORKSPACE/..}: " ${GITHUB_WORKSPACE/..}
           packages=$(node \
                      ${GITHUB_WORKSPACE}/.github/find_benchmarks.js " \
-                     ${BASE_PATH}/{{ github.event.inputs.packages || 'benchmarks.json' }}")
+                     ${GITHUB_WORKSPACE/..}/{{ github.event.inputs.packages || 'benchmarks.json' }}")
           echo "\n*** packages=$packages"
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
