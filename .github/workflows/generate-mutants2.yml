@@ -82,7 +82,7 @@ jobs:
           npm install
           # if an edit command for editing package.json is specified (e.g., to disable linting), run it
           if [ -n "${{ matrix.package.edits }}" ]; then
-            tr \' \" <${{ matrix.package.edits }} > edits
+            edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
             eval $edits
           fi
           npm run build
