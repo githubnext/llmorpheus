@@ -52,6 +52,7 @@ jobs:
       - name : print needs
         run: |
           echo "packages=${{ needs.setup.outputs.packages }}"
+          ${{ fromJson(needs.setup.outputs.packages) }}
     # continue-on-error: true
     # strategy:
     #   fail-fast: false
