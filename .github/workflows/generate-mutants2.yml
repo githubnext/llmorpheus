@@ -110,6 +110,7 @@ jobs:
             eval $edits
           fi
           npm run build 
+          npx stryker --version
       - name: run stryker (standard mutators)
         run: |
           cd ${{ matrix.package.name }}
