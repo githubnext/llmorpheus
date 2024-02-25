@@ -43,7 +43,32 @@ jobs:
           packages=$(echo $packages | tr '\n' ' ')
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
+  benchmark:
+    needs:
+      - setup
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.setup.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: llm-mutation-testing
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: Checkout github package repo
+        if: ${{ matrix.package.host == 'github.com' }}
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
+          ref: ${{ matrix.package.sha }}
+          path: "source"
 # name: Generate Mutants 2
 
 # on:
