@@ -47,38 +47,43 @@ jobs:
     needs:
       - setup
     runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJson(needs.setup.outputs.packages) }}
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          path: llm-mutation-testing
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Checkout github package repo
-        if: ${{ matrix.package.host == 'github.com' }}
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
-          ref: ${{ matrix.package.sha }}
-          path: ${{ matrix.package.name }}
-      
-      - name: build project
+      - name : print needs
         run: |
-          cd ${{ matrix.package.name }}
-          npm install
-          # if an edit command for editing package.json is specified (e.g., to disable linting), run it
-          if [ -n "${{ matrix.package.edits }}" ]; then
-            eval ${{ matrix.package.edits }}
-          fi
-          npm run build
+          echo "packages=${{ needs.setup.outputs.packages }}"
+    # continue-on-error: true
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     package: ${{ fromJson(needs.setup.outputs.packages) }}
+    # steps:
+    #   - uses: actions/checkout@v3
+    #     with:
+    #       path: llm-mutation-testing
+
+    #   - name: Set up Node.js
+    #     uses: actions/setup-node@v3
+    #     with:
+    #       node-version: 20
+
+    #   - name: Checkout github package repo
+    #     if: ${{ matrix.package.host == 'github.com' }}
+    #     uses: actions/checkout@v3
+    #     with:
+    #       repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
+    #       ref: ${{ matrix.package.sha }}
+    #       path: ${{ matrix.package.name }}
+      
+    #   - name: build project
+    #     run: |
+    #       cd ${{ matrix.package.name }}
+    #       npm install
+    #       # if an edit command for editing package.json is specified (e.g., to disable linting), run it
+    #       if [ -n "${{ matrix.package.edits }}" ]; then
+    #         eval ${{ matrix.package.edits }}
+    #       fi
+    #       npm run build
 
 # name: Generate Mutants 2
 
