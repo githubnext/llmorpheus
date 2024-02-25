@@ -30,6 +30,11 @@ export class MutantGenerator {
     private filesToMutate: string[]
   ) {
     console.log(`outputDir: ${outputDir}`);
+    console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
+    console.log(`projectPath: ${projectPath}`);
+    console.log(`filesToMutate: ${filesToMutate}`);
+    console.log(`model: ${model.getModelName()}`);
+
 
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir);
