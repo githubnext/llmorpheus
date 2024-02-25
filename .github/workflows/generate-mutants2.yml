@@ -117,6 +117,7 @@ jobs:
         run: |
           cd llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
+          echo "files to be mutated: ${{ matrix.package.files }}"
           command="node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --model codellama-34b-instruct --promptTemplateFileName test/input/newTemplate.hb --caching false --temperature 0.0 --rateLimit 10000 --mutate $${{ matrix.package.files }}"
           echo "Running command: $command"
           eval $command    
