@@ -51,9 +51,8 @@ jobs:
     steps:
       - name : print needs
         run: |
-          echo "packages=${{ needs.setup.outputs.packages }}"
-          p = ${{ needs.setup.outputs.packages }} | tr '\n' ' '
-          echo "p=$p"
+          echo "packages=${{ fromJson(needs.setup.outputs.packages) }}"
+          
     # continue-on-error: true
     # strategy:
     #   fail-fast: false
