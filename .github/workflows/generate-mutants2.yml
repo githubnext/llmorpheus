@@ -43,7 +43,7 @@ jobs:
           # more  $GITHUB_WORKSPACE/.github/hello.js
           packages=$(node \
                      ${GITHUB_WORKSPACE}/.github/find_benchmarks.js " \
-                     ${GITHUB_WORKSPACE}/.github/${{ github.event.inputs.packages || 'benchmarks.json' }}")
+                     .github/${{ github.event.inputs.packages || 'benchmarks.json' }}")
           echo "\n*** packages=$packages"
           echo "packages=$packages" >> $GITHUB_OUTPUT
 
