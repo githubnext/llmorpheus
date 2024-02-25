@@ -48,20 +48,17 @@ jobs:
       - setup
     runs-on: ubuntu-latest
 
-    # steps:
-    #   - name : print needs
-    #     run: |
-    #       echo "packages=${{ fromJson(needs.setup.outputs.packages) }}"
-          
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJson(needs.setup.outputs.packages) }}
     steps:
-      - name: print package
+      - name : print needs
         run: |
-          echo "package=${{ matrix.package }}"
+          echo "packages=${{ fromJson(needs.setup.outputs.packages) }}"
+          
+    # continue-on-error: true
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     package: ${{ fromJson(needs.setup.outputs.packages) }}
+    # steps:
     #   - uses: actions/checkout@v3
     #     with:
     #       path: llm-mutation-testing
