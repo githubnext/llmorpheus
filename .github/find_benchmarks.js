@@ -2,6 +2,7 @@ const { readFileSync } = require("fs");
 const { join } = require("path");
 
 function parsePackage(packageURL) {
+  console.log(`packageURL = ${packageURL}`);
   let pkg = new URL(packageURL);
 
   // pathname is /<owner>/<repo>/tree/<sha>/<path>
