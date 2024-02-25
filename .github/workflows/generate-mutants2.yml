@@ -107,7 +107,7 @@ jobs:
 
       - name: Set up llm-mutation-testing
         run: |
-          pwd
+          cd llm-mutation-testing
           ls -al
           npm run build
 
