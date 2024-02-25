@@ -59,46 +59,46 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.setup.outputs.packages) }}
     steps:
-      # - name: checkout master branch of StrykerJS from https://github.com/franktip/stryker-js into directory stryker-js
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: franktip/stryker-js
-      #     ref: master
-      #     path: stryker-js
+      - name: checkout master branch of StrykerJS from https://github.com/franktip/stryker-js into directory stryker-js
+        uses: actions/checkout@v3
+        with:
+          repository: franktip/stryker-js
+          ref: master
+          path: stryker-js
 
-      # - name: build StrykerJS
-      #   run: |
-      #     cd stryker-js
-      #     npm install
-      #     npm run build
-      # - name: print package info
-      #   run: |
-      #     echo "package.host=${{ matrix.package.host }}" 
-      #     echo "package.name=${{ matrix.package.name }}"
-      #     echo "package.owner=${{ matrix.package.owner }}"
-      #     echo "package.repo=${{ matrix.package.repo }}"
-      #     echo "package.sha=${{ matrix.package.sha }}"
-      #     echo "package.edits=${{ matrix.package.edits }}"
-      #     echo "package.files=${{ matrix.package.files }}"
+      - name: build StrykerJS
+        run: |
+          cd stryker-js
+          npm install
+          npm run build
+      - name: print package info
+        run: |
+          echo "package.host=${{ matrix.package.host }}" 
+          echo "package.name=${{ matrix.package.name }}"
+          echo "package.owner=${{ matrix.package.owner }}"
+          echo "package.repo=${{ matrix.package.repo }}"
+          echo "package.sha=${{ matrix.package.sha }}"
+          echo "package.edits=${{ matrix.package.edits }}"
+          echo "package.files=${{ matrix.package.files }}"
 
-      # - name: check out benchmark
-      #   if: ${{ matrix.package.host == 'github.com' }}
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
-      #     ref: ${{ matrix.package.sha }}
-      #     path: ${{ matrix.package.name }}
+      - name: check out benchmark
+        if: ${{ matrix.package.host == 'github.com' }}
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ format('{0}/{1}', matrix.package.owner, matrix.package.repo) }}
+          ref: ${{ matrix.package.sha }}
+          path: ${{ matrix.package.name }}
 
-      # - name: build project
-      #   run: |
-      #     cd ${{ matrix.package.name }}
-      #     # if an edit command for editing package.json is specified (e.g., to disable linting), run it
-      #     if [ -n "${{ matrix.package.edits }}" ]; then
-      #       edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
-      #       eval $edits
-      #     fi
-      #     npm install
-      #     npm run build 
+      - name: build project
+        run: |
+          cd ${{ matrix.package.name }}
+          # if an edit command for editing package.json is specified (e.g., to disable linting), run it
+          if [ -n "${{ matrix.package.edits }}" ]; then
+            edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
+            eval $edits
+          fi
+          npm install
+          npm run build 
 
       - name: Check out llm-mutation-testing
         uses: actions/checkout@v3
@@ -108,27 +108,26 @@ jobs:
       - name: Set up llm-mutation-testing
         run: |
           cd llm-mutation-testing
-          ls -al
           npm run build
 
-      # - name: Generate mutants
-      #   env:
-      #     PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
-      #     PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
-      #   run: |
-      #     cd llm-mutation-testing
-      #     echo "Generating mutants for ${{ matrix.package.name }}" 
-      #     command="node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --model codellama-34b-instruct --promptTemplateFileName test/input/newTemplate.hb --caching false --temperature 0.0 --rateLimit 10000 --mutate $${{ matrix.package.files }}"
-      #     echo "Running command: $command"
-      #     eval $command    
+      - name: Generate mutants
+        env:
+          PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
+          PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
+        run: |
+          cd llm-mutation-testing
+          echo "Generating mutants for ${{ matrix.package.name }}" 
+          command="node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --model codellama-34b-instruct --promptTemplateFileName test/input/newTemplate.hb --caching false --temperature 0.0 --rateLimit 10000 --mutate $${{ matrix.package.files }}"
+          echo "Running command: $command"
+          eval $command    
 
-      # - name: install stryker-js and run stryker (precomputed mutators)
-      #   run: |
-      #     cd ${{ matrix.package.name }}
-      #     npm install install-local # install-local is needed to install our custom version of stryker-js  
-      #     npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
-      #     npx stryker --version # 8.2.5
-      #     npx stryker run --usePrecomputed --mutate ${{ matrix.package.files }}
+      - name: install stryker-js and run stryker (precomputed mutators)
+        run: |
+          cd ${{ matrix.package.name }}
+          npm install install-local # install-local is needed to install our custom version of stryker-js  
+          npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+          npx stryker --version # 8.2.5
+          npx stryker run --usePrecomputed --mutate ${{ matrix.package.files }}
 
       # - name: install stryker-js and run stryker (standard mutators)
       #   run: |
