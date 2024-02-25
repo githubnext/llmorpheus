@@ -91,6 +91,11 @@ jobs:
       - name: go into project and install install-local and stryker-js
         run: |
           cd ${{ matrix.package.name }}
+          # if an edit command for editing package.json is specified (e.g., to disable linting), run it
+          if [ -n "${{ matrix.package.edits }}" ]; then
+            edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
+            eval $edits
+          fi
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           echo "check stryker version"
@@ -99,11 +104,6 @@ jobs:
       - name: build project
         run: |
           cd ${{ matrix.package.name }}
-          # if an edit command for editing package.json is specified (e.g., to disable linting), run it
-          if [ -n "${{ matrix.package.edits }}" ]; then
-            edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
-            eval $edits
-          fi
           npm install
           npm run build 
           npx stryker --version
