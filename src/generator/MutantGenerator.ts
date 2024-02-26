@@ -27,7 +27,7 @@ export class MutantGenerator {
     private promptTemplateFileName: string,
     private outputDir: string,
     private projectPath: string,
-    private filesToMutate: string[]
+    private filesToMutate: string
   ) {
     console.log(`outputDir: ${outputDir}`);
     console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
@@ -35,12 +35,17 @@ export class MutantGenerator {
     console.log(`filesToMutate: ${filesToMutate}`);
     console.log(`model: ${model.getModelName()}`);
 
+    this.createOutputFilesDirectory();
+  }
 
+  /**
+   * Delete old output old output files from previous runs, if they exist 
+   * and create the output directory and subdirectories for the current run.
+   */
+  private createOutputFilesDirectory() {
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir);
     }
-
-    // remove output files from previous run, if they exist
     if (!fs.existsSync(path.join(this.outputDir, this.getSubDirName()))) {
       fs.mkdirSync(path.join(this.outputDir, this.getSubDirName()));
     }
@@ -80,10 +85,12 @@ export class MutantGenerator {
   /**
    * Find the files to mutate
    * @param path the path to the project to mutate
+   * @param filesToMutate glob specifying the files to mutate
    * @returns the files to mutate
    */
-  public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
-    const pattern = `${path}/**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
+  public async findSourceFilesToMutate(path: string, filesToMutate: string): Promise<Array<string>> {
+    const pattern = filesToMutate ? path + "/" + filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
+    console.log(`>> pattern: ${pattern}`);
     const files = await fg([pattern], {
       ignore: ['**/node_modules',
         '**/dist',
@@ -108,6 +115,7 @@ export class MutantGenerator {
         '**/spec/**',
         '**/scripts/**',]
     });
+    console.log(`>> files to mutate: ${files}`);
     return files;
   }
 
@@ -162,13 +170,11 @@ export class MutantGenerator {
   /**
    * Generate mutants.
    */
-  public async generateMutants(packagePath: string): Promise<void> {
+  public async generateMutants(packagePath: string, filesToMutate: string): Promise<void> {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
     );
-    const files = this.filesToMutate 
-     ? this.filesToMutate.map((file) => path.join(packagePath, file))
-     : await this.findSourceFilesToMutate(packagePath);
+    const files = await this.findSourceFilesToMutate(packagePath, filesToMutate);
 
     const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
     this.printAndLog(
@@ -257,7 +263,9 @@ export class MutantGenerator {
 
     const locations = new Array<string>();
     for (const mutant of mutants) {
-      const location = `${mutant.file}:<${mutant.startLine},${mutant.startColumn}>-${mutant.endLine},${mutant.endColumn}`;
+      const fileName = mutant.file.substring(this.projectPath.length);
+      mutant.file = fileName;
+      const location = `${fileName}:<${mutant.startLine},${mutant.startColumn}>-${mutant.endLine},${mutant.endColumn}`;
       if (!locations.includes(location)) {
         locations.push(location);
       }

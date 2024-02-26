@@ -77,8 +77,8 @@ if (require.main === module) {
           description: "path to directory where cache files are located",
         },
         mutate: {
-          type: "array",
-          default: [] as string[],
+          type: "string",
+          default: "**/*.{js,ts}",
           demandOption: false,
           description: "comma-separated list of files to mutate",
         },
@@ -141,8 +141,8 @@ if (require.main === module) {
       argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
       argv.path,
-      argv.mutate ? argv.mutate as string[] : []
+      argv.mutate
     );
-    mutantGenerator.generateMutants(argv.path);
+    mutantGenerator.generateMutants(argv.path, argv.mutate as string);
   })();
 }
