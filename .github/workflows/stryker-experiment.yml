@@ -57,5 +57,5 @@ jobs:
       - name: run stryker (precomputed mutators)
         run: |
           cd PROJECT
-          export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
+          export MUTANTS_FILE=$(pwd)/MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           npx stryker run --usePrecomputed --mutate **/ZipAFolder.ts
