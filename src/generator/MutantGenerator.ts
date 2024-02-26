@@ -115,7 +115,7 @@ export class MutantGenerator {
         '**/spec/**',
         '**/scripts/**',]
     });
-    console.log(`>> files to mutate: ${files}`);
+    console.log(`** files to mutate: ${files}`);
     return files;
   }
 
@@ -201,9 +201,6 @@ export class MutantGenerator {
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
-      if (mutationStats.nrSyntacticallyValid >= 10){ // for DEBUGGING
-        break;
-      }
     }
 
     this.reportAndWriteResults(mutants, mutationStats);
