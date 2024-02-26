@@ -117,7 +117,7 @@ jobs:
         run: |
           cd llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
-          node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate ${{ matrix.package.files }}  --model codellama-34b-instruct  --promptTemplateFileName test/input/newTemplate.hb  --caching false  --temperature 0.0 --rateLimit 10000
+          node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate ${{ matrix.package.files }}  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
