@@ -135,14 +135,15 @@ if (require.main === module) {
       return value;
     }
 
-    console.log(`*** Generating mutants for ${argv.mutate} in ${argv.path}`);
+    const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
+    console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
     const mutantGenerator = new MutantGenerator(
       model,
       argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
-      argv.path,
+      packagePath,
       argv.mutate
     );
-    mutantGenerator.generateMutants(argv.path, argv.mutate as string);
+    mutantGenerator.generateMutants(packagePath, argv.mutate as string);
   })();
 }
