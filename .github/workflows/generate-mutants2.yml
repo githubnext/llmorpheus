@@ -126,7 +126,7 @@ jobs:
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           npx stryker --version # 8.2.5
           export MUTANTS_FILE=$(pwd)/MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
-          npx stryker run --usePrecomputed --mutate ${{ matrix.package.files }}
+          npx stryker run --usePrecomputed --mutate **/ZipAFolder.ts
 
       # - name: install stryker-js and run stryker (standard mutators)
       #   run: |
