@@ -3,7 +3,7 @@
     "name": "countries-and-timezones",
     "url": "https://github.com/manuelmhtr/countries-and-timezones/tree/241dd0f56dfc527bcd87779ae14ed67bd25c1c0e",
     "edits": "sed -i -e 's/ && yarn run test:types//;s/rollup -c && sh .fixTypes.sh//' package.json",
-    "files": "src/**/*.js"
+    "files": "src/**.js"
   }
 ]
 
