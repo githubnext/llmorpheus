@@ -132,6 +132,7 @@ jobs:
           # echo "--------------------------"
           CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}"
           echo "CMD=$CMD"
+          echo FILES=${{ matrix.package.files }} | tr '*' '\*'
           npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}
 
       - name: install stryker-js and run stryker (standard mutators)
