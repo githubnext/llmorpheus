@@ -128,7 +128,7 @@ jobs:
           echo "--------------------------"
           more $MUTANTS_FILE
           echo "--------------------------"
-          npx stryker run --usePrecomputed --concurrency 2 --mutate {{ matrix.package.files }}
+          npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}
 
       - name: install stryker-js and run stryker (standard mutators)
         run: |
