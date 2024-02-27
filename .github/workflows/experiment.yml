@@ -1,4 +1,4 @@
-name: Generate Mutants 2
+name: Mutation Testing Experiment
 
 on:
   workflow_dispatch:
