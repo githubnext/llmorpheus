@@ -1,9 +1,6 @@
-[
-  {
-    "name": "countries-and-timezones",
-    "url": "https://github.com/manuelmhtr/countries-and-timezones/tree/241dd0f56dfc527bcd87779ae14ed67bd25c1c0e",
-    "edits": "sed -i -e 's/ && yarn run test:types//' package.json",
-    "files": "src/**/*.js"
-  }
-]
-
+{
+  "name": "zip-a-folder",
+  "url": "https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1",
+  "edits": "sed -i -e 's/ && npm run lint//' package.json",
+  "files": "lib/**.ts"
+}
