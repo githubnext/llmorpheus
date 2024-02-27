@@ -198,9 +198,13 @@ export class MutantGenerator {
     };
 
     const mutants = new Array<Mutant>();
+    let promptNr = 0;
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
+      if (promptNr++ > 5){ // for debugging
+        break;
+      }
     }
 
     this.reportAndWriteResults(mutants, mutationStats);
