@@ -132,7 +132,8 @@ jobs:
           # echo "--------------------------"
           CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}"
           echo "CMD=$CMD"
-          FILES=${{ matrix.package.files }} | sed 's/**/\\*\\*/g'
+          FILES=${{ matrix.package.files }}
+          FILES=$FILES | sed 's/**/\\*\\*/g'
           # echo "FILES=$FILES"
           npx stryker run --usePrecomputed --concurrency 2 --mutate $FILES
 
