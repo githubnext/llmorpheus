@@ -1,4 +1,4 @@
-name: Mutation Testing Experiment
+name: New Experiment
 
 on:
   workflow_dispatch:
@@ -9,6 +9,9 @@ on:
       temperatures:
         description: "Sampling temperatures to try when obtaining completions (whitespace-separated)"
         default: "0.0"
+      maxNrPrompts:
+        description: "Maximum number of prompts to try when obtaining completions"
+        default: "1250"
       # model:
       #   description: "Which LLM API to use"
       #   type: "choice"
@@ -28,6 +31,7 @@ jobs:
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
       temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
+      maxNrPrompts: "${{ github.event.inputs.maxNrPrompts || '1250' }}"
     steps:
       - uses: actions/checkout@v3
 
@@ -93,12 +97,13 @@ jobs:
         run: |
           cd ${{ matrix.package.name }}
           # if an edit command for editing package.json is specified (e.g., to disable linting), run it
-          if [ -n "${{ matrix.package.edits }}" ]; then
-            edits=$(echo "${{ matrix.package.edits }}" | tr '\n' ' ')
-            eval $edits
+          if [ -n "$MATRIX_PACKAGE_EDITS" ]; then
+            ${{ matrix.package.edits }}
           fi
           npm install
           npm run build 
+        env:
+          MATRIX_PACKAGE_EDITS: ${{ matrix.package.edits }}
 
       - name: Check out llm-mutation-testing
         uses: actions/checkout@v3
@@ -119,7 +124,7 @@ jobs:
           echo "Generating mutants for ${{ matrix.package.name }}" 
           # export CMD="node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate ${{ matrix.package.files }}  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000"
           # echo "CMD=$CMD"
-          node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate ${{ matrix.package.files }}  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000
+          node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate ${{ matrix.package.files }}  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
@@ -127,24 +132,12 @@ jobs:
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           export MUTANTS_FILE=$(pwd)/MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
-          # echo "--------------------------"
-          # more $MUTANTS_FILE
-          # echo "--------------------------"
-          CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}"
-          echo "CMD=$CMD"
-          FILES=${{ matrix.package.files }}
-          FILES=$FILES | sed 's/**/\\*\\*/g'
-          # echo "FILES=$FILES"
-          npx stryker run --usePrecomputed --concurrency 2 --mutate $FILES
+          npx stryker run --usePrecomputed --mutate "${{ matrix.package.files }}"
 
       - name: install stryker-js and run stryker (standard mutators)
         run: |
           cd ${{ matrix.package.name }}
           # npm install install-local # install-local is needed to install our custom version of stryker-js  
           # npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
-          npx stryker --version # 8.2.5
-          FILES=${{ matrix.package.files }}
-          FILES=$FILES | sed 's/**/\\*\\*/g'
-          # echo "FILES=$FILES"
-          npx stryker run --mutate $FILES   
+          npx stryker run --mutate "${{ matrix.package.files }}"   
        
