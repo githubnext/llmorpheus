@@ -27,13 +27,15 @@ export class MutantGenerator {
     private promptTemplateFileName: string,
     private outputDir: string,
     private projectPath: string,
-    private filesToMutate: string
+    private filesToMutate: string,
+    private maxNrPrompts: number
   ) {
-    console.log(`outputDir: ${outputDir}`);
+    console.log(`model: ${model.getModelName()}`);
     console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
+    console.log(`outputDir: ${outputDir}`);
     console.log(`projectPath: ${projectPath}`);
     console.log(`filesToMutate: ${filesToMutate}`);
-    console.log(`model: ${model.getModelName()}`);
+    console.log(`maxNrPrompts: ${maxNrPrompts}`);
 
     this.createOutputFilesDirectory();
   }
@@ -88,8 +90,8 @@ export class MutantGenerator {
    * @param filesToMutate glob specifying the files to mutate
    * @returns the files to mutate
    */
-  public async findSourceFilesToMutate(path: string, filesToMutate: string): Promise<Array<string>> {
-    const pattern = filesToMutate ? path + "/" + filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
+  public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
+    const pattern = this.filesToMutate ? path + "/" + this.filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
     console.log(`>> pattern: ${pattern}`);
     const files = await fg([pattern], {
       ignore: ['**/node_modules',
@@ -170,11 +172,11 @@ export class MutantGenerator {
   /**
    * Generate mutants.
    */
-  public async generateMutants(packagePath: string, filesToMutate: string): Promise<void> {
+  public async generateMutants(packagePath: string): Promise<void> {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
     );
-    const files = await this.findSourceFilesToMutate(packagePath, filesToMutate);
+    const files = await this.findSourceFilesToMutate(packagePath);
 
     const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
     this.printAndLog(
@@ -198,11 +200,14 @@ export class MutantGenerator {
     };
 
     const mutants = new Array<Mutant>();
+    let promptCnt = 0;
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
+      if (++promptCnt >= this.maxNrPrompts) {
+        break;
+      }
     }
-
     this.reportAndWriteResults(mutants, mutationStats);
   }
 

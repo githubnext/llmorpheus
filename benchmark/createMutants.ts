@@ -82,6 +82,12 @@ if (require.main === module) {
           demandOption: false,
           description: "comma-separated list of files to mutate",
         },
+        maxNrPrompts: {
+          type: "number",
+          default: 1250,
+          demandOption: false,
+          description: "maximum number of prompts to generate",
+        },
       });
 
     const argv = await parser.argv;
@@ -142,8 +148,9 @@ if (require.main === module) {
       argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
       packagePath,
-      argv.mutate
+      argv.mutate,
+      argv.maxNrPrompts
     );
-    mutantGenerator.generateMutants(packagePath, argv.mutate as string);
+    mutantGenerator.generateMutants(packagePath);
   })();
 }
