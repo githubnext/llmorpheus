@@ -97,11 +97,14 @@ jobs:
         run: |
           cd ${{ matrix.package.name }}
           # if an edit command for editing package.json is specified (e.g., to disable linting), run it
-          if [ -n "${{ matrix.package.edits }}" ]; then
+          if [ -n "$MATRIX_PACKAGE_EDITS" ]; then
             ${{ matrix.package.edits }}
           fi
           npm install
           npm run build 
+        env:
+          MATRIX_PACKAGE_EDITS: ${{ matrix.package.edits }}
+
 
       - name: Check out llm-mutation-testing
         uses: actions/checkout@v3
