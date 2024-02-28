@@ -10,6 +10,12 @@
     "url": "https://github.com/manuelmhtr/countries-and-timezones/tree/241dd0f56dfc527bcd87779ae14ed67bd25c1c0e",
     "edits": "sed -i -e 's/ && yarn run test:types//;s/rollup -c && //' package.json; sed -i \"s/sed -i ''/sed -i/g\" .fixTypes.sh",
     "files": "src/**.js"
+  },
+  {
+    "name": "node-jsonfile",
+    "url": "https://github.com/jprichardson/node-jsonfile/tree/9c6478a85899a9318547a6e9514b0403166d8c5c",
+    "edits": "sed -i -e 's/npm run lint && //' package.json",
+    "files": "./*.js"
   }
 ]
 
