@@ -1,4 +1,4 @@
-name: New Experiment
+name: Mutation Testing Experiment
 
 on:
   workflow_dispatch:
