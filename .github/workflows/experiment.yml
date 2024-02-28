@@ -132,18 +132,17 @@ jobs:
           # echo "--------------------------"
           CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}"
           echo "CMD=$CMD"
-          FILES=${{ matrix.package.files }}
-          FILES=$FILES | sed 's/**/\\*\\*/g'
-          echo "FILES=$FILES"
+          FILES=${{ matrix.package.files }} | sed 's/**/\\*\\*/g'
+          # echo "FILES=$FILES"
           npx stryker run --usePrecomputed --concurrency 2 --mutate $FILES
 
-      # - name: install stryker-js and run stryker (standard mutators)
-      #   run: |
-      #     cd ${{ matrix.package.name }}
-      #     # npm install install-local # install-local is needed to install our custom version of stryker-js  
-      #     # npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
-      #     npx stryker --version # 8.2.5
-      #     FILES=${{ matrix.package.files }} | tr '*' '\*'
-      #     echo "FILES=$FILES"
-      #     npx stryker run --mutate $FILES   
+      - name: install stryker-js and run stryker (standard mutators)
+        run: |
+          cd ${{ matrix.package.name }}
+          # npm install install-local # install-local is needed to install our custom version of stryker-js  
+          # npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
+          npx stryker --version # 8.2.5
+          FILES=${{ matrix.package.files }} | tr '*' '\*'
+          # echo "FILES=$FILES"
+          npx stryker run --mutate $FILES   
        
