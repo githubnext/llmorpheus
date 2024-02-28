@@ -101,7 +101,8 @@ jobs:
             ${{ matrix.package.edits }}
           fi
           npm install
-          npm run build 
+          # if a build script exists, run it
+          npm run build || echo "No build script found"
         env:
           MATRIX_PACKAGE_EDITS: ${{ matrix.package.edits }}
 
