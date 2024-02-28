@@ -105,7 +105,6 @@ jobs:
         env:
           MATRIX_PACKAGE_EDITS: ${{ matrix.package.edits }}
 
-
       - name: Check out llm-mutation-testing
         uses: actions/checkout@v3
         with:
@@ -136,7 +135,7 @@ jobs:
           # echo "--------------------------"
           # more $MUTANTS_FILE
           # echo "--------------------------"
-          CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate ${{ matrix.package.files }}"
+          CMD="npx stryker run --usePrecomputed --concurrency 2 --mutate \"${{ matrix.package.files }}\""
           echo "CMD=$CMD"
           FILES=${{ matrix.package.files }}
           FILES=$FILES | sed 's/**/\\*\\*/g'
