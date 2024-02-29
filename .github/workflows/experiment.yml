@@ -20,10 +20,10 @@ on:
       #     - "gpt4"
       #     - "text-davinci003"
       #   default: "gpt4"
-      # debug_enabled:
-      #   type: boolean
-      #   description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
-      #   default: false
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        default: false
 
 jobs:
   setup:
@@ -125,6 +125,10 @@ jobs:
           echo "Generating mutants for ${{ matrix.package.name }}" 
           node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate "${{ matrix.package.files }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}    
+        
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
           cd ${{ matrix.package.name }}
