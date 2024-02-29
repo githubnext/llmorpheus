@@ -2,6 +2,7 @@ const fg = require('fast-glob');
 
 async function expandGlob(pattern, packagePath) {
   const files = await fg([pattern], {
+    dot: true,
     ignore: ['**/node_modules',
       '**/dist',
       '**/test',

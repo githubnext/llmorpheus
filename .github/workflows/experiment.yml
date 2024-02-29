@@ -133,6 +133,7 @@ jobs:
           echo "package.repo=${{ matrix.package.repo }}"
           echo "package.sha=${{ matrix.package.sha }}"
           echo "package.edits=${{ matrix.package.edits }}"
+          echo "package.files=${{ matrix.package.files }}"
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
           # store the output of running node in a variable STRYKER_FILES
