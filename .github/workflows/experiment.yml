@@ -136,7 +136,7 @@ jobs:
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
           # store the output of running node in a variable STRYKER_FILES
-          export STRYKER_FILES=`node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}"`
+          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}")
           echo "STRYKER_FILES=$STRYKER_FILES"
 
       - name: Setup tmate session
@@ -149,7 +149,7 @@ jobs:
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
-          export STRYKER_FILES=`node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}"`
+          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}")
           npx stryker run --usePrecomputed --mutate $STRYKER_FILES
 
       - name: install stryker-js and run stryker (standard mutators)
