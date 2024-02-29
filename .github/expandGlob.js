@@ -29,6 +29,11 @@ async function expandGlob(pattern, packagePath) {
   return filesWithoutProjectPath;
 }
 
+console.log(`argv[0] = ${process.argv[0]}`);
+console.log(`argv[1] = ${process.argv[1]}`);
+console.log(`argv[2] = ${process.argv[2]}`);
+console.log(`argv[3] = ${process.argv[3]}`);
+
 const packagePath = process.argv[2].trim();
 const glob = process.argv[3].trim();
 expandGlob(packagePath + glob, packagePath).then((files) => {
