@@ -1,7 +1,11 @@
 const fg = require('fast-glob');
 
 async function expandGlob(pattern, packagePath) {
-  let files = (await fg([pattern], { })).map((file) => file.replace(packagePath, "./"));
+  if (packagePath.endsWith('/')) {
+    packagePath = packagePath.substring(0, packagePath.length-1);
+  }
+  let files = await fg([pattern], { });
+  files = files.map(file => file.substring(packagePath.length+1));
   console.log(files.join(','));
 }
 
