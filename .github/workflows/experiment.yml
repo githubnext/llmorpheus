@@ -132,7 +132,7 @@ jobs:
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           export MUTANTS_FILE=$(pwd)/MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
-          export STRYKER_FILES=$(node ../.github/expandGlob.js ${{ matrix.package.files }} $(pwd))
+          export STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js ${{ matrix.package.files }} $(pwd))
           echo "STRYKER_FILES=$STRYKER_FILES"
           npx stryker run --usePrecomputed --mutate $STRYKER_FILES
 
