@@ -26,16 +26,11 @@ async function expandGlob(pattern, packagePath) {
       '**/scripts/**',]
   });
   const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
-  return filesWithoutProjectPath;
-}
-
-// console.log(`argv[0] = ${process.argv[0]}`);
-// console.log(`argv[1] = ${process.argv[1]}`);
-// console.log(`argv[2] = ${process.argv[2]}`);
-// console.log(`argv[3] = ${process.argv[3]}`);
+  console.log(filesWithoutProjectPath.join(','));}
 
 const packagePath = process.argv[2].trim();
 const glob = process.argv[3].trim();
-expandGlob(packagePath + glob, packagePath).then((files) => {
-  console.log(files.join(','));
-});
+// console.log(`packagePath = ${packagePath}`);
+// console.log(`glob = ${glob}`);
+
+expandGlob(packagePath + '/' + glob, packagePath);

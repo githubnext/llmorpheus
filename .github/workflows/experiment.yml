@@ -136,8 +136,8 @@ jobs:
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
           # store the output of running node in a variable STRYKER_FILES
-          # node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}" > STRYKER_FILES
-          # echo "STRYKER_FILES=$STRYKER_FILES"
+          export STRYKER_FILES=`node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}"`
+          echo "STRYKER_FILES=$STRYKER_FILES"
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
