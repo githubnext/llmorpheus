@@ -137,7 +137,7 @@ jobs:
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
           # store the output of running node in a variable STRYKER_FILES
-          node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}" > StrykerFiles.txt
+          node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" > StrykerFiles.txt
           # assign contents of file StrykerFiles.txt to variable STRYKER_FILES
           STRYKER_FILES=`cat StrykerFiles.txt`
           echo "----"
