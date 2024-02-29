@@ -135,7 +135,7 @@ jobs:
           echo "package.edits=${{ matrix.package.edits }}"
           export MUTANTS_FILE=$(pwd)/MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           find .. -name "expandGlob.js"
-          export STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js  $(pwd) ${{ matrix.package.files }})
+          export STRYKER_FILES=`$(node ../llm-mutation-testing/.github/expandGlob.js  $(pwd) ${{ matrix.package.files }})`
           echo "STRYKER_FILES=$STRYKER_FILES"
 
       # - name: Setup tmate session
