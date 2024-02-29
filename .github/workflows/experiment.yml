@@ -138,7 +138,7 @@ jobs:
           # store the output of running node in a variable STRYKER_FILES
           $(node ../llm-mutation-testing/.github/expandGlob.js . "${{ matrix.package.files }}") > StrykerFiles.txt
           # assign contents of file STRYKER_FILES to variable STRYKER_FILES
-          STRYKER_FILES=$(<StrykerFiles.txt)
+          STRYKER_FILES=`cat StrykerFiles.txt`
           echo "STRYKER_FILES=$STRYKER_FILES"
 
       - name: Setup tmate session
