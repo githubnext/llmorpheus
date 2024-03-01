@@ -3,7 +3,7 @@
     "name": "fs-extra",
     "url": "https://github.com/jprichardson/node-fs-extra/tree/6bffcd81881ae474d3d1765be7dd389b5edfd0e0",
     "edits": "echo 'no edits'",
-    // glob specifying any *.js files in subdirectories not named __tests__ anywhere under lib
-    "files":  "lib/**/!(__tests__)/*.js"
+    "files":  "./lib/**/*.js",
+    "ignore": "**/__tests__"
   }
 ]

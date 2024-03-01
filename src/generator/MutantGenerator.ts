@@ -92,40 +92,31 @@ export class MutantGenerator {
    * @param filesToMutate glob specifying the files to mutate
    * @returns the files to mutate
    */
-  public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
+  public async findSourceFilesToMutate(path: string): Promise<string[]> {
     const pattern = this.filesToMutate ? path + "/" + this.filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
-    const ignore = this.filesToIgnore ?  [this.filesToIgnore] : 
-      ['**/node_modules',
-      '**/dist',
-      '**/test',
-      '**/*.test.*',
-      '**/*.min.js',
-      '**/*.d.ts',
-      '**/rollup.config.js',
-      "**/esm/index.js",
-      'coverage',
-      'lcov-report',
-      `${path}/**/*test*.js`,
-      '**/examples',
-      '**/example',
-      '**/benchmark',
-      '**/benchmarks',
-      "**/*.spec.*",
-      '**/build',
-      '**/test.js',
-      '**/Gruntfile.js',
-      '**/design/**',
-      '**/spec/**',
-      '**/scripts/**',
-      '**/__tests__/**',]
+    const ignore = this.filesToIgnore ?  [this.filesToIgnore] : [];
     console.log(`>> pattern: ${pattern}`);
     console.log(`>> ignore: ${ignore}`);
-    const files = await fg([pattern], { ignore: ignore as string[]});
+    // const files = await fg([pattern], { ignore: ignore });
     // console.log(`** files to mutate: ${files}`);
+    console.log(`>> path = ${path}, filesToMutate = ${this.filesToMutate}, filesToIgnore = ${this.filesToIgnore}`);
+    const files: string[] = await this.expandGlob(path, this.filesToMutate, this.filesToIgnore);
+    console.log(`** files to mutate: ${files}`);
     return files;
   }
 
-
+  private async expandGlob(dirName: string, glob: string, ignore: string | undefined) : Promise<string[]> {
+    dirName = dirName.trim();
+    if (dirName.endsWith('/')) {
+      dirName = dirName.substring(0, dirName.length-1);
+    }
+    glob = path.join(dirName,glob.trim());
+    const ignorePatterns = ignore ? [(ignore as string).trim()] : [];
+    console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
+   
+    let files: string[] = await fg([glob], {ignore: ignorePatterns } );
+    return files.map(file => file.substring(dirName.length+1));
+  }
 
   /** Determine situations where a candidate mutant is invalid */
   private isInvalidSubstitution(prompt: Prompt, substitution: string): boolean {

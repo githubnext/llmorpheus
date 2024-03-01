@@ -80,7 +80,13 @@ if (require.main === module) {
           type: "string",
           default: "**/*.{js,ts}",
           demandOption: false,
-          description: "comma-separated list of files to mutate",
+          description: "glob specifying files to mutate",
+        },
+        ignore: {
+          type: "string",
+          default: "",
+          demandOption: false,
+          description: "glob specifying files to ignore",
         },
         maxNrPrompts: {
           type: "number",
@@ -149,6 +155,7 @@ if (require.main === module) {
       path.join(argv.path, "MUTATION_TESTING"),
       packagePath,
       argv.mutate,
+      argv.ignore,
       argv.maxNrPrompts
     );
     mutantGenerator.generateMutants(packagePath);
