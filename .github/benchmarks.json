@@ -22,6 +22,18 @@
     "url": "https://github.com/pull-stream/pull-stream/tree/29b4868bb3864c427c3988855c5d65ad5cb2cb1c",
     "edits": "sed -i -e 's/npm run lint && //' package.json",
     "files": "{index,pull,throughs/*,sources/*,sinks/*,util/*}.js"
+  },
+  {
+    "name": "node-dirty",
+    "url": "https://github.com/felixge/node-dirty/tree/d7fb4d4ecf0cce144efa21b674965631a7955e61",
+    "edits": "echo 'no edits'",
+    "files": "./lib/**/*.js"
+  },
+  {
+    "name": "node-geo-point",
+    "url": "https://github.com/rainder/node-geo-point/tree/c839d477ff7a48d1fc6574495cbbc6196161f494",
+    "edits": "echo 'no edits'",
+    "files": "src/{geo-point,index}.ts"
   }
 ]
 
