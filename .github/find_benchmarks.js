@@ -45,6 +45,7 @@ for (const benchmark of json) {
   const parsedPackage = parsePackage(benchmark.url);
   parsedPackage.name = benchmark.name;
   parsedPackage.files = benchmark.files;
+  parsedPackage.ignore = benchmark.ignore;
   parsedPackage.edits = benchmark.edits;
   packages.push(parsedPackage);
 }

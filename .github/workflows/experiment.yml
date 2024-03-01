@@ -84,6 +84,7 @@ jobs:
           echo "package.sha=${{ matrix.package.sha }}"
           echo "package.edits=${{ matrix.package.edits }}"
           echo "package.files=${{ matrix.package.files }}"
+          echo "package.ignore=${{ matrix.package.ignore }}"
 
       - name: check out benchmark
         if: ${{ matrix.package.host == 'github.com' }}
@@ -134,8 +135,10 @@ jobs:
           echo "package.sha=${{ matrix.package.sha }}"
           echo "package.edits=${{ matrix.package.edits }}"
           echo "package.files=${{ matrix.package.files }}"
-          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}")
-          echo $STRYKER_FILES
+          echo "package.ignore=${{ matrix.package.ignore }}"
+          echo "pwd=$(pwd)"
+          # STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
+          # echo $STRYKER_FILES
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
