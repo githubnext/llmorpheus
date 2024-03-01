@@ -10,7 +10,7 @@ async function expandGlob(dirName, glob, ignore) {
   dirName = dirName.trim();
   glob = dirName + glob.trim();
   ignore = ignore ? ignore.trim() : [];
-  // console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
+   console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
   if (dirName.endsWith('/')) {
     dirName = dirName.substring(0, dirName.length-1);
   }
