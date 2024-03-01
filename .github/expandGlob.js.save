@@ -1,7 +1,6 @@
 const fg = require('fast-glob');
 
 async function expandGlob(pattern, packagePath, ignore) {
-  console.log('ignore:', ignore);
   if (packagePath.endsWith('/')) {
     packagePath = packagePath.substring(0, packagePath.length-1);
   }
@@ -12,5 +11,4 @@ async function expandGlob(pattern, packagePath, ignore) {
 
 const packagePath = process.argv[2].trim();
 const glob = process.argv[3].trim();
-const ignore = process.argv[4] ? process.argv[4].trim() : undefined;  
-expandGlob(packagePath + '/' + glob, packagePath, ignore);
+expandGlob(packagePath + '/' + glob, packagePath);
