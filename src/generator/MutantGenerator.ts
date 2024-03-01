@@ -28,6 +28,7 @@ export class MutantGenerator {
     private outputDir: string,
     private projectPath: string,
     private filesToMutate: string,
+    private filesToIgnore: string,
     private maxNrPrompts: number
   ) {
     console.log(`model: ${model.getModelName()}`);
@@ -35,6 +36,7 @@ export class MutantGenerator {
     console.log(`outputDir: ${outputDir}`);
     console.log(`projectPath: ${projectPath}`);
     console.log(`filesToMutate: ${filesToMutate}`);
+    console.log(`filesToIgnore: ${filesToIgnore}`);
     console.log(`maxNrPrompts: ${maxNrPrompts}`);
 
     this.createOutputFilesDirectory();
@@ -92,33 +94,34 @@ export class MutantGenerator {
    */
   public async findSourceFilesToMutate(path: string): Promise<Array<string>> {
     const pattern = this.filesToMutate ? path + "/" + this.filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
+    const ignore = this.filesToIgnore ?  [this.filesToIgnore] : 
+      ['**/node_modules',
+      '**/dist',
+      '**/test',
+      '**/*.test.*',
+      '**/*.min.js',
+      '**/*.d.ts',
+      '**/rollup.config.js',
+      "**/esm/index.js",
+      'coverage',
+      'lcov-report',
+      `${path}/**/*test*.js`,
+      '**/examples',
+      '**/example',
+      '**/benchmark',
+      '**/benchmarks',
+      "**/*.spec.*",
+      '**/build',
+      '**/test.js',
+      '**/Gruntfile.js',
+      '**/design/**',
+      '**/spec/**',
+      '**/scripts/**',
+      '**/__tests__/**',]
     console.log(`>> pattern: ${pattern}`);
-    const files = await fg([pattern], {
-      ignore: ['**/node_modules',
-        '**/dist',
-        '**/test',
-        '**/*.test.*',
-        '**/*.min.js',
-        '**/*.d.ts',
-        '**/rollup.config.js',
-        "**/esm/index.js",
-        'coverage',
-        'lcov-report',
-        `${path}/**/*test*.js`,
-        '**/examples',
-        '**/example',
-        '**/benchmark',
-        '**/benchmarks',
-        "**/*.spec.*",
-        '**/build',
-        '**/test.js',
-        '**/Gruntfile.js',
-        '**/design/**',
-        '**/spec/**',
-        '**/scripts/**',
-        '**/__tests__/**',]
-    });
-    console.log(`** files to mutate: ${files}`);
+    console.log(`>> ignore: ${ignore}`);
+    const files = await fg([pattern], { ignore: ignore as string[]});
+    // console.log(`** files to mutate: ${files}`);
     return files;
   }
 
