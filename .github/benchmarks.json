@@ -34,6 +34,12 @@
     "url": "https://github.com/rainder/node-geo-point/tree/c839d477ff7a48d1fc6574495cbbc6196161f494",
     "edits": "echo 'no edits'",
     "files": "src/{geo-point,index}.ts"
+  },
+  {
+    "name": "Complex.js",
+    "url": "https://github.com/infusion/Complex.js/tree/d995ca105e8adef4c38d0ace50643daf84e0dd1c",
+    "edits": "echo 'no edits'",
+    "files": "complex.js"
   }
 ]
 

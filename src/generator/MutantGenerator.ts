@@ -115,7 +115,8 @@ export class MutantGenerator {
         '**/Gruntfile.js',
         '**/design/**',
         '**/spec/**',
-        '**/scripts/**',]
+        '**/scripts/**',
+        '**/__tests__/**',]
     });
     console.log(`** files to mutate: ${files}`);
     return files;
