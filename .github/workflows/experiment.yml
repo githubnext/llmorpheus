@@ -125,17 +125,17 @@ jobs:
           echo "Generating mutants for ${{ matrix.package.name }}" 
           node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate "${{ matrix.package.files }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
 
-      # - name: Print info for debugging
-      #   run: |
-      #     cd ${{ matrix.package.name }}
-      #     echo "matrix.package.name=${{ matrix.package.name }}"
-      #     echo "package.owner=${{ matrix.package.owner }}"
-      #     echo "package.repo=${{ matrix.package.repo }}"
-      #     echo "package.sha=${{ matrix.package.sha }}"
-      #     echo "package.edits=${{ matrix.package.edits }}"
-      #     echo "package.files=${{ matrix.package.files }}"
-      #     STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}")
-      #     echo $STRYKER_FILES
+      - name: Print info for debugging
+        run: |
+          cd ${{ matrix.package.name }}
+          echo "matrix.package.name=${{ matrix.package.name }}"
+          echo "package.owner=${{ matrix.package.owner }}"
+          echo "package.repo=${{ matrix.package.repo }}"
+          echo "package.sha=${{ matrix.package.sha }}"
+          echo "package.edits=${{ matrix.package.edits }}"
+          echo "package.files=${{ matrix.package.files }}"
+          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}")
+          echo $STRYKER_FILES
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
