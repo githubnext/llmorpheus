@@ -1,4 +1,5 @@
 const fg = require('fast-glob');
+const path = require('path');
 
 /**
  * Expand a glob into a comma-separated list of files.
@@ -8,13 +9,11 @@ const fg = require('fast-glob');
  */
 async function expandGlob(dirName, glob, ignore) {
   dirName = dirName.trim();
-  glob = dirName + glob.trim();
-  ignore = ignore ? ignore.trim() : [];
-   console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
   if (dirName.endsWith('/')) {
     dirName = dirName.substring(0, dirName.length-1);
   }
-  let files = await fg([glob], {ignore: [ignore] } );
+  glob = path.join(dirName, glob);
+  let files = ignore ? await fg([glob], { ignore: [ignore] }) : await fg([glob]);
   files = files.map(file => file.substring(dirName.length+1));
   console.log(files.join(','));
 }
