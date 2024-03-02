@@ -125,34 +125,12 @@ jobs:
           cd ${{ matrix.package.name }}
           BENCHMARK_DIR=`pwd`
           cd ../llm-mutation-testing
-          echo "Generating mutants for ${{ matrix.package.name }}" 
-          echo "matrix.package.name=${{ matrix.package.name }}"
-          echo "package.owner=${{ matrix.package.owner }}"
-          echo "package.repo=${{ matrix.package.repo }}"
-          echo "package.sha=${{ matrix.package.sha }}"
-          echo "package.edits=${{ matrix.package.edits }}"
-          echo "package.files=${{ matrix.package.files }}"
-          echo "package.ignore=${{ matrix.package.ignore }}"
-          echo "BENCHMARK_DIR=$BENCHMARK_DIR"
+          echo "Generating mutants for ${{ matrix.package.name }}"           
           node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
-
-      - name: Print info for debugging
-        run: |
-          cd ${{ matrix.package.name }}
-          echo "matrix.package.name=${{ matrix.package.name }}"
-          echo "package.owner=${{ matrix.package.owner }}"
-          echo "package.repo=${{ matrix.package.repo }}"
-          echo "package.sha=${{ matrix.package.sha }}"
-          echo "package.edits=${{ matrix.package.edits }}"
-          echo "package.files=${{ matrix.package.files }}"
-          echo "package.ignore=${{ matrix.package.ignore }}"
-          echo "pwd=$(pwd)"
-          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          echo $STRYKER_FILES
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
