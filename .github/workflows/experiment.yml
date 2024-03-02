@@ -121,9 +121,10 @@ jobs:
         env:
           PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
-          BENCHMARK_DIR: $(pwd)/${{ matrix.package.name }}
         run: |
-          cd llm-mutation-testing
+          cd ${{ matrix.package.name }}
+          BENCHMARK_DIR=`pwd`
+          cd ../llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
           echo "matrix.package.name=${{ matrix.package.name }}"
           echo "package.owner=${{ matrix.package.owner }}"
