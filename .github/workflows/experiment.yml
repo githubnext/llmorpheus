@@ -122,6 +122,7 @@ jobs:
           PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
         run: |
+          set DIR=$(pwd)
           cd llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
           echo "matrix.package.name=${{ matrix.package.name }}"
@@ -131,7 +132,11 @@ jobs:
           echo "package.edits=${{ matrix.package.edits }}"
           echo "package.files=${{ matrix.package.files }}"
           echo "package.ignore=${{ matrix.package.ignore }}"
-          node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
+          node --max-old-space-size=6144 benchmark/createMutants.js --path $(DIR)/${{ matrix.package.name }} --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
 
       - name: Print info for debugging
         run: |
@@ -147,9 +152,7 @@ jobs:
           # STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
           # echo $STRYKER_FILES
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}    
+         
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
