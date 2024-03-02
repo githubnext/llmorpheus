@@ -116,6 +116,19 @@ jobs:
         run: |
           cd llm-mutation-testing
           npm run build
+          - name: Print info for debugging
+          run: |
+            cd ${{ matrix.package.name }}
+            echo "matrix.package.name=${{ matrix.package.name }}"
+            echo "package.owner=${{ matrix.package.owner }}"
+            echo "package.repo=${{ matrix.package.repo }}"
+            echo "package.sha=${{ matrix.package.sha }}"
+            echo "package.edits=${{ matrix.package.edits }}"
+            echo "package.files=${{ matrix.package.files }}"
+            echo "package.ignore=${{ matrix.package.ignore }}"
+            echo "pwd=$(pwd)"
+            # STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
+            # echo $STRYKER_FILES
 
       - name: Generate mutants
         env:
@@ -125,20 +138,6 @@ jobs:
           cd llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
           node --max-old-space-size=6144 benchmark/createMutants.js --path ../${{ matrix.package.name }} --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
-
-      - name: Print info for debugging
-        run: |
-          cd ${{ matrix.package.name }}
-          echo "matrix.package.name=${{ matrix.package.name }}"
-          echo "package.owner=${{ matrix.package.owner }}"
-          echo "package.repo=${{ matrix.package.repo }}"
-          echo "package.sha=${{ matrix.package.sha }}"
-          echo "package.edits=${{ matrix.package.edits }}"
-          echo "package.files=${{ matrix.package.files }}"
-          echo "package.ignore=${{ matrix.package.ignore }}"
-          echo "pwd=$(pwd)"
-          # STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          # echo $STRYKER_FILES
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
