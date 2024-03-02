@@ -151,10 +151,8 @@ jobs:
           echo "package.files=${{ matrix.package.files }}"
           echo "package.ignore=${{ matrix.package.ignore }}"
           echo "pwd=$(pwd)"
-          # STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          # echo $STRYKER_FILES
-
-         
+          STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
+          echo $STRYKER_FILES
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
