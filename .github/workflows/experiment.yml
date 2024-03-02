@@ -123,6 +123,7 @@ jobs:
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
         run: |
           set DIR=$(pwd)
+          echo "DIR=$DIR"
           cd llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}" 
           echo "matrix.package.name=${{ matrix.package.name }}"
