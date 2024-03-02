@@ -26,18 +26,18 @@ export class MutantGenerator {
     private model: IModel,
     private promptTemplateFileName: string,
     private outputDir: string,
-    private projectPath: string,
+    private packagePath: string,
     private filesToMutate: string,
     private filesToIgnore: string,
     private maxNrPrompts: number
   ) {
-    console.log(`model: ${model.getModelName()}`);
-    console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
-    console.log(`outputDir: ${outputDir}`);
-    console.log(`projectPath: ${projectPath}`);
-    console.log(`filesToMutate: ${filesToMutate}`);
-    console.log(`filesToIgnore: ${filesToIgnore}`);
-    console.log(`maxNrPrompts: ${maxNrPrompts}`);
+    // console.log(`model: ${model.getModelName()}`);
+    // console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
+    // console.log(`outputDir: ${outputDir}`);
+    // console.log(`projectPath: ${packagePath}`);
+    // console.log(`filesToMutate: ${filesToMutate}`);
+    // console.log(`filesToIgnore: ${filesToIgnore}`);
+    // console.log(`maxNrPrompts: ${maxNrPrompts}`);
 
     this.createOutputFilesDirectory();
   }
@@ -74,7 +74,7 @@ export class MutantGenerator {
   }
 
   public getProjectPath(): string {
-    return this.projectPath;
+    return this.packagePath;
   }
 
   private log(msg: string): void {
@@ -88,20 +88,10 @@ export class MutantGenerator {
 
   /**
    * Find the files to mutate
-   * @param path the path to the project to mutate
-   * @param filesToMutate glob specifying the files to mutate
-   * @returns the files to mutate
+   * @param path to the path to the project to mutate
    */
-  public async findSourceFilesToMutate(path: string): Promise<string[]> {
-    const pattern = this.filesToMutate ? path + "/" + this.filesToMutate : path + `./**/*.{js,ts,.jsx,.tsx}`; // apply to each .js/.ts/.jsx/.tsx file under src
-    const ignore = this.filesToIgnore ?  [this.filesToIgnore] : [];
-    console.log(`>> pattern: ${pattern}`);
-    console.log(`>> ignore: ${ignore}`);
-    // const files = await fg([pattern], { ignore: ignore });
-    // console.log(`** files to mutate: ${files}`);
-    console.log(`>> path = ${path}, filesToMutate = ${this.filesToMutate}, filesToIgnore = ${this.filesToIgnore}`);
-    const files: string[] = await this.expandGlob(path, this.filesToMutate, this.filesToIgnore);
-    console.log(`** files to mutate: ${files}`);
+  public async findSourceFilesToMutate(): Promise<string[]> {
+    const files: string[] = await this.expandGlob(this.packagePath, this.filesToMutate, this.filesToIgnore);
     return files;
   }
 
@@ -112,7 +102,7 @@ export class MutantGenerator {
     }
     glob = path.join(dirName,glob.trim());
     const ignorePatterns = ignore ? [(ignore as string).trim()] : [];
-    console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
+    // console.log(`dirName = ${dirName}, glob = ${glob}, ignore = ${ignore}`);
    
     let files: string[] = await fg([glob], {ignore: ignorePatterns } );
     return files.map(file => file.substring(dirName.length+1));
@@ -167,13 +157,13 @@ export class MutantGenerator {
   /**
    * Generate mutants.
    */
-  public async generateMutants(packagePath: string): Promise<void> {
+  public async generateMutants(): Promise<void> {
     this.printAndLog(
       `Starting generation of mutants on: ${new Date().toUTCString()}\n\n`
     );
-    const files = await this.findSourceFilesToMutate(packagePath);
+    const files = await this.findSourceFilesToMutate();
 
-    const filesWithoutProjectPath = files.map((file) => file.replace(packagePath, ""));
+    const filesWithoutProjectPath = files.map((file) => file.replace(this.packagePath, ""));
     this.printAndLog(
       `generating mutants for the following files: ${filesWithoutProjectPath.join(",")}\n`
     );
@@ -181,7 +171,7 @@ export class MutantGenerator {
     const generator = new PromptSpecGenerator(
       files,
       this.promptTemplateFileName,
-      packagePath,
+      this.packagePath,
       this.outputDir,
       this.getSubDirName()
     );
@@ -260,7 +250,7 @@ export class MutantGenerator {
 
     const locations = new Array<string>();
     for (const mutant of mutants) {
-      const fileName = mutant.file.substring(this.projectPath.length);
+      const fileName = mutant.file.substring(this.packagePath.length);
       mutant.file = fileName;
       const location = `${fileName}:<${mutant.startLine},${mutant.startColumn}>-${mutant.endLine},${mutant.endColumn}`;
       if (!locations.includes(location)) {

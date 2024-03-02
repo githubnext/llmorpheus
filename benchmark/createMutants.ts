@@ -158,6 +158,6 @@ if (require.main === module) {
       argv.ignore,
       argv.maxNrPrompts
     );
-    mutantGenerator.generateMutants(packagePath);
+    mutantGenerator.generateMutants();
   })();
 }
