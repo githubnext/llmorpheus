@@ -97,8 +97,8 @@ jobs:
       - name: Checkout gitlab package repo
         if: ${{ matrix.package.host == 'gitlab.com' }}
         run: |
-          git clone ${{ format('https://gitlab.com/{0}/{1}', matrix.package.owner, matrix.package.repo) }} source
-          cd source
+          git clone ${{ format('https://gitlab.com/{0}/{1}', matrix.package.owner, matrix.package.repo) }} ${{ matrix.package.name }}
+          cd ${{ matrix.package.name }}
           git checkout ${{ matrix.package.sha }}
 
       - name: build project
