@@ -119,4 +119,4 @@ jobs:
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          npx stryker run --mutate $STRYKER_FILES   
+          (time npx stryker run --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
