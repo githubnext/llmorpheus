@@ -156,9 +156,16 @@ jobs:
         run: |
           mkdir results
           cd results
+
+          # iterate through the names of the downloaded zips
           for zip in ../results-*/results.zip
           do
-            unzip -oq $zip
+            # extract the name of the benchmark from the zip name
+            benchmark_name=$(echo $zip | sed -E 's/.*results-(.*)\/results.zip/\1/')
+            # create a directory for the benchmark
+            mkdir $benchmark_name
+            # unzip the benchmark's results into the directory
+            unzip $zip -d $benchmark_name
           done
           cd ..
           zip -r results.zip results
