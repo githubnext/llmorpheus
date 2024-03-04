@@ -155,11 +155,14 @@ jobs:
       - name: Combine output zips
         run: |
           mkdir results
+          cd results
           for zip in results-*/results.zip
           do
             unzip -oq $zip
           done
+          cd ..
           zip -r results.zip results
+      
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
