@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function generateReport(dirName){
+function generateReport(title, dirName){
   const report = `
 # ${title}
 Project | # Mutants | # Killed | # Survived | # Timeout |  # Mutation Score | # Time | --:|`;
@@ -16,4 +16,4 @@ Project | # Mutants | # Killed | # Survived | # Timeout |  # Mutation Score | # 
 
 
 const dirName = process.argv[2];
-generateReport(dirName);
+generateReport("Report", dirName);
