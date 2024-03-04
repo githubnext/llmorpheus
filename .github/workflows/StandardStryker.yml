@@ -175,3 +175,14 @@ jobs:
         with:
           name: results-all
           path: results.zip
+
+      - name: download combined output files 
+        uses: actions/download-artifact@v2
+        with:
+          name: results-all
+
+      - name: unzip output files and generate report
+        run: |
+          unzip results-all.zip -d results
+          node .github/generateReport.js results
+       
