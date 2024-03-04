@@ -172,7 +172,7 @@ jobs:
           name: results-all
           path: results.zip
 
-  generate report:
+  generate_report:
     name: Generate report
     needs: combine_output
     runs-on: ubuntu-latest
