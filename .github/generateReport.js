@@ -1,16 +1,22 @@
 const fs = require('fs');
 
 function generateReport(title, dirName){
-  const report = `
-# ${title}
-Project | # Mutants | # Killed | # Survived | # Timeout |  # Mutation Score | # Time | --:|`;
+  let report = `# ${title}\n`
+  report += '| Project | Mutants | Survived | Timeout | MutationScore | Time |\n';
+  report += '|:--------|:--------|:---------|:--------|---------------|------|\n';
+
   const files = fs.readdirSync(dirName);
-  const benchmarks = files.filter(file => file.endsWith('.json'));
-  const reportData = benchmarks.map(benchmark => {
-    const data = fs.readFileSync(`${dirName}/${StrykerInfo.json}`, 'utf8');
+  for (const benchmark of files) {  
+    const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8');
     const jsonObj = JSON.parse(data);
-    report  += `${benchmark} | ${jsonObj.totalKilled + jsonObj.totalSurvived + jsonObj.totalTimedOut} | ${jsonObj.totalKilled} | ${jsonObj.totalSurvived} | ${jsonObj.totalTimedOut} | ${jsonObj.totalMutationScore} | ${jsonObj.totalTime} |`;
-  });
+    const nrKilled = parseInt(jsonObj.nrKilled);
+    const nrSurvived = parseInt(jsonObj.nrSurvived);
+    const nrTimedOut = parseInt(jsonObj.nrTimedOut);
+    const nrTotal = nrKilled + nrSurvived + nrTimedOut;
+    const mutationScore = parseFloat(jsonObj.mutationScore);
+    const time = jsonObj.time;
+    report += `| ${benchmark} | ${nrTotal} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} |\n`;
+  }
   console.log(report);
 }  
 
