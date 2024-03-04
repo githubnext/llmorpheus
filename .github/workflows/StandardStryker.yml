@@ -156,7 +156,7 @@ jobs:
         run: |
           mkdir results
           cd results
-          for zip in results-*/results.zip
+          for zip in ../results-*/results.zip
           do
             unzip -oq $zip
           done
