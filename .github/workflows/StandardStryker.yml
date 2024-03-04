@@ -148,10 +148,6 @@ jobs:
       - name: Download output zips
         uses: actions/download-artifact@v2
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-
       - name: Combine output zips
         run: |
           mkdir results
@@ -180,6 +176,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: results-all
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: unzip output files and generate report
         run: |
