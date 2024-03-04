@@ -126,10 +126,11 @@ jobs:
           cd ${{ matrix.package.name }}
           node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
 
-      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and strykerInfo.json into results.zip
+      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
         run: |
           cd ${{ matrix.package.name }}
-          zip -r results.zip reports/mutation/mutation.html StrykerOutput.txt
+          cp reports/mutation/mutation.html mutation.html
+          zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

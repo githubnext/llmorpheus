@@ -35,7 +35,7 @@ async function extractInfoFromStrykerReport(strykerReportFileName) {
     time: realTimeLine
   };
   const json = JSON.stringify(result, null, 2);
-  fs.writeFileSync('strykerInfo.json', json);
+  fs.writeFileSync('StrykerInfo.json', json);
 }
 
 const fileName = process.argv[2];
