@@ -197,7 +197,7 @@ jobs:
          run: |
            cd llm-mutation-testing
            npm run build
-           node .github/generateReport.js results
+           node .github/generateReport.js results > $GITHUB_STEP_SUMMARY
 
     # run: |
     #   for benchmark in results/*; do
