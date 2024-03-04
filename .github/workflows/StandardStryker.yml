@@ -109,10 +109,6 @@ jobs:
           cd llm-mutation-testing
           npm run build
 
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      #   if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
-
       - name: install stryker-js and run stryker (standard mutators)
         run: |
           cd ${{ matrix.package.name }}
@@ -178,6 +174,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+       - name: Setup tmate session
+         uses: mxschmitt/action-tmate@v3
+         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
+
        - name: Download combined output files
          uses: actions/download-artifact@v2
          with:
