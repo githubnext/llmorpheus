@@ -99,6 +99,11 @@ jobs:
         env:
           MATRIX_PACKAGE_EDITS: ${{ matrix.package.edits }}
 
+      - name: Check out llm-mutation-testing
+        uses: actions/checkout@v3
+        with:
+          path: llm-mutation-testing 
+
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
