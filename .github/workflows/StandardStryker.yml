@@ -172,17 +172,36 @@ jobs:
           name: results-all
           path: results.zip
 
-      - name: download combined output files 
-        uses: actions/download-artifact@v2
-        with:
-          name: results-all
+  generate report:
+    name: Generate report
+    needs: combine_output
+    runs-on: ubuntu-latest
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+    steps:
+       - name: Download combined output files
+         uses: actions/download-artifact@v2
+         with:
+           name: results-all
+           path: results
 
-      - name: unzip output files and generate report
-        run: |
-          unzip results-all.zip -d results
-          node .github/generateReport.js results
+       - name: Unzip combined output files
+         run: |
+           unzip results/results.zip -d results
+
+       - name: Check out llm-mutation-testing
+         uses: actions/checkout@v3
+         with:
+           path: llm-mutation-testing 
+   
+       - name: Generate report
+         run: |
+           cd llm-mutation-testing
+           npm run build
+           node .github/generateReport.js results
+
+    # run: |
+    #   for benchmark in results/*; do
+    #     echo "benchmark=$benchmark"
+    #     more "$benchmark/StrykerInfo.json"
+    #   done
        
