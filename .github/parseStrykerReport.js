@@ -23,8 +23,9 @@ async function extractInfoFromStrykerReport(strykerReportFileName) {
 
   // wallclock time is on the line that starts with "real"  
   const realTimeLine = summary.split('\n').find(line => line.startsWith('real'));
+  const realTime = realTimeLine.substring(4).trim();
   console.log("Information extracted from Stryker report:");
-  console.log(`  Mutation score: ${mutationScore} Killed: ${nrKilled}, TimedOut: ${nrTimedOut}, Survived: ${nrSurvived} Time: ${realTimeLine.substring(4).trim()}`);
+  console.log(`  Mutation score: ${mutationScore} Killed: ${nrKilled}, TimedOut: ${nrTimedOut}, Survived: ${nrSurvived} Time: ${realTime}`);
   
   // write as JSON
   const result = {
@@ -32,7 +33,7 @@ async function extractInfoFromStrykerReport(strykerReportFileName) {
     nrKilled: nrKilled,
     nrTimedOut: nrTimedOut,
     nrSurvived: nrSurvived,
-    time: realTimeLine
+    time: realTime
   };
   const json = JSON.stringify(result, null, 2);
   fs.writeFileSync('StrykerInfo.json', json);
