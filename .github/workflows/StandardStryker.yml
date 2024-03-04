@@ -120,3 +120,19 @@ jobs:
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
           (time npx stryker run --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
+
+      - name: extract summary from StrykerOutput.txt
+        run: |
+          cd ${{ matrix.package.name }}
+          node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
+
+      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and strykerInfo.json into results.zip
+        run: |
+          cd ${{ matrix.package.name }}
+          zip -r results.zip reports/mutation/mutation.html StrykerOutput.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: results-${{ matrix.package.name }}
+          path: ${{ matrix.package.name }}/results.zip  
