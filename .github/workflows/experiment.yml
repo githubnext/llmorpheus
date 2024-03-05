@@ -142,7 +142,9 @@ jobs:
       - name: Zip up and upload mutants info
         run: |
           cd ${{ matrix.package.name }}
-          zip -r mutants.zip MUTATION_TESTING
+          mkdir mutants
+          mv MUTATION_TESTING/*/* mutants
+          zip -r mutants.zip mutants
       
       - name: Upload mutants info
         uses: actions/upload-artifact@v2
