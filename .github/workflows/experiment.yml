@@ -135,6 +135,10 @@ jobs:
           echo "Generating mutants for ${{ matrix.package.name }}"           
           node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+        
       - name: Zip up and upload mutants info
         run: |
           cd ${{ matrix.package.name }}
@@ -146,9 +150,7 @@ jobs:
           name: mutants
           path: ${{ matrix.package.name }}/mutants.zip
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
+      
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
