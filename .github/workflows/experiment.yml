@@ -192,3 +192,20 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
       
+      - name: Combine output zips
+        run: |
+          mkdir allresults
+          cd allresults  
+          
+          # iterate through the names of the downloaded zips
+          for zip in ../results-*/results.zip
+          do
+            # extract the name of the benchmark from the zip name
+            benchmark_name=$(echo $zip | sed -E 's/.*results-(.*)\/results.zip/\1/')
+            # create a directory for the benchmark
+            mkdir $benchmark_name
+            # unzip the benchmark's results into the directory
+            unzip $zip -d $benchmark_name
+          done
+          cd ..
+          zip -r allresults.zip allresults
