@@ -209,3 +209,9 @@ jobs:
           done
           cd ..
           zip -r allresults.zip allresults
+
+      - name: Upload combined output files
+        uses: actions/upload-artifact@v2
+        with:
+          name: results-all
+          path: allresults.zip
