@@ -206,6 +206,8 @@ jobs:
             mkdir $benchmark_name
             # unzip the benchmark's results into the directory
             unzip $zip -d $benchmark_name
+            # unzip the benchmark's mutants into the same directory
+            unzip ../mutants/mutants-$benchmark_name/mutants-$benchmark_name.zip -d $benchmark_name
           done
           cd ..
           zip -r allresults.zip allresults
