@@ -194,8 +194,8 @@ jobs:
       
       - name: Combine output zips
         run: |
-          mkdir results
-          cd results  
+          mkdir all-results
+          cd all-results  
           
           # iterate through the names of the downloaded zips
           for zip in ../results-*/results.zip
@@ -212,10 +212,10 @@ jobs:
             mv $benchmark_name/mutants-$benchmark_name $benchmark_name/mutants
           done
           cd ..
-          zip -r results.zip results
+          zip -r all-results.zip all-results
 
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
-          name: results
-          path: results.zip
+          name: all-results
+          path: all-results.zip
