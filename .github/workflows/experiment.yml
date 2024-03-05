@@ -161,19 +161,19 @@ jobs:
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
           (time npx stryker run --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
 
-          - name: extract summary from StrykerOutput.txt
-          run: |
-            cd ${{ matrix.package.name }}
-            node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
-  
-          - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
-            run: |
-              cd ${{ matrix.package.name }}
-              cp reports/mutation/mutation.html mutation.html
-              zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
-    
-          - name: Upload artifacts
-            uses: actions/upload-artifact@v3
-            with:
-              name: results-${{ matrix.package.name }}
-              path: ${{ matrix.package.name }}/results.zip  
+      - name: extract summary from StrykerOutput.txt
+        run: |
+          cd ${{ matrix.package.name }}
+          node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
+
+      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
+        run: |
+          cd ${{ matrix.package.name }}
+          cp reports/mutation/mutation.html mutation.html
+          zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: results-${{ matrix.package.name }}
+          path: ${{ matrix.package.name }}/results.zip  
