@@ -208,6 +208,8 @@ jobs:
             unzip $zip -d $benchmark_name
             # unzip the benchmark's mutants into the same directory
             unzip ../mutants/mutants-$benchmark_name.zip -d $benchmark_name
+            # rename directory to be the benchmark name
+            mv $benchmark_name/mutants-$benchmark $benchmark_name/mutants
           done
           cd ..
           zip -r results.zip results
