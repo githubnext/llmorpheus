@@ -159,7 +159,7 @@ jobs:
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          (time npx stryker run --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
+          (time npx stryker run --usePrecomputed --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
 
       - name: extract summary from StrykerOutput.txt
         run: |
