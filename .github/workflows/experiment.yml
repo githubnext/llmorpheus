@@ -144,13 +144,13 @@ jobs:
           cd ${{ matrix.package.name }}
           mkdir mutants-${{ matrix.package.name }}
           cp -r MUTATION_TESTING/*/* mutants-${{ matrix.package.name }}
-          zip -r mutants.zip mutants-${{ matrix.package.name }}
+          zip -r mutants-${{ matrix.package.name }}.zip mutants-${{ matrix.package.name }}
       
       - name: Upload mutants info
         uses: actions/upload-artifact@v2
         with:
           name: mutants
-          path: ${{ matrix.package.name }}/mutants.zip
+          path: ${{ matrix.package.name }}/mutants-${{ matrix.package.name }}.zip
 
       
 
