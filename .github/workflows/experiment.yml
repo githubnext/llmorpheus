@@ -143,7 +143,7 @@ jobs:
         run: |
           cd ${{ matrix.package.name }}
           mkdir mutants
-          mv MUTATION_TESTING/*/* mutants
+          cp -r MUTATION_TESTING/*/* mutants
           zip -r mutants.zip mutants
       
       - name: Upload mutants info
