@@ -160,9 +160,9 @@ jobs:
           # move all benchmark info into a single directory
           for zip in ../../results-*
           do
-            # extract benchmark name from zip name
-            benchmark_name=$(echo $zip | sed 's/..\/..\/results-//')
-            mv $zip/$benchmark_name .
+             # extract benchmark name from zip name
+             benchmark_name=$(echo $zip | sed 's/..\/..\/results-//')
+             mv $zip/results-$benchmark_name $benchmark_name
           done
           cd ../..
       
