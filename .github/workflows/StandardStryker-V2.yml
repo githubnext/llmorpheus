@@ -122,20 +122,20 @@ jobs:
           cd ${{ matrix.package.name }}
           node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
 
-      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
+      - name: gather reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
         run: |
           cd ${{ matrix.package.name }}
-          mkdir results-${{ matrix.package.name }}
-          cp reports/mutation/mutation.html results-${{ matrix.package.name }}/mutation.html
-          # zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
-          cp StrykerOutput.txt results-${{ matrix.package.name }}/StrykerOutput.txt
-          cp StrykerInfo.json results-${{ matrix.package.name }}/StrykerInfo.json
+          mkdir results
+          mkdir results/results-${{ matrix.package.name }}
+          cp reports/mutation/mutation.html results/results-${{ matrix.package.name }}/mutation.html
+          cp StrykerOutput.txt results/results-${{ matrix.package.name }}/StrykerOutput.txt
+          cp StrykerInfo.json results/results-${{ matrix.package.name }}/StrykerInfo.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: results-${{ matrix.package.name }}
-          path: ${{ matrix.package.name }}/results-${{ matrix.package.name }}
+          path: ${{ matrix.package.name }}/results
 
   # combine_output:
   #   name: Combine output from all benchmarks
