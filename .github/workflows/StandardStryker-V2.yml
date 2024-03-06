@@ -154,20 +154,23 @@ jobs:
       - name: Combine output zips
         run: |
           mkdir results
-          cd results
+          mkdir results/results
+          cd results/results
 
-          # iterate through the names of the downloaded zips
-          for zip in ../results-*.zip
+          # move all benchmark info into a single directory
+          for zip in ../../results-*
           do
-            unzip $zip 
+            # extract benchmark name from zip name
+            benchmark_name=$(echo $zip | sed 's/..\/..\/results-//')
+            mv $zip/$benchmark_name .
           done
-          cd ..
+          cd ../..
       
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
           name: results
-          path: results
+          path: results/results
 
   # generate_report:
   #   name: Generate report
