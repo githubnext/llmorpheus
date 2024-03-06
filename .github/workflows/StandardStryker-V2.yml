@@ -172,36 +172,36 @@ jobs:
           name: results
           path: results/results
 
-  # generate_report:
-  #   name: Generate report
-  #   needs: combine_output
-  #   runs-on: ubuntu-latest
+  generate_report:
+    name: Generate report
+    needs: combine_output
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #      - name: Download combined output files
-  #        uses: actions/download-artifact@v2
-  #        with:
-  #          name: results-all
-  #          path: results
+    steps:
+       - name: Download combined output files
+         uses: actions/download-artifact@v2
+         with:
+           name: results
+           path: results
 
-  #     #  - name: Unzip combined output files
-  #     #    run: |
-  #     #      unzip results/results.zip -d results
+      #  - name: Unzip combined output files
+      #    run: |
+      #      unzip results/results.zip -d results
 
-  #      - name: Check out llm-mutation-testing
-  #        uses: actions/checkout@v3
-  #        with:
-  #          path: llm-mutation-testing 
+       - name: Check out llm-mutation-testing
+         uses: actions/checkout@v3
+         with:
+           path: llm-mutation-testing 
    
-  #      - name: Setup tmate session
-  #        uses: mxschmitt/action-tmate@v3
-  #        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+       - name: Setup tmate session
+         uses: mxschmitt/action-tmate@v3
+         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
 
-  #      - name: Generate report
-  #        run: |
-  #          cd llm-mutation-testing
-  #          npm run build
-  #          node .github/generateReport.js ../results > $GITHUB_STEP_SUMMARY
+       - name: Generate report
+         run: |
+           cd llm-mutation-testing
+           npm run build
+           node .github/generateReport.js ../results > $GITHUB_STEP_SUMMARY
 
      
        
