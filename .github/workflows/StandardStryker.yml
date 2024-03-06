@@ -122,17 +122,20 @@ jobs:
           cd ${{ matrix.package.name }}
           node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
 
-      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
+      - name: gather reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
         run: |
           cd ${{ matrix.package.name }}
-          cp reports/mutation/mutation.html mutation.html
-          zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
+          mkdir results
+          mkdir results/results-${{ matrix.package.name }}
+          cp reports/mutation/mutation.html results/results-${{ matrix.package.name }}/mutation.html
+          cp StrykerOutput.txt results/results-${{ matrix.package.name }}/StrykerOutput.txt
+          cp StrykerInfo.json results/results-${{ matrix.package.name }}/StrykerInfo.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: results-${{ matrix.package.name }}
-          path: ${{ matrix.package.name }}/results.zip  
+          path: ${{ matrix.package.name }}/results
 
   combine_output:
     name: Combine output from all benchmarks
@@ -144,29 +147,30 @@ jobs:
       - name: Download output zips
         uses: actions/download-artifact@v2
 
-      - name: Combine output zips
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+
+      - name: Combine outputs
         run: |
           mkdir results
-          cd results
+          mkdir results/results
+          cd results/results
 
-          # iterate through the names of the downloaded zips
-          for zip in ../results-*/results.zip
+          # move all benchmark info into a single directory
+          for benchmark in ../../results-*
           do
-            # extract the name of the benchmark from the zip name
-            benchmark_name=$(echo $zip | sed -E 's/.*results-(.*)\/results.zip/\1/')
-            # create a directory for the benchmark
-            mkdir $benchmark_name
-            # unzip the benchmark's results into the directory
-            unzip $zip -d $benchmark_name
+             # extract benchmark name
+             name=$(echo $benchmark | sed 's/..\/..\/results-//')
+             mv $benchmark/results-$name $name
           done
-          cd ..
-          zip -r results.zip results
+          cd ../..
       
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
-          name: results-all
-          path: results.zip
+          name: results
+          path: results/results
 
   generate_report:
     name: Generate report
@@ -177,12 +181,8 @@ jobs:
        - name: Download combined output files
          uses: actions/download-artifact@v2
          with:
-           name: results-all
+           name: results
            path: results
-
-       - name: Unzip combined output files
-         run: |
-           unzip results/results.zip -d results
 
        - name: Check out llm-mutation-testing
          uses: actions/checkout@v3
@@ -197,11 +197,4 @@ jobs:
          run: |
            cd llm-mutation-testing
            npm run build
-           node .github/generateReport.js ../results/results > $GITHUB_STEP_SUMMARY
-
-    # run: |
-    #   for benchmark in results/*; do
-    #     echo "benchmark=$benchmark"
-    #     more "$benchmark/StrykerInfo.json"
-    #   done
-       
+           node .github/generateReport.js ../results > $GITHUB_STEP_SUMMARY
