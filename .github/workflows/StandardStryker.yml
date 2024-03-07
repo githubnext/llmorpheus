@@ -207,8 +207,8 @@ jobs:
            # if stryker options are specified, include them in the title
            STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}" 
            if [ -n "$STRYKER_OPTIONS" ]; then
-             title="Report (StrykerJS standard mutators STRYKER_OPTIONS)"
+             title="Report (StrykerJS standard mutators $STRYKER_OPTIONS)"
            else
              title="Report (StrykerJS standard mutators)"
            fi
-           node .github/generateReport.js $title ../results > $GITHUB_STEP_SUMMARY
+           node .github/generateReport.js "$title" ../results > $GITHUB_STEP_SUMMARY
