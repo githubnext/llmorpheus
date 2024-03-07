@@ -138,11 +138,7 @@ jobs:
           BENCHMARK_DIR=`pwd`
           cd ../llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}"           
-          node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} 
-
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      #   if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+          (time node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }})  2>&1 | tee -a LLMorpheusOutput.txt    
 
       - name: Zip up and upload mutants info
         run: |
@@ -150,6 +146,7 @@ jobs:
           mkdir ${{ matrix.package.name }}
           mkdir ${{ matrix.package.name }}/${{ matrix.package.name }}
           cp -r MUTATION_TESTING/*/* ${{ matrix.package.name }}/${{ matrix.package.name }}
+          cp LLMorpheusOutput.txt ${{ matrix.package.name }}/${{ matrix.package.name }}/LLMorpheusOutput.txt
       
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3

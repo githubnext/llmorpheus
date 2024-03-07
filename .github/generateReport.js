@@ -14,8 +14,8 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Max Tokens: ${metaData.maxTokens}\n`;
     report += `## Template: ${metaData.templateName}\n`;
     report += "\n";
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|------|\n';
+    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Stryker Time |\n';
+    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|--------------|\n';
   }  
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  
