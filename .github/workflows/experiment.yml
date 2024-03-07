@@ -147,16 +147,15 @@ jobs:
       - name: Zip up and upload mutants info
         run: |
           cd ${{ matrix.package.name }}
-          mkdir mutants-${{ matrix.package.name }}
-          mkdir mutants-${{ matrix.package.name }}/mutants-${{ matrix.package.name }}
-          cp -r MUTATION_TESTING/*/* mutants-${{ matrix.package.name }}/mutants-${{ matrix.package.name }}
-      # zip -r mutants-${{ matrix.package.name }}.zip mutants-${{ matrix.package.name }}
+          mkdir ${{ matrix.package.name }}
+          mkdir ${{ matrix.package.name }}/${{ matrix.package.name }}
+          cp -r MUTATION_TESTING/*/* ${{ matrix.package.name }}/mutants-${{ matrix.package.name }}
       
       - name: Upload mutants info
         uses: actions/upload-artifact@v2
         with:
           name: mutants
-          path: ${{ matrix.package.name }}/mutants-${{ matrix.package.name }}
+          path: ${{ matrix.package.name }}/${{ matrix.package.name }}
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
