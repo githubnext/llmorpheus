@@ -217,39 +217,39 @@ jobs:
           name: results
           path: results/results
 
-      generate_report:
-        name: Generate report
-        needs: 
-          - setup
-          - combine_output
-        runs-on: ubuntu-latest
-    
-        steps:
-           - name: Download combined output files
-             uses: actions/download-artifact@v2
-             with:
-               name: results
-               path: results
-    
-           - name: Check out llm-mutation-testing
-             uses: actions/checkout@v3
-             with:
-               path: llm-mutation-testing 
-       
-           - name: Setup tmate session
-             uses: mxschmitt/action-tmate@v3
-             if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
-    
-           - name: Generate report
-             run: |
-               cd llm-mutation-testing
-               npm run build
-               # if stryker options are specified, include them in the title
-               STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}" 
-               if [ -n "$STRYKER_OPTIONS" ]; then
-                 title="Report (StrykerJS standard mutators $STRYKER_OPTIONS)"
-               else
-                 title="Report (StrykerJS standard mutators)"
-               fi
-               node .github/generateReport.js "$title" ../results > $GITHUB_STEP_SUMMARY
+  generate_report:
+    name: Generate report
+    needs: 
+      - setup
+      - combine_output
+    runs-on: ubuntu-latest
+
+    steps:
+       - name: Download combined output files
+         uses: actions/download-artifact@v2
+         with:
+           name: results
+           path: results
+
+       - name: Check out llm-mutation-testing
+         uses: actions/checkout@v3
+         with:
+           path: llm-mutation-testing 
+   
+       - name: Setup tmate session
+         uses: mxschmitt/action-tmate@v3
+         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+
+       - name: Generate report
+         run: |
+           cd llm-mutation-testing
+           npm run build
+           # if stryker options are specified, include them in the title
+           STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}" 
+           if [ -n "$STRYKER_OPTIONS" ]; then
+             title="Report (StrykerJS standard mutators $STRYKER_OPTIONS)"
+           else
+             title="Report (StrykerJS standard mutators)"
+           fi
+           node .github/generateReport.js "$title" ../results > $GITHUB_STEP_SUMMARY
         
