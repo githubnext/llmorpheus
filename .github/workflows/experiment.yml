@@ -261,5 +261,5 @@ jobs:
            else
              title="Report (Precomputed mutators)"
            fi
-           node .github/generateReport.js "$title" ../results > $GITHUB_STEP_SUMMARY
+           node .github/generateReport.js "$title" ../results ../mutants > $GITHUB_STEP_SUMMARY
         
