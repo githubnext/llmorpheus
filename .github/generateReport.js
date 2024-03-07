@@ -45,4 +45,5 @@ function generateReport(title, dirName, mutantsDirName){
 
 const title = process.argv[2];
 const dirName = process.argv[3];
+const mutantsDirName = process.argv[4];
 generateReport(title, dirName, mutantsDirName);
