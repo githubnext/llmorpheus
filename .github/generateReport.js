@@ -2,8 +2,8 @@ const fs = require('fs');
 
 function generateReport(title, dirName){
   let report = `# ${title}\n`
-  report += '| Project | Mutants | Killed | Survived | Timeout | MutationScore | Time |\n';
-  report += '|:--------|:--------|:-------|:---------|---------|---------------|------|\n';
+  report += '| Project | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
+  report += '|:--------|:---------|:--------|:----------|----------|---------------|------|\n';
 
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  

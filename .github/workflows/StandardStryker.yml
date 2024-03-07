@@ -204,4 +204,10 @@ jobs:
          run: |
            cd llm-mutation-testing
            npm run build
-           node .github/generateReport.js "Report (StrykerJS standard mutators) ${{ needs.setup.outputs.strykerOptions }}" ../results > $GITHUB_STEP_SUMMARY
+           # if stryker options are specified, include them in the title
+            if [ -n "$STRYKER_OPTIONS" ]; then
+              title="Report (StrykerJS standard mutators ${{ needs.setup.outputs.strykerOptions }})"
+            else
+              title="Report (StrykerJS standard mutators)"
+            fi
+           node .github/generateReport.js $title ../results > $GITHUB_STEP_SUMMARY
