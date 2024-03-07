@@ -20,6 +20,6 @@ function generateReport(title, dirName){
   console.log(report);
 }  
 
-
-const dirName = process.argv[2];
+const title = process.argv[2];
+const dirName = process.argv[3];
 generateReport(title, dirName);
