@@ -20,6 +20,9 @@ on:
       #     - "gpt4"
       #     - "text-davinci003"
       #   default: "gpt4"
+      strykerOptions:
+        description: "stryker options (e.g., --concurrency 4) to pass to stryker"
+        default: ""
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
@@ -32,6 +35,7 @@ jobs:
       packages: "${{ steps.parse_packages.outputs.packages }}"
       temperatures: "${{ github.event.inputs.temperatures || '0.0' }}"
       maxNrPrompts: "${{ github.event.inputs.maxNrPrompts || '1250' }}"
+      strykerOptions: "${{ github.event.inputs.strykerOptions }}"
     steps:
       - uses: actions/checkout@v3
 
@@ -75,6 +79,7 @@ jobs:
           cd stryker-js
           npm install
           npm run build
+
       - name: print package info
         run: |
           echo "package.host=${{ matrix.package.host }}" 
@@ -159,24 +164,28 @@ jobs:
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          (time npx stryker run --usePrecomputed --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
+          STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}"
+          (time npx stryker run $STRYKER_OPTIONS --usePrecomputed --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
 
       - name: extract summary from StrykerOutput.txt
         run: |
           cd ${{ matrix.package.name }}
           node ../llm-mutation-testing/.github/parseStrykerReport.js StrykerOutput.txt    
 
-      - name: zip up reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
+      - name: gather reports/mutation/mutation.html, StrykerOutput.txt, and StrykerInfo.json into results.zip
         run: |
           cd ${{ matrix.package.name }}
-          cp reports/mutation/mutation.html mutation.html
-          zip -r results.zip mutation.html StrykerOutput.txt StrykerInfo.json
+          mkdir results
+          mkdir results/results-${{ matrix.package.name }}
+          cp reports/mutation/mutation.html results/results-${{ matrix.package.name }}/mutation.html
+          cp StrykerOutput.txt results/results-${{ matrix.package.name }}/StrykerOutput.txt
+          cp StrykerInfo.json results/results-${{ matrix.package.name }}/StrykerInfo.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: results-${{ matrix.package.name }}
-          path: ${{ matrix.package.name }}/results.zip  
+          path: ${{ matrix.package.name }}/results
 
   combine_output:
     name: Combine output from all benchmarks
@@ -186,36 +195,61 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download output zips
-        uses: actions/download-artifact@v2   
-     
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
-      
-      - name: Combine output zips
+        uses: actions/download-artifact@v2
+      - name: Combine outputs
         run: |
-          mkdir all-results
-          cd all-results  
-          
-          # iterate through the names of the downloaded zips
-          for zip in ../results-*/results.zip
+          mkdir results
+          mkdir results/results
+          cd results/results
+
+          # move all benchmark info into a single directory
+          for benchmark in ../../results-*
           do
-            # extract the name of the benchmark from the zip name
-            benchmark_name=$(echo $zip | sed -E 's/.*results-(.*)\/results.zip/\1/')
-            # create a directory for the benchmark
-            mkdir $benchmark_name
-            # unzip the benchmark's results into the directory
-            unzip $zip -d $benchmark_name
-            # unzip the benchmark's mutants into the same directory
-            unzip ../mutants/mutants-$benchmark_name.zip -d $benchmark_name
-            # rename directory to be the benchmark name
-            mv $benchmark_name/mutants-$benchmark_name $benchmark_name/mutants
+             # extract benchmark name
+             name=$(echo $benchmark | sed 's/..\/..\/results-//')
+             mv $benchmark/results-$name $name
           done
-          cd ..
-          zip -r all-results.zip all-results
+          cd ../..
 
       - name: Upload combined output files
         uses: actions/upload-artifact@v2
         with:
           name: results
-          path: all-results.zip
+          path: results/results
+
+      generate_report:
+        name: Generate report
+        needs: 
+          - setup
+          - combine_output
+        runs-on: ubuntu-latest
+    
+        steps:
+           - name: Download combined output files
+             uses: actions/download-artifact@v2
+             with:
+               name: results
+               path: results
+    
+           - name: Check out llm-mutation-testing
+             uses: actions/checkout@v3
+             with:
+               path: llm-mutation-testing 
+       
+           - name: Setup tmate session
+             uses: mxschmitt/action-tmate@v3
+             if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}     
+    
+           - name: Generate report
+             run: |
+               cd llm-mutation-testing
+               npm run build
+               # if stryker options are specified, include them in the title
+               STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}" 
+               if [ -n "$STRYKER_OPTIONS" ]; then
+                 title="Report (StrykerJS standard mutators $STRYKER_OPTIONS)"
+               else
+                 title="Report (StrykerJS standard mutators)"
+               fi
+               node .github/generateReport.js "$title" ../results > $GITHUB_STEP_SUMMARY
+        
