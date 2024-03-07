@@ -235,6 +235,12 @@ jobs:
            name: results
            path: results
 
+       - name: Download combined output files
+         uses: actions/download-artifact@v2
+         with:
+           name: mutants
+           path: mutants     
+
        - name: Check out llm-mutation-testing
          uses: actions/checkout@v3
          with:
