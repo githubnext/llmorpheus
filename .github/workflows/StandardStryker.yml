@@ -6,6 +6,9 @@ on:
       packages:
         description: "JSON file that specifies packages to generate mutants for"
         default: "benchmarks.json"
+      strykerOptions:
+        description: "stryker options (e.g., --concurrency 4) to pass to stryker"
+        default: ""
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
@@ -16,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packages: "${{ steps.parse_packages.outputs.packages }}" 
+      strykerOptions: "${{ github.event.inputs.strykerOptions }}"
     steps:
       - uses: actions/checkout@v3
 
@@ -115,7 +119,8 @@ jobs:
           npm install install-local # install-local is needed to install our custom version of stryker-js  
           npx install-local ../stryker-js/packages/{core,util,api,instrumenter,*-runner}  --legacy-peer-deps
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
-          (time npx stryker run --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
+          STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}"
+          (time npx stryker run $STRYKER_OPTIONS --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
 
       - name: extract summary from StrykerOutput.txt
         run: |
@@ -174,7 +179,9 @@ jobs:
 
   generate_report:
     name: Generate report
-    needs: combine_output
+    needs: 
+      - setup
+      - combine_output
     runs-on: ubuntu-latest
 
     steps:
@@ -197,4 +204,4 @@ jobs:
          run: |
            cd llm-mutation-testing
            npm run build
-           node .github/generateReport.js ../results > $GITHUB_STEP_SUMMARY
+           node .github/generateReport.js "Report (StrykerJS standard mutators) ${{ needs.setup.outputs.strykerOptions }}" ../results > $GITHUB_STEP_SUMMARY

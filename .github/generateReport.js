@@ -22,4 +22,4 @@ function generateReport(title, dirName){
 
 
 const dirName = process.argv[2];
-generateReport("Report", dirName);
+generateReport(title, dirName);
