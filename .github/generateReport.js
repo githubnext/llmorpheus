@@ -1,9 +1,6 @@
 const fs = require('fs');
 
 function generateReport(title, dirName){
-  console.log(`** title = ${title}`);
-  console.log(`** dirName = ${dirName}`);
-
   let report = `# ${title}\n`
   report += '| Project | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
   report += '|:--------|:---------|:--------|:----------|----------|---------------|------|\n';
