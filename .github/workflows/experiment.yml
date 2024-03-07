@@ -155,7 +155,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mutants
-          path: ${{ matrix.package.name }}/mutants-${{ matrix.package.name }}
+          path: ${{ matrix.package.name }}
 
       - name: install stryker-js into benchmark and run stryker (precomputed mutators)
         run: |
