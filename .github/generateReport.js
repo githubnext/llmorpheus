@@ -7,17 +7,13 @@ function generateReport(title, dirName, mutantsDirName){
     report += '| Project | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
     report += '|:--------|:---------|:--------|:----------|----------|---------------|------|\n';
   } else {
-    const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
-    const llmJsonObj = JSON.parse(llmData);
-    const modelName = llmJsonObj.metaInfo.modelName;
-    const temperature = llmJsonObj.metaInfo.temperature;
-    const maxTokens = llmJsonObj.metaInfo.maxTokens;
-    const templateName = llmJsonObj.metaInfo.templateName || "N/A";
+    const metaData = retrieveMetaData(mutantsDirName);
     report = `# ${title}\n`
-    report += `## Model: ${modelName}\n`;
-    report += `## Temperature: ${temperature}\n`;
-    report += `## Max Tokens: ${maxTokens}\n`;
-    report += `## Template: ${templateName}\n`;
+    report += `## Model: ${metaData.modelName}\n`;
+    report += `## Temperature: ${metaData.temperature}\n`;
+    report += `## Max Tokens: ${metaData.maxTokens}\n`;
+    report += `## Template: ${metaData.templateName}\n`;
+    report += "\n";
     report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
     report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|------|\n';
   }  
@@ -42,6 +38,19 @@ function generateReport(title, dirName, mutantsDirName){
   }
   console.log(report);
 }  
+
+function retrieveMetaData(mutantsDirName){
+  const files = fs.readdirSync(mutantsDirName);
+  const benchmark = files[0];
+  const data = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
+  const jsonObj = JSON.parse(data);
+  return {
+    modelName: jsonObj.metaInfo.modelName,
+    temperature: jsonObj.metaInfo.temperature,
+    maxTokens: jsonObj.metaInfo.maxTokens,
+    templateName: jsonObj.metaInfo.templateName || "N/A"
+  }
+}
 
 const title = process.argv[2];
 const dirName = process.argv[3];
