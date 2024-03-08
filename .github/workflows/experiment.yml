@@ -139,8 +139,6 @@ jobs:
           cd ../llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}"           
           (time node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 10000 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }})  2>&1 | tee -a ../${{ matrix.package.name }}/LLMorpheusOutput.txt    
-          cd ..
-          node llm-mutation-testing/.github/parseLLMorpheusReport.js ${{ matrix.package.name }}/LLMorpheusOutput.txt 
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
@@ -153,7 +151,6 @@ jobs:
           mkdir ${{ matrix.package.name }}/${{ matrix.package.name }}
           cp -r MUTATION_TESTING/*/* ${{ matrix.package.name }}/${{ matrix.package.name }}
           cp LLMorpheusOutput.txt ${{ matrix.package.name }}/${{ matrix.package.name }}/LLMorpheusOutput.txt
-          pwd
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3

@@ -14,8 +14,8 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Max Tokens: ${metaData.maxTokens}\n`;
     report += `## Template: ${metaData.templateName}\n`;
     report += "\n";
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Stryker Time |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|--------------|\n';
+    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Stryker Time | LLMorpheus Time |\n';
+    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|--------------|-----------------|\n';
   }  
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  
@@ -33,7 +33,14 @@ function generateReport(title, dirName, mutantsDirName){
       const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
       const llmJsonObj = JSON.parse(llmData);
       const nrPrompts = parseInt(llmJsonObj.nrSyntacticallyValid);
-      report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} |\n`;
+      
+      // read file LLMorpheusOutput.txt
+      const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
+      // starting from the end of the file, find the line that starts with "real:"
+      const realTimeLine = llmOutput.split('\n').reverse().find(line => line.startsWith('real:'));
+      const llmorpheusTime = realTimeLine.substring(5).trim();
+
+      report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} | ${llmorpheusTime} |\n`;
     }
   }
   console.log(report);
