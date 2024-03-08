@@ -285,7 +285,6 @@ export class MutantGenerator {
       JSON.stringify(
         {
           nrPrompts,
-          template,
           nrCandidates,
           nrSyntacticallyValid,
           nrSyntacticallyInvalid,
@@ -294,6 +293,7 @@ export class MutantGenerator {
           nrLocations,
           metaInfo: {
             modelName: this.model.getModelName(),
+            template,
             temperature: this.model.getTemperature(),
             maxTokens: this.model.getMaxTokens()
           }
