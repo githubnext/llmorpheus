@@ -3,7 +3,7 @@ import { hideBin } from "yargs/helpers";
 import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mistral8x7bInstructModel } from "../src/model/PerplexityAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
-import { MutantGenerator } from "../src/generator/MutantGenerator";
+import { MutantGenerator, MetaInfo } from "../src/generator/MutantGenerator";
 import path from "path";
 
 if (require.main === module) {
@@ -165,14 +165,26 @@ if (require.main === module) {
 
     const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
     console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
+
+    const metaInfo : MetaInfo = {
+      modelName: model.getModelName(),
+      temperature: model.getTemperature(),
+      maxTokens: model.getMaxTokens(),
+      maxNrPrompts: argv.maxNrPrompts,
+      rateLimit: argv.rateLimit,
+      nrAttempts: argv.nrAttempts,
+      template: argv.promptTemplateFileName,
+      mutate: argv.mutate,
+      ignore: argv.ignore
+    }
+
+
+
     const mutantGenerator = new MutantGenerator(
       model,
-      argv.promptTemplateFileName,
       path.join(argv.path, "MUTATION_TESTING"),
       packagePath,
-      argv.mutate,
-      argv.ignore,
-      argv.maxNrPrompts
+      metaInfo
     );
     mutantGenerator.generateMutants();
   })();

@@ -18,28 +18,31 @@ type MutationStats = {
 };
 
 /**
+ * Meta information about the process used to generate the mutants
+ */
+export interface MetaInfo {
+  modelName: string;
+  template: string;
+  temperature: number;
+  maxTokens: number;
+  maxNrPrompts: number;
+  nrAttempts: number;
+  rateLimit: number;
+  mutate: string;
+  ignore: string;
+}
+
+/**
  * Suggests mutations in given files using the specified rules
  */
-
 export class MutantGenerator {
   private promptCnt = 0;
   constructor(
     private model: IModel,
-    private promptTemplateFileName: string,
     private outputDir: string,
     private packagePath: string,
-    private filesToMutate: string,
-    private filesToIgnore: string,
-    private maxNrPrompts: number
+    private metaInfo: MetaInfo
   ) {
-    // console.log(`model: ${model.getModelName()}`);
-    // console.log(`promptTemplateFileName: ${promptTemplateFileName}`);
-    // console.log(`outputDir: ${outputDir}`);
-    // console.log(`projectPath: ${packagePath}`);
-    // console.log(`filesToMutate: ${filesToMutate}`);
-    // console.log(`filesToIgnore: ${filesToIgnore}`);
-    // console.log(`maxNrPrompts: ${maxNrPrompts}`);
-
     this.createOutputFilesDirectory();
   }
 
@@ -68,7 +71,7 @@ export class MutantGenerator {
   }
 
   public getSubDirName(): string {
-    const shortFileName = this.promptTemplateFileName.substring(this.promptTemplateFileName.lastIndexOf("/") + 1);
+    const shortFileName = this.metaInfo.template.substring(this.metaInfo.template.lastIndexOf("/") + 1);
     const shortTemplateFileName = shortFileName.substring(0, shortFileName.lastIndexOf("."));
     const subDirName = shortTemplateFileName + "_" + this.model.getModelName() + "_" + this.model.getTemperature();
     return subDirName;
@@ -92,7 +95,7 @@ export class MutantGenerator {
    * @param path to the path to the project to mutate
    */
   public async findSourceFilesToMutate(): Promise<string[]> {
-    const files: string[] = await this.expandGlob(this.packagePath, this.filesToMutate, this.filesToIgnore);
+    const files: string[] = await this.expandGlob(this.packagePath, this.metaInfo.mutate, this.metaInfo.ignore);
     return files;
   }
 
@@ -171,7 +174,7 @@ export class MutantGenerator {
 
     const generator = new PromptSpecGenerator(
       files,
-      this.promptTemplateFileName,
+      this.metaInfo.template,
       this.packagePath,
       this.outputDir,
       this.getSubDirName()
@@ -189,7 +192,7 @@ export class MutantGenerator {
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
-      if (++this.promptCnt >= this.maxNrPrompts) {
+      if (++this.promptCnt >= this.metaInfo.maxNrPrompts) {
         break;
       }
     }
@@ -275,7 +278,7 @@ export class MutantGenerator {
     // write summary of results to "summary.json"
     const resultsFileName = path.join(this.outputDir, this.getSubDirName(), "summary.json");
     const nrPrompts = this.promptCnt;
-    const template = this.promptTemplateFileName;
+    const template = this.metaInfo.template;
     const nrSyntacticallyValid = mutationStats.nrSyntacticallyValid;
     const nrSyntacticallyInvalid = mutationStats.nrSyntacticallyInvalid;
     const nrIdentical = mutationStats.nrIdentical;
