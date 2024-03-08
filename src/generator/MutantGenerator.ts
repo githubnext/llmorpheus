@@ -22,6 +22,7 @@ type MutationStats = {
  */
 
 export class MutantGenerator {
+  private promptCnt = 0;
   constructor(
     private model: IModel,
     private promptTemplateFileName: string,
@@ -185,11 +186,10 @@ export class MutantGenerator {
     };
 
     const mutants = new Array<Mutant>();
-    let promptCnt = 0;
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
       await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
-      if (++promptCnt >= this.maxNrPrompts) {
+      if (++this.promptCnt >= this.maxNrPrompts) {
         break;
       }
     }
@@ -272,8 +272,10 @@ export class MutantGenerator {
     const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
     fs.writeFileSync(mutantsFileName, JSON.stringify(mutants, null, 2));
 
-    // write summary of results to "results.json"
+    // write summary of results to "summary.json"
     const resultsFileName = path.join(this.outputDir, this.getSubDirName(), "summary.json");
+    const nrPrompts = this.promptCnt;
+    const template = this.promptTemplateFileName;
     const nrSyntacticallyValid = mutationStats.nrSyntacticallyValid;
     const nrSyntacticallyInvalid = mutationStats.nrSyntacticallyInvalid;
     const nrIdentical = mutationStats.nrIdentical;
@@ -282,6 +284,8 @@ export class MutantGenerator {
       resultsFileName,
       JSON.stringify(
         {
+          nrPrompts,
+          template,
           nrCandidates,
           nrSyntacticallyValid,
           nrSyntacticallyInvalid,

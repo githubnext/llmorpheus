@@ -32,7 +32,7 @@ function generateReport(title, dirName, mutantsDirName){
     } else {
       const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
       const llmJsonObj = JSON.parse(llmData);
-      const nrPrompts = parseInt(llmJsonObj.nrSyntacticallyValid);
+      const nrPrompts = parseInt(llmJsonObj.nrPrompts);
       
       // real time appears at the second to last line of the output
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
@@ -53,7 +53,7 @@ function retrieveMetaData(mutantsDirName){
     modelName: jsonObj.metaInfo.modelName,
     temperature: jsonObj.metaInfo.temperature,
     maxTokens: jsonObj.metaInfo.maxTokens,
-    templateName: jsonObj.metaInfo.templateName || "N/A"
+    templateName: jsonObj.metaInfo.template
   }
 }
 
