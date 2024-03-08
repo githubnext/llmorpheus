@@ -37,7 +37,7 @@ function generateReport(title, dirName, mutantsDirName){
       // real time appears at the second to last line of the output
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
       const lines = llmOutput.split('\n');
-      const llmorpheusTime = lines[lines.length-3].trim();
+      const llmorpheusTime = lines[lines.length-4].trim();
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} | ${llmorpheusTime} |\n`;
     }
   }
