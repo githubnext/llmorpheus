@@ -12,7 +12,7 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Model: ${metaData.modelName}\n`;
     report += `## Temperature: ${metaData.temperature}\n`;
     report += `## Max Tokens: ${metaData.maxTokens}\n`;
-    report += `## Template: ${metaData.templateName}\n`;
+    report += `## Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
     report += "\n";
     report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time |\n';
     report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|\n';
