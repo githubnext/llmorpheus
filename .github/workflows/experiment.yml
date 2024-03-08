@@ -144,15 +144,15 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
 
-      - name: Zip up and upload mutants info
+      - name: extract mutant-related info
         run: |
           cd ${{ matrix.package.name }}
           mkdir ${{ matrix.package.name }}
           mkdir ${{ matrix.package.name }}/${{ matrix.package.name }}
           cp -r MUTATION_TESTING/*/* ${{ matrix.package.name }}/${{ matrix.package.name }}
           cp LLMorpheusOutput.txt ${{ matrix.package.name }}/${{ matrix.package.name }}/LLMorpheusOutput.txt
-      
-      
+          cd ${{ matrix.package.name }}/${{ matrix.package.name }}
+          node .github/parseLLMorpheusOutput.js LLMorpheusOutput.txt
 
       - name: Upload mutants info
         uses: actions/upload-artifact@v2
