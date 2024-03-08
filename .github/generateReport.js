@@ -34,12 +34,10 @@ function generateReport(title, dirName, mutantsDirName){
       const llmJsonObj = JSON.parse(llmData);
       const nrPrompts = parseInt(llmJsonObj.nrSyntacticallyValid);
       
-      // read file LLMorpheusOutput.txt
+      // real time appears at the second to last line of the output
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
-      // starting from the end of the file, find the line that starts with "real:"
-      const realTimeLine = llmOutput.split('\n').reverse().find(line => line.startsWith('real:'));
-      const llmorpheusTime = realTimeLine.substring(5).trim();
-
+      const lines = llmOutput.split('\n');
+      const llmorpheusTime = lines[lines.length-3].trim();
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} | ${llmorpheusTime} |\n`;
     }
   }
