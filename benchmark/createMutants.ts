@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { CodeLlama34bInstructModel, Llama2_70bModel } from "../src/model/PerplexityAIModels";
+import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mistral8x7bInstructModel } from "../src/model/PerplexityAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
 import { MutantGenerator } from "../src/generator/MutantGenerator";
@@ -30,8 +30,8 @@ if (require.main === module) {
         },
         model: {
           type: "string",
-          default: "text-davinci003",
-          description: 'name of the model to use (default: "text-davinci003")',
+          default: "codellama-34b-instruct",
+          description: 'name of the model to use (default: "codellama-34b-instruct")',
         },
         caching: {
           type: "boolean",
@@ -98,9 +98,11 @@ if (require.main === module) {
 
     const argv = await parser.argv;
 
-    if (argv.model !== "text-davinci003" && argv.model !== "gpt4" && argv.model !== "codellama" && 
-        argv.model !== "codellama:13b" && argv.model !== "codellam:34b" && argv.model !== "codellama-34b-instruct" &&
-        argv.model !== "llama-2-70b-chat") {
+    if (argv.model !== "codellama-34b-instruct" &&
+        argv.model !== "codellama-70b-instruct" &&
+        argv.model !== "mistral-7b-instruct" &&
+        argv.model !== "mistral-8x7b-instruct" &&
+        argv.model !== "gpt4") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
@@ -122,8 +124,22 @@ if (require.main === module) {
       argv.rateLimit,
       argv.nrAttempts
       );
-    } else if (argv.model === "llama-2-70b-chat"){
-      baseModel = new Llama2_70bModel({
+    } else if (argv.model === "codellama-70b-instruct"){
+      baseModel = new CodeLlama70bInstructModel({
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens
+      },
+      argv.rateLimit,
+      argv.nrAttempts)
+    } else if (argv.model === "mistral-7b-instruct"){
+      baseModel = new Mistral7bInstructModel({
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens
+      },
+      argv.rateLimit,
+      argv.nrAttempts)
+    } else if (argv.model === "mistral-8x7b-instruct"){
+      baseModel = new Mistral8x7bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },

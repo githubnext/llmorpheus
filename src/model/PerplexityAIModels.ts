@@ -121,20 +121,49 @@ export class CodeLlama34bInstructModel extends PerplexityAIModel {
     return "codellama-34b-instruct";
   }
 }
+
 /**
- * Abstraction for the llama2-70b-chat model.
+ * Abstraction for the codellama-70b-instruct model.
  */
 
-export class Llama2_70bModel extends PerplexityAIModel {
+export class CodeLlama70bInstructModel extends PerplexityAIModel {
 
   constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
     super(instanceOptions, rateLimit, nrAttempts);
   }
 
   public getModelName(): string {
-    return "llama-2-70b-chat";
+    return "codellama-70b-instruct";
   }
 }
 
+/**
+ * Abstraction for the codellama-70b-instruct model.
+ */
 
+export class Mistral7bInstructModel extends PerplexityAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
+    super(instanceOptions, rateLimit, nrAttempts);
+  }
+
+  public getModelName(): string {
+    return "mistral-7b-instruct";
+  }
+}
+
+/**
+ * Abstraction for the codellama-70b-instruct model.
+ */
+
+export class Mistral8x7bInstructModel extends PerplexityAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
+    super(instanceOptions, rateLimit, nrAttempts);
+  }
+
+  public getModelName(): string {
+    return "mixtral-8x7b-instruct";
+  }
+}
 
