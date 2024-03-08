@@ -14,8 +14,8 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Max Tokens: ${metaData.maxTokens}\n`;
     report += `## Template: ${metaData.templateName}\n`;
     report += "\n";
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Stryker Time | LLMorpheus Time |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|--------------|-----------------|\n';
+    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time |\n';
+    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|\n';
   }  
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  
@@ -26,9 +26,9 @@ function generateReport(title, dirName, mutantsDirName){
     const nrTimedOut = parseInt(jsonObj.nrTimedOut);
     const nrTotal = nrKilled + nrSurvived + nrTimedOut;
     const mutationScore = parseFloat(jsonObj.mutationScore);
-    const time = jsonObj.time;
+    const strykerTime = jsonObj.time;
     if (!mutantsDirName) {
-      report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} |\n`;
+      report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
     } else {
       const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
       const llmJsonObj = JSON.parse(llmData);
@@ -38,7 +38,7 @@ function generateReport(title, dirName, mutantsDirName){
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
       const lines = llmOutput.split('\n');
       const llmorpheusTime = lines[lines.length-4].substring(5).trim();
-      report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${time} | ${llmorpheusTime} |\n`;
+      report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} |\n`;
     }
   }
   console.log(report);
@@ -53,7 +53,7 @@ function retrieveMetaData(mutantsDirName){
     modelName: jsonObj.metaInfo.modelName,
     temperature: jsonObj.metaInfo.temperature,
     maxTokens: jsonObj.metaInfo.maxTokens,
-    templateName: jsonObj.metaInfo.template
+    template: jsonObj.metaInfo.template
   }
 }
 
