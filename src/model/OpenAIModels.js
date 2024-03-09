@@ -92,7 +92,12 @@ class Gpt4Model {
         if (numContentFiltered > 0) {
             console.warn(`${numContentFiltered} completions were truncated due to content filtering.`);
         }
-        return completions;
+        return {
+            completions,
+            prompt_tokens: 0,
+            completion_tokens: 0,
+            total_tokens: 0
+        };
     }
 }
 exports.Gpt4Model = Gpt4Model;

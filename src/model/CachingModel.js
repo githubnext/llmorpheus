@@ -53,14 +53,28 @@ class CachingModel {
             for (const completion of completionsJSON) {
                 completions.add(completion);
             }
-            return completions;
+            return {
+                completions,
+                prompt_tokens: 0,
+                completion_tokens: 0,
+                total_tokens: 0
+            };
         }
         else {
             // otherwise, call the wrapped model and cache the result
-            const completions = await this.model.query(prompt, requestPostOptions);
+            const queryResult = await this.model.query(prompt, requestPostOptions);
+            const completions = queryResult.completions;
+            const prompt_tokens = queryResult.prompt_tokens;
+            const completion_tokens = queryResult.completion_tokens;
+            const total_tokens = queryResult.total_tokens;
             fs_1.default.mkdirSync(cacheDir, { recursive: true });
             fs_1.default.writeFileSync(cacheFile, JSON.stringify([...completions]));
-            return completions;
+            return {
+                completions,
+                prompt_tokens,
+                completion_tokens,
+                total_tokens
+            };
         }
     }
 }

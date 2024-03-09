@@ -3,6 +3,7 @@ import { performance } from "perf_hooks";
 import { IModel } from "./IModel";
 import { OpenAIPostOptions, defaultPostOptions, defaultOpenAIPostoptions } from "./IModel";
 import { getEnv } from "../util/code-utils";
+import { IQueryResult } from "./IQueryResult";
 
 /**
  * Interface for the OpenAI model.
@@ -57,7 +58,7 @@ export class Gpt4Model implements OpenAIModel {
   public async query(
     prompt: string,
     requestPostOptions: OpenAIPostOptions = {}
-  ): Promise<Set<string>> {
+  ): Promise<IQueryResult> {
     const apiEndpoint = getEnv("GPT4_API_ENDPOINT");
     const apiKey = getEnv("GPT4_API_KEY");
 
@@ -121,6 +122,11 @@ export class Gpt4Model implements OpenAIModel {
         `${numContentFiltered} completions were truncated due to content filtering.`
       );
     }
-    return completions;
+    return {
+      completions,
+      prompt_tokens: 0,
+      completion_tokens: 0,
+      total_tokens: 0
+    };
   }
 }

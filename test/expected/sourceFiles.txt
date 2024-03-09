@@ -1,5 +1,5 @@
 [
-  "/src/build-country.js",
-  "/src/build-timezone.js",
-  "/src/index.js"
+  "src/build-country.js",
+  "src/build-timezone.js",
+  "src/index.js"
 ]

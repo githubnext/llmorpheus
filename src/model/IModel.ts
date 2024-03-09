@@ -1,8 +1,10 @@
+import { IQueryResult } from "./IQueryResult";
+
 /**
  * A model that can be queried to generate a set of completions for a given prompt.
  */
 export interface IModel {
-  query(prompt: string, requestPostOptions?: PostOptions): Promise<Set<string>>;
+  query(prompt: string, requestPostOptions?: PostOptions): Promise<IQueryResult>;
   getModelName(): string;
   getTemperature(): number;
   getMaxTokens(): number;

@@ -160,12 +160,6 @@ export class PromptSpecGenerator {
    * Create PromptSpecs for a for loop.
    */
   private createPromptSpecsForFor(file: string, path: any) {
-    // console.log(`** file: ${file}`);
-    // const code = fs.readFileSync(file, "utf8");
-    // console.log(`** code: ${code}`);
-    // console.log(`** path: ${path}`);
-
-
     if (path.isForStatement()) {
       const init = path.node.init;
       const test = path.node.test;
@@ -187,7 +181,6 @@ export class PromptSpecGenerator {
       } else {
         // if there is no initializer, find the start of the test and look for the position of the semicolon
         // that precedes it. This is the start of the initializer.
-        console.log(">No initializer found for for loop in file " + file);
         const code = fs.readFileSync(file, "utf8");
         let initEndLine = test.loc!.start.line;
         let initEndColumn = test.loc!.start.column;

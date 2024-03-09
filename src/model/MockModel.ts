@@ -3,6 +3,7 @@ import path from "path";
 import crypto from "crypto";
 import { IModel } from "./IModel";
 import { defaultPostOptions } from "./IModel";
+import { IQueryResult } from "./IQueryResult";
 
 /**
  * A mock model that extracts its responses from a directory containing previously recorded cache files.
@@ -25,7 +26,7 @@ export class MockModel implements IModel {
     return defaultPostOptions.max_tokens;
   }
 
-  public async query(prompt: string): Promise<Set<string>> {
+  public async query(prompt: string): Promise<IQueryResult> {
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.modelName,
@@ -45,7 +46,12 @@ export class MockModel implements IModel {
       for (const completion of completionsJSON) {
         completions.add(completion);
       }
-      return completions;
+      return {
+        completions,
+        prompt_tokens: 0,
+        completion_tokens: 0,
+        total_tokens: 0
+      };
     } else {
       throw new Error(`MockModel: cache file ${cacheFile} does not exist`);
     }

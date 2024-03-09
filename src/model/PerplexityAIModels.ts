@@ -5,6 +5,7 @@ import { retry } from "../util/promise-utils";
 import { IModel } from "./IModel";
 import { PostOptions, defaultPostOptions } from "./IModel";
 import { getEnv } from "../util/code-utils";
+import { IQueryResult } from "./IQueryResult";
 
 
 export abstract class PerplexityAIModel implements IModel {
@@ -51,7 +52,7 @@ export abstract class PerplexityAIModel implements IModel {
   public async query(
     prompt: string,
     requestPostOptions: PostOptions = {}
-  ): Promise<Set<string>> {
+  ): Promise<IQueryResult> {
 
     const options: PostOptions = {
       ...defaultPostOptions,
@@ -102,9 +103,20 @@ export abstract class PerplexityAIModel implements IModel {
     if (!res.data) {
       throw new Error("Response data is empty");
     }
+
+    const prompt_tokens = res.data.usage.prompt_tokens;
+    const completion_tokens = res.data.usage.completion_tokens;
+    const total_tokens = res.data.usage.total_tokens;
+    console.log(`*** prompt tokens: ${prompt_tokens}, completion tokens: ${completion_tokens}, total tokens: ${total_tokens}`);
+
     const completions = new Set<string>();
     completions.add(res.data.choices[0].message.content);
-    return completions;
+    return {
+      completions,
+      prompt_tokens,
+      completion_tokens,
+      total_tokens
+    };
   }
 }
 /**

@@ -3,14 +3,15 @@ import path from "path";
 
 import { MockModel } from "../src/model/MockModel";
 import { PromptSpecGenerator } from "../src/generator/PromptSpecGenerator";
-import { MutantGenerator } from "../src/generator/MutantGenerator";
+import { MetaInfo, MutantGenerator } from "../src/generator/MutantGenerator";
 import { expect } from "chai";
 import { assert } from "console";
 
-const mockModelDir = "./test/input/mockModel";
-const testProjectPath = "./test/input/testProject/countries-and-timezones";
+const mockModelDir = "test/input/mockModel";
+const testFilePath = "test/input";
+const testProjectPath = "test/input/testProject/countries-and-timezones";
 const promptTemplateFileName = "./templates/template1.hb";
-const sourceFileName = "./test/input/countriesandtimezones_index.js";
+const sourceFileName = "countriesandtimezones_index.js";
 const modelName = "codellama-34b-instruct";
 const subDirName = "template1_codellama-34b-instruct_0";
 
@@ -22,7 +23,7 @@ describe("test mutant generation", () => {
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
-      "./test/input/",
+      testFilePath,
       outputDir,
       subDirName,
     );
@@ -98,15 +99,24 @@ describe("test mutant generation", () => {
   it("should find the source files to be mutated in a given source project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
+    const metaInfo : MetaInfo = {
+      modelName: modelName,
+      template: promptTemplateFileName,
+      maxTokens: 250,
+      temperature: 0,
+      maxNrPrompts: 100,
+      nrAttempts: 1,
+      mutate: "./src/**.js",
+      ignore: "",
+      rateLimit: 1000
+    }
     const mutantGenerator = new MutantGenerator(
       model,
-      promptTemplateFileName,
       path.join(outputDir, subDirName),
-      testProjectPath
+      testProjectPath,
+      metaInfo
     );
-    const actualSourceFiles = await mutantGenerator.findSourceFilesToMutate(
-      testProjectPath
-    );
+    const actualSourceFiles = await mutantGenerator.findSourceFilesToMutate();
     console.log(`actualSourceFiles: ${actualSourceFiles}`);
     // strip off the testProjectPath prefix from the actual source files
     const actualSourceFilesWithoutTestProjectPath = actualSourceFiles.map(
@@ -136,26 +146,38 @@ describe("test mutant generation", () => {
     const model = new MockModel(modelName, mockModelDir);
 
     // use the same options that were used to generate the MockModel
-    const completions = await model.query(prompt1);
-    assert(completions.size === 1);
+    const queryResult = await model.query(prompt1);
+    const completions = queryResult.completions;
+    expect(completions.size).to.equal(1);
     const expectedCompletion = fs.readFileSync(
       "test/expected/prompt1_completion_0.txt",
       "utf8"
     );
-    assert([...completions][0] === expectedCompletion);
+    const actualCompletion = [...completions][0];
+    expect(actualCompletion).to.equal(expectedCompletion);
   });
 
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-
+    const metaInfo : MetaInfo = {
+      modelName: modelName,
+      template: promptTemplateFileName,
+      maxTokens: 250,
+      temperature: 0,
+      maxNrPrompts: 100,
+      nrAttempts: 1,
+      mutate: "src/**.js",
+      ignore: "",
+      rateLimit: 1000
+    }
     const mutantGenerator = new MutantGenerator(
       model,
-      promptTemplateFileName,
       outputDir,
-      testProjectPath
+      testProjectPath,
+      metaInfo
     );
-    await mutantGenerator.generateMutants(testProjectPath);
+    await mutantGenerator.generateMutants();
     const actualMutantsJson = fs.readFileSync(
       path.join(outputDir, subDirName, "mutants.json"),
       "utf8"
@@ -164,29 +186,43 @@ describe("test mutant generation", () => {
       "./test/expected/mutants.json",
       "utf8"
     );
-    assert(actualMutantsJson === expectedMutantsJson);
+    expect(actualMutantsJson).to.equal(expectedMutantsJson);
     fs.rmdirSync(outputDir, { recursive: true });
   });
 
   it("should produce a file summary.json containing a summary of the results", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
+    const metaInfo : MetaInfo = {
+      modelName: modelName,
+      template: promptTemplateFileName,
+      maxTokens: 250,
+      temperature: 0,
+      maxNrPrompts: 100,
+      nrAttempts: 1,
+      mutate: "src/**.js",
+      ignore: "",
+      rateLimit: 1000
+    }
     const mutantGenerator = new MutantGenerator(
       model,
-      promptTemplateFileName,
       outputDir,
-      testProjectPath
+      testProjectPath,
+      metaInfo
     );
-    await mutantGenerator.generateMutants(testProjectPath);
-    const actualResultsJson = fs.readFileSync(
+    await mutantGenerator.generateMutants();
+    const actualSummaryJson = fs.readFileSync(
       path.join(outputDir, subDirName, "summary.json"),
       "utf8"
     );
-    const expectedResultsJson = fs.readFileSync(
+    const expectedSummaryJson = fs.readFileSync(
       "./test/expected/summary.json",
       "utf8"
     );
-    assert(actualResultsJson === expectedResultsJson);
+    fs.writeFileSync("actualSummary.json", actualSummaryJson);
+    // assert(actualSummaryJson === expectedSummaryJson);
+
+    expect(actualSummaryJson).to.equal(expectedSummaryJson);
     fs.rmdirSync(outputDir, { recursive: true });
   });
 });

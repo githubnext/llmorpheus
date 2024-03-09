@@ -4,7 +4,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 5,
       "startColumn": 23,
       "endLine": 5,
@@ -17,7 +17,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 5,
       "startColumn": 35,
       "endLine": 5,
@@ -30,7 +30,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 11,
       "startColumn": 9,
       "endLine": 11,
@@ -43,7 +43,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 11,
       "startColumn": 21,
       "endLine": 11,
@@ -56,7 +56,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 11,
       "endLine": 12,
@@ -69,7 +69,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 25,
       "endLine": 12,
@@ -82,7 +82,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 31,
       "endLine": 12,
@@ -95,7 +95,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 25,
       "endLine": 12,
@@ -103,7 +103,7 @@
     },
     "orig": "prev, { [id]: getCountry(id, options) }",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 11,
       "endLine": 12,
@@ -115,7 +115,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 39,
       "endLine": 12,
@@ -128,7 +128,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 50,
       "endLine": 12,
@@ -141,7 +141,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 54,
       "endLine": 12,
@@ -154,7 +154,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 50,
       "endLine": 12,
@@ -162,7 +162,7 @@
     },
     "orig": "id, options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 12,
       "startColumn": 39,
       "endLine": 12,
@@ -174,7 +174,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 17,
       "startColumn": 6,
       "endLine": 17,
@@ -187,7 +187,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 17,
       "startColumn": 44,
       "endLine": 17,
@@ -200,7 +200,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 17,
       "startColumn": 80,
       "endLine": 17,
@@ -213,7 +213,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 17,
       "startColumn": 44,
       "endLine": 17,
@@ -226,7 +226,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 17,
       "startColumn": 56,
       "endLine": 17,
@@ -239,7 +239,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 18,
       "startColumn": 9,
       "endLine": 18,
@@ -252,7 +252,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 18,
       "startColumn": 26,
       "endLine": 18,
@@ -265,7 +265,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 18,
       "startColumn": 37,
       "endLine": 18,
@@ -278,7 +278,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 18,
       "startColumn": 26,
       "endLine": 18,
@@ -286,7 +286,7 @@
     },
     "orig": "timezones, options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 18,
       "startColumn": 9,
       "endLine": 18,
@@ -298,7 +298,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 6,
       "endLine": 22,
@@ -311,7 +311,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 22,
       "endLine": 22,
@@ -324,7 +324,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 37,
       "endLine": 22,
@@ -337,7 +337,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 37,
       "endLine": 22,
@@ -350,7 +350,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 50,
       "endLine": 22,
@@ -363,7 +363,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 56,
       "endLine": 22,
@@ -376,7 +376,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 50,
       "endLine": 22,
@@ -384,7 +384,7 @@
     },
     "orig": "data, id",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 22,
       "startColumn": 37,
       "endLine": 22,
@@ -396,7 +396,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 23,
       "startColumn": 9,
       "endLine": 23,
@@ -409,7 +409,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 23,
       "startColumn": 24,
       "endLine": 23,
@@ -422,7 +422,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 23,
       "startColumn": 39,
       "endLine": 23,
@@ -435,7 +435,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 23,
       "startColumn": 24,
       "endLine": 23,
@@ -443,7 +443,7 @@
     },
     "orig": "countries[id], options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 23,
       "startColumn": 9,
       "endLine": 23,
@@ -455,7 +455,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 27,
       "startColumn": 6,
       "endLine": 27,
@@ -468,7 +468,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 6,
       "endLine": 32,
@@ -481,7 +481,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 24,
       "endLine": 32,
@@ -494,7 +494,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 40,
       "endLine": 32,
@@ -507,7 +507,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 40,
       "endLine": 32,
@@ -520,7 +520,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 54,
       "endLine": 32,
@@ -533,7 +533,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 60,
       "endLine": 32,
@@ -546,7 +546,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 54,
       "endLine": 32,
@@ -554,7 +554,7 @@
     },
     "orig": "data, name",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 32,
       "startColumn": 40,
       "endLine": 32,
@@ -566,7 +566,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 37,
       "startColumn": 6,
       "endLine": 37,
@@ -579,7 +579,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 39,
       "startColumn": 22,
       "endLine": 39,
@@ -592,7 +592,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 39,
       "startColumn": 34,
       "endLine": 39,
@@ -605,7 +605,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 43,
       "startColumn": 19,
       "endLine": 43,
@@ -618,7 +618,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 43,
       "startColumn": 31,
       "endLine": 43,
@@ -631,7 +631,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 9,
       "endLine": 45,
@@ -644,7 +644,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 20,
       "endLine": 45,
@@ -657,7 +657,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 27,
       "endLine": 45,
@@ -670,7 +670,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 38,
       "endLine": 45,
@@ -683,7 +683,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 41,
       "endLine": 45,
@@ -696,7 +696,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 38,
       "endLine": 45,
@@ -704,7 +704,7 @@
     },
     "orig": "c, options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 45,
       "startColumn": 27,
       "endLine": 45,
@@ -716,7 +716,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 49,
       "startColumn": 17,
       "endLine": 49,
@@ -729,7 +729,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 49,
       "startColumn": 41,
       "endLine": 49,
@@ -742,7 +742,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 49,
       "startColumn": 49,
       "endLine": 49,
@@ -755,7 +755,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 49,
       "startColumn": 41,
       "endLine": 49,
@@ -763,7 +763,7 @@
     },
     "orig": "tzName, options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 49,
       "startColumn": 17,
       "endLine": 49,
@@ -775,7 +775,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 54,
       "startColumn": 18,
       "endLine": 54,
@@ -788,7 +788,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 54,
       "startColumn": 29,
       "endLine": 54,
@@ -801,7 +801,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 54,
       "startColumn": 40,
       "endLine": 54,
@@ -814,7 +814,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 54,
       "startColumn": 29,
       "endLine": 54,
@@ -822,7 +822,7 @@
     },
     "orig": "countryId, options",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 54,
       "startColumn": 18,
       "endLine": 54,
@@ -834,7 +834,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 55,
       "startColumn": 6,
       "endLine": 55,
@@ -847,7 +847,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 57,
       "startColumn": 9,
       "endLine": 57,
@@ -860,7 +860,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 57,
       "startColumn": 20,
       "endLine": 57,
@@ -873,7 +873,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 62,
       "startColumn": 6,
       "endLine": 62,
@@ -886,7 +886,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 63,
       "startColumn": 9,
       "endLine": 63,
@@ -899,7 +899,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 63,
       "startColumn": 21,
       "endLine": 63,
@@ -912,7 +912,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 8,
       "endLine": 64,
@@ -925,7 +925,7 @@
     "feature": "call",
     "component": "callee",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 30,
       "endLine": 64,
@@ -938,7 +938,7 @@
     "feature": "call",
     "component": "arg0",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 44,
       "endLine": 64,
@@ -951,7 +951,7 @@
     "feature": "call",
     "component": "arg1",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 50,
       "endLine": 64,
@@ -964,7 +964,7 @@
     "feature": "call",
     "component": "allArgs",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 44,
       "endLine": 64,
@@ -972,7 +972,7 @@
     },
     "orig": "prev, { [key]: tzs[key] }",
     "parentLocation": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 64,
       "startColumn": 30,
       "endLine": 64,
@@ -984,7 +984,7 @@
     "feature": "if",
     "component": "test",
     "location": {
-      "file": "./test/input/countriesandtimezones_index.js",
+      "file": "test/input/countriesandtimezones_index.js",
       "startLine": 70,
       "startColumn": 6,
       "endLine": 70,

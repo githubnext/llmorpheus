@@ -10,7 +10,7 @@ import { Completion } from "../prompt/Completion";
 import { Prompt } from "../prompt/Prompt";
 import { hasUnbalancedParens, isDeclaration } from "../util/code-utils";
 
-type MutationStats = { 
+interface MutationStats { 
   nrSyntacticallyValid: number, 
   nrSyntacticallyInvalid: number,
   nrIdentical: number,
@@ -37,6 +37,15 @@ export interface MetaInfo {
  */
 export class MutantGenerator {
   private promptCnt = 0;
+  private mutationStats = { 
+    nrSyntacticallyValid: 0, 
+    nrSyntacticallyInvalid: 0,
+    nrIdentical: 0,
+    nrDuplicate : 0,
+    totalPromptTokens: 0,
+    totalCompletionTokens: 0,
+    totalTokens: 0
+  };
   constructor(
     private model: IModel,
     private outputDir: string,
@@ -96,6 +105,7 @@ export class MutantGenerator {
    */
   public async findSourceFilesToMutate(): Promise<string[]> {
     const files: string[] = await this.expandGlob(this.packagePath, this.metaInfo.mutate, this.metaInfo.ignore);
+    console.log(`found ${files.length} files to mutate`);
     return files;
   }
 
@@ -181,28 +191,23 @@ export class MutantGenerator {
     );
     generator.writePromptFiles();
 
-    const mutationStats: MutationStats = { 
-      nrSyntacticallyValid: 0, 
-      nrSyntacticallyInvalid: 0,
-      nrIdentical: 0,
-      nrDuplicate : 0
-    };
+    
 
     const mutants = new Array<Mutant>();
     for (const prompt of generator.getPrompts()) {
       this.printAndLog(`processing prompt ${prompt.getId()}/${generator.getPrompts().length}\n`);
-      await this.generateMutantsFromPrompt(prompt, mutationStats, mutants);
+      await this.generateMutantsFromPrompt(prompt, mutants);
       if (++this.promptCnt >= this.metaInfo.maxNrPrompts) {
         break;
       }
     }
-    this.reportAndWriteResults(mutants, mutationStats);
+    this.reportAndWriteResults(mutants);
   }
 
   /**
    * Generate mutants from a specific prompt.
    */
-  private async generateMutantsFromPrompt(prompt: Prompt, mutationStats: MutationStats, mutants: Mutant[]) {
+  private async generateMutantsFromPrompt(prompt: Prompt, mutants: Mutant[]) {
     try {
       const completions = await this.getCompletionsForPrompt(prompt);
       for (const completion of completions) {
@@ -216,24 +221,24 @@ export class MutantGenerator {
         while ((match = regExp.exec(completion.text)) !== null) {
           const substitution = match[1];
           if (substitution === prompt.getOrig()) {
-            mutationStats.nrIdentical++;
+            this.mutationStats.nrIdentical++;
           } else if (prompt.getOrig().includes("Object.") ||
             this.isInvalidSubstitution(prompt, substitution) ||
             isDeclaration(prompt.getOrig()) && !isDeclaration(substitution)) {
-            mutationStats.nrSyntacticallyInvalid++;
+            this.mutationStats.nrSyntacticallyInvalid++;
           } else {
             const candidateMutant = this.createCandidateMutant(prompt, substitution);
             if (prompt.spec.isExpressionPlaceholder()) {
-              this.handleExpression(substitution, prompt, completion, mutants, mutationStats);
+              this.handleExpression(substitution, prompt, completion, mutants);
             } else if (prompt.spec.isArgListPlaceHolder() ||
               prompt.spec.isForInitializerPlaceHolder() || prompt.spec.isForLoopHeaderPlaceHolder() ||
               prompt.spec.isForInInitializerPlaceHolder() || prompt.spec.isForInLoopHeaderPlaceHolder() || prompt.spec.isForInRightPlaceHolder() ||
               prompt.spec.isForOfInitializerPlaceHolder() || prompt.spec.isForOfLoopHeaderPlaceHolder() ||
               prompt.spec.isCalleePlaceHolder()) {
               // if the placeholder corresponds to something that is not an entire AST node, expand the original code and the substitution to the parent node
-              this.handleIncompleteFragment(prompt, substitution, completion, mutants, mutationStats);
+              this.handleIncompleteFragment(prompt, substitution, completion, mutants);
             } else { // statement placeholder
-              this.handleStatement(candidateMutant, prompt, substitution, completion, mutants, mutationStats);
+              this.handleStatement(candidateMutant, prompt, substitution, completion, mutants);
             }
           }
         }
@@ -246,9 +251,9 @@ export class MutantGenerator {
   /**
    * Report results and write results of the mutation generation to files in the output directory.
    */
-  private reportAndWriteResults(mutants: Mutant[], mutationStats: MutationStats) {
+  private reportAndWriteResults(mutants: Mutant[]) {
 
-    const nrCandidates = mutationStats.nrSyntacticallyValid + mutationStats.nrSyntacticallyInvalid + mutationStats.nrIdentical;
+    const nrCandidates = this.mutationStats.nrSyntacticallyValid + this.mutationStats.nrSyntacticallyInvalid + this.mutationStats.nrIdentical;
     this.printAndLog(`found ${nrCandidates} mutant candidates\n`);
 
     const locations = new Array<string>();
@@ -263,13 +268,13 @@ export class MutantGenerator {
     const nrLocations = locations.length;
 
     this.printAndLog(
-      `discarding ${mutationStats.nrSyntacticallyInvalid} syntactically invalid mutants\n`
+      `discarding ${this.mutationStats.nrSyntacticallyInvalid} syntactically invalid mutants\n`
     );
     this.printAndLog(
-      `discarding ${mutationStats.nrIdentical} mutant candidates that are identical to the original code\n`
+      `discarding ${this.mutationStats.nrIdentical} mutant candidates that are identical to the original code\n`
     );
     this.printAndLog(
-      `discarding ${mutationStats.nrDuplicate} duplicate mutants\n`
+      `discarding ${this.mutationStats.nrDuplicate} duplicate mutants\n`
     );
 
     const mutantsFileName = path.join(this.outputDir, this.getSubDirName(), "mutants.json");
@@ -278,11 +283,10 @@ export class MutantGenerator {
     // write summary of results to "summary.json"
     const resultsFileName = path.join(this.outputDir, this.getSubDirName(), "summary.json");
     const nrPrompts = this.promptCnt;
-    const template = this.metaInfo.template;
-    const nrSyntacticallyValid = mutationStats.nrSyntacticallyValid;
-    const nrSyntacticallyInvalid = mutationStats.nrSyntacticallyInvalid;
-    const nrIdentical = mutationStats.nrIdentical;
-    const nrDuplicate = mutationStats.nrDuplicate;
+    const nrSyntacticallyValid = this.mutationStats.nrSyntacticallyValid;
+    const nrSyntacticallyInvalid = this.mutationStats.nrSyntacticallyInvalid;
+    const nrIdentical = this.mutationStats.nrIdentical;
+    const nrDuplicate = this.mutationStats.nrDuplicate;
     fs.writeFileSync(
       resultsFileName,
       JSON.stringify(
@@ -294,6 +298,9 @@ export class MutantGenerator {
           nrIdentical,
           nrDuplicate,
           nrLocations,
+          totalPromptTokens: this.mutationStats.totalPromptTokens,
+          totalCompletionTokens: this.mutationStats.totalCompletionTokens,
+          totalTokens: this.mutationStats.totalTokens,
           metaInfo: this.metaInfo
         },
         null,
@@ -310,7 +317,7 @@ export class MutantGenerator {
   /**
    * Handle the case where the mutated code fragment is an expression.
    */
-  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
+  private handleExpression(substitution: string, prompt: Prompt, completion: Completion, mutants: Mutant[]) {
     try {
       parser.parseExpression(substitution);
 
@@ -329,13 +336,13 @@ export class MutantGenerator {
 
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        mutationStats.nrSyntacticallyValid++;
+        this.mutationStats.nrSyntacticallyValid++;
       } else {
-        mutationStats.nrDuplicate++;
+        this.mutationStats.nrDuplicate++;
       }
     } catch (e) {
       // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-      mutationStats.nrSyntacticallyInvalid++;
+      this.mutationStats.nrSyntacticallyInvalid++;
     }
   }
 
@@ -346,7 +353,7 @@ export class MutantGenerator {
   * of the code fragment. This is the case for replacing a list of call arguments or the
   * header or left side (var declaration) of a for-of loop.
   */
-  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
+  private handleIncompleteFragment(prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[]) {
     try {
       const expandedOrig = prompt.spec.parentLocation!.getText();
       const expandedSubstitution = expandedOrig.replace(
@@ -372,19 +379,19 @@ export class MutantGenerator {
       );
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        mutationStats.nrSyntacticallyValid++;
+        this.mutationStats.nrSyntacticallyValid++;
       } else {
-        mutationStats.nrDuplicate++;
+        this.mutationStats.nrDuplicate++;
       }
     } catch (e) {
-      mutationStats.nrSyntacticallyInvalid++;
+      this.mutationStats.nrSyntacticallyInvalid++;
     }
   }
 
   /**
    * Handle the case where the mutated code fragment is a statement.
    */
-  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[], mutationStats: MutationStats) {
+  private handleStatement(candidateMutant: string, prompt: Prompt, substitution: string, completion: Completion, mutants: Mutant[]) {
     try {
       parser.parse(candidateMutant, {
         sourceType: "module",
@@ -405,19 +412,24 @@ export class MutantGenerator {
       );
       if (!this.isDuplicate(mutant, mutants)) {
         mutants.push(mutant);
-        mutationStats.nrSyntacticallyValid++;
+        this.mutationStats.nrSyntacticallyValid++;
       } else {
-        mutationStats.nrDuplicate++;
+        this.mutationStats.nrDuplicate++;
       }
     } catch (e) {
       // console.log(`*** invalid mutant: ${substitution} replacing ${prompt.getOrig()}\n`);
-      mutationStats.nrSyntacticallyInvalid++;
+      this.mutationStats.nrSyntacticallyInvalid++;
     }
   }
 
   public async getCompletionsForPrompt(prompt: Prompt): Promise<Completion[]> {
     const query = this.model.query(prompt.getText());
-    const completions = [...(await query)];
+    const queryResult = await query;
+    const completions = [...queryResult.completions];
+    this.mutationStats.totalPromptTokens += queryResult.prompt_tokens;
+    this.mutationStats.totalCompletionTokens += queryResult.completion_tokens;
+    this.mutationStats.totalTokens += queryResult.total_tokens;
+    // console.log(`** totalPromptTokens = ${this.mutationStats.totalPromptTokens}, totalCompletionTokens = ${this.mutationStats.totalCompletionTokens}, totalTokens = ${this.mutationStats.totalTokens}`);
     return completions.map((completionText) => new Completion(completionText, prompt.getId()));
   }
 }
