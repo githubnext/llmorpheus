@@ -19,8 +19,8 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Files to Mutate: ${metaData.mutate}\n`;
     report += `## Files to Ignore: ${metaData.ignore ? metaData.ignore : "N/A"}\n`;
     report += "\n";
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #PromptTokens | # CompletionTokens | # Total Tokens |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|---------------|--------------------|----------------|\n';
+    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #Prompt Tokens | #Completion Tokens | #Total Tokens  |\n';
+    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|----------------|--------------------|----------------|\n';
   }  
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  
@@ -37,7 +37,6 @@ function generateReport(title, dirName, mutantsDirName){
     } else {
       const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
       const llmJsonObj = JSON.parse(llmData);
-      console.log(`>>llmJsonObj: ${JSON.stringify(llmJsonObj)}`);
       const nrPrompts = parseInt(llmJsonObj.nrPrompts);
       
       // real time appears at the second to last line of the output
