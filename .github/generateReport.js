@@ -17,7 +17,7 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Rate Limit: ${metaData.rateLimit}\n`;
     report += `## Number of Attempts: ${metaData.nrAttempts}\n`;
     report += `## Files to Mutate: ${metaData.mutate}\n`;
-    report += `## Files to Ignore: ${metaData.ignore}\n`;
+    report += `## Files to Ignore: ${metaData.ignore ? metaData.ignore : "N/A"}\n`;
     report += "\n";
     report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time |\n';
     report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|\n';
