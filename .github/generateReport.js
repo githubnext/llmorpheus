@@ -12,7 +12,7 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Model: ${metaData.modelName}\n`;
     report += `## Temperature: ${metaData.temperature}\n`;
     report += `## Max Tokens: ${metaData.maxTokens}\n`;
-    report += "## Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
+    report += `## Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
     report += `## Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
     report += `## Rate Limit: ${metaData.rateLimit}\n`;
     report += `## Number of Attempts: ${metaData.nrAttempts}\n`;
