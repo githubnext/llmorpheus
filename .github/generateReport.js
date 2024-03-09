@@ -19,8 +19,8 @@ function generateReport(title, dirName, mutantsDirName){
     report += `## Files to Mutate: ${metaData.mutate}\n`;
     report += `## Files to Ignore: ${metaData.ignore ? metaData.ignore : "N/A"}\n`;
     report += "\n";
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #Prompt Tokens | # Completion Tokens | # Total Tokens |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|----------------|---------------------|----------------|\n';
+    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #PromptTokens | # CompletionTokens | # Total Tokens |\n';
+    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|---------------|--------------------|----------------|\n';
   }  
   const files = fs.readdirSync(dirName);
   for (const benchmark of files) {  
@@ -44,9 +44,9 @@ function generateReport(title, dirName, mutantsDirName){
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
       const lines = llmOutput.split('\n');
       const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
-      const nrPromptTokens = llmJsonObj.nrPromptTokens;
-      const nrCompletionTokens = llmJsonObj.nrCompletionTokens;
-      const nrTotalTokens = llmJsonObj.nrTotalTokens;
+      const nrPromptTokens = llmJsonObj.totalPromptTokens;
+      const nrCompletionTokens = llmJsonObj.totalCompletionTokens;
+      const nrTotalTokens = llmJsonObj.totalTokens;
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
     }
   }
