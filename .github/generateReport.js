@@ -31,7 +31,7 @@ function generateReport(title, dirName, mutantsDirName){
     const nrTimedOut = parseInt(jsonObj.nrTimedOut);
     const nrTotal = nrKilled + nrSurvived + nrTimedOut;
     const mutationScore = parseFloat(jsonObj.mutationScore);
-    const strykerTime = jsonObj.time;
+    const strykerTime = timeInSeconds(jsonObj.time);
     if (!mutantsDirName) {
       report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
     } else {
@@ -42,7 +42,7 @@ function generateReport(title, dirName, mutantsDirName){
       // real time appears at the second to last line of the output
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
       const lines = llmOutput.split('\n');
-      const llmorpheusTime = lines[lines.length-4].substring(5).trim();
+      const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} |\n`;
     }
   }
@@ -64,6 +64,18 @@ function retrieveMetaData(mutantsDirName){
     mutate: jsonObj.metaInfo.mutate,
     ignore: jsonObj.metaInfo.ignore
   }
+}
+
+/** 
+ * Converts a string that was produced by the Unix time command (e.g, "2m0.390s")
+ * to seconds. Output the number using up to two decimal places (e.g., 0.2342 -> 0.23)
+ * @param {string} time - the time string
+ * @returns {number} - the time in seconds
+ */
+function timeInSeconds(time){
+  const minutes = parseInt(time.substring(0, time.indexOf('m')));
+  const seconds = parseFloat(time.substring(time.indexOf('m')+1, time.indexOf('s')));
+  return parseFloat((minutes*60 + seconds).toFixed(2));
 }
 
 const title = process.argv[2];
