@@ -43,9 +43,9 @@ function generateReport(title, dirName, mutantsDirName){
       const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
       const lines = llmOutput.split('\n');
       const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
-      const nrPromptTokens = parseInt(llmJsonObj.nrPromptTokens);
-      const nrCompletionTokens = parseInt(llmJsonObj.nrCompletionTokens);
-      const nrTotalTokens = parseInt(llmJsonObj.nrTotalTokens);
+      const nrPromptTokens = llmJsonObj.nrPromptTokens;
+      const nrCompletionTokens = llmJsonObj.nrCompletionTokens;
+      const nrTotalTokens = llmJsonObj.nrTotalTokens;
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
     }
   }
