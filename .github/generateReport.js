@@ -37,6 +37,7 @@ function generateReport(title, dirName, mutantsDirName){
     } else {
       const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
       const llmJsonObj = JSON.parse(llmData);
+      console.log(`>>llmJsonObj: ${JSON.stringify(llmJsonObj)}`);
       const nrPrompts = parseInt(llmJsonObj.nrPrompts);
       
       // real time appears at the second to last line of the output
