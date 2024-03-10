@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.retry = void 0;
+exports.BenchmarkRateLimiter = exports.FixedRateLimiter = exports.RateLimiter = exports.retry = void 0;
 /**
  * This class provides supports for retrying the creation of a promise
  * up to a given number of times in case the promise is rejected.
@@ -26,14 +26,15 @@ async function retry(f, howManyTimes) {
     }
     ;
     return promise; // if the promise was rejected howManyTimes times, return the last promise
-} /**
+}
+exports.retry = retry;
+/**
  * This class provides supports for asynchronous rate limiting by
  * limiting the number of requests to the server to at most one
  * in N milliseconds. This is useful for throttling requests to
  * a server that has a limit on the number of requests per second.
  *
  */
-exports.retry = retry;
 class RateLimiter {
     constructor(howManyMilliSeconds) {
         this.howManyMilliSeconds = howManyMilliSeconds;
@@ -61,5 +62,44 @@ class RateLimiter {
         return p(); // return the promise
     }
 }
-exports.default = RateLimiter;
+exports.RateLimiter = RateLimiter;
+/**
+ * A rate limiter that limits the number of requests to the server to a
+ * maximum of one per N milliseconds.
+ *
+ */
+class FixedRateLimiter extends RateLimiter {
+    constructor(N) {
+        super(N);
+    }
+}
+exports.FixedRateLimiter = FixedRateLimiter;
+/**
+ * A custom rate limiter for use during benchmark runs. It increases
+ * the pace of requests after two designated thresholds have been reached.
+ */
+class BenchmarkRateLimiter extends RateLimiter {
+    constructor() {
+        console.log(`BenchmarkRateLimiter: initial pace is ${BenchmarkRateLimiter.INITIAL_PACE}`);
+        super(BenchmarkRateLimiter.INITIAL_PACE);
+        this.requestCount = 0;
+    }
+    next(p) {
+        this.requestCount++;
+        if (this.requestCount === 150) {
+            this.howManyMilliSeconds = BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS;
+            console.log(`BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS}`);
+        }
+        else if (this.requestCount === 300) {
+            this.howManyMilliSeconds = BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS;
+            console.log(`BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS}`);
+        }
+        return super.next(p);
+    }
+    ;
+}
+exports.BenchmarkRateLimiter = BenchmarkRateLimiter;
+BenchmarkRateLimiter.INITIAL_PACE = 20000;
+BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS = 10000;
+BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS = 5000;
 //# sourceMappingURL=promise-utils.js.map

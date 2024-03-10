@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mistral8x7bInstructModel } from "../src/model/PerplexityAIModels";
+import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mixtral8x7bInstructModel } from "../src/model/PerplexityAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
 import { MutantGenerator, MetaInfo } from "../src/generator/MutantGenerator";
@@ -94,6 +94,12 @@ if (require.main === module) {
           demandOption: false,
           description: "maximum number of prompts to generate",
         },
+        benchmark: {
+          type: "boolean",
+          default: false,
+          demandOption: false,
+          description: "use custom rate-limiting for benchmarking",
+        },
       });
 
     const argv = await parser.argv;
@@ -101,13 +107,27 @@ if (require.main === module) {
     if (argv.model !== "codellama-34b-instruct" &&
         argv.model !== "codellama-70b-instruct" &&
         argv.model !== "mistral-7b-instruct" &&
-        argv.model !== "mistral-8x7b-instruct" &&
+        argv.model !== "mixtral-8x7b-instruct" &&
         argv.model !== "gpt4") {
       console.error(`Invalid model name: ${argv.model}`);
       process.exit(1);
     }
 
     let baseModel, model;
+    const metaInfo : MetaInfo = {
+      modelName: argv.model,
+      temperature: argv.temperature,
+      maxTokens: argv.maxTokens,
+      maxNrPrompts: argv.maxNrPrompts,
+      rateLimit: argv.rateLimit,
+      nrAttempts: argv.nrAttempts,
+      template: argv.promptTemplateFileName,
+      mutate: argv.mutate,
+      ignore: argv.ignore,
+      benchmark: argv.benchmark
+    }
+
+
     if (argv.model === "gpt4"){
       console.log("*** Using GPT4 model");
       baseModel = new Gpt4Model({
@@ -121,30 +141,26 @@ if (require.main === module) {
         temperature: argv.temperature,
         max_tokens: argv.maxTokens 
       },
-      argv.rateLimit,
-      argv.nrAttempts
+      metaInfo
       );
     } else if (argv.model === "codellama-70b-instruct"){
       baseModel = new CodeLlama70bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
-      argv.rateLimit,
-      argv.nrAttempts)
+      metaInfo)
     } else if (argv.model === "mistral-7b-instruct"){
       baseModel = new Mistral7bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
-      argv.rateLimit,
-      argv.nrAttempts)
-    } else if (argv.model === "mistral-8x7b-instruct"){
-      baseModel = new Mistral8x7bInstructModel({
+      metaInfo)
+    } else if (argv.model === "mixtral-8x7b-instruct"){
+      baseModel = new Mixtral8x7bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
-      argv.rateLimit,
-      argv.nrAttempts)
+      metaInfo)
     } else {
       throw new Error(`Invalid model name: ${argv.model}`);
     }
@@ -154,29 +170,10 @@ if (require.main === module) {
       model = baseModel;
     }
 
-    function getEnv(name: string): string {
-      const value = process.env[name];
-      if (!value) {
-        console.error(`Please set the ${name} environment variable.`);
-        process.exit(1);
-      }
-      return value;
-    }
-
     const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
     console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
 
-    const metaInfo : MetaInfo = {
-      modelName: model.getModelName(),
-      temperature: model.getTemperature(),
-      maxTokens: model.getMaxTokens(),
-      maxNrPrompts: argv.maxNrPrompts,
-      rateLimit: argv.rateLimit,
-      nrAttempts: argv.nrAttempts,
-      template: argv.promptTemplateFileName,
-      mutate: argv.mutate,
-      ignore: argv.ignore
-    }
+ 
 
 
 

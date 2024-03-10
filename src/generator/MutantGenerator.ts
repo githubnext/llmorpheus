@@ -30,6 +30,7 @@ export interface MetaInfo {
   rateLimit: number;
   mutate: string;
   ignore: string;
+  benchmark: boolean
 }
 
 /**

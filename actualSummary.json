@@ -18,6 +18,7 @@
     "nrAttempts": 1,
     "mutate": "src/**.js",
     "ignore": "",
-    "rateLimit": 1000
+    "rateLimit": 1000,
+    "benchmark": false
   }
 }

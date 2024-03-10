@@ -1,11 +1,12 @@
 import axios from "axios";
 import { performance } from "perf_hooks";
-import RateLimiter from "../util/promise-utils";
+import { BenchmarkRateLimiter, FixedRateLimiter, RateLimiter } from "../util/promise-utils";
 import { retry } from "../util/promise-utils";
 import { IModel } from "./IModel";
 import { PostOptions, defaultPostOptions } from "./IModel";
 import { getEnv } from "../util/code-utils";
 import { IQueryResult } from "./IQueryResult";
+import { MetaInfo } from "../generator/MutantGenerator";
 
 
 export abstract class PerplexityAIModel implements IModel {
@@ -22,10 +23,19 @@ export abstract class PerplexityAIModel implements IModel {
   protected instanceOptions: PostOptions;
   protected rateLimiter: RateLimiter;
 
-  constructor(instanceOptions: PostOptions = {}, rateLimit: number, private nrAttempts: number) {
+  constructor(instanceOptions: PostOptions = {}, private metaInfo: MetaInfo) {
     this.instanceOptions = instanceOptions;
-    this.rateLimiter = new RateLimiter(rateLimit);
-    console.log(`*** Using ${this.getModelName()} with rate limit ${rateLimit} and ${nrAttempts} attempts`);
+    if (metaInfo.benchmark){
+      console.log(`*** Using ${this.getModelName()} with benchmark rate limiter`);
+      this.rateLimiter = new BenchmarkRateLimiter();
+      metaInfo.nrAttempts = 3;
+    } else if (metaInfo.rateLimit > 0) {
+      this.rateLimiter = new FixedRateLimiter(metaInfo.rateLimit);
+      console.log(`*** Using ${this.getModelName()} with rate limit: ${metaInfo.rateLimit} and ${metaInfo.nrAttempts} attempts`);
+    } else {
+      this.rateLimiter = new FixedRateLimiter(0);
+      console.log(`*** Using ${this.getModelName()} with no rate limit and ${metaInfo.nrAttempts} attempts`);
+    }
   }
 
   public getTemperature(): number {
@@ -79,7 +89,7 @@ export abstract class PerplexityAIModel implements IModel {
         this.apiEndpoint,
         body,
         { headers: this.header }
-      )), this.nrAttempts);
+      )), this.metaInfo.nrAttempts);
       // console.log(`*** completion is: ${res.data.response}`);
     } catch (e) {
       if (res?.status === 429) {
@@ -125,8 +135,8 @@ export abstract class PerplexityAIModel implements IModel {
 
 export class CodeLlama34bInstructModel extends PerplexityAIModel {
 
-  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
-    super(instanceOptions, rateLimit, nrAttempts);
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
   }
 
   public getModelName(): string {
@@ -140,8 +150,8 @@ export class CodeLlama34bInstructModel extends PerplexityAIModel {
 
 export class CodeLlama70bInstructModel extends PerplexityAIModel {
 
-  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
-    super(instanceOptions, rateLimit, nrAttempts);
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
   }
 
   public getModelName(): string {
@@ -155,8 +165,8 @@ export class CodeLlama70bInstructModel extends PerplexityAIModel {
 
 export class Mistral7bInstructModel extends PerplexityAIModel {
 
-  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
-    super(instanceOptions, rateLimit, nrAttempts);
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
   }
 
   public getModelName(): string {
@@ -168,10 +178,10 @@ export class Mistral7bInstructModel extends PerplexityAIModel {
  * Abstraction for the codellama-70b-instruct model.
  */
 
-export class Mistral8x7bInstructModel extends PerplexityAIModel {
+export class Mixtral8x7bInstructModel extends PerplexityAIModel {
 
-  constructor(instanceOptions: PostOptions = {}, rateLimit: number = 0, nrAttempts: number = 1) {
-    super(instanceOptions, rateLimit, nrAttempts);
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
   }
 
   public getModelName(): string {

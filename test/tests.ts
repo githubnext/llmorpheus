@@ -108,7 +108,8 @@ describe("test mutant generation", () => {
       nrAttempts: 1,
       mutate: "./src/**.js",
       ignore: "",
-      rateLimit: 1000
+      rateLimit: 1000,
+      benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
@@ -169,7 +170,8 @@ describe("test mutant generation", () => {
       nrAttempts: 1,
       mutate: "src/**.js",
       ignore: "",
-      rateLimit: 1000
+      rateLimit: 1000,
+      benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
@@ -202,7 +204,8 @@ describe("test mutant generation", () => {
       nrAttempts: 1,
       mutate: "src/**.js",
       ignore: "",
-      rateLimit: 1000
+      rateLimit: 1000,
+      benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
