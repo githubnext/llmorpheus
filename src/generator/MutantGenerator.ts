@@ -288,6 +288,7 @@ export class MutantGenerator {
     const nrSyntacticallyInvalid = this.mutationStats.nrSyntacticallyInvalid;
     const nrIdentical = this.mutationStats.nrIdentical;
     const nrDuplicate = this.mutationStats.nrDuplicate;
+    console.log(`*** metaInfo = ${JSON.stringify(this.metaInfo, null, 2)}`);
     fs.writeFileSync(
       resultsFileName,
       JSON.stringify(

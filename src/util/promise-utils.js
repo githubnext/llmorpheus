@@ -99,7 +99,7 @@ class BenchmarkRateLimiter extends RateLimiter {
     ;
 }
 exports.BenchmarkRateLimiter = BenchmarkRateLimiter;
-BenchmarkRateLimiter.INITIAL_PACE = 20000;
-BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS = 10000;
-BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS = 5000;
+BenchmarkRateLimiter.INITIAL_PACE = 30000;
+BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS = 15000;
+BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS = 7500;
 //# sourceMappingURL=promise-utils.js.map
