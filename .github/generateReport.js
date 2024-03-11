@@ -60,7 +60,7 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
 
   const metaData = retrieveMetaData(mutantsDirName);
   
-  report += "## Experimental Parameters";
+  report += "## Experimental Parameters\n";
   report += `  - Model: ${metaData.modelName}\n`;
   report += `  - Temperature: ${metaData.temperature}\n`;
   report += `  - Max Tokens: ${metaData.maxTokens}\n`;
@@ -100,7 +100,7 @@ function generateStandardReport(title, dirName){
     totalTime += strykerTime;
     report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
   }
-  report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime} |\n`;
+  report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime.toFixed(2)} |\n`;
 }
 
 function retrieveMetaData(mutantsDirName){
