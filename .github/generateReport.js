@@ -60,7 +60,7 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
 
   const metaData = retrieveMetaData(mutantsDirName);
   
-  report += "\nExperimental Parameters";
+  report += "## Experimental Parameters";
   report += `  - Model: ${metaData.modelName}\n`;
   report += `  - Temperature: ${metaData.temperature}\n`;
   report += `  - Max Tokens: ${metaData.maxTokens}\n`;
