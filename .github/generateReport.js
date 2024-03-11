@@ -1,58 +1,107 @@
 const fs = require('fs');
 
 function generateReport(title, dirName, mutantsDirName){
-  let report;
   if (!mutantsDirName) {
-    report = `# ${title}\n`
-    report += '| Project | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
-    report += '|:--------|:---------|:--------|:----------|----------|---------------|------|\n';
+    generateStandardReport(title, dirName);
   } else {
-    report = `# ${title}\n`
-    report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #Prompt Tokens | #Completion Tokens | #Total Tokens  |\n';
-    report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|----------------|--------------------|----------------|\n';
-  }  
+    generateLLMorpheusReport(title, dirName, mutantsDirName);
+  }
+}
+
+function generateLLMorpheusReport(title, dirName, mutantsDirName){
+  let report = `# ${title}\n`
+  report += '| Project | #Prompts | #Mutants | #Killed | #Survived | #Timeout | MutationScore | LLMorpheus Time | Stryker Time | #Prompt Tokens | #Completion Tokens | #Total Tokens  |\n';
+  report += '|:--------|:---------|:---------|:--------|:----------|----------|---------------|-----------------|--------------|----------------|--------------------|----------------|\n';
   const files = fs.readdirSync(dirName);
+  let totalMutants = 0;
+  let totalKilled = 0;
+  let totalSurvived = 0;
+  let totalTimedOut = 0;
+  let totalPrompts = 0;
+  let totalLLMorpheusTime = 0;
+  let totalStrykerTime = 0;
+  let totalPromptTokens = 0;
+  let totalCompletionTokens = 0;
+  let totalTotalTokens = 0;
   for (const benchmark of files) {  
     const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8');
     const jsonObj = JSON.parse(data);
     const nrKilled = parseInt(jsonObj.nrKilled);
+    totalKilled += nrKilled;
     const nrSurvived = parseInt(jsonObj.nrSurvived);
+    totalSurvived += nrSurvived;
     const nrTimedOut = parseInt(jsonObj.nrTimedOut);
+    totalTimedOut += nrTimedOut;
     const nrTotal = nrKilled + nrSurvived + nrTimedOut;
+    totalMutants += nrTotal;
     const mutationScore = parseFloat(jsonObj.mutationScore);
     const strykerTime = timeInSeconds(jsonObj.time);
-    if (!mutantsDirName) {
-      report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
-    } else {
-      const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
-      const llmJsonObj = JSON.parse(llmData);
-      const nrPrompts = parseInt(llmJsonObj.nrPrompts);
-      
-      // real time appears at the second to last line of the output
-      const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
-      const lines = llmOutput.split('\n');
-      const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
-      const nrPromptTokens = llmJsonObj.totalPromptTokens;
-      const nrCompletionTokens = llmJsonObj.totalCompletionTokens;
-      const nrTotalTokens = llmJsonObj.totalTokens;
-      report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
-    }
-    const metaData = retrieveMetaData(mutantsDirName);
+    totalStrykerTime += strykerTime;
     
-    report += "\nExperimental Parameters";
-    report += `  - Model: ${metaData.modelName}\n`;
-    report += `  - Temperature: ${metaData.temperature}\n`;
-    report += `  - Max Tokens: ${metaData.maxTokens}\n`;
-    report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
-    report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
-    report += `  - Rate Limit: ${metaData.rateLimit}\n`;
-    report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
-    report += `  - Files to Mutate: ${metaData.mutate}\n`;
-    report += `  - Files to Ignore: ${metaData.ignore ? metaData.ignore : "not specified"}\n`;
-    report += "\n";
-  }
+    const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
+    const llmJsonObj = JSON.parse(llmData);
+    const nrPrompts = parseInt(llmJsonObj.nrPrompts);
+    totalPrompts += nrPrompts;
+      
+    // real time appears at the second to last line of the output
+    const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
+    const lines = llmOutput.split('\n');
+    const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
+    totalLLMorpheusTime += llmorpheusTime;
+    const nrPromptTokens = llmJsonObj.totalPromptTokens;
+    totalPromptTokens += nrPromptTokens;
+    const nrCompletionTokens = llmJsonObj.totalCompletionTokens;
+    totalCompletionTokens += nrCompletionTokens;
+    const nrTotalTokens = llmJsonObj.totalTokens;
+    totalTotalTokens += nrTotalTokens;
+    report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
+  } 
+  report += `| Total | ${totalPrompts} | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalLLMorpheusTime} | ${totalStrykerTime} | ${totalPromptTokens} | ${totalCompletionTokens} | ${totalTotalTokens} |\n`;
+
+  const metaData = retrieveMetaData(mutantsDirName);
+  
+  report += "\nExperimental Parameters";
+  report += `  - Model: ${metaData.modelName}\n`;
+  report += `  - Temperature: ${metaData.temperature}\n`;
+  report += `  - Max Tokens: ${metaData.maxTokens}\n`;
+  report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
+  report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
+  report += `  - Rate Limit: ${metaData.rateLimit}\n`;
+  report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
+  report += `  - Files to Mutate: ${metaData.mutate}\n`;
+  report += `  - Files to Ignore: ${metaData.ignore ? metaData.ignore : "not specified"}\n`;
+  report += "\n";
   console.log(report);
 }  
+
+function generateStandardReport(title, dirName){
+  let report = `# ${title}\n`
+  report += '| Project | #Mutants | #Killed | #Survived | #Timeout | MutationScore | Time |\n';
+  report += '|:--------|:---------|:--------|:----------|----------|---------------|------|\n';
+  const files = fs.readdirSync(dirName);
+  let totalKilled = 0;
+  let totalSurvived = 0;
+  let totalTimedOut = 0;
+  let totalMutants = 0;
+  let totalTime = 0;
+  for (const benchmark of files) {
+    const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8');
+    const jsonObj = JSON.parse(data);
+    const nrKilled = parseInt(jsonObj.nrKilled);
+    totalKilled += nrKilled;
+    const nrSurvived = parseInt(jsonObj.nrSurvived);
+    totalSurvived += nrSurvived;
+    const nrTimedOut = parseInt(jsonObj.nrTimedOut);
+    totalTimedOut += nrTimedOut;
+    const nrTotal = nrKilled + nrSurvived + nrTimedOut;
+    totalMutants += nrTotal;
+    const mutationScore = parseFloat(jsonObj.mutationScore);
+    const strykerTime = timeInSeconds(jsonObj.time);
+    totalTime += strykerTime;
+    report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
+  }
+  report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime} |\n`;
+}
 
 function retrieveMetaData(mutantsDirName){
   const files = fs.readdirSync(mutantsDirName);
