@@ -36,20 +36,20 @@ function generateReport(title, dirName, mutantsDirName){
       const nrCompletionTokens = llmJsonObj.totalCompletionTokens;
       const nrTotalTokens = llmJsonObj.totalTokens;
       report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
-    
-      const metaData = retrieveMetaData(mutantsDirName);
-      report += "Experimental Parameters";
-      report += `  - Model: ${metaData.modelName}\n`;
-      report += `  - Temperature: ${metaData.temperature}\n`;
-      report += `  - Max Tokens: ${metaData.maxTokens}\n`;
-      report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
-      report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
-      report += `  - Rate Limit: ${metaData.rateLimit}\n`;
-      report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
-      report += `  - Files to Mutate: ${metaData.mutate}\n`;
-      report += `  - Files to Ignore: ${metaData.ignore ? metaData.ignore : "not specified"}\n`;
-      report += "\n";
     }
+    const metaData = retrieveMetaData(mutantsDirName);
+    
+    report += "\nExperimental Parameters";
+    report += `  - Model: ${metaData.modelName}\n`;
+    report += `  - Temperature: ${metaData.temperature}\n`;
+    report += `  - Max Tokens: ${metaData.maxTokens}\n`;
+    report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
+    report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
+    report += `  - Rate Limit: ${metaData.rateLimit}\n`;
+    report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
+    report += `  - Files to Mutate: ${metaData.mutate}\n`;
+    report += `  - Files to Ignore: ${metaData.ignore ? metaData.ignore : "not specified"}\n`;
+    report += "\n";
   }
   console.log(report);
 }  
@@ -63,6 +63,7 @@ function retrieveMetaData(mutantsDirName){
     modelName: jsonObj.metaInfo.modelName,
     temperature: jsonObj.metaInfo.temperature,
     maxTokens: jsonObj.metaInfo.maxTokens,
+    maxNrPrompts: jsonObj.metaInfo.maxNrPrompts,
     template: jsonObj.metaInfo.template,
     rateLimit: jsonObj.metaInfo.rateLimit,
     nrAttempts: jsonObj.metaInfo.nrAttempts,
