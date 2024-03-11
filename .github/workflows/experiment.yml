@@ -167,7 +167,7 @@ jobs:
           BENCHMARK_DIR=`pwd`
           cd ../llm-mutation-testing
           echo "Generating mutants for ${{ matrix.package.name }}"           
-          LLMORPHEUS_OPTIONS="--temperature ${{ needs.setup.outputs.temperatures }} --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} --rateLimit ${{ github.event.inputs.rateLimit }} --nrAttempts ${{ github.event.inputs.nrAttempts }} --model ${{ github.event.inputs.model }} --benchmarkMode ${{ github.event.inputs.benchmarkMode }} --maxTokensInCompletion ${{ github.event.inputs.maxTokensInCompletion }}"
+          LLMORPHEUS_OPTIONS="--temperature ${{ needs.setup.outputs.temperatures }} --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} --rateLimit ${{ github.event.inputs.rateLimit }} --nrAttempts ${{ github.event.inputs.nrAttempts }} --model ${{ github.event.inputs.model }} --benchmark ${{ github.event.inputs.benchmarkMode }} --maxTokens ${{ github.event.inputs.maxTokensInCompletion }}"
           # (time node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0.0 --rateLimit 3000 --nrAttempts 3 --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }})  2>&1 | tee -a ../${{ matrix.package.name }}/LLMorpheusOutput.txt    
           (time node --max-old-space-size=6144 benchmark/createMutants.js --path $BENCHMARK_DIR --mutate "${{ matrix.package.files }}" --ignore "${{ matrix.package.ignore }}"  --promptTemplateFileName templates/template1.hb  --caching false  $LLMORPHEUS_OPTIONS)  2>&1 | tee -a ../${{ matrix.package.name }}/LLMorpheusOutput.txt
 
