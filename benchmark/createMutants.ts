@@ -130,7 +130,7 @@ if (require.main === module) {
         max_tokens: 500,
         stop: ["DONE"],
         temperature: 0.0,
-        n: argv.numCompletions,
+        n: 1,
       });
     } if (argv.model === "codellama-34b-instruct"){
       baseModel = new CodeLlama34bInstructModel({
