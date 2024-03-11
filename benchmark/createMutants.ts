@@ -22,12 +22,6 @@ if (require.main === module) {
           description:
             'name of file containing the prompt template (default: "template.hb")',
         },
-        numCompletions: {
-          type: "number",
-          default: 1,
-          description:
-            "number of completions to generate for each prompt (default: 5)",
-        },
         model: {
           type: "string",
           default: "codellama-34b-instruct",
@@ -39,42 +33,12 @@ if (require.main === module) {
           description:
             "whether to cache the results of queries to the model (default: true)",
         },
-        temperature: {
-          type: "number",
-          default: 0.0,
-          description:
-            "temperature to use when generating completions (default: 0.0)"
-        },
         outputDir: {
           type: "string",
           default: "./test/actual",
           demandOption: false,
           description:
             "path to directory where generated files should be written",
-        },
-        nrAttempts: {
-          type: "number",
-          default: 1,
-          demandOption: false,
-          description: "number of attempts to generate a completion",
-        },
-        rateLimit: {
-          type: "number",
-          default: 0,
-          demandOption: false,
-          description: "number of milliseconds between requests to the model (0 is no rate limit)",
-        },
-        maxTokens: {
-          type: "number",
-          default: 250,
-          demandOption: false,
-          description: "maximum number of tokens in a completion",
-        },
-        cacheDir: {
-          type: "string",
-          default: path.join(__dirname, "..", ".llm-cache"),
-          demandOption: false,
-          description: "path to directory where cache files are located",
         },
         mutate: {
           type: "string",
@@ -88,18 +52,49 @@ if (require.main === module) {
           demandOption: false,
           description: "glob specifying files to ignore",
         },
+        cacheDir: {
+          type: "string",
+          default: path.join(__dirname, "..", ".llm-cache"),
+          demandOption: false,
+          description: "path to directory where cache files are located",
+        },
+        temperature: {
+          type: "number",
+          default: 0.0,
+          description:
+            "temperature to use when generating completions (default: 0.0)"
+        },
+        rateLimit: {
+          type: "number",
+          default: 0,
+          demandOption: false,
+          description: "number of milliseconds between requests to the model (0 is no rate limit)",
+        },
+        nrAttempts: {
+          type: "number",
+          default: 1,
+          demandOption: false,
+          description: "number of attempts to generate a completion",
+        },
+        benchmark: {
+          type: "boolean",
+          default: false,
+          demandOption: false,
+          description: "use custom rate-limiting for benchmarking (if specified, this supercedes the rateLimit option)",
+        },
+        maxTokens: {
+          type: "number",
+          default: 250,
+          demandOption: false,
+          description: "maximum number of tokens in a completion",
+        },
         maxNrPrompts: {
           type: "number",
           default: 1250,
           demandOption: false,
           description: "maximum number of prompts to generate",
         },
-        benchmark: {
-          type: "boolean",
-          default: false,
-          demandOption: false,
-          description: "use custom rate-limiting for benchmarking",
-        },
+        
       });
 
     const argv = await parser.argv;

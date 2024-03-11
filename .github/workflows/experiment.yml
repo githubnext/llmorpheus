@@ -7,19 +7,38 @@ on:
         description: "JSON file that specifies packages to generate mutants for"
         default: "benchmarks.json"
       temperature:
+        type: number
         description: "Sampling temperature to try when obtaining completions"
-        default: "0.0"
+        default: 0.0
+      model:
+        description: "Which LLM API to use"
+        type: choice
+        options:
+          - "codellama-34b-instruct"
+          - "codellama-70b-instruct"
+          - "mistral-7b-instruct"
+          - "mixtral-8x7b-instruct"
+        default: "codellama-34b-instruct"
+      rateLimit:
+          description: "number of milliseconds between requests sent to the LLM"
+          type: number
+          default: 0
+      benchmarkMode:
+          description: "use custom rate limiting for benchmarking"
+          type: "boolean"
+          default: false
+      nrAttempts:
+          type: number
+          description: "number of attempts to obtain completions in case of 429 errors"
+          default: 3
       maxNrPrompts:
-        description: "Maximum number of prompts to try when obtaining completions"
-        default: "1250"
-      # model:
-      #   description: "Which LLM API to use"
-      #   type: "choice"
-      #   options:
-      #     - "gpt3.5-turbo"
-      #     - "gpt4"
-      #     - "text-davinci003"
-      #   default: "gpt4"
+          type: number
+          description: "maximum number of prompts to produce"
+          default: 1500
+      maxTokensInCompletion:
+          type: number
+          description: "maximum number of tokens in a completion"
+          default: 250
       strykerOptions:
         description: "stryker options (e.g., --concurrency 4) to pass to stryker"
         default: ""
@@ -90,6 +109,16 @@ jobs:
           echo "package.edits=${{ matrix.package.edits }}"
           echo "package.files=${{ matrix.package.files }}"
           echo "package.ignore=${{ matrix.package.ignore }}"
+
+          # print the various options
+          echo "temperature=${{ needs.setup.outputs.temperatures }}"
+          echo "model=${{ github.event.inputs.model }}"
+          echo "rateLimit=${{ github.event.inputs.rateLimit }}"
+          echo "benchmarkMode=${{ github.event.inputs.benchmarkMode }}"
+          echo "nrAttempts=${{ github.event.inputs.nrAttempts }}"
+          echo "maxNrPrompts=${{ needs.setup.outputs.maxNrPrompts }}"
+          echo "maxTokensInCompletion=${{ github.event.inputs.maxTokensInCompletion }}"
+          echo "strykerOptions=${{ needs.setup.outputs.strykerOptions }}"
 
       - name: check out benchmark
         if: ${{ matrix.package.host == 'github.com' }}
@@ -162,7 +191,8 @@ jobs:
           export MUTANTS_FILE=MUTATION_TESTING/template1_codellama-34b-instruct_0/mutants.json
           STRYKER_FILES=$(node ../llm-mutation-testing/.github/expandGlob.js $(pwd) "${{ matrix.package.files }}" "${{ matrix.package.ignore }}")
           STRYKER_OPTIONS="${{ needs.setup.outputs.strykerOptions }}"
-          (time npx stryker run $STRYKER_OPTIONS --usePrecomputed --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
+          LLMORPHEUS_OPTIONS="--temperature ${{ needs.setup.outputs.temperatures }} --maxNrPrompts ${{ needs.setup.outputs.maxNrPrompts }} --rateLimit ${{ github.event.inputs.rateLimit }} --nrAttempts ${{ github.event.inputs.nrAttempts }} --model ${{ github.event.inputs.model }} --benchmarkMode ${{ github.event.inputs.benchmarkMode }} --maxTokensInCompletion ${{ github.event.inputs.maxTokensInCompletion }}
+          (time npx stryker run $STRYKER_OPTIONS --usePrecomputed $LLMORPHEUS_OPTIONS --mutate $STRYKER_FILES)  2>&1 | tee -a StrykerOutput.txt
 
       - name: extract summary from StrykerOutput.txt
         run: |
