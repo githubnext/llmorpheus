@@ -8,6 +8,7 @@ import path from "path";
 
 if (require.main === module) {
   (async () => {
+    console.log(`**process.argv: ${process.argv}`);
     const parser = yargs(hideBin(process.argv))
       .strict()
       .options({
