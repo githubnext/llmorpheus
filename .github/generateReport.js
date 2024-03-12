@@ -100,7 +100,9 @@ function generateStandardReport(title, dirName){
     totalTime += strykerTime;
     report += `| ${benchmark} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${strykerTime} |\n`;
   }
-  report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime.toFixed(2)} |\n`;
+  if (files.length > 1){
+    report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime.toFixed(2)} |\n`;
+  }
 }
 
 function retrieveMetaData(mutantsDirName){
