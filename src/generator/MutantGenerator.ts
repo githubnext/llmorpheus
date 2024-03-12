@@ -83,7 +83,8 @@ export class MutantGenerator {
   public getSubDirName(): string {
     const shortFileName = this.metaInfo.template.substring(this.metaInfo.template.lastIndexOf("/") + 1);
     const shortTemplateFileName = shortFileName.substring(0, shortFileName.lastIndexOf("."));
-    const subDirName = shortTemplateFileName + "_" + this.model.getModelName() + "_" + this.model.getTemperature();
+    const tempAsString = this.metaInfo.temperature === 0 ? "0.0" : this.metaInfo.temperature.toString();
+    const subDirName = shortTemplateFileName + "_" + this.model.getModelName() + "_" + tempAsString;
     return subDirName;
   }
 
