@@ -56,7 +56,7 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
     totalTotalTokens += nrTotalTokens;
     report += `| ${benchmark} | ${nrPrompts} | ${nrTotal} | ${nrKilled} | ${nrSurvived} | ${nrTimedOut} | ${mutationScore} | ${llmorpheusTime} | ${strykerTime} | ${nrPromptTokens} | ${nrCompletionTokens} | ${nrTotalTokens} |\n`;
   } 
-  report += `| Total | ${totalPrompts} | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalLLMorpheusTime} | ${totalStrykerTime} | ${totalPromptTokens} | ${totalCompletionTokens} | ${totalTotalTokens} |\n`;
+  report += `| Total | ${totalPrompts} | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalLLMorpheusTime.toFixed(2)} | ${totalStrykerTime.toFixed(2)} | ${totalPromptTokens} | ${totalCompletionTokens} | ${totalTotalTokens} |\n`;
 
   const metaData = retrieveMetaData(mutantsDirName);
   

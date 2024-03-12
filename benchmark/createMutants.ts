@@ -17,7 +17,7 @@ if (require.main === module) {
           demandOption: true,
           description: "path to file/directory containing the original code",
         },
-        promptTemplateFileName: {
+        template: {
           type: "string",
           default: "template.hb",
           description:
@@ -33,13 +33,6 @@ if (require.main === module) {
           default: true,
           description:
             "whether to cache the results of queries to the model (default: true)",
-        },
-        outputDir: {
-          type: "string",
-          default: "./test/actual",
-          demandOption: false,
-          description:
-            "path to directory where generated files should be written",
         },
         mutate: {
           type: "string",
@@ -117,7 +110,7 @@ if (require.main === module) {
       maxNrPrompts: argv.maxNrPrompts,
       rateLimit: argv.rateLimit,
       nrAttempts: argv.nrAttempts,
-      template: argv.promptTemplateFileName,
+      template: argv.template,
       mutate: argv.mutate,
       ignore: argv.ignore,
       benchmark: argv.benchmark
