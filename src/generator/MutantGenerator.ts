@@ -217,7 +217,8 @@ export class MutantGenerator {
           `${path.join(this.outputDir, this.getSubDirName())}/prompts/prompt${prompt.getId()}_completion_${completion.getId()}.txt`,
           completion.text
         );
-        const regExp = /```\n((?:.(?!```))*)\n```/gs;
+        // const regExp = /```\n((?:.(?!```))*)\n```/gs;
+        const regExp = /```[^\n\r]*\n((?:.(?!```))*)\n```/gs
         let match;
 
         while ((match = regExp.exec(completion.text)) !== null) {
