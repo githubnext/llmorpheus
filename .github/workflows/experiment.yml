@@ -37,7 +37,7 @@ on:
       maxNrPrompts:
           type: number
           description: "maximum number of prompts to produce"
-          default: 1500
+          default: 2000
       maxTokensInCompletion:
           type: number
           description: "maximum number of tokens in a completion"
