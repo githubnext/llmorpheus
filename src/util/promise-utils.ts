@@ -84,9 +84,9 @@ export class FixedRateLimiter extends RateLimiter {
 export class BenchmarkRateLimiter extends RateLimiter {
   private requestCount: number;
   
-  private static INITIAL_PACE = 30000;
-  private static PACE_AFTER_150_REQUESTS = 15000;
-  private static PACE_AFTER_300_REQUESTS = 7500;
+  private static INITIAL_PACE = 10000;
+  private static PACE_AFTER_150_REQUESTS = 5000;
+  private static PACE_AFTER_300_REQUESTS = 2500;
 
   constructor() {
     console.log(`BenchmarkRateLimiter: initial pace is ${BenchmarkRateLimiter.INITIAL_PACE}`);
