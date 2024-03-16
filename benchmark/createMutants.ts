@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mixtral8x7bInstructModel } from "../src/model/PerplexityAIModels";
+import { OctoAICodeLlama13bInstructModel, OctoAICodeLlama34bInstructModel, OctoAICodeLlama70bInstructModel } from "../src/model/OctoAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
 import { MutantGenerator, MetaInfo } from "../src/generator/MutantGenerator";
@@ -92,7 +93,8 @@ if (require.main === module) {
 
     const argv = await parser.argv;
 
-    if (argv.model !== "codellama-34b-instruct" &&
+    if (argv.model !== "codellama-13b-instruct" &&
+        argv.model !== "codellama-34b-instruct" &&
         argv.model !== "codellama-70b-instruct" &&
         argv.model !== "mistral-7b-instruct" &&
         argv.model !== "mixtral-8x7b-instruct" &&
@@ -124,15 +126,23 @@ if (require.main === module) {
         temperature: 0.0,
         n: 1,
       });
-    } if (argv.model === "codellama-34b-instruct"){
-      baseModel = new CodeLlama34bInstructModel({
+    } 
+    if (argv.model === "codellama-13b-instruct"){
+      baseModel = new OctoAICodeLlama13bInstructModel({
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens 
+      },
+      metaInfo
+      );
+    }else if (argv.model === "codellama-34b-instruct"){
+      baseModel = new OctoAICodeLlama34bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens 
       },
       metaInfo
       );
     } else if (argv.model === "codellama-70b-instruct"){
-      baseModel = new CodeLlama70bInstructModel({
+      baseModel = new OctoAICodeLlama70bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },

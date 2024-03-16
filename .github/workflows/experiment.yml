@@ -165,6 +165,7 @@ jobs:
         env:
           PERPLEXITY_AI_API_ENDPOINT: '${{ secrets.PERPLEXITY_AI_API_ENDPOINT }}'
           PERPLEXITY_AI_AUTH_HEADERS: '${{ secrets.PERPLEXITY_AI_AUTH_HEADERS }}'
+          OCTO_AI_TOKEN: '${{ secrets.OCTOAI_TOKEN }}'
         run: |
           cd ${{ matrix.package.name }}
           BENCHMARK_DIR=`pwd`
