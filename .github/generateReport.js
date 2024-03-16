@@ -68,8 +68,6 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
   report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
   report += `  - Rate Limit: ${metaData.rateLimit}\n`;
   report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
-  report += `  - Files to Mutate: ${metaData.mutate}\n`;
-  report += `  - Files to Ignore: ${metaData.ignore ? metaData.ignore : "not specified"}\n`;
   report += "\n";
   console.log(report);
 }  
