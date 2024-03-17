@@ -395,7 +395,7 @@ export class PromptSpecGenerator {
         callee.loc!.end.line,
         callee.loc!.end.column
       );
-      if (calleeLoc.getText() !== "require") { // don't mutate calls to require
+      if (calleeLoc.getText() !== "require" && calleeLoc.getText() !== "super") { // don't mutate calls to require or super-calls
         newPromptSpecs.push(
           new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
         );
