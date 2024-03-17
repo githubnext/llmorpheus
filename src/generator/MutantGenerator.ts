@@ -129,6 +129,7 @@ export class MutantGenerator {
 
     return (
       hasUnbalancedParens(substitution) ||
+      substitution.includes("yield") ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
       (!isDeclaration(substitution) &&
