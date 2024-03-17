@@ -1,7 +1,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mixtral8x7bInstructModel } from "../src/model/PerplexityAIModels";
-import { OctoAICodeLlama13bInstructModel, OctoAICodeLlama34bInstructModel, OctoAICodeLlama70bInstructModel } from "../src/model/OctoAIModels";
+// import { CodeLlama34bInstructModel, CodeLlama70bInstructModel, Mistral7bInstructModel, Mixtral8x7bInstructModel } from "../src/model/PerplexityAIModels";
+import { OctoAICodeLlama13bInstructModel, OctoAICodeLlama34bInstructModel, OctoAICodeLlama70bInstructModel, OctoAILlama2_13bChatModel, OctoAILlama2_70bChatModel, OctoAIMistral7bInstructModel, OctoAIMixtral8x7bInstructModel, getSupportedModels } from "../src/model/OctoAIModels";
 import { CachingModel } from "../src/model/CachingModel";
 import { Gpt4Model } from "../src/model/OpenAIModels";
 import { MutantGenerator, MetaInfo } from "../src/generator/MutantGenerator";
@@ -93,13 +93,10 @@ if (require.main === module) {
 
     const argv = await parser.argv;
 
-    if (argv.model !== "codellama-13b-instruct" &&
-        argv.model !== "codellama-34b-instruct" &&
-        argv.model !== "codellama-70b-instruct" &&
-        argv.model !== "mistral-7b-instruct" &&
-        argv.model !== "mixtral-8x7b-instruct" &&
-        argv.model !== "gpt4") {
+    const supportedModels = getSupportedModels();
+    if (!supportedModels.includes(argv.model)) {
       console.error(`Invalid model name: ${argv.model}`);
+      console.error(`Supported models are: ${supportedModels.join(", ")}`);
       process.exit(1);
     }
 
@@ -148,13 +145,25 @@ if (require.main === module) {
       },
       metaInfo)
     } else if (argv.model === "mistral-7b-instruct"){
-      baseModel = new Mistral7bInstructModel({
+      baseModel = new OctoAIMistral7bInstructModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
       metaInfo)
     } else if (argv.model === "mixtral-8x7b-instruct"){
-      baseModel = new Mixtral8x7bInstructModel({
+      baseModel = new OctoAIMixtral8x7bInstructModel({
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens
+      },
+      metaInfo)
+    } else if (argv.model === "llama2-13b-chat"){
+      baseModel = new OctoAILlama2_13bChatModel({
+        temperature: argv.temperature,
+        max_tokens: argv.maxTokens
+      },
+      metaInfo)
+    } else if (argv.model === "llama2-70b-chat"){
+      baseModel = new OctoAILlama2_70bChatModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
@@ -170,10 +179,6 @@ if (require.main === module) {
 
     const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
     console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
-
- 
-
-
 
     const mutantGenerator = new MutantGenerator(
       model,

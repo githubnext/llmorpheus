@@ -135,7 +135,6 @@ export abstract class OctoAIModel implements IModel {
 export class OctoAICodeLlama13bInstructModel extends OctoAIModel {
   constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
     super(instanceOptions, metaInfo);
-    console.log(`*** Using OctoAICodeLlama13bInstructModel`);
   }
 
   public getModelName(): string {
@@ -151,7 +150,6 @@ export class OctoAICodeLlama34bInstructModel extends OctoAIModel {
 
   constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
     super(instanceOptions, metaInfo);
-    console.log(`*** Using OctoAICodeLlama34bInstructModel`);
   }
 
   public getModelName(): string {
@@ -167,7 +165,6 @@ export class OctoAICodeLlama70bInstructModel extends OctoAIModel {
 
   constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
     super(instanceOptions, metaInfo);
-    console.log(`*** Using OctoAICodeLlama70bInstructModel`);
   }
 
   public getModelName(): string {
@@ -175,4 +172,73 @@ export class OctoAICodeLlama70bInstructModel extends OctoAIModel {
   }
 }
 
+/**
+ * Abstraction for the mistral-7b-instruct model.
+ */
 
+export class OctoAIMistral7bInstructModel extends OctoAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
+  }
+
+  public getModelName(): string {
+    return "mistral-7b-instruct";
+  }
+}
+
+
+/**
+ * Abstraction for the mixtral-8x7b-instruct model.
+ */
+
+export class OctoAIMixtral8x7bInstructModel extends OctoAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
+  }
+
+  public getModelName(): string {
+    return "mixtral-8x7b-instruct";
+  }
+}
+
+/**
+ * Abstraction for the llama-2-13b-chat model.
+ */
+export class OctoAILlama2_13bChatModel extends OctoAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
+  }
+
+  public getModelName(): string {
+    return "llama-2-13b-chat";
+  }
+}
+
+/**
+ * Abstraction for the llama-2-70b-chat model.
+ */
+export class OctoAILlama2_70bChatModel extends OctoAIModel {
+
+  constructor(instanceOptions: PostOptions = {}, metaInfo: MetaInfo) {
+    super(instanceOptions, metaInfo);
+  }
+
+  public getModelName(): string {
+    return "llama-2-70b-chat";
+  }
+}
+
+export function getSupportedModels(): string[] {
+  return [
+    "codellama-13b-instruct",
+    "codellama-34b-instruct",
+    "codellama-70b-instruct",
+    "mistral-7b-instruct",
+    "mixtral-8x7b-instruct",
+    "llama-2-13b-chat",
+    "llama-2-70b-chat"
+  ];
+}

@@ -13,7 +13,7 @@ const testProjectPath = "test/input/testProject/countries-and-timezones";
 const promptTemplateFileName = "./templates/template1.hb";
 const sourceFileName = "countriesandtimezones_index.js";
 const modelName = "codellama-34b-instruct";
-const subDirName = "template1_codellama-34b-instruct_0";
+const subDirName = "template1_codellama-34b-instruct_0.0";
 
 describe("test mutant generation", () => {
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
@@ -184,6 +184,7 @@ describe("test mutant generation", () => {
       path.join(outputDir, subDirName, "mutants.json"),
       "utf8"
     );
+    console.log(`** done reading mutants.json`);
     const expectedMutantsJson = fs.readFileSync(
       "./test/expected/mutants.json",
       "utf8"

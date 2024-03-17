@@ -66,7 +66,7 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
   report += `  - Max Tokens: ${metaData.maxTokens}\n`;
   report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
   report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
-  report += `  - Rate Limit: ${metaData.rateLimit}\n`;
+  report += `  - Rate Limit: ${metaData.benchmark ? "benchmark mode" : metaData.rateLimit}\n`;
   report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
   report += "\n";
   console.log(report);
@@ -116,6 +116,7 @@ function retrieveMetaData(mutantsDirName){
     template: jsonObj.metaInfo.template,
     rateLimit: jsonObj.metaInfo.rateLimit,
     nrAttempts: jsonObj.metaInfo.nrAttempts,
+    benchmark: jsonObj.metaInfo.benchmark,
     mutate: jsonObj.metaInfo.mutate,
     ignore: jsonObj.metaInfo.ignore
   }
