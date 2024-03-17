@@ -156,13 +156,13 @@ if (require.main === module) {
         max_tokens: argv.maxTokens
       },
       metaInfo)
-    } else if (argv.model === "llama2-13b-chat"){
+    } else if (argv.model === "llama-2-13b-chat"){
       baseModel = new OctoAILlama2_13bChatModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
       },
       metaInfo)
-    } else if (argv.model === "llama2-70b-chat"){
+    } else if (argv.model === "llama-2-70b-chat"){
       baseModel = new OctoAILlama2_70bChatModel({
         temperature: argv.temperature,
         max_tokens: argv.maxTokens
