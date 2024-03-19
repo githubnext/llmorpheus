@@ -131,6 +131,8 @@ export class MutantGenerator {
       hasUnbalancedParens(substitution) ||
       substitution.includes("yield") ||
       substitution.includes("delete") ||
+      substitution.includes("process") ||
+      substitution.includes("require") ||
       prompt.getOrig().includes("...") ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
