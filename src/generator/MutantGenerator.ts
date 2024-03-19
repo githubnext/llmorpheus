@@ -134,6 +134,7 @@ export class MutantGenerator {
       substitution.includes("process") ||
       substitution.includes("require") ||
       prompt.getOrig().includes("...") ||
+      prompt.getOrig().includes("process") ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
       (!isDeclaration(substitution) &&
