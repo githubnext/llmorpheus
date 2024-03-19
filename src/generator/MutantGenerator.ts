@@ -134,6 +134,7 @@ export class MutantGenerator {
       substitution.includes("process") ||
       substitution.includes("require") ||
       substitution.includes("setImmediate") ||
+      substitution.includes("setTimeout") ||
       substitution.includes("//") ||
       prompt.getOrig().includes("...") ||
       prompt.getOrig().includes("process") ||
