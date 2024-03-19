@@ -133,6 +133,7 @@ export class MutantGenerator {
       substitution.includes("delete") ||
       substitution.includes("process") ||
       substitution.includes("require") ||
+      substitution.includes("setImmediate") ||
       substitution.includes("//") ||
       prompt.getOrig().includes("...") ||
       prompt.getOrig().includes("process") ||
