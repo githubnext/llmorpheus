@@ -130,10 +130,13 @@ export class MutantGenerator {
     return (
       hasUnbalancedParens(substitution) ||
       substitution.includes("yield") ||
+      substitution.includes("delete") ||
+      prompt.getOrig().includes("...") ||
       (substitution.includes(";") &&
         prompt.spec.component === "allArgs") ||
       (!isDeclaration(substitution) &&
-        prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "header"))
+        prompt.spec.feature === "for-of" && (prompt.spec.component === "left" || prompt.spec.component === "header")) ||
+      (prompt.spec.feature === "call" && prompt.spec.component === "callee" && substitution.includes("("))
     );
   }
 
