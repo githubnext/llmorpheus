@@ -66,6 +66,12 @@
     "files":  "./{q,queue}.js" 
   },
   {
+    "name": "spacl-core",
+    "url": "https://gitlab.com/cptpackrat/spacl-core/tree/fcb8511a0d01bdc206582cfacb3e2b01a0288f6a",
+    "edits": "sed -i -e 's/types\\/node\": \"^17.0.8\"/types\\/node\": \"^18.9.0\"/' package.json; sed -i -e '/typedoc/d' package.json; sed -i -e '/prepack/s/,$//g' package.json",
+    "files": "./src/*.ts"
+  },
+  {
     "name": "zip-a-folder",
     "url": "https://github.com/maugenst/zip-a-folder/tree/d2ea465b20dc33cf8c98c58a7acaf875c586c3e1",
     "edits": "sed -i -e 's/ && npm run lint//' package.json",
