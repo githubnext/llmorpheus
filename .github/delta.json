@@ -1,0 +1,9 @@
+[
+  {
+    "name": "delta",
+    "url": "https://github.com/felixge/node-dirty/tree/d7fb4d4ecf0cce144efa21b674965631a7955e61",
+    "edits": "sed -i -e 's/\"@types/node\": \"^17.0.21\"/\"@types/node\": \"^18.9.0\"/' package.json",
+    "files": "./src/*.ts"
+  }
+]
+
