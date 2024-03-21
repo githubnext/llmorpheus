@@ -1,0 +1,9 @@
+[
+  {
+    "name": "node-dir",
+    "url": "https://github.com/fshost/node-dir/tree/a57c3b1b571dd91f464ae398090ba40f64ba38a2",
+    "edits": "echo 'no edits'",
+    "files": "./{index,lib/*}.js"
+  }
+]
+
