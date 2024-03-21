@@ -101,6 +101,7 @@ function generateStandardReport(title, dirName){
   if (files.length > 1){
     report += `| Total | ${totalMutants} | ${totalKilled} | ${totalSurvived} | ${totalTimedOut} | - | ${totalTime.toFixed(2)} |\n`;
   }
+  console.log(report);
 }
 
 function retrieveMetaData(mutantsDirName){
