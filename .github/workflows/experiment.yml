@@ -45,13 +45,13 @@ on:
           type: number
           description: "maximum number of tokens in a completion"
           default: 250
-      # strykerOptions:
-      #   description: "stryker options (e.g., --concurrency 4) to pass to stryker"
-      #   default: ""
-      debug_enabled:
-        type: boolean
-        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
-        default: false
+      strykerOptions:
+        description: "stryker options (e.g., --concurrency 4) to pass to stryker"
+        default: ""
+      # debug_enabled:
+      #   type: boolean
+      #   description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+      #   default: false
 
 jobs:
   setup:
@@ -290,13 +290,26 @@ jobs:
            node .github/generateReport.js "$title" ../results ../mutants > report.md
            more report.md > $GITHUB_STEP_SUMMARY
 
-       - name: Setup tmate session
-         uses: mxschmitt/action-tmate@v3
-         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
-
        - name: Upload report
          uses: actions/upload-artifact@v2
          with:
            name: report.md
-           path: llm-mutation-testing/report.md 
+           path: llm-mutation-testing/report.md   
+
+       - name: generate Latex table
+         run: |
+           cd llm-mutation-testing
+           node .github/generateLatexTable.js "$title" ../results ../mutants > table.tex        
+
+       - name: Upload table
+         uses: actions/upload-artifact@v2
+         with:
+           name: table.tex
+           path: llm-mutation-testing/table.tex
+
+      #  - name: Setup tmate session
+      #    uses: mxschmitt/action-tmate@v3
+      #    if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }} 
+
+       
         

@@ -8,38 +8,13 @@ function generateLatexTable(title, dirName, mutantsDirName){
   }
 }
 
-// Generates a table that looks as follows:
-// \begin{table*}
-//  \centering
-//  {\scriptsize
-//  \begin{tabular}{l||r|r|r|r|r|r|r||r|r||r|r}
-//    {\bf application}                & {\bf \#prompts}   & {\bf \#mutants} & {\bf \#killed} & {\bf \#survived} & {\bf \#timeout} & {\bf mutation} & \multicolumn{2}{|c|}{\bf time (sec)} & \multicolumn{3}{|c|}{\bf \#tokens}\\
-//                                     &                   &                 &                &                  &                 & {\bf score}    & \ToolName & {\it StrykerJS}  & {\bf prompt} & {\bf completion} & {\bf total}\\
-//    \hline
-//    \textit{Complex.js}              & 490               &  1,206          &  735           &      470         &              1  & 61.03          &  3,004.38  &    516.8         & 983,678 & 100,863 & 1,084,541 \\    
-//    \hline  
-//    \textit{countries-and-timezones} & 106               & 225             &  199           &     26           &              0 & 88.44           & 1,070.91   &    223.75 	     &  109,326 &  22,678 &	132,004 \\              
-//    \hline 
-//    TOTAL                            & 596               & 1,431           & 934            & 496              & 1               & 65.29          & 4,075.29   &    740.55        & 1,093,004 & 123,541 & 1,216,545 \\  
-//  \end{tabular}
-//  }
-//  \caption{Results obtained with LLMorpheus using the following parameters: 
-//    model: \textit{codellama-34b-instruct}, 
-//    temperature: 0.0, 
-//    MaxTokens: 250, 
-//    MaxNrPrompts: 2000,
-//    template: \textit{template-full.hb},
-//    rateLimit: benchmark mode,
-//    nrAttempts: 3  
-//  }
-
 function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirName){
   let report = `\\begin{table*}\n`;
-  report += ` \\centering\n`; 
+  report += ` \\centering\n`;
   report += ` {\\scriptsize\n`;
   report += ` \\begin{tabular}{l||r|r|r|r|r|r|r||r|r||r|r}\n`;
-  report += `   {\\bf application}                & {\\bf \\#prompts}   & {\\bf \\#mutants} & {\\bf \\#killed} & {\\bf \\#survived} & {\\bf \\#timeout} & {\\bf mutation} & \\multicolumn{2}{|c|}{\\bf time (sec)} & \\multicolumn{3}{|c|}{\\bf \\#tokens}\\\\\n`; 
-  report += `                                    &                   &                 &                &                  &                 & {\\bf score}    & \\ToolName & {\\it StrykerJS}  & {\\bf prompt} & {\\bf completion} & {\\bf total}\\\\\n`;
+  report += `   {\\bf application}                & {\\bf \\#prompts}   & {\\bf \\#mutants} & {\\bf \\#killed} & {\\bf \\#survived} & {\\bf \\#timeout} & \\multicolumn{1}{|c|}{\\bf mutation}  & \\multicolumn{2}{|c|}{\\bf time (sec)} & \\multicolumn{3}{|c|}{\\bf \\#tokens}\\\\\n`;
+  report += `                                    &                   &                 &                &                  &                 & \\multicolumn{1}{|c|}{\\bf score}    & \\ToolName & {\\it StrykerJS}  & {\\bf prompt} & {\\bf completion} & {\\bf total}\\\\\n`;
   report += `   \\hline\n`;
   const files = fs.readdirSync(dirName);
   let totalPrompts = 0;
@@ -47,24 +22,34 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
   let totalSurvived = 0;
   let totalTimedOut = 0;
   let totalMutants = 0;
-  let totalTime = 0;
+  let totalLLMorpheusTime = 0;
+  let totalStrykerTime = 0;
   let totalPromptTokens = 0;
   let totalCompletionTokens = 0;
   let totalTotalTokens = 0;
   for (const benchmark of files) {
-    const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8'); 
+          console.log(`dirName = ${dirName}`);
+          console.log(`benchmark = ${benchmark}`);
+    const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8');
+          console.log("**1**");
+    const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
+              const llmJsonObj = JSON.parse(llmData);
     const jsonObj = JSON.parse(data);
-    const metaData = retrieveMetaData(`${mutantsDirName}/${benchmark}`);
-    const nrPrompts = metaData.maxNrPrompts;
+    const nrPrompts = parseInt(llmJsonObj.nrPrompts);
+          console.log(`** nrPrompts = ${nrPrompts}`);
+          console.log(`** jsonObj = ${JSON.stringify(jsonObj)}`);
     const nrMutants = parseInt(jsonObj.nrKilled) + parseInt(jsonObj.nrSurvived) + parseInt(jsonObj.nrTimedOut);
     const nrKilled = parseInt(jsonObj.nrKilled);
     const nrSurvived = parseInt(jsonObj.nrSurvived);
     const nrTimedOut = parseInt(jsonObj.nrTimedOut);
     const mutationScore = parseFloat(jsonObj.mutationScore);
     const strykerTime = timeInSeconds(jsonObj.time);
-    const llmorpheusTime = parseFloat(fs.readFileSync(`${dirName}/${benchmark}/time.txt`, 'utf8'));
-    const nrTokensPrompt = metaData.maxTokens;
-    const nrTokensCompletion = metaData.maxTokens;
+          console.log("**4**");
+          const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
+              const lines = llmOutput.split('\n');
+    const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
+    const nrTokensPrompt = llmJsonObj.totalPromptTokens;
+    const nrTokensCompletion = llmJsonObj.totalCompletionTokens
     const nrTokensTotal = nrTokensPrompt + nrTokensCompletion;
 
     // update totals
@@ -73,16 +58,17 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
     totalSurvived += nrSurvived;
     totalTimedOut += nrTimedOut;
     totalMutants += nrMutants;
-    totalTime += llmorpheusTime;
+    totalStrykerTime += strykerTime;
+    totalLLMorpheusTime += llmorpheusTime;
     totalPromptTokens += nrTokensPrompt;
     totalCompletionTokens += nrTokensCompletion;
     totalTotalTokens += nrTokensTotal;
 
-    report += `   \\textit{${benchmark}} & ${nrPrompts} & ${nrMutants} & ${nrKilled} & ${nrSurvived} & ${nrTimedOut} & ${mutationScore.toFixed(2)} & ${llmorpheusTime.toFixed(2)} & ${strykerTime.toFixed(2)} & ${nrTokensPrompt} & ${nrTokensCompletion} & ${nrTokensTotal} \\\\ \n`;  
+    report += `   \\textit{${benchmark}} & ${nrPrompts} & ${nrMutants} & ${nrKilled} & ${nrSurvived} & ${nrTimedOut} & ${mutationScore.toFixed(2)} & ${formatNr(llmorpheusTime,2)} & ${formatNr(strykerTime,2)} & ${formatNr(nrTokensPrompt)} & ${formatNr(nrTokensCompletion)} & ${formatNr(nrTokensTotal)} \\\\ \n`;
     report += `   \\hline\n`;
   }
   if (files.length > 1){
-    report += `   \\textit{Total} & ${totalPrompts} & ${totalMutants} & ${totalKilled} & ${totalSurvived} & ${totalTimedOut} & - & ${totalTime.toFixed(2)} & - & ${totalPromptTokens} & ${totalCompletionTokens} & ${totalTotalTokens} \\\\ \n`;
+    report += `   \\textit{Total} & ${totalPrompts} & ${totalMutants} & ${totalKilled} & ${totalSurvived} & ${formatNr(totalTimedOut)} & - & ${formatNr(totalLLMorpheusTime,2)}  & ${formatNr(totalStrykerTime,2)} & ${formatNr(totalPromptTokens)} & ${formatNr(totalCompletionTokens)} & ${formatNr(totalTotalTokens)} \\\\ \n`;
   }
   report += ` \\end{tabular}\n`;
   report += ` }\n`;
@@ -98,10 +84,15 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
   report += ` }\n`;
   report += `\\end{table*}\n`;
   console.log(report);
-}  
+}
 
- 
-
+/** Format a number with commas to separate thousands and millions, limit to
+ *  two decimal places. Example: 1234567.2345 -> 1,234,567.23
+ **/
+function formatNr(x, nrDecimals=0) {
+  return x.toFixed(nrDecimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+    
 function retrieveMetaData(mutantsDirName){
   const files = fs.readdirSync(mutantsDirName);
   const benchmark = files[0];
@@ -132,6 +123,9 @@ function timeInSeconds(time){
   const seconds = parseFloat(time.substring(time.indexOf('m')+1, time.indexOf('s')));
   return parseFloat((minutes*60 + seconds).toFixed(2));
 }
+
+//const num = 1668.54;
+//console.log(`num = ${num}, formatted = ${formatNumberWithCommas(num)}`);
 
 const title = process.argv[2];
 const dirName = process.argv[3];
