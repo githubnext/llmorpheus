@@ -45,9 +45,9 @@ on:
           type: number
           description: "maximum number of tokens in a completion"
           default: 250
-      strykerOptions:
-        description: "stryker options (e.g., --concurrency 4) to pass to stryker"
-        default: ""
+      # strykerOptions:
+      #   description: "stryker options (e.g., --concurrency 4) to pass to stryker"
+      #   default: ""
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
