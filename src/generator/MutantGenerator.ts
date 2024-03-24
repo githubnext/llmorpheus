@@ -23,6 +23,7 @@ interface MutationStats {
 export interface MetaInfo {
   modelName: string;
   template: string;
+  systemPrompt: string
   temperature: number;
   maxTokens: number;
   maxNrPrompts: number;

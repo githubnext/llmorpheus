@@ -1,3 +1,4 @@
+import fs from "fs";
 import axios from "axios";
 import { performance } from "perf_hooks";
 import { BenchmarkRateLimiter, FixedRateLimiter, RateLimiter } from "../util/promise-utils";
@@ -71,10 +72,11 @@ export abstract class OctoAIModel implements IModel {
       ...requestPostOptions,
     };
 
+    const systemPrompt = fs.readFileSync(`templates/${this.metaInfo.systemPrompt}`, 'utf8');
     const body = {
       model: this.getModelName(),
       messages: [
-        { role: 'system', content: 'You are a programming assistant. You are expected to be concise and precise and avoid any unnecessary examples, tests, and verbosity.' },
+        { role: 'system', content: systemPrompt },
         { role: 'user', content: prompt }
       ],
       ...options

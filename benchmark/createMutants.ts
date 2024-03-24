@@ -23,6 +23,12 @@ if (require.main === module) {
           description:
             'name of file containing the prompt template (default: "template.hb")',
         },
+        systemPrompt: {
+          type: "string",
+          default: "SystemPrompt-MutationTestingExpert.txt",
+          description:
+            'name of file containing the system prompt template (default: "SystemPrompt-MutationTestingExpert.txt")',
+        },
         model: {
           type: "string",
           default: "codellama-34b-instruct",
@@ -109,6 +115,7 @@ if (require.main === module) {
       rateLimit: argv.rateLimit,
       nrAttempts: argv.nrAttempts,
       template: argv.template,
+      systemPrompt: argv.systemPrompt,
       mutate: argv.mutate,
       ignore: argv.ignore,
       benchmark: argv.benchmark
