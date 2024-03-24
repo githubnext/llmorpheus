@@ -116,6 +116,7 @@ function retrieveMetaData(mutantsDirName){
     maxTokens: jsonObj.metaInfo.maxTokens,
     maxNrPrompts: jsonObj.metaInfo.maxNrPrompts,
     template: jsonObj.metaInfo.template,
+    systemPrompt: jsonObj.metaInfo.systemPrompt,
     rateLimit: jsonObj.metaInfo.rateLimit,
     nrAttempts: jsonObj.metaInfo.nrAttempts,
     benchmark: jsonObj.metaInfo.benchmark,

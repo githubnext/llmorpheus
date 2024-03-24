@@ -8,7 +8,7 @@ on:
         default: "zip-a-folder.json"
       template:
         description: "Template to use for generating mutants"
-        default: "template1"
+        default: "template-full"
       temperature:
         type: number
         description: "Sampling temperature to try when obtaining completions"
