@@ -73,6 +73,7 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
   report += `   MaxTokens: ${metaData.maxTokens}, \n`;
   report += `   MaxNrPrompts: ${metaData.maxNrPrompts}, \n`;
   report += `   template: \\textit{${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}}, \n`;
+  report += `   systemPrompt: ${metaData.systemPrompt.substring(metaData.systemPrompt.lastIndexOf('/')+1)}, \n`;
   report += `   rateLimit: ${metaData.benchmark ? "benchmark mode" : metaData.rateLimit}, \n`;
   report += `   nrAttempts: ${metaData.nrAttempts}  \n`;
   report += ` }\n`;
@@ -98,6 +99,7 @@ function retrieveMetaData(mutantsDirName){
     maxTokens: jsonObj.metaInfo.maxTokens,
     maxNrPrompts: jsonObj.metaInfo.maxNrPrompts,
     template: jsonObj.metaInfo.template,
+    systemPrompt: jsonObj.metaInfo.systemPrompt,
     rateLimit: jsonObj.metaInfo.rateLimit,
     nrAttempts: jsonObj.metaInfo.nrAttempts,
     benchmark: jsonObj.metaInfo.benchmark,
