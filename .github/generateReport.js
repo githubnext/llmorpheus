@@ -66,6 +66,7 @@ function generateLLMorpheusReport(title, dirName, mutantsDirName){
   report += `  - Max Tokens: ${metaData.maxTokens}\n`;
   report += `  - Max Nr of Prompts: ${metaData.maxNrPrompts}\n`;
   report += `  - Template: ${metaData.template.substring(metaData.template.lastIndexOf('/')+1)}\n`;
+  report += `  - System Prompt: ${metaData.systemPrompt(metaData.systemPrompt.lastIndexOf('/')+1)}\n`;  
   report += `  - Rate Limit: ${metaData.benchmark ? "benchmark mode" : metaData.rateLimit}\n`;
   report += `  - Number of Attempts: ${metaData.nrAttempts}\n`;
   report += "\n";
