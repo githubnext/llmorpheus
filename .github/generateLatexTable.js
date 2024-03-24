@@ -28,25 +28,19 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
   let totalCompletionTokens = 0;
   let totalTotalTokens = 0;
   for (const benchmark of files) {
-          console.log(`dirName = ${dirName}`);
-          console.log(`benchmark = ${benchmark}`);
     const data = fs.readFileSync(`${dirName}/${benchmark}/StrykerInfo.json`, 'utf8');
-          console.log("**1**");
     const llmData = fs.readFileSync(`${mutantsDirName}/${benchmark}/summary.json`, 'utf8');
-              const llmJsonObj = JSON.parse(llmData);
+    const llmJsonObj = JSON.parse(llmData);
     const jsonObj = JSON.parse(data);
     const nrPrompts = parseInt(llmJsonObj.nrPrompts);
-          console.log(`** nrPrompts = ${nrPrompts}`);
-          console.log(`** jsonObj = ${JSON.stringify(jsonObj)}`);
     const nrMutants = parseInt(jsonObj.nrKilled) + parseInt(jsonObj.nrSurvived) + parseInt(jsonObj.nrTimedOut);
     const nrKilled = parseInt(jsonObj.nrKilled);
     const nrSurvived = parseInt(jsonObj.nrSurvived);
     const nrTimedOut = parseInt(jsonObj.nrTimedOut);
     const mutationScore = parseFloat(jsonObj.mutationScore);
     const strykerTime = timeInSeconds(jsonObj.time);
-          console.log("**4**");
-          const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
-              const lines = llmOutput.split('\n');
+    const llmOutput = fs.readFileSync(`${mutantsDirName}/${benchmark}/LLMorpheusOutput.txt`, 'utf8');
+    const lines = llmOutput.split('\n');
     const llmorpheusTime = timeInSeconds(lines[lines.length-4].substring(5).trim());
     const nrTokensPrompt = llmJsonObj.totalPromptTokens;
     const nrTokensCompletion = llmJsonObj.totalCompletionTokens
@@ -123,9 +117,6 @@ function timeInSeconds(time){
   const seconds = parseFloat(time.substring(time.indexOf('m')+1, time.indexOf('s')));
   return parseFloat((minutes*60 + seconds).toFixed(2));
 }
-
-//const num = 1668.54;
-//console.log(`num = ${num}, formatted = ${formatNumberWithCommas(num)}`);
 
 const title = process.argv[2];
 const dirName = process.argv[3];
