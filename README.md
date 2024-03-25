@@ -1,52 +1,101 @@
-# llm-mutation-testing
+# LLMorpheus
 
-## Building the Project
+LLMorpheus is a tool for applying mutation testing to npm packages
+written in JavaScript/TypeScript using a large language model (LLM).
 
-npm run build
+Note that LLMorpheus represents an early exploration in the use of LLMs for
+mutation testing, and has been made available in open source as a basis for
+research and exploration.  
 
-## Running the Tests
+## Background
 
-npm run test
+LLMorpheus generates mutants for a given package `p` by prompting the LLM with a
+prompt that asks it to apply mutations to specific locations in the source code
+of `p`. This prompt includes some background on mutation testing, a fragment
+of `p`'s source code in which a code fragment is replaced with the word
+`PLACEHOLDER`, and a request to suggest what code fragments should be 
+substituted for the placeholder. The LLM is asked to produce output in a 
+specific format in which the mutation suggestions occur as fenced code blocks.
+The completion provided by the LLM is then analyzed to extract the suggested
+mutants, and the resulting modified source code is checked for syntactic
+validity. All syntactically valid mutants are written to a file `mutants.json`.
 
-## Generating mutants for an application
+The resulting set of mutants is then provided to a modified version of the
+popular [StrykerJS ](https://github.com/franktip/stryker-js), a state-of-the-art mutation testing tool. Running this version of StrykerJS produces an interactive web page that can be inspected to reveal which mutants are killed, survived, or timed out. 
 
-1. To generate mutants for an application, begin by cloning, installing, and building the application.
+Unlike other systems for mutation testing, LLMorpheus does not rely on a fixed
+set of mutation operators, but instead relies on an LLM to suggest suitable code fragments.
 
-2. To generate mutants, you need to run the ```createMutants.js``` file that is located in the ```benchmark``` directory. 
+A research paper describing LLMorpheus in detail is available on [arXiv](TODOTODOTODO).
 
-   Required parameters are:
-  - ```path``` location where the project to be mutated is located
-  - ```mutate``` glob pattern specifying the files that should be mutated
-  - ```model``` the LLM that should be used. Currently available options are ```codellama-34b-instruct```, ```codellama-70b-instruct```, ```mistral-7b-instruct```, and ```mixtral-8x7b-instruct```
-  - ```template``` the template used for creating prompts, some examples are located in the ```templates``` directory
-  
-  Optional parameters are:
-  - ```temperature``` temperature setting to be used for the LLM (default: 0.0)
-  - ```maxNrPrompts``` place a bound on the number of prompts,  useful for quickly running a small experiment (default: 1250)
-  - ```rateLimit``` minimum number of milliseconds between successive prompts, useful for rate-limited API endpoints (default: 0)
-  - ```nrAttempts``` number of times a prompt should be repeated in case of 429 errors (default: 1)
-  - ```maxTokens``` maximum number of tokens allowed in the completion (default: 250)
-  - ```caching``` whether LLM responses should be cached locally (default: true)
-  - ```cacheDir``` location for the cache if caching is enables (default: .llm-cache)
-  - ```ignore``` glob pattern of files that should be excluded
-  - ```benchmark``` experimental rate-limiting feature for use when running benchmarks in GitHub Actions, this will gradually decrease the time intervals between prompts
+## Requirements
 
-Note: to run LLMorpheus using LLMs available through Perplexity.ai, you need to set the following environment variables:
-  - PERPLEXITY_AI_API_ENDPOINT
-  - PERPLEXITY_AI_AUTH_HEADERS
+In general, to be able to run LLMorpheus you need access to a OpenAI-style LLM
+with chat API. Set the `LLMORPHEUS_LLM_API_ENDPOINT` environment variable to
+the URL of the LLM API endpoint you want to use, and
+`LLMORPHEUS_LLM_AUTH_HEADERS` to a JSON object containing the headers you need to
+authenticate with the API.
 
+Typical values for these variables might be:
 
-### Example usage:
-```node benchmark/createMutants.js --path ~/projects/zip-a-folder/ --mutate "lib/*.ts"   --model codellama-34b-instruct  --promptTemplateFileName templates/template1.hb  --caching false  --temperature 0```
+- `LLMORPHEUS_LLM_API_ENDPOINT='https://api.openai.com/v1/engines/code-cushman-001/completions'`
+- `LLMORPHEUS_LLM_AUTH_HEADERS='{"Authorization": "Bearer <your API key>", "OpenAI-Organization": "<your organization ID>"}'`
 
-## Inspecting the results
+Note, however, that you can run LLMorpheus in reproduction mode without access to
+the LLM API where model responses are taken from the output of a previous run;
+see below for details.
 
-LLMorpheus will write its outputs in a subdirectory of a directory ```MUTATION_TESTING``` of the directory where the subject project is located. This directory will be created if it did not already exist, and if it existed, the old contents will be deleted. Inside this directory, you will find the following:
+## Installation
+
+You can install LLMorpheus from a pre-built package or from source.
+
+### Installing from a pre-built package
+
+LLMorpheus is available as a pre-built npm package, though it is not currently
+published to the npm registry. You can download a tarball from the repository
+and install it in the usual way. Note that this distribution only contains the
+core part of LLMorpheus, not the benchmarking harness.
+
+### Installing from source
+
+The `src/` directory contains the source code for LLMorpheus, which is written in
+TypeScript and gets compiled into the `dist/` directory. Tests are in `test/`;
+the `benchmark/` directory contains a benchmarking harness for running LLMorpheus
+on multiple npm packages.
+
+In the root directory of a checkout of this repository, run `npm build` to
+install dependencies and build the package.
+
+You can also use `npm run build:watch` to automatically build anytime you make
+changes to the code. Note, however, that this will not automatically install
+dependencies, and also will not build the benchmarking harness.
+
+Use `npm run test` to run the tests. For convenience, this will also install
+dependencies and run a build.
+
+## Benchmarking
+
+If you install LLMorpheus from source, you can use the benchmarking harness to
+run LLMorpheus on multiple packages and analyze the results. This is not
+currently available if you install LLMorpheus from a pre-built package.
+
+### Running LLMorpheus locally
+
+Basic usage is as follows:
+
+```sh
+node benchmark/createMutants.js --path <package-dir> --mutate <files-to-mutate>   --model <model-name>  --template <prompt-template>
+```
+Note that this assumes that package dependencies are installed and any build
+steps have been run (e.g., using `npm i` and `npm run build`). 
+
+This will generate a directory `<package_dir>/MUTATION_TESTING` in which you will  find the following:
   - a subdirectory ```prompts``` containing all generated prompts and completions. Prompts are saved in files named ```promptN.txt``` and completions are in files ```promptN_completionN.txt```
   - a file ```mutants.json``` containing information about the computed mutants (file, location, original source code, mutated source code, prompt ID, completion ID, and code pattern that was used to derive the mutant). This file is what our custom version of StrykerJS refers to when it performs its mutation analysis.
   - a file ```promptSpecs.json`` recording the locations that are candidates for mutation (file, location, pattern)
   - a file ```summary.json``` containing statistics gathered for the entire project (number of prompts, number of mutants, number of tokens used for prompts, number of tokens used for completions, meta-information about the model and LLMorpheus parameters used for the experiment)
- 
+
+For further details on available command-line options, please refer to the documentation.
 
 ## Running StrykerJS and Viewing Stryker's Report
 
@@ -66,15 +115,36 @@ To run our custom version of Stryker, perform the following steps:
   - set ```STRYKER_FILES``` to a quoted comma-separated list of files that you want to be mutated.  LLMorpheus outputs this list, so you can copy and paste from there. Note: There should be no space characters in the list.
   - set the ```MUTANTS_FILE``` environment variable to point to the ```mutants.json``` file that was generated by LLMorpheus
   - ```npx stryker run --usePrecomputed  --mutate $STRYKER_FILES```   (if you leave out the ```---usePrecomputed``` option, Stryker's standard mutation operators will be applied). You may supply other options to StrykerJS, see the StrykerJS documentation.
-  - the previous command will generate a directory ```reports```. You can view Stryker's report by opening ```reports/mutation/mutation.html```
+  - the previous command will generate a directory ```reports```. You can view Stryker's report by opening ```reports/mutation/mutation.html``` in a browser.
 
-## Running a benchmark using GitHub Actions
+### Running on Actions
 
-GitHub Actions are set up to run experiments using Perplexity.ai's LLMs. You can select Actions for:
-  - "Run tests" running the tests
-  - "Apply Stryker's Standard Mutation Operators" running Stryker's standard mutators
-  - "Mutation Testing Experiment: runs LLMorpheus and then runs Stryker using the inferred mutants
+The `experiment.yml` workflow runs an experiment on GitHub Actions,
+producing the final report as an artifact you can download. The `mutants` artifact contains all mutants, prompts, and related information computed by LLMorpheus, and the `results` artifact contains the report produced by StrykerJS. 
 
-When you select the last action, a dialog pops up that lets you select various setting, including what template to use, LLM settings etc. 
+The `StandardStryker.yml` workflow runs the standard StrykerJS mutators.
 
-The latter two Actions will produce a report that contains all relevant information. All generated information is available for download.
+### Reproducing results
+
+The results of LLMorpheus are non-deterministic, so even if you run it from the
+same package on the same machine multiple times, you will get different results.
+However, the benchmarking harness records enough data to be able to replay a
+benchmark run in many cases.
+
+
+
+## License
+
+This project is licensed under the terms of the MIT open source license. Please refer to [MIT](./LICENSE.txt) for the full terms.
+
+## Maintainers
+
+- Frank Tip (@franktip)
+- Jon Bell (@jon-bell)
+- Max Schaefer (@max-schaefer)
+
+## Support
+
+LLMorpheus is a research prototype and is not officially supported. However, if
+you have questions or feedback, please file an issue and we will do our best to
+respond.
