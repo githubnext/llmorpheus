@@ -12,9 +12,9 @@ function generateLatexTableForLLMorpheusExperiment(title, dirName, mutantsDirNam
   let report = `\\begin{table*}\n`;
   report += ` \\centering\n`;
   report += ` {\\scriptsize\n`;
-  report += ` \\begin{tabular}{l||r|r|r|r|r|r|r||r|r||r|r}\n`;
-  report += `   {\\bf application}                & {\\bf \\#prompts}   & {\\bf \\#mutants} & {\\bf \\#killed} & {\\bf \\#survived} & {\\bf \\#timeout} & \\multicolumn{1}{|c|}{\\bf mutation}  & \\multicolumn{2}{|c|}{\\bf time (sec)} & \\multicolumn{3}{|c|}{\\bf \\#tokens}\\\\\n`;
-  report += `                                    &                   &                 &                &                  &                 & \\multicolumn{1}{|c|}{\\bf score}    & \\ToolName & {\\it StrykerJS}  & {\\bf prompt} & {\\bf completion} & {\\bf total}\\\\\n`;
+  report += ` \\begin{tabular}{l||r|r|r|r|r|r||r|r||r|r|r}\n`;
+  report += `   {\\bf application}                & {\\bf \\#prompts}   & {\\bf \\#mutants} & {\\bf \\#killed} & {\\bf \\#survived} & {\\bf \\#timeout} & \\multicolumn{1}{|c||}{\\bf mutation}   & \\multicolumn{2}{|c||}{\\bf time (sec)} & \\multicolumn{3}{|c}{\\bf \#tokens}\\\\\n`;
+  report += `                                    &                   &                 &                &                  &                 & \\multicolumn{1}{|c||}{\\bf score}    & \\ToolName & {\\it StrykerJS}  & {\\bf prompt} & {\\bf completion} & {\\bf total}\\\\\n`;
   report += `   \\hline\n`;
   const files = fs.readdirSync(dirName);
   let totalPrompts = 0;
