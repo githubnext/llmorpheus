@@ -135,7 +135,7 @@ benchmark run in many cases.
 
 ## License
 
-This project is licensed under the terms of the MIT open source license. Please refer to [MIT](./LICENSE.txt) for the full terms.
+This project is licensed under the terms of the MIT open source license. Please refer to [LICENSE](./LICENSE) for the full terms.
 
 ## Maintainers
 
