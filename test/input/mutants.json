@@ -1,0 +1,240 @@
+[
+  {
+    "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "getTimezonesMap(data)[id] || {}",
+    "replacement": "getTimezonesMap(data)[id]",
+    "file": "src/build-country.js",
+    "startLine": 7,
+    "startColumn": 16,
+    "endLine": 7,
+    "endColumn": 47,
+    "promptId": 0,
+    "completionId": 0,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "timezonesMap",
+    "replacement": "!timezonesMap",
+    "file": "src/build-country.js",
+    "startLine": 19,
+    "startColumn": 9,
+    "endLine": 19,
+    "endColumn": 21,
+    "promptId": 1,
+    "completionId": 1,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "2",
+      "rule": "<Expr> === <Expr> -> <Expr> !== <Expr>",
+      "description": "replace === operator in condition with !=="
+    },
+    "originalCode": "tz.r === undefined",
+    "replacement": "tz.r !== undefined",
+    "file": "src/build-country.js",
+    "startLine": 33,
+    "startColumn": 10,
+    "endLine": 33,
+    "endColumn": 28,
+    "promptId": 2,
+    "completionId": 2,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "data.timezones[a] || {}",
+    "replacement": "data.timezones[a]",
+    "file": "src/build-country.js",
+    "startLine": 26,
+    "startColumn": 20,
+    "endLine": 26,
+    "endColumn": 43,
+    "promptId": 3,
+    "completionId": 3,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "result",
+    "replacement": "!result",
+    "file": "src/build-country.js",
+    "startLine": 37,
+    "startColumn": 11,
+    "endLine": 37,
+    "endColumn": 17,
+    "promptId": 4,
+    "completionId": 4,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "result",
+    "replacement": "!result",
+    "file": "src/build-country.js",
+    "startLine": 29,
+    "startColumn": 27,
+    "endLine": 29,
+    "endColumn": 33,
+    "promptId": 4,
+    "completionId": 5,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "1",
+      "rule": "<Expr> + <Expr> -> <Expr> - <Expr>",
+      "description": "replace + operator in binary expression with -"
+    },
+    "originalCode": "offset < 0 ? '-' : '+'",
+    "replacement": "offset < 0 ? '+' : '-'",
+    "file": "src/build-timezone.js",
+    "startLine": 32,
+    "startColumn": 15,
+    "endLine": 32,
+    "endColumn": 37,
+    "promptId": 7,
+    "completionId": 9,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "result",
+    "replacement": "!result",
+    "file": "src/build-timezone.js",
+    "startLine": 26,
+    "startColumn": 9,
+    "endLine": 26,
+    "endColumn": 15,
+    "promptId": 8,
+    "completionId": 10,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "3",
+      "rule": "<Expr> !== <Expr> -> <Expr> === <Expr>",
+      "description": "replace !== operator in condition with ==="
+    },
+    "originalCode": "totalTimezones !== memoizedTimezones",
+    "replacement": "totalTimezones === memoizedTimezones",
+    "file": "src/index.js",
+    "startLine": 17,
+    "startColumn": 6,
+    "endLine": 17,
+    "endColumn": 42,
+    "promptId": 9,
+    "completionId": 11,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "timezones[name]",
+    "replacement": "!timezones[name]",
+    "file": "src/index.js",
+    "startLine": 33,
+    "startColumn": 9,
+    "endLine": 33,
+    "endColumn": 24,
+    "promptId": 11,
+    "completionId": 14,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "getTimezone(tzName) || {}",
+    "replacement": "getTimezone(tzName)",
+    "file": "src/index.js",
+    "startLine": 43,
+    "startColumn": 19,
+    "endLine": 43,
+    "endColumn": 44,
+    "promptId": 12,
+    "completionId": 16,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "main || null",
+    "replacement": "!(main || null)",
+    "file": "src/index.js",
+    "startLine": 50,
+    "startColumn": 9,
+    "endLine": 50,
+    "endColumn": 21,
+    "promptId": 13,
+    "completionId": 18,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "5",
+      "rule": "return <Expr>; -> return !<Expr>;",
+      "description": "negate return expression"
+    },
+    "originalCode": "values.map(getTimezone)",
+    "replacement": "!values.map(getTimezone)",
+    "file": "src/index.js",
+    "startLine": 57,
+    "startColumn": 9,
+    "endLine": 57,
+    "endColumn": 32,
+    "promptId": 13,
+    "completionId": 19,
+    "comment": ""
+  },
+  {
+    "rule": {
+      "ruleId": "4",
+      "rule": "<Expr> || {} -> <Expr>",
+      "description": "replace binary || expression with its first operand if the second operand is an empty object literal"
+    },
+    "originalCode": "options || {}",
+    "replacement": "options",
+    "file": "src/index.js",
+    "startLine": 71,
+    "startColumn": 25,
+    "endLine": 71,
+    "endColumn": 38,
+    "promptId": 15,
+    "completionId": 22,
+    "comment": ""
+  }
+]

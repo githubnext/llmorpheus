@@ -1,0 +1,995 @@
+[
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 5,
+      "startColumn": 23,
+      "endLine": 5,
+      "endColumn": 34
+    },
+    "orig": "Object.keys"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 5,
+      "startColumn": 35,
+      "endLine": 5,
+      "endColumn": 49
+    },
+    "orig": "data.timezones"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 11,
+      "startColumn": 9,
+      "endLine": 11,
+      "endColumn": 20
+    },
+    "orig": "Object.keys"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 11,
+      "startColumn": 21,
+      "endLine": 11,
+      "endColumn": 35
+    },
+    "orig": "data.countries"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 11,
+      "endLine": 12,
+      "endColumn": 24
+    },
+    "orig": "Object.assign"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 25,
+      "endLine": 12,
+      "endColumn": 29
+    },
+    "orig": "prev"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 31,
+      "endLine": 12,
+      "endColumn": 64
+    },
+    "orig": "{ [id]: getCountry(id, options) }"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 25,
+      "endLine": 12,
+      "endColumn": 64
+    },
+    "orig": "prev, { [id]: getCountry(id, options) }",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 11,
+      "endLine": 12,
+      "endColumn": 65
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 39,
+      "endLine": 12,
+      "endColumn": 49
+    },
+    "orig": "getCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 50,
+      "endLine": 12,
+      "endColumn": 52
+    },
+    "orig": "id"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 54,
+      "endLine": 12,
+      "endColumn": 61
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 50,
+      "endLine": 12,
+      "endColumn": 61
+    },
+    "orig": "id, options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 12,
+      "startColumn": 39,
+      "endLine": 12,
+      "endColumn": 62
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 17,
+      "startColumn": 6,
+      "endLine": 17,
+      "endColumn": 42
+    },
+    "orig": "totalTimezones !== memoizedTimezones"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 17,
+      "startColumn": 44,
+      "endLine": 17,
+      "endColumn": 79
+    },
+    "orig": "Object.keys(data.timezones).forEach"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 17,
+      "startColumn": 80,
+      "endLine": 17,
+      "endColumn": 91
+    },
+    "orig": "getTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 17,
+      "startColumn": 44,
+      "endLine": 17,
+      "endColumn": 55
+    },
+    "orig": "Object.keys"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 17,
+      "startColumn": 56,
+      "endLine": 17,
+      "endColumn": 70
+    },
+    "orig": "data.timezones"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 18,
+      "startColumn": 9,
+      "endLine": 18,
+      "endColumn": 25
+    },
+    "orig": "deliverTimezones"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 18,
+      "startColumn": 26,
+      "endLine": 18,
+      "endColumn": 35
+    },
+    "orig": "timezones"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 18,
+      "startColumn": 37,
+      "endLine": 18,
+      "endColumn": 44
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 18,
+      "startColumn": 26,
+      "endLine": 18,
+      "endColumn": 44
+    },
+    "orig": "timezones, options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 18,
+      "startColumn": 9,
+      "endLine": 18,
+      "endColumn": 45
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 6,
+      "endLine": 22,
+      "endColumn": 20
+    },
+    "orig": "!countries[id]"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 22,
+      "endLine": 22,
+      "endColumn": 36
+    },
+    "orig": "memoizeCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 37,
+      "endLine": 22,
+      "endColumn": 59
+    },
+    "orig": "buildCountry(data, id)"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 37,
+      "endLine": 22,
+      "endColumn": 49
+    },
+    "orig": "buildCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 50,
+      "endLine": 22,
+      "endColumn": 54
+    },
+    "orig": "data"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 56,
+      "endLine": 22,
+      "endColumn": 58
+    },
+    "orig": "id"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 50,
+      "endLine": 22,
+      "endColumn": 58
+    },
+    "orig": "data, id",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 22,
+      "startColumn": 37,
+      "endLine": 22,
+      "endColumn": 59
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 23,
+      "startColumn": 9,
+      "endLine": 23,
+      "endColumn": 23
+    },
+    "orig": "deliverCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 23,
+      "startColumn": 24,
+      "endLine": 23,
+      "endColumn": 37
+    },
+    "orig": "countries[id]"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 23,
+      "startColumn": 39,
+      "endLine": 23,
+      "endColumn": 46
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 23,
+      "startColumn": 24,
+      "endLine": 23,
+      "endColumn": 46
+    },
+    "orig": "countries[id], options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 23,
+      "startColumn": 9,
+      "endLine": 23,
+      "endColumn": 47
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 27,
+      "startColumn": 6,
+      "endLine": 27,
+      "endColumn": 14
+    },
+    "orig": "!country"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 6,
+      "endLine": 32,
+      "endColumn": 22
+    },
+    "orig": "!timezones[name]"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 24,
+      "endLine": 32,
+      "endColumn": 39
+    },
+    "orig": "memoizeTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 40,
+      "endLine": 32,
+      "endColumn": 65
+    },
+    "orig": "buildTimezone(data, name)"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 40,
+      "endLine": 32,
+      "endColumn": 53
+    },
+    "orig": "buildTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 54,
+      "endLine": 32,
+      "endColumn": 58
+    },
+    "orig": "data"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 60,
+      "endLine": 32,
+      "endColumn": 64
+    },
+    "orig": "name"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 54,
+      "endLine": 32,
+      "endColumn": 64
+    },
+    "orig": "data, name",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 32,
+      "startColumn": 40,
+      "endLine": 32,
+      "endColumn": 65
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 37,
+      "startColumn": 6,
+      "endLine": 37,
+      "endColumn": 15
+    },
+    "orig": "!timezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 39,
+      "startColumn": 22,
+      "endLine": 39,
+      "endColumn": 33
+    },
+    "orig": "Object.keys"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 39,
+      "startColumn": 34,
+      "endLine": 39,
+      "endColumn": 42
+    },
+    "orig": "timezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 43,
+      "startColumn": 19,
+      "endLine": 43,
+      "endColumn": 30
+    },
+    "orig": "getTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 43,
+      "startColumn": 31,
+      "endLine": 43,
+      "endColumn": 37
+    },
+    "orig": "tzName"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 9,
+      "endLine": 45,
+      "endColumn": 19
+    },
+    "orig": "values.map"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 20,
+      "endLine": 45,
+      "endColumn": 49
+    },
+    "orig": "(c) => getCountry(c, options)"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 27,
+      "endLine": 45,
+      "endColumn": 37
+    },
+    "orig": "getCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 38,
+      "endLine": 45,
+      "endColumn": 39
+    },
+    "orig": "c"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 41,
+      "endLine": 45,
+      "endColumn": 48
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 38,
+      "endLine": 45,
+      "endColumn": 48
+    },
+    "orig": "c, options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 45,
+      "startColumn": 27,
+      "endLine": 45,
+      "endColumn": 49
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 49,
+      "startColumn": 17,
+      "endLine": 49,
+      "endColumn": 40
+    },
+    "orig": "getCountriesForTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 49,
+      "startColumn": 41,
+      "endLine": 49,
+      "endColumn": 47
+    },
+    "orig": "tzName"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 49,
+      "startColumn": 49,
+      "endLine": 49,
+      "endColumn": 56
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 49,
+      "startColumn": 41,
+      "endLine": 49,
+      "endColumn": 56
+    },
+    "orig": "tzName, options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 49,
+      "startColumn": 17,
+      "endLine": 49,
+      "endColumn": 57
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 54,
+      "startColumn": 18,
+      "endLine": 54,
+      "endColumn": 28
+    },
+    "orig": "getCountry"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 54,
+      "startColumn": 29,
+      "endLine": 54,
+      "endColumn": 38
+    },
+    "orig": "countryId"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 54,
+      "startColumn": 40,
+      "endLine": 54,
+      "endColumn": 47
+    },
+    "orig": "options"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 54,
+      "startColumn": 29,
+      "endLine": 54,
+      "endColumn": 47
+    },
+    "orig": "countryId, options",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 54,
+      "startColumn": 18,
+      "endLine": 54,
+      "endColumn": 48
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 55,
+      "startColumn": 6,
+      "endLine": 55,
+      "endColumn": 14
+    },
+    "orig": "!country"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 57,
+      "startColumn": 9,
+      "endLine": 57,
+      "endColumn": 19
+    },
+    "orig": "values.map"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 57,
+      "startColumn": 20,
+      "endLine": 57,
+      "endColumn": 31
+    },
+    "orig": "getTimezone"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 62,
+      "startColumn": 6,
+      "endLine": 62,
+      "endColumn": 25
+    },
+    "orig": "deprecated === true"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 63,
+      "startColumn": 9,
+      "endLine": 63,
+      "endColumn": 20
+    },
+    "orig": "Object.keys"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 63,
+      "startColumn": 21,
+      "endLine": 63,
+      "endColumn": 24
+    },
+    "orig": "tzs"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 8,
+      "endLine": 64,
+      "endColumn": 28
+    },
+    "orig": "!tzs[key].deprecated"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "callee",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 30,
+      "endLine": 64,
+      "endColumn": 43
+    },
+    "orig": "Object.assign"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg0",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 44,
+      "endLine": 64,
+      "endColumn": 48
+    },
+    "orig": "prev"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "arg1",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 50,
+      "endLine": 64,
+      "endColumn": 69
+    },
+    "orig": "{ [key]: tzs[key] }"
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "call",
+    "component": "allArgs",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 44,
+      "endLine": 64,
+      "endColumn": 69
+    },
+    "orig": "prev, { [key]: tzs[key] }",
+    "parentLocation": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 64,
+      "startColumn": 30,
+      "endLine": 64,
+      "endColumn": 70
+    }
+  },
+  {
+    "file": "countriesandtimezones_index.js",
+    "feature": "if",
+    "component": "test",
+    "location": {
+      "file": "test/input/countriesandtimezones_index.js",
+      "startLine": 70,
+      "startColumn": 6,
+      "endLine": 70,
+      "endColumn": 14
+    },
+    "orig": "!country"
+  }
+]

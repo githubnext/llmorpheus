@@ -1,0 +1,25 @@
+{
+  "nrPrompts": 100,
+  "nrCandidates": 288,
+  "nrSyntacticallyValid": 210,
+  "nrSyntacticallyInvalid": 77,
+  "nrIdentical": 1,
+  "nrDuplicate": 8,
+  "nrLocations": 72,
+  "totalPromptTokens": 0,
+  "totalCompletionTokens": 0,
+  "totalTokens": 0,
+  "metaInfo": {
+    "modelName": "codellama-34b-instruct",
+    "template": "./templates/template-test.hb",
+    "systemPrompt": "",
+    "maxTokens": 250,
+    "temperature": 0,
+    "maxNrPrompts": 100,
+    "nrAttempts": 1,
+    "mutate": "src/**.js",
+    "ignore": "",
+    "rateLimit": 1000,
+    "benchmark": false
+  }
+}
