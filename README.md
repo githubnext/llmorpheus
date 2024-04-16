@@ -111,6 +111,10 @@ same package on the same machine multiple times, you will get different results.
 
 This project is licensed under the terms of the MIT open source license. Please refer to [LICENSE](./LICENSE) for the full terms.
 
+## Paper
+
+A paper about LLMorpheus is available on [arXiv](https://arxiv.org/abs/2404.09952).
+
 ## Maintainers
 
 - Frank Tip (@franktip)
