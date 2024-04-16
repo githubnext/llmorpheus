@@ -53,9 +53,13 @@ export function hasUnbalancedParens(code: string): boolean {
   return nrOpen !== nrClose;
 }
 
-export function insertCommentOnLineWithPlaceholder(code: string, comment: string) {
+export function insertCommentOnLineWithPlaceholder(
+  code: string,
+  comment: string
+) {
   const lines = code.split("\n");
-  const lineWithPlaceholder = lines.findIndex((line) => line.includes("<PLACEHOLDER>")
+  const lineWithPlaceholder = lines.findIndex((line) =>
+    line.includes("<PLACEHOLDER>")
   );
   if (lineWithPlaceholder === -1) {
     throw new Error("No line with placeholder found");
@@ -131,11 +135,11 @@ export function nextPosition(code: string, line: number, column: number) {
 export function prevPosition(code: string, line: number, column: number) {
   if (column > 1) {
     return { line, column: column - 1 };
-  } else { // find the last position on the previous line
+  } else {
+    // find the last position on the previous line
     return { line: line - 1, column: code.split("\n")[line - 2].length };
   }
 }
-
 
 export function getEnv(name: string): string {
   const value = process.env[name];
@@ -147,5 +151,9 @@ export function getEnv(name: string): string {
 }
 
 export function isDeclaration(compl: string): boolean {
-  return compl.startsWith("const") || compl.startsWith("let") || compl.startsWith("var");
+  return (
+    compl.startsWith("const") ||
+    compl.startsWith("let") ||
+    compl.startsWith("var")
+  );
 }

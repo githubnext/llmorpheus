@@ -31,7 +31,8 @@ if (require.main === module) {
         model: {
           type: "string",
           default: "codellama-34b-instruct",
-          description: 'name of the model to use (default: "codellama-34b-instruct")',
+          description:
+            'name of the model to use (default: "codellama-34b-instruct")',
         },
         caching: {
           type: "boolean",
@@ -61,13 +62,14 @@ if (require.main === module) {
           type: "number",
           default: 0.0,
           description:
-            "temperature to use when generating completions (default: 0.0)"
+            "temperature to use when generating completions (default: 0.0)",
         },
         rateLimit: {
           type: "number",
           default: 0,
           demandOption: false,
-          description: "number of milliseconds between requests to the model (0 is no rate limit)",
+          description:
+            "number of milliseconds between requests to the model (0 is no rate limit)",
         },
         nrAttempts: {
           type: "number",
@@ -79,7 +81,8 @@ if (require.main === module) {
           type: "boolean",
           default: false,
           demandOption: false,
-          description: "use custom rate-limiting for benchmarking (if specified, this supercedes the rateLimit option)",
+          description:
+            "use custom rate-limiting for benchmarking (if specified, this supercedes the rateLimit option)",
         },
         maxTokens: {
           type: "number",
@@ -93,7 +96,6 @@ if (require.main === module) {
           demandOption: false,
           description: "maximum number of prompts to generate",
         },
-        
       });
 
     const argv = await parser.argv;
@@ -105,7 +107,7 @@ if (require.main === module) {
       "mixtral-8x7b-instruct",
       "mixtral-8x22b",
       "llama-2-13b-chat",
-      "llama-2-70b-chat"
+      "llama-2-70b-chat",
     ];
 
     if (!supportedModels.includes(argv.model)) {
@@ -114,7 +116,7 @@ if (require.main === module) {
       process.exit(1);
     }
 
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: argv.model,
       temperature: argv.temperature,
       maxTokens: argv.maxTokens,
@@ -125,8 +127,8 @@ if (require.main === module) {
       systemPrompt: argv.systemPrompt,
       mutate: argv.mutate,
       ignore: argv.ignore,
-      benchmark: argv.benchmark
-    }
+      benchmark: argv.benchmark,
+    };
 
     if (!supportedModels.includes(argv.model)) {
       console.error(`Invalid model name: ${argv.model}`);
@@ -134,12 +136,17 @@ if (require.main === module) {
       process.exit(1);
     }
 
-    const baseModel = new Model(argv.model, { temperature: argv.temperature,
-                                              max_tokens: argv.maxTokens },
-                                metaInfo
+    const baseModel = new Model(
+      argv.model,
+      { temperature: argv.temperature, max_tokens: argv.maxTokens },
+      metaInfo
     );
-    const model = (argv.caching) ? new CachingModel(baseModel, argv.cacheDir) : baseModel;
-    const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
+    const model = argv.caching
+      ? new CachingModel(baseModel, argv.cacheDir)
+      : baseModel;
+    const packagePath = argv.path.endsWith("/")
+      ? argv.path
+      : path.join(argv.path, "/");
     console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
 
     const mutantGenerator = new MutantGenerator(

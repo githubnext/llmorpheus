@@ -24,13 +24,17 @@ describe("test mutant generation", () => {
       promptTemplateFileName,
       testFilePath,
       outputDir,
-      subDirName,
+      subDirName
     );
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
     expect(actualPromptSpecs.length).to.equal(71);
     promptSpecGenerator.writePromptFiles();
     const actualPromptSpecsAsJson = fs.readFileSync(
-      path.join(promptSpecGenerator.getOutputDir(), subDirName, "promptSpecs.json"),
+      path.join(
+        promptSpecGenerator.getOutputDir(),
+        subDirName,
+        "promptSpecs.json"
+      ),
       "utf8"
     );
     const expectedPromptSpecsAsJson = fs.readFileSync(
@@ -54,7 +58,9 @@ describe("test mutant generation", () => {
     );
     promptSpecGenerator.writePromptFiles();
     // check that actual and expected directories contain the same files
-    const actualPrompts = fs.readdirSync(path.join(outputDir, subDirName, "prompts"));
+    const actualPrompts = fs.readdirSync(
+      path.join(outputDir, subDirName, "prompts")
+    );
     const expectedPrompts = fs.readdirSync("./test/expected/prompts");
     expect(actualPrompts.length).to.equal(expectedPrompts.length);
     const inActualButNotInExpected = actualPrompts.filter(
@@ -98,7 +104,7 @@ describe("test mutant generation", () => {
   it("should find the source files to be mutated in a given source project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -109,8 +115,8 @@ describe("test mutant generation", () => {
       mutate: "./src/**.js",
       ignore: "",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       path.join(outputDir, subDirName),
@@ -161,7 +167,7 @@ describe("test mutant generation", () => {
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -172,8 +178,8 @@ describe("test mutant generation", () => {
       mutate: "src/**.js",
       ignore: "",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
@@ -196,7 +202,7 @@ describe("test mutant generation", () => {
   it("should produce a file summary.json containing a summary of the results", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -207,8 +213,8 @@ describe("test mutant generation", () => {
       mutate: "src/**.js",
       ignore: "",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
