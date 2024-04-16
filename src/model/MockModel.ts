@@ -11,7 +11,13 @@ import { IQueryResult } from "./IQueryResult";
 
 export class MockModel implements IModel {
   private modelName: string;
-  private mockOptions = { "max_tokens": 250, "temperature": 0, "n": 5, "stop": ["\n\n"], "top_p": 1 };
+  private mockOptions = {
+    max_tokens: 250,
+    temperature: 0,
+    n: 5,
+    stop: ["\n\n"],
+    top_p: 1,
+  };
   constructor(modelName: string, private modelDir: string) {
     this.modelName = `${modelName}`;
   }
@@ -31,7 +37,7 @@ export class MockModel implements IModel {
     const hashKey = JSON.stringify({
       modelName: this.modelName,
       prompt,
-      options: this.mockOptions
+      options: this.mockOptions,
     });
 
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
@@ -50,7 +56,7 @@ export class MockModel implements IModel {
         completions,
         prompt_tokens: 0,
         completion_tokens: 0,
-        total_tokens: 0
+        total_tokens: 0,
       };
     } else {
       throw new Error(`MockModel: cache file ${cacheFile} does not exist`);

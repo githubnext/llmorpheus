@@ -23,8 +23,8 @@ export class PromptSpec {
     public readonly location: SourceLocation,
     public readonly orig: string,
     public readonly parentLocation?: SourceLocation
-  ) {  
-      this.findReferences();
+  ) {
+    this.findReferences();
   }
 
   /**
@@ -35,7 +35,7 @@ export class PromptSpec {
     const lines = code.split("\n");
     const lastLine = lines.length;
     const endColumnOfLastLine = lines[lastLine - 1].length;
-    const codeWithPlaceHolder = (
+    const codeWithPlaceHolder =
       getText(code, 1, 0, this.location.startLine, this.location.startColumn) +
       "<PLACEHOLDER>" +
       getText(
@@ -44,8 +44,7 @@ export class PromptSpec {
         this.location.endColumn,
         lastLine,
         endColumnOfLastLine
-      )
-    );
+      );
     return codeWithPlaceHolder;
   }
 
@@ -54,10 +53,10 @@ export class PromptSpec {
    */
   private findReferences() {
     const code = fs.readFileSync(this.file, "utf8");
-      const ast = parser.parse(code, {
-        sourceType: "module",
-        plugins: ["typescript"],
-      });
+    const ast = parser.parse(code, {
+      sourceType: "module",
+      plugins: ["typescript"],
+    });
     const outerThis = this;
     traverse(ast, {
       enter(path) {
@@ -73,11 +72,13 @@ export class PromptSpec {
             outerThis.references.add(path.node.name);
           }
         }
-      }
+      },
     });
   }
 
-  public addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(codeWithPlaceHolder: string) : string {
+  public addOriginalCodeAsCommentAtEndOfLineContainingPlaceholder(
+    codeWithPlaceHolder: string
+  ): string {
     const lines = codeWithPlaceHolder.split("\n");
     const lineNr = this.location.startLine - 1;
     const line = lines[lineNr];
@@ -85,7 +86,6 @@ export class PromptSpec {
     lines[lineNr] = newLine;
     return lines.join("\n");
   }
-
 
   public isExpressionPlaceholder(): boolean {
     return (
@@ -106,35 +106,34 @@ export class PromptSpec {
   }
 
   public isForInitializerPlaceHolder(): boolean {
-    return (this.feature === "for" && this.component === "init");
+    return this.feature === "for" && this.component === "init";
   }
 
   public isForLoopHeaderPlaceHolder(): boolean {
-    return (this.feature === "for" && this.component === "header");
+    return this.feature === "for" && this.component === "header";
   }
 
   public isForInInitializerPlaceHolder(): boolean {
-    return (this.feature === "for-in" && this.component === "left");
+    return this.feature === "for-in" && this.component === "left";
   }
 
   public isForInLoopHeaderPlaceHolder(): boolean {
-    return (this.feature === "for-in" && this.component === "header");
+    return this.feature === "for-in" && this.component === "header";
   }
 
   public isForInRightPlaceHolder(): boolean {
-    return (this.feature === "for-in" && this.component === "right");
+    return this.feature === "for-in" && this.component === "right";
   }
 
   public isForOfInitializerPlaceHolder(): boolean {
-    return (this.feature === "for-of" && this.component === "left");
+    return this.feature === "for-of" && this.component === "left";
   }
 
   public isForOfLoopHeaderPlaceHolder(): boolean {
-    return (this.feature === "for-of" && this.component === "header");
+    return this.feature === "for-of" && this.component === "header";
   }
 
   public isCalleePlaceHolder(): boolean {
     return this.feature === "call" && this.component === "callee";
   }
-           
 }

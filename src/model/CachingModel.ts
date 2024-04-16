@@ -7,11 +7,15 @@ import { IQueryResult } from "./IQueryResult";
 
 /**
  * A model that wraps another model and caches its results.
-*/
+ */
 export class CachingModel implements IModel {
   private modelName: string;
-  
-  constructor(private model: IModel, private cacheDir: string, private instanceOptions: PostOptions = {}) {
+
+  constructor(
+    private model: IModel,
+    private cacheDir: string,
+    private instanceOptions: PostOptions = {}
+  ) {
     this.modelName = `${model.getModelName()}`;
     console.log(`Using cache dir: ${cacheDir}`);
   }
@@ -29,8 +33,6 @@ export class CachingModel implements IModel {
     prompt: string,
     requestPostOptions: PostOptions = {}
   ): Promise<IQueryResult> {
-
-
     const options: PostOptions = {
       ...defaultPostOptions,
       // options provided to constructor override default options
@@ -43,7 +45,7 @@ export class CachingModel implements IModel {
     const hashKey = JSON.stringify({
       modelName: this.model.getModelName(),
       prompt,
-      options
+      options,
     });
 
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
@@ -67,9 +69,8 @@ export class CachingModel implements IModel {
         completions,
         prompt_tokens: 0,
         completion_tokens: 0,
-        total_tokens: 0
+        total_tokens: 0,
       };
-
     } else {
       // otherwise, call the wrapped model and cache the result
       const queryResult = await this.model.query(prompt, requestPostOptions);
@@ -83,7 +84,7 @@ export class CachingModel implements IModel {
         completions,
         prompt_tokens,
         completion_tokens,
-        total_tokens
+        total_tokens,
       };
     }
   }

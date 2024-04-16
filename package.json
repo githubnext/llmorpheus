@@ -8,7 +8,6 @@
     "Frank Tip <f.tip@northeastern.edu>",
     "Max Schäfer <max-schaefer@github.com>",
     "Jon Bell <j.bell@northeastern.edu>"
-
   ],
   "license": "MIT",
   "scripts": {
@@ -17,8 +16,8 @@
     "build:watch": "tsc --watch -p src && tsc --watch -p benchmark",
     "pretest": "npm run build",
     "test": "ts-mocha --forbid-only -p test/tsconfig.json test/*.ts",
-    "autoformat": "prettier --write src/*.ts test/*.ts typings benchmark",
-    "autoformat:check": "prettier --check src/*.ts test/*.ts typings benchmark/*.ts",
+    "autoformat": "prettier --write src/**/*.ts test/*.ts typings benchmark",
+    "autoformat:check": "prettier --check src/**/*.ts test/*.ts typings benchmark/*.ts",
     "prepack": "npm run build"
   },
   "devDependencies": {
@@ -34,7 +33,7 @@
     "@types/yargs": "^17.0.10",
     "chai": "^4.3.6",
     "deep-equal-in-any-order": "^2.0.0",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.8",
     "source-map-support": "^0.5.21",
     "ts-mocha": "^10.0.0",
     "typescript": "^4.9.3"
