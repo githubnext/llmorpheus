@@ -41,7 +41,7 @@
   "dependencies": {
     "@babel/traverse": "^7.22.5",
     "adm-zip": "^0.5.9",
-    "axios": "^0.27.2",
+    "axios": "^1.6.8",
     "common-js-file-extensions": "^1.0.4",
     "console-stamp": "^3.1.0",
     "dedent": "^0.7.0",
