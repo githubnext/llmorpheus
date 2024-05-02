@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+!isGlob(src)
+```
+This would result in different behavior because the `!` operator negates the result of the `isGlob` function, so if `src` is a glob, the `!isGlob(src)` expression would evaluate to `true`, and the `zipArchive.glob(globPart)` method would not be called.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+isGlob(src)
+```
+This would result in different behavior because the `isGlob` function returns `true` if `src` is a glob, and `false` otherwise. So if `src` is a glob, the `isGlob(src)` expression would evaluate to `true`, and the `zipArchive.glob(globPart)` method would be called.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+src.includes('*')
+```
+This would result in different behavior because the `includes` method returns `true` if the string `src`

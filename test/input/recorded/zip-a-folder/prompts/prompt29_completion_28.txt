@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+reject
+```
+This would result in different behavior because the `output.on('close', reject)` event listener would be triggered when the `output` stream is closed, which would cause the promise to be rejected.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+resolve(null)
+```
+This would result in different behavior because the `resolve` function would be called with a `null` value, which would cause the promise to be resolved with a `null` value.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+resolve(undefined)
+```
+This would result in different behavior because the `resolve` function would be called with an `undefined` value, which would cause the promise to be resolved with an `undefined` value.
+
+DONE.

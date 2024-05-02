@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+src, true
+```
+This would result in different behavior because the `src` parameter is now being passed as `true` instead of `false`, which would cause the `directory` method to throw an error.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+src, null
+```
+This would result in different behavior because the `src` parameter is now being passed as `null` instead of `false`, which would cause the `directory` method to throw an error.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+src, undefined
+```
+This would result in different behavior because the `src` parameter is now being passed as `undefined` instead of `false`, which would cause the `directory` method to throw an error.
+
+DONE.

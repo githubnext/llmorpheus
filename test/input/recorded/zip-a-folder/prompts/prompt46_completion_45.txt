@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+true
+```
+This would result in different behavior because the `if` statement would always evaluate to `true`, causing the `zipArchive.directory(src, true)` line to be executed, which would include all files and subdirectories in the `src` directory, regardless of whether they match the glob pattern or not.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+undefined
+```
+This would result in different behavior because the `if` statement would always evaluate to `false`, causing the `zipArchive.directory(src, undefined)` line to be executed, which would include only the files and subdirectories in the `src` directory that match the glob pattern, but would not include any files or subdirectories that do not match the pattern.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+null
+```
+This would result in different behavior because the `if` statement would always evaluate to `false`, causing the `zipArchive.directory(src, null)` line to be executed, which would

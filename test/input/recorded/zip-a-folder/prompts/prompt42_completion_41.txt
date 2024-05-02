@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+zipArchive.glob(src, {dot: true});
+```
+This would result in different behavior because the `dot` option is set to `true`, which means that the glob pattern will match dotfiles. In the original code, the `dot` option is not set, so dotfiles are not included in the glob pattern.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+zipArchive.glob(src, {dot: false});
+```
+This would result in different behavior because the `dot` option is set to `false`, which means that the glob pattern will not match dotfiles. In the original code, the `dot` option is not set, so dotfiles are not included in the glob pattern.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+zipArchive.glob(src, {dot: undefined});
+```
+This would result in different behavior because the `dot` option is set to `undefined`, which means that the default behavior of the `glob` method will be used.

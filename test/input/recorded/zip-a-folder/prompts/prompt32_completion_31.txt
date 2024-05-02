@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+'close'
+```
+This would result in different behavior because the `output.on('close', resolve)` event listener would be triggered when the output stream is closed, which would resolve the promise and end the function.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+'finish'
+```
+This would result in different behavior because the `output.on('finish', resolve)` event listener would be triggered when the output stream is finished writing all the data, which would resolve the promise and end the function.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+'error'
+```
+This would result in different behavior because the `output.on('error', reject)` event listener would be triggered when an error occurs while writing to the output stream, which would reject the promise and end the function.
+
+DONE.

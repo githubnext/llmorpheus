@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+'*'
+```
+This would result in different behavior because the glob pattern would match all files in the directory, rather than just the files that match the original pattern.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+'**'
+```
+This would result in different behavior because the glob pattern would match all files in the directory and all subdirectories, rather than just the files that match the original pattern.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+'?'
+```
+This would result in different behavior because the glob pattern would match any single character, rather than just the files that match the original pattern.
+
+DONE.

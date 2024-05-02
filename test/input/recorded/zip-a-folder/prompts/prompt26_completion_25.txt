@@ -1,0 +1,15 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+format, archiverOptions || {}
+```
+This would result in different behavior because the `||` operator is used to provide a default value for `archiverOptions` if it is not provided. If `archiverOptions` is not provided, the default value will be an empty object, which may cause the code to behave differently than expected.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+format, archiverOptions || { zlib: { level: 9 } }
+```
+This would result in different behavior because the `||` operator is used to provide a default value for `archiverOptions` if it is not provided. If `archiverOptions` is not provided, the default value will be an object with a `zlib` property set to an object with a `level` property set to `9`. This may cause the code to compress the archive with a different level than expected.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+format, archiverOptions || { zlib: { level: 

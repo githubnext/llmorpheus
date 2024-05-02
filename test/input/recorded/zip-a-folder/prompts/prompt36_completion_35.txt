@@ -1,0 +1,13 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+output.on('close', resolve);
+```
+This would result in different behavior because the `output.on('close', resolve)` event listener would be called when the `output` stream is closed, which would resolve the promise returned by the `compress` function. This would cause the `compress` function to return a resolved promise, even if the `zipArchive.finalize()` method throws an error.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+zipArchive.pipe(output);
+```
+This would result in different behavior because the `zipArchive.pipe(output)` method would pipe the output of the `zipArchive` object to the `output` stream, which would cause the `zipArchive` object to write its output to the `output` stream instead of the `targetFilePath` file. This would cause the `compress` function to return a resolved promise, even if the `zipArchive.finalize()` method throws an error.
+
+Option 3: The PLACEHOLDER can be replaced

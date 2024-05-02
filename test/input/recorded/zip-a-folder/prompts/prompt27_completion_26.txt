@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+output.on('error', reject);
+```
+This would result in different behavior because the `output.on('error', reject)` event listener would be added to the `output` stream, which would cause the promise to be rejected if an error occurs on the `output` stream.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+output.on('close', resolve);
+```
+This would result in different behavior because the `output.on('close', resolve)` event listener would be added to the `output` stream, which would cause the promise to be resolved when the `output` stream is closed.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+output.on('finish', resolve);
+```
+This would result in different behavior because the `output.on('finish', resolve)` event listener would be added to the `output` stream, which would cause the promise to be resolved when the `output` stream finishes writing all the data.
+
+DONE.

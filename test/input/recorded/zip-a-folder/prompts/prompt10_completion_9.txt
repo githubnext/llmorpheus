@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+isGlob(src)
+```
+This would result in different behavior because the `isGlob` function is called with the `src` parameter, which is a string, instead of the `src` parameter, which is a glob. This would cause the `isGlob` function to return `false`, which would result in the `src` parameter being treated as a directory instead of a glob.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+!isGlob(src)
+```
+This would result in different behavior because the `!` operator is used to negate the result of the `isGlob` function. This would cause the `src` parameter to be treated as a directory instead of a glob, even if it is a glob.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+isGlob(src) && src.split(',').length > 1
+```
+This would result in different behavior because the `isGlob` function is called with the `src` parameter, which

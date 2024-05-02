@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+archiverOptions || { gzip: true }
+```
+This would result in different behavior because it would enable gzip compression for the archiver, which is not the default behavior.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+archiverOptions || { zlib: { level: 9 } }
+```
+This would result in different behavior because it would set the compression level to 9, which is the highest level of compression available.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+archiverOptions || { store: true }
+```
+This would result in different behavior because it would enable store mode for the archiver, which would not compress the data.
+
+DONE.

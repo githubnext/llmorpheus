@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.high
+```
+This would result in different behavior because the `compression` option would be set to `high` instead of `uncompressed`, which would result in a compressed archive being created.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.medium
+```
+This would result in different behavior because the `compression` option would be set to `medium` instead of `uncompressed`, which would result in a compressed archive being created with a medium compression level.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.low
+```
+This would result in different behavior because the `compression` option would be set to `low` instead of `uncompressed`, which would result in an uncompressed archive being created.
+
+DONE.

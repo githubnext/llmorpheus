@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+src, fs.constants.W_OK
+```
+This would result in different behavior because the `fs.promises.access` function would now check for write access instead of read access. This could potentially cause the function to throw an error if the user does not have write access to the source directory.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+src, fs.constants.R_OK | fs.constants.W_OK
+```
+This would result in different behavior because the `fs.promises.access` function would now check for both read and write access. This could potentially cause the function to throw an error if the user does not have both read and write access to the source directory.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+src, fs.constants.R_OK | fs.constants.W_OK | fs.constants.X_OK
+```
+This would result in different behavior because the `fs.promises.access` function would now check for

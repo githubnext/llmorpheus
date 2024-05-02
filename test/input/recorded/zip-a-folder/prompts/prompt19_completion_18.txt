@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+targetBasePath, fs.constants.R_OK
+```
+This would result in different behavior because the `fs.constants.W_OK` flag is not included in the `fs.promises.access()` call, which would cause the function to throw an error if the target file path is not writable.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+targetBasePath, fs.constants.W_OK
+```
+This would result in different behavior because the `fs.constants.R_OK` flag is not included in the `fs.promises.access()` call, which would cause the function to throw an error if the target file path is not readable.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+targetBasePath, fs.constants.R_OK | fs.constants.W_OK
+```
+This would result in different behavior because the `fs.constants.R_OK` and `fs.constants.W_OK` flags are included

@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+zipArchive.directory(src, false);
+```
+This would result in different behavior because the `directory` method is used instead of the `glob` method. The `directory` method adds a directory to the archive, while the `glob` method adds files that match a pattern to the archive.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+zipArchive.glob(src, false);
+```
+This would result in different behavior because the `glob` method is used instead of the `directory` method. The `glob` method adds files that match a pattern to the archive, while the `directory` method adds a directory to the archive.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+zipArchive.file(src, false);
+```
+This would result in different behavior because the `file` method is used instead of the `glob` method. The `file` method adds a single file to the archive, while the `glob` method adds files that match a pattern to the archive.

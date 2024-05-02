@@ -1,0 +1,15 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+output.on('error', reject);
+```
+This would result in different behavior because the `error` event is now being listened to on the `output` stream, whereas in the original code, it was only listening to the `close` event. This could potentially cause the promise to reject if there is an error while writing to the output stream, whereas in the original code, it would only reject if there is an error while compressing the files.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+output.on('close', resolve);
+```
+This would result in different behavior because the `close` event is now being listened to on the `output` stream, whereas in the original code, it was only listening to the `error` event. This could potentially cause the promise to resolve if the output stream is closed, whereas in the original code, it would only resolve if there is an error while compressing the files.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+output.on('error', (err) =>

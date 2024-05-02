@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+zipAFolderOptions?.customWriteStream
+```
+This would result in different behavior because the optional chaining operator `?.` is used to access the `customWriteStream` property of the `zipAFolderOptions` object, which would prevent the code from throwing an error if the `zipAFolderOptions` object is undefined.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+zipAFolderOptions?.customWriteStream || output
+```
+This would result in different behavior because the `||` operator is used to provide a default value for the `customWriteStream` property, which would prevent the code from throwing an error if the `zipAFolderOptions` object is undefined.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+zipAFolderOptions?.customWriteStream ?? output
+```
+This would result in different behavior because the `??` operator is used to provide a default value for the `customWriteStream` property, which would prevent the code from throwing an error if the `zipAFolderOptions` object is undefined

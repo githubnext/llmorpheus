@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+src.toLowerCase()
+```
+This would result in different behavior because the `src` variable is now converted to lowercase before being passed to the `isGlob` function. This could potentially cause the `isGlob` function to return a different result, which could affect the behavior of the `ZipAFolder` class.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+src.toUpperCase()
+```
+This would result in different behavior because the `src` variable is now converted to uppercase before being passed to the `isGlob` function. This could potentially cause the `isGlob` function to return a different result, which could affect the behavior of the `ZipAFolder` class.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+src.replace(/[a-z]/g, 'A')
+```
+This would result in different behavior because the `src` variable is now modified to replace all lowercase letters with uppercase letters before being passed to the `isGlob

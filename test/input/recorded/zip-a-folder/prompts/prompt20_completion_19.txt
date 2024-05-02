@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+fs.createWriteStream(targetFilePath, { flags: 'a' })
+```
+This would result in different behavior because the `flags` option is set to `'a'`, which means that the file will be opened in append mode. This would cause the new archive to be appended to the end of the existing file, rather than overwriting it.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+fs.createWriteStream(targetFilePath, { flags: 'w' })
+```
+This would result in different behavior because the `flags` option is set to `'w'`, which means that the file will be opened in write mode. This would cause the new archive to be written to the beginning of the file, rather than appending it to the end.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+fs.createWriteStream(targetFilePath, { flags: 'wx' })
+```
+This would result in different behavior because the `flags` option is set to `'wx'`, which

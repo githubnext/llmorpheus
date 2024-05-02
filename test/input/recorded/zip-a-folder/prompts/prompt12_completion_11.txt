@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+fs.promises.access(src, fs.constants.R_OK | fs.constants.W_OK);
+```
+This would result in different behavior because it would allow the code to access the source directory with both read and write permissions, which is not desirable.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+fs.promises.access(src, fs.constants.R_OK);
+```
+This would result in different behavior because it would allow the code to access the source directory with read permissions only, which would prevent it from writing to the target directory.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+fs.promises.access(src, fs.constants.W_OK);
+```
+This would result in different behavior because it would allow the code to access the source directory with write permissions only, which would prevent it from reading from the source directory.
+
+DONE.

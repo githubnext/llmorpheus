@@ -1,0 +1,15 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+{src, targetFilePath: tarFilePath, format: 'tar', zipAFolderOptions, archiverOptions: {}}
+```
+This would result in different behavior because the `archiverOptions` object is now empty, which would cause the `archiver` library to use its default options instead of the custom options provided in the `zipAFolderOptions` object.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+{src, targetFilePath: tarFilePath, format: 'tar', zipAFolderOptions, archiverOptions: {gzip: false}}
+```
+This would result in different behavior because the `gzip` option in the `archiverOptions` object is now set to `false`, which would cause the `archiver` library to not compress the archive using gzip.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+{src, targetFilePath: tarFilePath, format: 'tar', zipAFolderOptions, archiverOptions: {gzip: true, gzip

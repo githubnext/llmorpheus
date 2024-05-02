@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+globPart.toLowerCase()
+```
+This would result in different behavior because the `toLowerCase()` method would convert the glob pattern to lowercase, which could affect the matching behavior of the `glob()` method.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+globPart.toUpperCase()
+```
+This would result in different behavior because the `toUpperCase()` method would convert the glob pattern to uppercase, which could affect the matching behavior of the `glob()` method.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+globPart.replace(/[a-z]/g, 'A')
+```
+This would result in different behavior because the `replace()` method would replace all lowercase letters in the glob pattern with uppercase letters, which could affect the matching behavior of the `glob()` method.
+
+DONE.

@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+throw new Error('Error in zip/tar function')
+```
+This would result in different behavior because it would throw an error when the `output.on('error', <PLACEHOLDER>)` event is triggered, which would cause the promise to reject and the function to return an error.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+console.log('Error in zip/tar function')
+```
+This would result in different behavior because it would log an error message to the console when the `output.on('error', <PLACEHOLDER>)` event is triggered, but it would not cause the promise to reject or the function to return an error.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+output.end()
+```
+This would result in different behavior because it would end the output stream when the `output.on('error', <PLACEHOLDER>)` event is triggered, which would cause the promise to resolve and the function to return successfully.
+
+DONE.

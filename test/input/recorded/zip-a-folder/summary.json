@@ -1,0 +1,25 @@
+{
+  "nrPrompts": 49,
+  "nrCandidates": 137,
+  "nrSyntacticallyValid": 87,
+  "nrSyntacticallyInvalid": 43,
+  "nrIdentical": 7,
+  "nrDuplicate": 1,
+  "nrLocations": 33,
+  "totalPromptTokens": 82457,
+  "totalCompletionTokens": 11494,
+  "totalTokens": 93951,
+  "metaInfo": {
+    "modelName": "codellama-13b-instruct",
+    "temperature": 0,
+    "maxTokens": 250,
+    "maxNrPrompts": 2000,
+    "rateLimit": 0,
+    "nrAttempts": 3,
+    "template": "templates/template-full.hb",
+    "systemPrompt": "SystemPrompt-MutationTestingExpert.txt",
+    "mutate": "lib/*.ts",
+    "ignore": "",
+    "benchmark": true
+  }
+}

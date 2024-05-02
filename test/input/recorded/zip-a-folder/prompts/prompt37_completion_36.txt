@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+isGlob(src) || true
+```
+This would result in different behavior because the `|| true` expression would always evaluate to `true`, causing the `src.split(',').forEach((globPart) => {` line to always execute, even if `src` is not a glob. This would cause the code to always treat `src` as a glob, regardless of whether it is actually a glob or not.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+isGlob(src) && false
+```
+This would result in different behavior because the `&& false` expression would always evaluate to `false`, causing the `src.split(',').forEach((globPart) => {` line to never execute, even if `src` is a glob. This would cause the code to never treat `src` as a glob, regardless of whether it is actually a glob or not.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+isGlob(src)
+```
+This would result in different behavior because

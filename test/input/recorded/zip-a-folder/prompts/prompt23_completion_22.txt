@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+archiver.create('zip', {})
+```
+This would result in different behavior because the `archiver.create()` method returns a new instance of the `Archiver` class, which is not the same as the `archiver` variable in the original code. This could cause issues if the code relies on the `archiver` variable being a specific instance.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+archiver.create('tar', {})
+```
+This would result in different behavior because the `archiver.create()` method returns a new instance of the `Archiver` class, which is not the same as the `archiver` variable in the original code. This could cause issues if the code relies on the `archiver` variable being a specific instance.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+archiver.create('tar', {})
+```
+This would result in different behavior because the `archiver.create()` method returns a new instance of the `Archiver`

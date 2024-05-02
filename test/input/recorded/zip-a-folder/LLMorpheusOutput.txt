@@ -1,0 +1,172 @@
+*** Using codellama-13b-instruct with benchmark rate limiter
+BenchmarkRateLimiter: initial pace is 10000
+*** Generating mutants for lib/*.ts in /home/runner/work/llm-mutation-testing/llm-mutation-testing/zip-a-folder/
+Starting generation of mutants on: Mon, 01 Apr 2024 11:01:40 GMT
+
+
+found 1 files to mutate
+generating mutants for the following files: lib/ZipAFolder.ts
+
+processing prompt 1/49
+
+*** prompt tokens: 1682, completion tokens: 238, total tokens: 1920
+processing prompt 2/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 3/49
+
+*** prompt tokens: 1685, completion tokens: 250, total tokens: 1935
+processing prompt 4/49
+
+*** prompt tokens: 1682, completion tokens: 179, total tokens: 1861
+processing prompt 5/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 6/49
+
+*** prompt tokens: 1682, completion tokens: 192, total tokens: 1874
+processing prompt 7/49
+
+*** prompt tokens: 1683, completion tokens: 239, total tokens: 1922
+processing prompt 8/49
+
+*** prompt tokens: 1682, completion tokens: 180, total tokens: 1862
+processing prompt 9/49
+
+*** prompt tokens: 1684, completion tokens: 250, total tokens: 1934
+processing prompt 10/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 11/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 12/49
+
+*** prompt tokens: 1682, completion tokens: 232, total tokens: 1914
+processing prompt 13/49
+
+*** prompt tokens: 1682, completion tokens: 244, total tokens: 1926
+processing prompt 14/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 15/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 16/49
+
+*** prompt tokens: 1682, completion tokens: 219, total tokens: 1901
+processing prompt 17/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 18/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 19/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 20/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 21/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 22/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 23/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 24/49
+
+*** prompt tokens: 1682, completion tokens: 239, total tokens: 1921
+processing prompt 25/49
+
+*** prompt tokens: 1683, completion tokens: 182, total tokens: 1865
+processing prompt 26/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 27/49
+
+*** prompt tokens: 1683, completion tokens: 243, total tokens: 1926
+processing prompt 28/49
+
+*** prompt tokens: 1684, completion tokens: 250, total tokens: 1934
+processing prompt 29/49
+
+*** prompt tokens: 1683, completion tokens: 197, total tokens: 1880
+processing prompt 30/49
+
+*** prompt tokens: 1684, completion tokens: 250, total tokens: 1934
+processing prompt 31/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 32/49
+
+*** prompt tokens: 1684, completion tokens: 209, total tokens: 1893
+processing prompt 33/49
+
+*** prompt tokens: 1684, completion tokens: 249, total tokens: 1933
+processing prompt 34/49
+
+*** prompt tokens: 1684, completion tokens: 250, total tokens: 1934
+processing prompt 35/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 36/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 37/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 38/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 39/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 40/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 41/49
+
+*** prompt tokens: 1684, completion tokens: 171, total tokens: 1855
+processing prompt 42/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 43/49
+
+*** prompt tokens: 1683, completion tokens: 214, total tokens: 1897
+processing prompt 44/49
+
+*** prompt tokens: 1682, completion tokens: 250, total tokens: 1932
+processing prompt 45/49
+
+*** prompt tokens: 1682, completion tokens: 194, total tokens: 1876
+processing prompt 46/49
+
+*** prompt tokens: 1683, completion tokens: 250, total tokens: 1933
+processing prompt 47/49
+
+*** prompt tokens: 1683, completion tokens: 196, total tokens: 1879
+processing prompt 48/49
+
+*** prompt tokens: 1682, completion tokens: 249, total tokens: 1931
+processing prompt 49/49
+
+*** prompt tokens: 1684, completion tokens: 178, total tokens: 1862
+found 137 mutant candidates
+
+discarding 43 syntactically invalid mutants
+
+discarding 7 mutant candidates that are identical to the original code
+
+discarding 1 duplicate mutants
+
+summary written to  /home/runner/work/llm-mutation-testing/llm-mutation-testing/zip-a-folder/MUTATION_TESTING/template-full_codellama-13b-instruct_0.0/summary.json
+
+wrote 87 mutants in 33 locations to /home/runner/work/llm-mutation-testing/llm-mutation-testing/zip-a-folder/MUTATION_TESTING/template-full_codellama-13b-instruct_0.0/mutants.json
+
+
+real	8m20.511s
+user	0m1.487s
+sys	0m0.179s

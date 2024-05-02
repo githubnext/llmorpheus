@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.medium
+```
+This would result in different behavior because the compression level would be set to medium instead of high.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.low
+```
+This would result in different behavior because the compression level would be set to low instead of high.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+o.compression === COMPRESSION_LEVEL.uncompressed
+```
+This would result in different behavior because the compression level would be set to uncompressed instead of high.
+
+DONE.

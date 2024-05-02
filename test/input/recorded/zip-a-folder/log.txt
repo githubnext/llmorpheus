@@ -1,0 +1,57 @@
+Starting generation of mutants on: Mon, 01 Apr 2024 11:01:40 GMT
+
+generating mutants for the following files: lib/ZipAFolder.ts
+processing prompt 1/49
+processing prompt 2/49
+processing prompt 3/49
+processing prompt 4/49
+processing prompt 5/49
+processing prompt 6/49
+processing prompt 7/49
+processing prompt 8/49
+processing prompt 9/49
+processing prompt 10/49
+processing prompt 11/49
+processing prompt 12/49
+processing prompt 13/49
+processing prompt 14/49
+processing prompt 15/49
+processing prompt 16/49
+processing prompt 17/49
+processing prompt 18/49
+processing prompt 19/49
+processing prompt 20/49
+processing prompt 21/49
+processing prompt 22/49
+processing prompt 23/49
+processing prompt 24/49
+processing prompt 25/49
+processing prompt 26/49
+processing prompt 27/49
+processing prompt 28/49
+processing prompt 29/49
+processing prompt 30/49
+processing prompt 31/49
+processing prompt 32/49
+processing prompt 33/49
+processing prompt 34/49
+processing prompt 35/49
+processing prompt 36/49
+processing prompt 37/49
+processing prompt 38/49
+processing prompt 39/49
+processing prompt 40/49
+processing prompt 41/49
+processing prompt 42/49
+processing prompt 43/49
+processing prompt 44/49
+processing prompt 45/49
+processing prompt 46/49
+processing prompt 47/49
+processing prompt 48/49
+processing prompt 49/49
+found 137 mutant candidates
+discarding 43 syntactically invalid mutants
+discarding 7 mutant candidates that are identical to the original code
+discarding 1 duplicate mutants
+wrote 87 mutants in 33 locations to /home/runner/work/llm-mutation-testing/llm-mutation-testing/zip-a-folder/MUTATION_TESTING/template-full_codellama-13b-instruct_0.0/mutants.json

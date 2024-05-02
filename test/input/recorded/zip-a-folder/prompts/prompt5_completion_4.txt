@@ -1,0 +1,15 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+!zipAFolderOptions?.customWriteStream || targetFilePath
+```
+This would result in different behavior because the `||` operator has a higher precedence than the `&&` operator, so the `targetFilePath` would be evaluated first, and then the `!zipAFolderOptions?.customWriteStream` would be evaluated. This could result in a different error message being thrown if the `targetFilePath` is not a valid path.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+zipAFolderOptions?.customWriteStream && targetFilePath
+```
+This would result in different behavior because the `&&` operator has a higher precedence than the `||` operator, so the `targetFilePath` would be evaluated first, and then the `zipAFolderOptions?.customWriteStream` would be evaluated. This could result in a different error message being thrown if the `targetFilePath` is not a valid path.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+zipAFolderOptions?.customWrite

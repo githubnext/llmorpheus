@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+'end'
+```
+This would result in different behavior because the 'end' event is emitted when the output stream is closed, whereas the 'close' event is emitted when the output stream is closed and the underlying resource is released. In this case, the 'end' event would be emitted before the 'close' event, which could cause the test to fail.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+'finish'
+```
+This would result in different behavior because the 'finish' event is emitted when the output stream is finished writing data, whereas the 'close' event is emitted when the output stream is closed and the underlying resource is released. In this case, the 'finish' event would be emitted before the 'close' event, which could cause the test to fail.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+'error'
+```
+This would result in different behavior because the 'error' event is emitted when an error occurs on the output stream,

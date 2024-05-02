@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+format.toLowerCase()
+```
+This would result in different behavior because the `format` variable is now converted to lowercase, which could cause issues if the `format` variable is used in other parts of the code that expect it to be in uppercase.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+format.toUpperCase()
+```
+This would result in different behavior because the `format` variable is now converted to uppercase, which could cause issues if the `format` variable is used in other parts of the code that expect it to be in lowercase.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+format.replace('zip', 'tar')
+```
+This would result in different behavior because the `format` variable is now replaced with 'tar' if it contains the string 'zip', which could cause issues if the `format` variable is used in other parts of the code that expect it to be 'zip'.
+
+DONE.

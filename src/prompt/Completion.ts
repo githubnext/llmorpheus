@@ -10,4 +10,7 @@ export class Completion {
   public getId(): number {
     return this.id;
   }
+  public static resetIdCounter(): void {
+    Completion.idCounter = 0;
+  }
 }

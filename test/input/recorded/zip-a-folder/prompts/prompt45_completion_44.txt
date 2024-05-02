@@ -1,0 +1,19 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+src.toUpperCase()
+```
+This would result in different behavior because the `src` variable is converted to uppercase, which would affect the behavior of the `zip` and `tar` functions.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+src.toLowerCase()
+```
+This would result in different behavior because the `src` variable is converted to lowercase, which would affect the behavior of the `zip` and `tar` functions.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+src.split(',')
+```
+This would result in different behavior because the `src` variable is split into an array of strings, which would affect the behavior of the `zip` and `tar` functions.
+
+DONE.

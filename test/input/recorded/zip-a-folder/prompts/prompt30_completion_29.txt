@@ -1,0 +1,17 @@
+  Option 1: The PLACEHOLDER can be replaced with:
+```
+'end', resolve
+```
+This would result in different behavior because the 'end' event is emitted when the output stream is closed, whereas the 'close' event is emitted when the output stream is closed and the underlying resource is released. In this case, the 'end' event is more appropriate because it ensures that the output stream is closed before the promise is resolved.
+
+Option 2: The PLACEHOLDER can be replaced with:
+```
+'finish', resolve
+```
+This would result in different behavior because the 'finish' event is emitted when the output stream is finished writing data, whereas the 'close' event is emitted when the output stream is closed. In this case, the 'finish' event is more appropriate because it ensures that the output stream is finished writing data before the promise is resolved.
+
+Option 3: The PLACEHOLDER can be replaced with:
+```
+'error', reject
+```
+This would result in different behavior because the 'error' event is emitted when an error occurs on the output stream, whereas
