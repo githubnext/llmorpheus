@@ -11,7 +11,7 @@ import { MetaInfo } from "../generator/MetaInfo";
 export class ReplayModel implements IModel {
 
   private metaInfo: MetaInfo;
-  private promptToCompletionMap: Map<string, string> = new Map<string, string>();
+  private promptToCompletionMap = new Map<string, string>();
 
   public constructor(private dirName: string){
     const summaryFileName = path.join(this.dirName, 'summary.json');
