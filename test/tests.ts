@@ -11,12 +11,12 @@ import { Prompt } from "../src/prompt/Prompt";
 import { Completion } from "../src/prompt/Completion";
 
 const mockModelDir = "test/input/mockModel";
-const testFilePath = "test/input";
-const testProjectPath = "test/input/testProject/countries-and-timezones";
-const promptTemplateFileName = "./templates/template-test.hb";
-const sourceFileName = "countriesandtimezones_index.js";
+const sorterTestFilePath = "test/input/testProject/sorters/src/";
+const sorterProjectPath = "test/input/testProject/sorters";
+const promptTemplateFileName = "./templates/template-full.hb";
+const sorterSourceFileName = "TreeSorter.ts";
 const modelName = "codellama-34b-instruct";
-const subDirName = "template-test_codellama-34b-instruct_0.0";
+const subDirName = "template-full_codellama-34b-instruct_0.0";
 
 describe("test mutant generation", () => {
 
@@ -26,23 +26,25 @@ describe("test mutant generation", () => {
   });
 
   it("should generate the expected PromptSpecs for a given source file and prompt template", async () => {
-    const files = [sourceFileName];
+    const files = [sorterSourceFileName];
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     fs.mkdirSync(path.join(outputDir, subDirName));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
-      testFilePath,
+      sorterTestFilePath,
       outputDir,
       subDirName,
     );
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
-    expect(actualPromptSpecs.length).to.equal(71);
+    expect(actualPromptSpecs.length).to.equal(40);
     promptSpecGenerator.writePromptFiles();
-    const actualPromptSpecsAsJson = fs.readFileSync(
-      path.join(promptSpecGenerator.getOutputDir(), subDirName, "promptSpecs.json"),
-      "utf8"
+    const actualPromptSpecsFilePath = path.join(
+      outputDir,
+      subDirName,
+      "promptSpecs.json"
     );
+    const actualPromptSpecsAsJson = fs.readFileSync(actualPromptSpecsFilePath, "utf8");
     const expectedPromptSpecsAsJson = fs.readFileSync(
       "./test/expected/promptSpecs/promptSpecs.json",
       "utf8"
@@ -52,19 +54,21 @@ describe("test mutant generation", () => {
   });
 
   it("should generate the expected prompts for a given source file and prompt template", async () => {
-    const files = [sourceFileName];
+    const files = [sorterSourceFileName];
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     fs.mkdirSync(path.join(outputDir, subDirName));
     const promptSpecGenerator = new PromptSpecGenerator(
       files,
       promptTemplateFileName,
-      "./test/input/",
+      sorterTestFilePath,
       outputDir,
       subDirName
     );
     promptSpecGenerator.writePromptFiles();
     // check that actual and expected directories contain the same files
-    const actualPrompts = fs.readdirSync(path.join(outputDir, subDirName, "prompts"));
+    const actualPromptsDirName = path.join(outputDir, subDirName, "prompts");
+    // console.log(`actualPromptsDirName: ${actualPromptsDirName}`);
+    const actualPrompts = fs.readdirSync(actualPromptsDirName);
     const expectedPrompts = fs.readdirSync("./test/expected/prompts");
     expect(actualPrompts.length).to.equal(expectedPrompts.length);
     const inActualButNotInExpected = actualPrompts.filter(
@@ -116,30 +120,31 @@ describe("test mutant generation", () => {
       temperature: 0,
       maxNrPrompts: 100,
       nrAttempts: 1,
-      mutate: "./src/**.js",
-      ignore: "",
+      mutate: "src/**/*.ts",
+      ignore: "**/*.spec.ts",
       rateLimit: 1000,
       benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
       path.join(outputDir, subDirName),
-      testProjectPath,
+      sorterProjectPath,
       metaInfo
     );
     const actualSourceFiles = await mutantGenerator.findSourceFilesToMutate();
-    console.log(`actualSourceFiles: ${actualSourceFiles}`);
-    // strip off the testProjectPath prefix from the actual source files
+    // strip off the sorterProjectPath prefix from the actual source files
     const actualSourceFilesWithoutTestProjectPath = actualSourceFiles.map(
-      (sourceFile) => sourceFile.replace(testProjectPath, "")
+      (sourceFile) => sourceFile.replace(sorterProjectPath, "")
     );
     const actualSourceFilesJson = JSON.stringify(
       actualSourceFilesWithoutTestProjectPath,
       null,
       2
     );
+    const actualSourceFilesPath = path.join(outputDir, subDirName, "sourceFiles.txt");
+    console.log(`actualSourceFilesPath: ${actualSourceFilesPath}`);
     fs.writeFileSync(
-      path.join(outputDir, subDirName, "sourceFiles.txt"),
+      actualSourceFilesPath,
       actualSourceFilesJson
     );
     // compare actual source files to expected source files
@@ -179,15 +184,15 @@ describe("test mutant generation", () => {
       temperature: 0,
       maxNrPrompts: 100,
       nrAttempts: 1,
-      mutate: "src/**.js",
-      ignore: "",
+      mutate: "src/**/TreeSorter.ts",
+      ignore: "src/**/*.spec.ts",
       rateLimit: 1000,
       benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
-      testProjectPath,
+      sorterProjectPath,
       metaInfo
     );
     await mutantGenerator.generateMutants();
@@ -214,15 +219,15 @@ describe("test mutant generation", () => {
       temperature: 0,
       maxNrPrompts: 100,
       nrAttempts: 1,
-      mutate: "src/**.js",
-      ignore: "",
+      mutate: "src/**/TreeSorter.js",
+      ignore: "src/**/*.spec.ts",
       rateLimit: 1000,
       benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
-      testProjectPath,
+      sorterProjectPath,
       metaInfo
     );
     await mutantGenerator.generateMutants();

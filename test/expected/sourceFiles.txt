@@ -1,5 +1,9 @@
 [
-  "src/build-country.js",
-  "src/build-timezone.js",
-  "src/index.js"
+  "src/BubbleSorter.ts",
+  "src/HeapSorter.ts",
+  "src/ISorter.ts",
+  "src/MergeSorter.ts",
+  "src/QuickSorter.ts",
+  "src/TreeSorter.ts",
+  "src/index.ts"
 ]
