@@ -240,34 +240,33 @@ describe("test mutant generation", () => {
   });
 
   it("should replay a previously observed execution", async () => {
-    const dirContainingRecording = "./test/input/recorded/zip-a-folder/";
+    const dirContainingRecording = "./test/input/recorded/sorters/";
     const model = new ReplayModel(dirContainingRecording);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
     const metaInfo : MetaInfo = {
-      modelName: "codellama-13b-instruct",
+      modelName: "codellama-34b-instruct",
       template: "templates/template-full.hb",
       systemPrompt: "SystemPrompt-MutationTestingExpert.txt",
       maxTokens: 250,
       temperature: 0,
-      maxNrPrompts: 2000,
+      maxNrPrompts: 1250,
       nrAttempts: 3,
-      mutate: "lib/*.ts",
-      ignore: "",
+      mutate: "src/**/TreeSorter.ts",
+      ignore: "**/*.spec.ts",
       rateLimit: 0,
-      benchmark: true
+      benchmark: false
     }
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
-      "test/input/testProject/zip-a-folder",
+      "test/input/testProject/sorters",
       metaInfo
     );
     await mutantGenerator.generateMutants();
-    const filePath = path.join(outputDir, "template-full_codellama-13b-instruct_0.0", "summary.json");
-    console.log(`filePath = ${filePath}$`);
+    const filePath = path.join(outputDir, "template-full_codellama-34b-instruct_0.0", "summary.json");
     const actualSummaryJson: any = JSON.parse(fs.readFileSync(path.join(filePath), "utf8"));
     const expectedSummaryJson: any = JSON.parse(fs.readFileSync(
-      "./test/input/recorded/zip-a-folder/summary.json",
+      "./test/input/recorded/sorters/summary.json",
       "utf8"
     ));
 
@@ -294,7 +293,7 @@ describe("test mutant generation", () => {
     expect(actualSummaryJson.metaInfo.benchmark).to.equal(expectedSummaryJson.metaInfo.benchmark);
 
     // now check that the actual prompt and completion files are the same as the expected ones
-    const actualFiles = fs.readdirSync(path.join(outputDir, "template-full_codellama-13b-instruct_0.0", "prompts"));
+    const actualFiles = fs.readdirSync(path.join(outputDir, "template-full_codellama-34b-instruct_0.0", "prompts"));
     const expectedFiles = fs.readdirSync(path.join(dirContainingRecording, "prompts"));
     expect(actualFiles.length).to.equal(expectedFiles.length);
 
@@ -317,7 +316,7 @@ describe("test mutant generation", () => {
     // check that the file contents match
     for (const actualFileName of actualFiles) {
       const actualFileContents = fs.readFileSync(
-        path.join(outputDir, "template-full_codellama-13b-instruct_0.0", "prompts", actualFileName),
+        path.join(outputDir, "template-full_codellama-34b-instruct_0.0", "prompts", actualFileName),
         "utf8"
       );
       const expectedFileContents = fs.readFileSync(
