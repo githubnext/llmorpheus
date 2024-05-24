@@ -1,11 +1,13 @@
-
 /**
  * This function provides supports for retrying the creation of a promise
  * up to a given number of times in case the promise is rejected.
  * This is useful for, e.g., retrying a request to a server that is temporarily unavailable.
  *
  */
-export async function retry<T>(f: () => Promise<T>, howManyTimes: number): Promise<T> {
+export async function retry<T>(
+  f: () => Promise<T>,
+  howManyTimes: number
+): Promise<T> {
   let i = 1;
   let promise: Promise<T> = f(); // create the promise, but don't wait for its fulfillment yet..
   while (i <= howManyTimes) {
@@ -20,7 +22,7 @@ export async function retry<T>(f: () => Promise<T>, howManyTimes: number): Promi
       console.log(`Promise rejected with ${e}.`);
       promise = f(); // next attempt: create the promise, but don't wait for its fulfillment yet..
     }
-  };
+  }
   return promise; // if the promise was rejected howManyTimes times, return the last promise
 }
 
@@ -31,7 +33,6 @@ export async function retry<T>(f: () => Promise<T>, howManyTimes: number): Promi
  * a server that has a limit on the number of requests per second.
  */
 export abstract class RateLimiter {
-   
   constructor(protected howManyMilliSeconds: number) {
     this.timer = this.resetTimer();
   }
@@ -58,11 +59,12 @@ export abstract class RateLimiter {
    * @returns a promise that is resolved after the number of milliseconds
    *         specified in the constructor have elapsed
    */
-  protected resetTimer = () => new Promise<void>((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, this.howManyMilliSeconds);
-  });
+  protected resetTimer = () =>
+    new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, this.howManyMilliSeconds);
+    });
 }
 
 /**
@@ -82,13 +84,15 @@ export class FixedRateLimiter extends RateLimiter {
  */
 export class BenchmarkRateLimiter extends RateLimiter {
   private requestCount: number;
-  
+
   private static INITIAL_PACE = 10000;
   private static PACE_AFTER_150_REQUESTS = 5000;
   private static PACE_AFTER_300_REQUESTS = 2500;
 
   constructor() {
-    console.log(`BenchmarkRateLimiter: initial pace is ${BenchmarkRateLimiter.INITIAL_PACE}`);
+    console.log(
+      `BenchmarkRateLimiter: initial pace is ${BenchmarkRateLimiter.INITIAL_PACE}`
+    );
     super(BenchmarkRateLimiter.INITIAL_PACE);
     this.requestCount = 0;
   }
@@ -97,11 +101,15 @@ export class BenchmarkRateLimiter extends RateLimiter {
     this.requestCount++;
     if (this.requestCount === 150) {
       this.howManyMilliSeconds = BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS;
-      console.log(`BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS}`);  
+      console.log(
+        `BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_150_REQUESTS}`
+      );
     } else if (this.requestCount === 300) {
       this.howManyMilliSeconds = BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS;
-      console.log(`BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS}`);
+      console.log(
+        `BenchmarkRateLimiter: increasing pace to ${BenchmarkRateLimiter.PACE_AFTER_300_REQUESTS}`
+      );
     }
     return super.next(p);
-  };
+  }
 }

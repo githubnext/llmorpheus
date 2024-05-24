@@ -34,7 +34,7 @@ describe("test mutant generation", () => {
       promptTemplateFileName,
       sorterTestFilePath,
       outputDir,
-      subDirName,
+      subDirName
     );
     const actualPromptSpecs = await promptSpecGenerator.getPromptSpecs();
     expect(actualPromptSpecs.length).to.equal(40);
@@ -112,7 +112,7 @@ describe("test mutant generation", () => {
   it("should find the source files to be mutated in a given source project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -123,8 +123,8 @@ describe("test mutant generation", () => {
       mutate: "src/**/*.ts",
       ignore: "**/*.spec.ts",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       path.join(outputDir, subDirName),
@@ -176,7 +176,7 @@ describe("test mutant generation", () => {
   it("should generate the expected mutants for a project", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -187,8 +187,8 @@ describe("test mutant generation", () => {
       mutate: "src/**/TreeSorter.ts",
       ignore: "src/**/*.spec.ts",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,
@@ -211,7 +211,7 @@ describe("test mutant generation", () => {
   it("should produce a file summary.json containing a summary of the results", async () => {
     const model = new MockModel(modelName, mockModelDir);
     const outputDir = fs.mkdtempSync(path.join(".", "test-"));
-    const metaInfo : MetaInfo = {
+    const metaInfo: MetaInfo = {
       modelName: modelName,
       template: promptTemplateFileName,
       systemPrompt: "",
@@ -222,8 +222,8 @@ describe("test mutant generation", () => {
       mutate: "src/**/TreeSorter.js",
       ignore: "src/**/*.spec.ts",
       rateLimit: 1000,
-      benchmark: false
-    }
+      benchmark: false,
+    };
     const mutantGenerator = new MutantGenerator(
       model,
       outputDir,

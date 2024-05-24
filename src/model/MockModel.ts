@@ -34,7 +34,7 @@ export class MockModel implements IModel {
     const hashKey = JSON.stringify({
       modelName: this.modelName,
       prompt,
-      options: this.mockOptions
+      options: this.mockOptions,
     });
     const hash = crypto.createHash("sha256").update(hashKey).digest("hex");
 
@@ -52,7 +52,7 @@ export class MockModel implements IModel {
         completions,
         prompt_tokens: 0,
         completion_tokens: 0,
-        total_tokens: 0
+        total_tokens: 0,
       };
     } else {
       throw new Error(`MockModel: cache file ${cacheFile} does not exist`);

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { toIndex } from "./code-utils";
 
 /**
- * This class captures all information associated with a source location: 
+ * This class captures all information associated with a source location:
  * file, start line, start column, end line, and end column.
  */
 export class SourceLocation {
@@ -25,11 +25,17 @@ export class SourceLocation {
       return false;
     } else if (this.startLine < other.startLine) {
       return false;
-    } else if (this.startLine === other.startLine && this.startColumn < other.startColumn) {
+    } else if (
+      this.startLine === other.startLine &&
+      this.startColumn < other.startColumn
+    ) {
       return false;
     } else if (this.endLine > other.endLine) {
       return false;
-    } else if (this.endLine === other.endLine && this.endColumn > other.endColumn) {
+    } else if (
+      this.endLine === other.endLine &&
+      this.endColumn > other.endColumn
+    ) {
       return false;
     } else {
       return true;

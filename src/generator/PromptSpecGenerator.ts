@@ -54,16 +54,25 @@ export class PromptSpecGenerator {
 
       const nrLines = codeWithPlaceholder.split("\n").length;
       if (nrLines > 200) {
-        const lineWherePlaceHolderIs = codeWithPlaceholder.split("\n").findIndex((line) => line.includes("<PLACEHOLDER>"));
+        const lineWherePlaceHolderIs = codeWithPlaceholder
+          .split("\n")
+          .findIndex((line) => line.includes("<PLACEHOLDER>"));
         const startLine = Math.max(0, lineWherePlaceHolderIs - 100);
         const endLine = Math.min(nrLines, lineWherePlaceHolderIs + 100);
-        codeWithPlaceholder = codeWithPlaceholder.split("\n").slice(startLine, endLine).join("\n");
+        codeWithPlaceholder = codeWithPlaceholder
+          .split("\n")
+          .slice(startLine, endLine)
+          .join("\n");
       }
 
-      const compiledTemplate = handlebars.compile(this.promptTemplate); 
+      const compiledTemplate = handlebars.compile(this.promptTemplate);
       const references = Array.from(promptSpec.references).join(", ");
       const orig = promptSpec.orig;
-      const prompt = compiledTemplate({ code: codeWithPlaceholder, references, orig });
+      const prompt = compiledTemplate({
+        code: codeWithPlaceholder,
+        references,
+        orig,
+      });
       this.prompts.push(new Prompt(prompt, promptSpec));
     }
   }
@@ -71,7 +80,9 @@ export class PromptSpecGenerator {
   private createPromptSpecs() {
     for (let i = 0; i < this.files.length; i++) {
       const file = this.files[i];
-      this.promptSpecs.push(...this.createPromptSpecsForFile(path.join(this.packagePath, file)));
+      this.promptSpecs.push(
+        ...this.createPromptSpecsForFile(path.join(this.packagePath, file))
+      );
     }
   }
 
@@ -96,7 +107,7 @@ export class PromptSpecGenerator {
         outerThis.createPromptSpecsForForIn(file, path);
         outerThis.createPromptSpecsForForOf(file, path);
         outerThis.createPromptSpecsForCall(file, path);
-      }
+      },
     });
     return promptSpecs;
   }
@@ -111,7 +122,9 @@ export class PromptSpecGenerator {
         test.loc!.end.line,
         test.loc!.end.column
       );
-      this.promptSpecs.push(new PromptSpec(file, "if", "test", loc, loc.getText()));
+      this.promptSpecs.push(
+        new PromptSpec(file, "if", "test", loc, loc.getText())
+      );
     }
   }
 
@@ -125,7 +138,9 @@ export class PromptSpecGenerator {
         discriminant.loc!.end.line,
         discriminant.loc!.end.column
       );
-      this.promptSpecs.push(new PromptSpec(file, "switch", "discriminant", loc, loc.getText()));
+      this.promptSpecs.push(
+        new PromptSpec(file, "switch", "discriminant", loc, loc.getText())
+      );
     }
   }
 
@@ -139,7 +154,9 @@ export class PromptSpecGenerator {
         test.loc!.end.line,
         test.loc!.end.column
       );
-      this.promptSpecs.push(new PromptSpec(file, "while", "test", loc, loc.getText()));
+      this.promptSpecs.push(
+        new PromptSpec(file, "while", "test", loc, loc.getText())
+      );
     }
   }
 
@@ -153,7 +170,9 @@ export class PromptSpecGenerator {
         test.loc!.end.line,
         test.loc!.end.column
       );
-      this.promptSpecs.push(new PromptSpec(file, "do-while", "test", loc, loc.getText()));
+      this.promptSpecs.push(
+        new PromptSpec(file, "do-while", "test", loc, loc.getText())
+      );
     }
   }
 
@@ -171,7 +190,7 @@ export class PromptSpecGenerator {
       let updateLoc: SourceLocation;
       let loopHeaderLoc: SourceLocation;
 
-      if (init){
+      if (init) {
         initLoc = new SourceLocation(
           file,
           init!.loc!.start.line,
@@ -232,7 +251,9 @@ export class PromptSpecGenerator {
         let updateStartLine = test.loc!.end.line;
         let updateStartColumn = test.loc!.end.column;
         // the loop's updater starts at the position of the first non-newline character after the test
-        while (charAtPosition(code, updateStartLine, updateStartColumn) !== ";") {
+        while (
+          charAtPosition(code, updateStartLine, updateStartColumn) !== ";"
+        ) {
           const next = nextPosition(code, updateStartLine, updateStartColumn);
           updateStartLine = next.line;
           updateStartColumn = next.column;
@@ -271,9 +292,30 @@ export class PromptSpecGenerator {
         path.node.loc!.end.column
       );
       const newPromptSpecs = [
-        new PromptSpec(file, "for", "init", initLoc, initLoc.getText(), parentLoc),
-        new PromptSpec(file, "for", "test", testLoc, testLoc.getText(), parentLoc),
-        new PromptSpec(file, "for", "update", updateLoc, updateLoc.getText(), parentLoc),
+        new PromptSpec(
+          file,
+          "for",
+          "init",
+          initLoc,
+          initLoc.getText(),
+          parentLoc
+        ),
+        new PromptSpec(
+          file,
+          "for",
+          "test",
+          testLoc,
+          testLoc.getText(),
+          parentLoc
+        ),
+        new PromptSpec(
+          file,
+          "for",
+          "update",
+          updateLoc,
+          updateLoc.getText(),
+          parentLoc
+        ),
         new PromptSpec(
           file,
           "for",
@@ -320,8 +362,22 @@ export class PromptSpecGenerator {
         path.node.loc!.end.column
       );
       const newPromptSpecs = [
-        new PromptSpec(file, "for-in", "left", leftLoc, leftLoc.getText(), parentLoc),
-        new PromptSpec(file, "for-in", "right", rightLoc, rightLoc.getText(), parentLoc),
+        new PromptSpec(
+          file,
+          "for-in",
+          "left",
+          leftLoc,
+          leftLoc.getText(),
+          parentLoc
+        ),
+        new PromptSpec(
+          file,
+          "for-in",
+          "right",
+          rightLoc,
+          rightLoc.getText(),
+          parentLoc
+        ),
         new PromptSpec(
           file,
           "for-in",
@@ -368,7 +424,14 @@ export class PromptSpecGenerator {
         path.node.loc!.end.column
       );
       const newPromptSpecs = [
-        new PromptSpec(file, "for-of", "left", leftLoc, leftLoc.getText(), parentLoc),
+        new PromptSpec(
+          file,
+          "for-of",
+          "left",
+          leftLoc,
+          leftLoc.getText(),
+          parentLoc
+        ),
         new PromptSpec(file, "for-of", "right", rightLoc, rightLoc.getText()),
         new PromptSpec(
           file,
@@ -384,7 +447,10 @@ export class PromptSpecGenerator {
   }
 
   private createPromptSpecsForCall(file: string, path: any) {
-    if (path.isCallExpression() && path.node.loc!.start.line === path.node.loc!.end.line) {
+    if (
+      path.isCallExpression() &&
+      path.node.loc!.start.line === path.node.loc!.end.line
+    ) {
       // for now, restrict to calls on a single line
       const callee = path.node.callee;
       const args = path.node.arguments;
@@ -396,7 +462,11 @@ export class PromptSpecGenerator {
         callee.loc!.end.line,
         callee.loc!.end.column
       );
-      if (calleeLoc.getText() !== "require" && calleeLoc.getText() !== "super") { // don't mutate calls to require or super-calls
+      if (
+        calleeLoc.getText() !== "require" &&
+        calleeLoc.getText() !== "super"
+      ) {
+        // don't mutate calls to require or super-calls
         newPromptSpecs.push(
           new PromptSpec(file, "call", "callee", calleeLoc, calleeLoc.getText())
         );
@@ -410,7 +480,13 @@ export class PromptSpecGenerator {
             arg.loc!.end.column
           );
           newPromptSpecs.push(
-            new PromptSpec(file, "call", "arg" + argNr, argLoc, argLoc.getText())
+            new PromptSpec(
+              file,
+              "call",
+              "arg" + argNr,
+              argLoc,
+              argLoc.getText()
+            )
           );
         }
         if (args.length === 0) {
@@ -484,14 +560,17 @@ export class PromptSpecGenerator {
         component,
         location,
         orig,
-        parentLocation
+        parentLocation,
       };
     });
 
     // write promptSpecs to JSON file
     const json = JSON.stringify(promptSpecsWithRelativePaths, null, 2);
     const fileName = path.join(this.outputDir, this.subDir, "promptSpecs.json");
-    fs.writeFileSync(path.join(this.outputDir, this.subDir, "promptSpecs.json"), json);
+    fs.writeFileSync(
+      path.join(this.outputDir, this.subDir, "promptSpecs.json"),
+      json
+    );
 
     // write prompts to directory "prompts"
     const dir = path.join(this.outputDir, this.subDir, "prompts");

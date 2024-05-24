@@ -33,7 +33,8 @@ if (require.main === module) {
         model: {
           type: "string",
           default: "codellama-34b-instruct",
-          description: 'name of the model to use (default: "codellama-34b-instruct")',
+          description:
+            'name of the model to use (default: "codellama-34b-instruct")',
         },
         caching: {
           type: "boolean",
@@ -63,13 +64,14 @@ if (require.main === module) {
           type: "number",
           default: 0.0,
           description:
-            "temperature to use when generating completions (default: 0.0)"
+            "temperature to use when generating completions (default: 0.0)",
         },
         rateLimit: {
           type: "number",
           default: 0,
           demandOption: false,
-          description: "number of milliseconds between requests to the model (0 is no rate limit)",
+          description:
+            "number of milliseconds between requests to the model (0 is no rate limit)",
         },
         nrAttempts: {
           type: "number",
@@ -81,7 +83,8 @@ if (require.main === module) {
           type: "boolean",
           default: false,
           demandOption: false,
-          description: "use custom rate-limiting for benchmarking (if specified, this supercedes the rateLimit option)",
+          description:
+            "use custom rate-limiting for benchmarking (if specified, this supercedes the rateLimit option)",
         },
         maxTokens: {
           type: "number",
@@ -156,6 +159,7 @@ if (require.main === module) {
       model = (argv.caching) ? new CachingModel(baseModel, argv.cacheDir) : baseModel;
       console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
     }
+
     const mutantGenerator = new MutantGenerator(
       model,
       path.join(argv.path, "MUTATION_TESTING"),

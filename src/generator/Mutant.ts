@@ -16,7 +16,7 @@ export class Mutant {
     public readonly reason: string
   ) {}
 
-  public toString(){
+  public toString() {
     return JSON.stringify(this);
   }
 }
