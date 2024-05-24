@@ -103,8 +103,16 @@ The `StandardStryker.yml` workflow runs the standard StrykerJS mutators.
 
 ### Reproducing results
 
-The results of LLMorpheus are non-deterministic, so even if you run it from the
-same package on the same machine multiple times, you will get different results.
+The results of LLMorpheus are non-deterministic, so even if you run it from the same package on the same machine multiple times, it is likely that you will get different results.
+
+That said, LLMorpheus has an option `--replay <dirName>` for replaying an execution using prompts and completions observed during a previous execution. If you use this option, the model name, temperature, max number of tokens, and system prompt will be inferred from the previously observed execution. However, the `--mutate` and `--ignore` settings will be taken from command-line arguments, so as to enable replaying executions of LLMorpheus partially, on a subset of the files that it was previous run on.
+
+For example, let's say that the zip-a-folder project is located in a directory `/Users/xxx/zip-a-folder/`, and that the results of a previous execution of LLMorpheus on zip-a-folder can be found in a directory `/Users/xxx/recording`. Further, let's assume that we want to mutate the files that match the pattern `"lib/*.ts"`. You can do that by running the following command:
+```
+node benchmark/createMutants.js --path /Users/xxx/zip-a-folder --mutate "lib/**.ts"  --replay /Users/xxx/recording
+```
+
+A collection of recorded executions of LLMorheus is made available at <https://github.com/neu-se/mutation-testing-data>. Here, you can find recorded executions that were made using the codellama-13b-instruct, codellama-34b-instruct, and mixtral-8x7b-instruct LLMs there, and using various templates and temperature settings. The data is organized in subdirectories that reflect the model, template, and temperature used, e.g. `codellama-13b-instruct/template-full-0.0` reflects a set of experiments using the `codellama-13b-instruct` model, the `full`  template, at temperature `0.0`. This directory contains 5 sets of experiments on 13 subject programs using these settings, contained in subdirectories named `run354`-`run359`. A file `zip/mutants.zip` within each of these subdirectories contains all data that is needed to replay these executions.
 
 
 ## License

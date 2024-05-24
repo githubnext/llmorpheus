@@ -1,62 +1,85 @@
-Mutation testing is a technique that involves modifying a program in small ways, in
-order to find weaknesses in a project's test suite. The goal is to change the
-behavior of the program, and then check whether the tests notice. When they do
-not, that indicates that the tests may not be as effective as the developer
-might have hoped.
-
 Your task is to apply mutation testing to the following code:
 ```
-let timezonesMap;
+import ISorter from './ISorter';
 
-export default function buildCountry(data, id) {
-  const name = data.countries[id];
-  if (<PLACEHOLDER>) return null;
+/**
+ * An implementation of tree-sort.
+ */
+export default class TreeSorter<E> implements ISorter<E> {
 
-  const tzMap = getTimezonesMap(data)[id] || {};
+  public constructor(){
+    <PLACEHOLDER>('*** creating TreeSorter ***');
+  }
 
-  return {
-    id,
-    name,
-    timezones: tzMap.current || [],
-    allTimezones: tzMap.all || [],
-  };
+  /**
+   * inserts elements into binary tree. uses recursive in-order traversal
+   * of the tree to retrieve elements in sorted order
+   */
+  public sort(list: E[], compareFun: (e1: E, e2: E) => number): void {
+    if (list.length > 1){
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const tree: Tree<E> = new Tree<E>(list[0]);
+      for (let i: number = 1; i < list.length; i++){
+        tree.insert(list[i], compareFun);
+      }
+      tree.copyInto(list, 0);
+    }
+  }
 }
 
-function getTimezonesMap(data) {
-  if (!timezonesMap) timezonesMap = buildTimezonesMap(data);
-  return timezonesMap;
-}
+class Tree<E> {
+  private value: E;
+  private left: Tree<E>;
+  private right: Tree<E>;
 
-function buildTimezonesMap(data) {
-  return Object.keys(data.timezones).reduce((result, id) => {
-    const tz = data.timezones[id];
-    const { c, a } = tz;
-    const aliasTz = data.timezones[a] || {};
-    const countries = c || aliasTz.c;
+  public constructor(v: E){
+    this.value = v;
+    this.left = null;
+    this.right = null;
+  }
+  public insert(v: E, compareFun: (e1: E, e2: E) => number): void {
+    if (compareFun(v, this.value) < 0) {
+      if (this.left != null){
+        this.left.insert(v, compareFun);
+      } else {
+        this.left = new Tree(v);
+      }
+    } else {
+      if (this.right != null){
+        this.right.insert(v, compareFun);
+      } else {
+        this.right = new Tree(v);
+      }
+    }
+  }
 
-    if (!countries) return result;
-
-    countries.forEach((country) => {
-      if (!result[country]) Object.assign(result, { [country]: { current: [], all: [] } });
-      if (tz.r === undefined) result[country].current.push(id);
-      result[country].all.push(id);
-    });
-
-    return result;
-  }, {});
+  /**
+   * returns index at which to insert next element
+   */
+  public copyInto(list: E[], index: number): number {
+    let newIndex: number = index;
+    if (this.left != null){
+      newIndex = this.left.copyInto(list, newIndex);
+    }
+    list[newIndex++] = this.value;
+    if (this.right != null){
+      newIndex = this.right.copyInto(list, newIndex);
+    }
+    return newIndex;
+  }
 }
 
 ```
 
-by replacing the PLACEHOLDER with a buggy piece of code that behaves different
-from the original code fragment, which was:
+by replacing the PLACEHOLDER with a buggy code fragment that has different
+behavior than the original code fragment, which was:
 ```
-!name
+console.log
 ```
 Please consider changes such as using different operators, changing constants,
 referring to different variables, object properties, functions, or methods.  
 
-Provide three answers as fenced code blocks containing a single line of code, 
+Provide three answers as fenced code blocks containing a single line of code,
 using the following template:
 
 Option 1: The PLACEHOLDER can be replaced with:
@@ -77,4 +100,4 @@ Option 3: The PLACEHOLDER can be replaced with:
 ```
 This would result in different behavior because <brief explanation>.
 
-Please conclude your response with "DONE." 
+Please conclude your response with "DONE."

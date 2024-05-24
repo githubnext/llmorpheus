@@ -7,6 +7,7 @@ import { Prompt } from "../prompt/Prompt";
 import { PromptSpec } from "../prompt/PromptSpec";
 import { SourceLocation } from "../util/SourceLocation";
 import { charAtPosition, nextPosition, prevPosition } from "../util/code-utils";
+import { Completion } from "../prompt/Completion";
 
 /**
  * Generates a set of PromptSpecs for a given set of source files and a given prompt template.
