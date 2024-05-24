@@ -11,7 +11,7 @@ import { IQueryResult } from "./IQueryResult";
 
 export class MockModel implements IModel {
   private modelName: string;
-  private mockOptions = { "max_tokens": 250, "temperature": 0, "top_p": 1 };
+  private mockOptions = { max_tokens: 250, temperature: 0, top_p: 1 };
   constructor(modelName: string, private modelDir: string) {
     this.modelName = `${modelName}`;
   }
@@ -27,9 +27,6 @@ export class MockModel implements IModel {
   }
 
   public async query(prompt: string): Promise<IQueryResult> {
-
-    
-
     // compute hash using npm package `crypto`
     const hashKey = JSON.stringify({
       modelName: this.modelName,

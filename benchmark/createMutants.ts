@@ -99,18 +99,20 @@ if (require.main === module) {
           description: "maximum number of prompts to generate",
         },
         replay: {
-          type:"string",
+          type: "string",
           default: undefined,
           demandOption: false,
-          description: "replay execution from specified directory"
-        }
+          description: "replay execution from specified directory",
+        },
       });
 
     const argv = await parser.argv;
-    const packagePath = argv.path.endsWith("/") ? argv.path : path.join(argv.path, "/");
+    const packagePath = argv.path.endsWith("/")
+      ? argv.path
+      : path.join(argv.path, "/");
     let model: IModel;
     let metaInfo: MetaInfo;
-    if (argv.replay !== undefined){
+    if (argv.replay !== undefined) {
       model = new ReplayModel(argv.replay);
       metaInfo = (model as ReplayModel).getMetaInfo();
       metaInfo.mutate = argv.mutate;
@@ -123,9 +125,9 @@ if (require.main === module) {
         "mixtral-8x7b-instruct",
         "mixtral-8x22b",
         "llama-2-13b-chat",
-        "llama-2-70b-chat"
+        "llama-2-70b-chat",
       ];
-  
+
       if (!supportedModels.includes(argv.model)) {
         console.error(`Invalid model name: ${argv.model}`);
         console.error(`Supported models are: ${supportedModels.join(", ")}`);
@@ -143,8 +145,8 @@ if (require.main === module) {
         systemPrompt: argv.systemPrompt,
         mutate: argv.mutate,
         ignore: argv.ignore,
-        benchmark: argv.benchmark
-      }
+        benchmark: argv.benchmark,
+      };
 
       if (!supportedModels.includes(argv.model)) {
         console.error(`Invalid model name: ${argv.model}`);
@@ -152,19 +154,24 @@ if (require.main === module) {
         process.exit(1);
       }
 
-      const baseModel = new Model(argv.model, { temperature: argv.temperature,
-                                                max_tokens: argv.maxTokens },
-                                  metaInfo
+      const baseModel = new Model(
+        argv.model,
+        { temperature: argv.temperature, max_tokens: argv.maxTokens },
+        metaInfo
       );
-      model = (argv.caching) ? new CachingModel(baseModel, argv.cacheDir) : baseModel;
-      console.log(`*** Generating mutants for ${argv.mutate} in ${packagePath}`);
+      model = argv.caching
+        ? new CachingModel(baseModel, argv.cacheDir)
+        : baseModel;
+      console.log(
+        `*** Generating mutants for ${argv.mutate} in ${packagePath}`
+      );
     }
 
     const mutantGenerator = new MutantGenerator(
       model,
       path.join(argv.path, "MUTATION_TESTING"),
       packagePath,
-      metaInfo 
+      metaInfo
     );
     mutantGenerator.generateMutants();
   })();

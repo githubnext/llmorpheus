@@ -1,12 +1,12 @@
-import * as parser from "@babel/parser"; 
-import traverse from "@babel/traverse"; 
-import * as fs from "fs"; 
-import * as handlebars from "handlebars"; 
-import * as path from "path"; 
-import { Prompt } from "../prompt/Prompt"; 
-import { PromptSpec } from "../prompt/PromptSpec"; 
-import { SourceLocation } from "../util/SourceLocation"; 
-import { charAtPosition, nextPosition, prevPosition } from "../util/code-utils"; 
+import * as parser from "@babel/parser";
+import traverse from "@babel/traverse";
+import * as fs from "fs";
+import * as handlebars from "handlebars";
+import * as path from "path";
+import { Prompt } from "../prompt/Prompt";
+import { PromptSpec } from "../prompt/PromptSpec";
+import { SourceLocation } from "../util/SourceLocation";
+import { charAtPosition, nextPosition, prevPosition } from "../util/code-utils";
 import { Completion } from "../prompt/Completion";
 
 /**
