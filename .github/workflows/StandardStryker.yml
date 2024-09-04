@@ -142,7 +142,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download output zips
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
 
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
@@ -177,7 +177,7 @@ jobs:
 
     steps:
        - name: Download combined output files
-         uses: actions/download-artifact@v2
+         uses: actions/download-artifact@v4.1.7
          with:
            name: results
            path: results
